@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">לא רוצה הלוואה</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="title_about">אודות</string>
+    <string name="title_summary">סיכום סטטוס</string>
+    <string name="content_summary">סה״כ &lt;b&gt; %1$s &lt;/b&gt;  הודעות חשודות</string>
+    <string name="content_summary_empty">אין הודעות חשודות</string>
+    <!--<string name="text_lawsuit">להנחיות לתביעה לחצו &lt;a href="http://www.google.com/"&gt;כאן&lt;/a&gt;</string>-->
+    <string name="text_lawsuit">להנחיות לתביעה לחצו </string>
+    <string name="text_lawsuit_press"><a href="http://www.google.com">כאן</a></string>
+    <string name="list_item_title">מאת: %1$s</string>
+    <string name="list_item_date">ב: %1$s</string>
+    <string name="about_information">האפליקציה מוצאת הודעות ספאם.</string>
+
+</resources>
