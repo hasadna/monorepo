@@ -6,11 +6,12 @@ option java_package = "projects.noloan.app";
 option java_outer_classname = "Protos";
 
 message SmsMessage {
-   // ms time (unix timestamp * 1000)
+   // Unix milliseconds
   int64 receivedDateTime = 1;
-   // Sender phone number
+  // Sender phone number
   string sender = 2;
-  string message = 3;
+  // The text in the message
+  string contents = 3;
 }
 
 message SmsMessageList {

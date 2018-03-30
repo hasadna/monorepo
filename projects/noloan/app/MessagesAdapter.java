@@ -107,7 +107,7 @@ public class MessagesAdapter
                 itemViewHolder.receivedAtText.setText(context.getResources()
                         .getString(R.string.list_item_date,
                                 Util.formatTime(message.getReceivedDateTime())));
-                itemViewHolder.contentText.setText(message.getMessage());
+                itemViewHolder.contentText.setText(message.getContents());
                 break;
         }
     }
@@ -146,7 +146,7 @@ public class MessagesAdapter
                 final String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
                 final String receivedTime = cursor.getString(cursor.getColumnIndexOrThrow("date_sent"));
                 final String senderPhone = cursor.getString(cursor.getColumnIndexOrThrow("address"));
-                messageBuilder.setMessage(body);
+                messageBuilder.setContents(body);
                 messageBuilder.setSender(senderPhone);
                 messageBuilder.setReceivedDateTime(Long.valueOf(receivedTime));
 

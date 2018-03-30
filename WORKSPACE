@@ -36,9 +36,9 @@ android_sdk_repository(
 )
 
 http_archive(
-    name = "android_firestore_sample",
-    urls = ["https://github.com/google/startup-os/archive/30bdc6aa23a24a9514d26e9bd2023e9e46ce8c64.zip"],
-    strip_prefix = "startup-os-30bdc6aa23a24a9514d26e9bd2023e9e46ce8c64"
+    name = "startup_os",
+    urls = ["https://github.com/google/startup-os/archive/2c72c1e618ae302b882b21ac15982b43f6a78786.zip"],
+    strip_prefix = "startup-os-2c72c1e618ae302b882b21ac15982b43f6a78786"
 )
 
 # XXX Use maven deps

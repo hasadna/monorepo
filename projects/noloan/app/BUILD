@@ -1,8 +1,6 @@
 android_binary(
     name = "app",
-    srcs = glob([
-        "*.java",
-    ]),
+    srcs = glob(["*.java"]),
     custom_package = "projects.noloan.app",
     manifest = "AndroidManifest.xml",
     resource_files = glob(["res/**"]),
@@ -45,8 +43,8 @@ android_binary(
         '@com_android_support_cardview_v7_27_0_2//aar',
         '@com_android_support_recyclerview_v7_27_0_2//aar',
 
-        "@android_firestore_sample//android:firestore",
-        "@android_firestore_sample//android:firestore_config_manager",
+        "@startup_os//android:firestore",
+        "@startup_os//android:firestore_config_manager",
 
 
     ],
