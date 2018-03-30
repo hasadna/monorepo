@@ -2,7 +2,7 @@
 
 We're doing an experiment to see what it would be like to work in a monorepo in Hasadna.
 
-For more details on the monorepo approach, see [trunkbaseddevelopment.com/monorepos](trunkbaseddevelopment.com/monorepos).
+For more details on the monorepo approach, see [http://trunkbaseddevelopment.com/monorepos](trunkbaseddevelopment.com/monorepos).
 
 Some monorepo etiquette:
 1. Don't store large files in the repo (>500kb), or many small files. Until we figure out a way to deal with them, you can store them in a different repo.
