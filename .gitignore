@@ -1,5 +1,6 @@
 .idea
 bazel-*
+.project
 
 # To avoid exposing credentials
 google-services.json
