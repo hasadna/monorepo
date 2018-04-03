@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "800619638070",
+    "firebase_url": "https://noloan-7276b.firebaseio.com",
+    "project_id": "noloan-7276b",
+    "storage_bucket": "noloan-7276b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800619638070:android:e0c6c132ea8a9daf",
+        "android_client_info": {
+          "package_name": "projects.noloan.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800619638070-cjsncnp9nr8095s3itd5b9m1vij1tomb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcMziMS1XhQVAW0nrK59IXBzKV_0h7sc4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

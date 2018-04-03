@@ -8,6 +8,7 @@ android_binary(
     assets = ["assets/google-services.json"],
     multidex='legacy',
     visibility = ["//visibility:public"],
+    javacopts = ["-verbose"],
     deps = [
         "//projects/noloan/app/proto:data_protos_java",
         "@com_android_support_support_v4_27_0_2//aar",
@@ -31,7 +32,6 @@ android_binary(
 
         '@android_arch_lifecycle_runtime_1_0_3//aar',
         '@android_arch_lifecycle_common_1_0_3//jar',
-        '@com_android_support_support_annotations_26_1_0//jar',
         '@android_arch_core_common_1_0_0//jar',
 
         '@com_android_support_constraint_constraint_layout_1_0_2//aar',
