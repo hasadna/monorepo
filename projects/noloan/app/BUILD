@@ -9,8 +9,6 @@ android_binary(
     multidex='legacy',
     visibility = ["//visibility:public"],
     deps = [
-        "//projects/noloan/app/filter:spam_filter",
-
         "//projects/noloan/app/proto:data_protos_java",
         "@com_android_support_support_v4_27_0_2//aar",
 
