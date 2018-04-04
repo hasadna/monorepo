@@ -105,7 +105,7 @@ public class SpamFilterTool {
     checkFlags();
 
     ImmutableList<SmsMessage> messagesToFilter = getMessagesToFilter();
-    SpamFilter spamFilter = new SpamFilter();
+    SpamFilter spamFilter = new SpamFilter(messagesToFilter);
     ImmutableList<SmsMessage> messagesDetectedAsSpam = spamFilter.filter(messagesToFilter);
 
     FileUtils.writePrototxtUnchecked(
