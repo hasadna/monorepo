@@ -57,6 +57,12 @@ http_archive(
     strip_prefix = "protobuf-3.5.1.1",
 )
 
+http_archive(
+    name = "com_google_protobuf_javalite",
+    strip_prefix = "protobuf-javalite",
+    urls = ["https://github.com/google/protobuf/archive/javalite.zip"],
+)
+
 new_http_archive(
     name = "auto_value",
     url = "http://repo1.maven.org/maven2/com/google/auto/value/auto-value/1.5.3/auto-value-1.5.3.jar",
