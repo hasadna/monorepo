@@ -3,26 +3,17 @@ package projects.noloan.app.filter;
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
-import com.google.startupos.common.MessageDifferencer.Reporter;
-import com.google.startupos.common.MessageDifferencer;
 import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.FlagDesc;
 import com.google.startupos.common.flags.Flags;
-import java.io.FileWriter;
-import projects.noloan.app.Protos.SmsMessage;
-import projects.noloan.app.Protos.SmsMessageList;
-import projects.noloan.app.filter.SpamFilter;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import java.io.IOException;
-
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import projects.noloan.app.Protos.SmsMessage;
+import projects.noloan.app.Protos.SmsMessageList;
 
 /** A tool for running the SMS Spam filter. */
 public class SpamFilterTool {
@@ -74,10 +65,7 @@ public class SpamFilterTool {
         String sender = record.get(CsvColumns.SENDER);
         String contents = record.get(CsvColumns.CONTENTS);
         SmsMessage message =
-            SmsMessage.newBuilder()
-                .setSender(sender)
-                .setContents(contents)
-                .build();
+            SmsMessage.newBuilder().setSender(sender).setContents(contents).build();
         result.addMessage(message);
       }
     } catch (IOException e) {
@@ -91,8 +79,9 @@ public class SpamFilterTool {
   private static ImmutableList<SmsMessage> getMessagesToFilter() {
     SmsMessageList messagesToFilter;
     if (!messagesPrototxt.get().isEmpty()) {
-      messagesToFilter = (SmsMessageList) FileUtils.readPrototxtUnchecked(
-          messagesPrototxt.get(), SmsMessageList.newBuilder());
+      messagesToFilter =
+          (SmsMessageList)
+              FileUtils.readPrototxtUnchecked(messagesPrototxt.get(), SmsMessageList.newBuilder());
     } else {
       messagesToFilter = getMessagesFromCsv();
     }
@@ -109,8 +98,7 @@ public class SpamFilterTool {
     ImmutableList<SmsMessage> messagesDetectedAsSpam = spamFilter.filter(messagesToFilter);
 
     FileUtils.writePrototxtUnchecked(
-        SmsMessageList.newBuilder().addAllMessage(
-            messagesDetectedAsSpam).build(),
-            outputPrototxt.get());
+        SmsMessageList.newBuilder().addAllMessage(messagesDetectedAsSpam).build(),
+        outputPrototxt.get());
   }
 }
