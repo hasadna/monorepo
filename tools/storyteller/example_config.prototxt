@@ -1,0 +1,16 @@
+invoice_creator {
+  name: "<your name>"
+  phone_number: "<your phone>"
+  email: "<your email>"
+  street_and_number: "<street and number>"
+  city_state_country: "<city state and country>"
+  zip_code: "<zip code>"
+  tagline: "<invoice tagline>"
+  hourly_rate_usd: <rate>
+}
+
+invoice_receiver {
+  name: "<company name>"
+  street_and_number: "<street and number>"
+  city_state_country: "<city state and country>"
+}
