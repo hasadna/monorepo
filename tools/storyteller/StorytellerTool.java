@@ -54,8 +54,7 @@ public class StorytellerTool {
     
   public static void main(String[] args) throws Exception {
     // TODO: Add Flags.parse current package.
-    Iterable<String> packages = ImmutableList.of(StorytellerTool.class.getPackage().getName());
-    String[] leftoverArgs = Flags.parse(args, packages);
+    String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage());
     Storyteller storyteller = new Storyteller(StorytellerConfig.getConfig());
 
     String option = leftoverArgs.length > 0 ? leftoverArgs[0] : null;

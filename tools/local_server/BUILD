@@ -7,8 +7,10 @@ java_binary(
     ],
     main_class = "tools.localserver.LocalServer",
     deps = [
-        "@startup_os//tools/reviewer/service:code_review_lib",
-        "@startup_os//tools/reviewer/service:grpc_service",
+        "@startup_os//tools/reviewer/service",
+        "@startup_os//tools/reviewer/service:service_lib",
+        "@startup_os//tools/local_server/service:auth_service",
+        "//tools/storyteller/service",
         "//third_party/maven/io/opencensus:opencensus_contrib_grpc_metrics",
         "@org_pubref_rules_protobuf//java:netty_runtime_deps",
         "@startup_os//common/flags",

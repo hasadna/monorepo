@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package tools.storyteller.service;
+
+option java_package = "tools.storyteller.service";
+option java_outer_classname = "Protos";
+
+service StorytellerService { 
+  rpc shareStories(ShareStoriesRequest) returns (ShareStoriesResponse);
+}
+
+message ShareStoriesRequest {
+  StoryList stories = 1;
+}
+
+message ShareStoriesResponse {}
+
+message StoryItem {
+  int64 timeMs = 1;
+  bytes screenshot = 2;
+  string oneliner = 3;
+  string note = 4;
+}
+
+message Story {
+  int64 startTimeMs = 1;
+  int64 endTimeMs = 2;
+  string project = 3;
+  repeated StoryItem item = 4;
+}
+
+message StoryList {
+  repeated Story story = 1;
+}

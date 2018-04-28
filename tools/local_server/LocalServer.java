@@ -5,6 +5,8 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 import java.util.logging.Logger;
 import com.google.startupos.tools.reviewer.service.CodeReviewService;
+import com.google.startupos.tools.localserver.service.AuthService;
+import tools.storyteller.service.StorytellerService;
 import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.Flags;
 import com.google.startupos.common.flags.FlagDesc;
@@ -31,9 +33,12 @@ public class LocalServer {
   private Server server;
 
   private void start() throws IOException {
+    AuthService authService = new AuthService();
     server =
         ServerBuilder.forPort(localServerPort.get())
-            .addService(new CodeReviewService(rootPath.get()))
+            .addService(authService)
+            .addService(new CodeReviewService(authService, rootPath.get()))
+            .addService(new StorytellerService(authService))
             .build()
             .start();
     logger.info("Server started, listening on " + localServerPort.get());
@@ -68,7 +73,8 @@ public class LocalServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    Flags.parse(args, LocalServer.class.getPackage());
+    Flags.parse(args, LocalServer.class.getPackage(), CodeReviewService.class.getPackage(),
+        StorytellerService.class.getPackage());
     checkFlags();
 
     final LocalServer server = new LocalServer();

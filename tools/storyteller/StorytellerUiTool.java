@@ -36,8 +36,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.StatusData;
-import tools.storyteller.Protos.Story;
-import tools.storyteller.Protos.StoryItem;
+import tools.storyteller.service.Protos.Story;
+import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.UiDefaults;
 
 /* UI tool for Storyteller */

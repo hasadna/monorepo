@@ -21,6 +21,7 @@ fuser -k 8000/tcp # For Angular
 # (see https://github.com/alexeagle/angular-bazel-example/issues/122)
 git clone https://github.com/google/startup-os.git tools/local_server/startup-os
 cd tools/local_server/startup-os/tools/local_server/web_login
+git pull
 npm install
 ng serve &
 cd -
