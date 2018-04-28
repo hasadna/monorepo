@@ -21,6 +21,7 @@ java_library(
     deps = [
         ":invoicer",
         ":storyteller_java_proto",
+        "//tools/storyteller/service:service_lib",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "@startup_os//common",
@@ -35,6 +36,7 @@ java_library(
     ],
     deps = [
         ":storyteller_java_proto",
+        "//tools/storyteller/service:service_lib",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/commons_logging",
@@ -64,6 +66,7 @@ java_binary(
 STORYTELLER_UI_TOOL_DEPS = [
     ":storyteller",
     ":storyteller_java_proto",
+    "//tools/storyteller/service:service_lib",
     "//third_party/maven/com/google/guava:guava",
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",

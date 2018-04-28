@@ -14,8 +14,8 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Optional;
 import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.Story;
-import tools.storyteller.Protos.StoryItem;
+import tools.storyteller.service.Protos.Story;
+import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.ScreenshotMetadata;
 
 

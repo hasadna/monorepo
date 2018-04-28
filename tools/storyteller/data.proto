@@ -57,22 +57,6 @@ message FileData {
   }
 }
 
-message StoryItem {
-  int64 timeMs = 1;
-  bytes screenshot = 2;
-  // Cryptohash of screenshot, used for timestamping.
-  string screenshot_hash = 3;
-  string oneliner = 4;
-  string note = 5;
-}
-
-message Story {
-  int64 startTimeMs = 1;
-  int64 endTimeMs = 2;
-  string project = 3;
-  repeated StoryItem item = 4;
-}
-
 message InvoiceItem {
   string title = 1;
   string description = 2;

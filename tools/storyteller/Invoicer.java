@@ -15,7 +15,7 @@ import tools.storyteller.Protos.InvoiceCreator;
 import tools.storyteller.Protos.InvoiceReceiver;
 import tools.storyteller.Protos.InvoiceItemList;
 import tools.storyteller.Protos.InvoiceItem;
-import tools.storyteller.Protos.Story;
+import tools.storyteller.service.Protos.Story;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
