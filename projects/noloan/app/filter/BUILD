@@ -1,10 +1,20 @@
 package(default_visibility = ["//projects/noloan/app:__subpackages__"])
 
 java_library(
+    name = 'bayes_spam_filter',
+    srcs = glob(["bayes/*.java"]),
+    deps = [
+      "//projects/noloan/app/proto:bayes_protos_java"
+    ]
+)
+
+java_library(
   name = 'spam_filter',
   srcs = ["SpamFilter.java"],
   deps =
   [
+    ":bayes_spam_filter",
+    "//projects/noloan/app/proto:bayes_protos_java",
     "//projects/noloan/app/proto:data_protos_java",
     "@com_google_protobuf//:protobuf_java",
     "//third_party/maven/com/google/guava:guava",

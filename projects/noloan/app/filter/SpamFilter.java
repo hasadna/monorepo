@@ -2,22 +2,29 @@ package projects.noloan.app.filter;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.common.io.Resources;
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Resources;
+import com.google.protobuf.TextFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 import projects.noloan.app.Protos.SmsMessage;
 import projects.noloan.app.Protos.SmsMessageList;
-import com.google.protobuf.TextFormat;
-import com.google.protobuf.MessageLite;
-
+import projects.noloan.app.filter.bayes.BayesFilter;
 
 /* Filter for spam SMS messages */
 public class SpamFilter {
   private static final String SPAM_PROTOTXT = "projects/noloan/app/filter/spam.prototxt";
 
   ImmutableList<SmsMessage> spam;
+  BayesFilter bayesFilter;
 
-  public SpamFilter() {
+  public SpamFilter(List<SmsMessage> ham) {
     readSpamPrototxt();
+
+    bayesFilter =
+        new BayesFilter(
+            spam.stream().map(SmsMessage::getContents).collect(Collectors.toList()),
+            ham.stream().map(SmsMessage::getContents).collect(Collectors.toList()));
   }
 
   private void readSpamPrototxt() {
@@ -27,13 +34,12 @@ public class SpamFilter {
       TextFormat.merge(text, builder);
       spam = ImmutableList.copyOf(builder.build().getMessageList());
     } catch (Exception e) {
-        throw new RuntimeException(e);
-    }    
+      throw new RuntimeException(e);
+    }
   }
 
   public boolean isSpam(SmsMessage message) {
-    // TODO: Implement simple Naive Bayes spam filter
-    return true;
+    return bayesFilter.isSpam(message.getContents());
   }
 
   /* Returns messages that are spam */
