@@ -3,12 +3,11 @@ package projects.noloan.app.filter.bayes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import projects.noloan.app.filter.SpamFilterAlgorithm;
 import projects.noloan.app.filter.bayes.Protos.WordInfo;
 import projects.noloan.app.filter.bayes.Protos.WordInfoList;
 import projects.noloan.app.filter.bayes.Protos.WordType;
 
-public class BayesFilter implements SpamFilterAlgorithm {
+public class BayesFilter {
   private static final float MIN_PROBABILITY_THRESHOLD = 0.01f;
   private static final float MAX_SPAM_THRESHOLD = 0.99f;
   private HashMap<String, WordInfo> words = new HashMap<>();

@@ -2,7 +2,7 @@ package(default_visibility = ["//projects/noloan/app:__subpackages__"])
 
 java_library(
     name = 'bayes_spam_filter',
-    srcs = glob(["bayes/*.java", "SpamFilterAlgorithm.java"]),
+    srcs = glob(["bayes/*.java"]),
     deps = [
       "//projects/noloan/app/proto:bayes_protos_java"
     ]

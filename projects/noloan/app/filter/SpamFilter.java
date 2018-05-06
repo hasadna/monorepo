@@ -16,7 +16,7 @@ public class SpamFilter {
   private static final String SPAM_PROTOTXT = "projects/noloan/app/filter/spam.prototxt";
 
   ImmutableList<SmsMessage> spam;
-  SpamFilterAlgorithm bayesFilter;
+  BayesFilter bayesFilter;
 
   public SpamFilter(List<SmsMessage> ham) {
     readSpamPrototxt();
