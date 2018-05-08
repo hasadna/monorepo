@@ -42,7 +42,7 @@ android_binary(
         '@com_android_support_recyclerview_v7_27_0_2//aar',
 
         "@startup_os//android:firestore",
-        "@startup_os//android:firestore_config_manager",
+        "@startup_os//android:firestore_config_manager_impl",
 
 
     ],

@@ -6,7 +6,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
-import com.google.startupos.android.FirestoreConfigManager;
+import com.google.startupos.android.FirestoreInitializer;
 
 
 public class MainApp extends Application {
@@ -15,7 +15,7 @@ public class MainApp extends Application {
         super.onCreate();
 
         try {
-            FirestoreConfigManager.initializeFromAssets(getApplicationContext(), "google-services.json");
+            FirestoreInitializer.init(getApplicationContext(), "google-services.json");
         } catch (IOException|JSONException e) {
             e.printStackTrace();
         }
