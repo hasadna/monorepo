@@ -14,10 +14,16 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import projects.noloan.app.Protos.SmsMessage;
 import projects.noloan.app.Protos.SmsMessageList;
+import com.google.startupos.common.CommonModule;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import dagger.Component;
 
 /** A tool for running the SMS Spam filter. */
+@Singleton
 public class SpamFilterTool {
   private static final Logger log = Logger.getForClass();
+  FileUtils fileUtils;
 
   public static enum CsvColumns {
     SENDER,
@@ -32,6 +38,11 @@ public class SpamFilterTool {
 
   @FlagDesc(name = "output_prototxt", description = "Prototxt of messages detected as spam")
   public static final Flag<String> outputPrototxt = Flag.create("");
+
+  @Inject
+  SpamFilterTool(FileUtils fileUtils) {
+    this.fileUtils = fileUtils;
+  }
 
   private static void checkFlags() {
     if (messagesPrototxt.get().isEmpty() && messagesCsv.get().isEmpty()) {
@@ -48,11 +59,11 @@ public class SpamFilterTool {
     }
   }
 
-  private static SmsMessageList getMessagesFromCsv() {
+  private SmsMessageList getMessagesFromCsv() {
     SmsMessageList.Builder result = SmsMessageList.newBuilder();
 
     try {
-      Reader fileReader = new FileReader(FileUtils.expandHomeDirectory(messagesCsv.get()));
+      Reader fileReader = new FileReader(fileUtils.expandHomeDirectory(messagesCsv.get()));
       List<CSVRecord> records =
           CSVFormat.DEFAULT
               .withDelimiter('\t')
@@ -76,29 +87,39 @@ public class SpamFilterTool {
   }
 
   /* Returns messages to filter from prototxt or csv */
-  private static ImmutableList<SmsMessage> getMessagesToFilter() {
+  private ImmutableList<SmsMessage> getMessagesToFilter() {
     SmsMessageList messagesToFilter;
     if (!messagesPrototxt.get().isEmpty()) {
       messagesToFilter =
           (SmsMessageList)
-              FileUtils.readPrototxtUnchecked(messagesPrototxt.get(), SmsMessageList.newBuilder());
+              fileUtils.readPrototxtUnchecked(messagesPrototxt.get(), SmsMessageList.newBuilder());
     } else {
       messagesToFilter = getMessagesFromCsv();
     }
     return ImmutableList.copyOf(messagesToFilter.getMessageList());
   }
 
-  public static void main(String[] args) throws Exception {
-    Iterable<String> packages = ImmutableList.of(SpamFilterTool.class.getPackage().getName());
-    Flags.parse(args, packages);
-    checkFlags();
+  @Singleton
+  @Component(modules = {CommonModule.class})
+  public interface SpamFilterToolComponent {
+    SpamFilterTool getSpamFilterTool();
+  }
 
+  private void run() {
     ImmutableList<SmsMessage> messagesToFilter = getMessagesToFilter();
     SpamFilter spamFilter = new SpamFilter(messagesToFilter);
     ImmutableList<SmsMessage> messagesDetectedAsSpam = spamFilter.filter(messagesToFilter);
-
-    FileUtils.writePrototxtUnchecked(
+    fileUtils.writePrototxtUnchecked(
         SmsMessageList.newBuilder().addAllMessage(messagesDetectedAsSpam).build(),
         outputPrototxt.get());
+  }
+
+  public static void main(String[] args) throws Exception {
+    Flags.parse(args, SpamFilterTool.class.getPackage());
+    checkFlags();
+    DaggerSpamFilterTool_SpamFilterToolComponent
+        .create()
+        .getSpamFilterTool()
+        .run();
   }
 }
