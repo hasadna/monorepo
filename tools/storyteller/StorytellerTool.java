@@ -1,7 +1,6 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import com.google.startupos.common.flags.Flags;
 
@@ -55,7 +54,8 @@ public class StorytellerTool {
   public static void main(String[] args) throws Exception {
     // TODO: Add Flags.parse current package.
     String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage());
-    Storyteller storyteller = new Storyteller(StorytellerConfig.getConfig());
+    StorytellerComponent storytellerComponent = DaggerStorytellerComponent.builder().build();
+    Storyteller storyteller = storytellerComponent.getStoryteller();
 
     String option = leftoverArgs.length > 0 ? leftoverArgs[0] : null;
 
@@ -72,4 +72,3 @@ public class StorytellerTool {
     }
   }
 }
-

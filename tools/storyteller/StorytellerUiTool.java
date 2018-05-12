@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
+import javax.inject.Inject;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,11 +34,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.UiDefaults;
 
 /* UI tool for Storyteller */
@@ -84,6 +81,7 @@ public class StorytellerUiTool {
   private JComboBox projectDropDown;
   private JTextField storyTextArea;
   private Mode mode;
+  private StorytellerConfig storytellerConfig;
 
   enum Mode {
     TIME_AND_SCREENSHOT,
@@ -94,18 +92,25 @@ public class StorytellerUiTool {
 
     checkInputArgs(args);
 
+    StorytellerComponent storytellerComponent = DaggerStorytellerComponent.builder().build();
+    Storyteller storyteller = storytellerComponent.getStoryteller();
+    StorytellerConfig storytellerConfig = storytellerComponent.getStorytellerConfig();
+
     EventQueue.invokeLater(
         () -> {
-          StorytellerUiTool uiTool = new StorytellerUiTool();
+          StorytellerUiTool uiTool = new StorytellerUiTool(storyteller, storytellerConfig);
           uiTool.mode = getMode(args[0]);
           uiTool.init();
         });
   }
 
-  private StorytellerUiTool() {}
+  @Inject
+  StorytellerUiTool(Storyteller storyteller, StorytellerConfig storytellerConfig) {
+    this.storyteller = storyteller;
+    this.storytellerConfig = storytellerConfig;
+  }
 
   private void init() {
-    storyteller = new Storyteller(StorytellerConfig.getConfig());
     unsharedStories = storyteller.getUnsharedStories();
     for (Story story : unsharedStories) {
       unsharedStoriesTime += story.getEndTimeMs() - story.getStartTimeMs();
@@ -351,11 +356,11 @@ public class StorytellerUiTool {
   private String[] getProjects() {
     ImmutableList.Builder<String> result = new ImmutableList.Builder<>();
     for (String project : uiDefaults.getProjectList()) {
-      if (StorytellerConfig.getConfig().getProjectsList().contains(project)) {
+      if (storytellerConfig.getConfig().getProjectsList().contains(project)) {
         result.add(project);
       }
     }
-    for (String project : StorytellerConfig.getConfig().getProjectsList()) {
+    for (String project : storytellerConfig.getConfig().getProjectsList()) {
       // No contains in builder.. :(
       if (!result.build().contains(project)) {
         result.add(project);
