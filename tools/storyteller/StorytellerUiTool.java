@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,6 +35,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import com.google.startupos.common.CommonModule;
+import dagger.Component;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
 
@@ -88,17 +91,20 @@ public class StorytellerUiTool {
     SCREENSHOT_ONLY
   }
 
+  @Singleton
+  @Component(modules = { CommonModule.class })
+  interface StorytellerUiToolComponent {
+    StorytellerUiTool getStoryTellerUiTool();
+  }
+
   public static void main(String[] args) {
 
     checkInputArgs(args);
 
-    StorytellerComponent storytellerComponent = DaggerStorytellerComponent.builder().build();
-    Storyteller storyteller = storytellerComponent.getStoryteller();
-    StorytellerConfig storytellerConfig = storytellerComponent.getStorytellerConfig();
+    StorytellerUiTool uiTool = DaggerStorytellerUiTool_StorytellerUiToolComponent.create().getStoryTellerUiTool();
 
     EventQueue.invokeLater(
         () -> {
-          StorytellerUiTool uiTool = new StorytellerUiTool(storyteller, storytellerConfig);
           uiTool.mode = getMode(args[0]);
           uiTool.init();
         });

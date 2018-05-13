@@ -1,7 +1,6 @@
 package tools.storyteller;
 
 import com.google.protobuf.Message;
-import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import java.awt.AWTException;
@@ -17,15 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-
-import dagger.Module;
+import javax.inject.Singleton;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.ScreenshotMetadata;
 
 
 /* Storyteller writer that writes story files. */
-@Module (includes = { CommonModule.class, StorytellerConfig.class })
+@Singleton
 public class StoryWriter {
   private static final Logger log = Logger.getForClass();
   public static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");

@@ -1,17 +1,16 @@
 package tools.storyteller;
 
-import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import java.util.Arrays;
-import dagger.Module;
 import tools.storyteller.Protos.Config;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /*
  * Config for Storyteller
  */
-@Module (includes = CommonModule.class)
+@Singleton
 public class StorytellerConfig {
   private static final Logger log = Logger.getForClass();
   private static final String CONFIG_FILE = "~/.storyteller";
@@ -24,6 +23,7 @@ public class StorytellerConfig {
   public StorytellerConfig(FileUtils fileUtils){
     this.fileUtils = fileUtils;
   }
+
   public Config getConfig() {
     Config.Builder config =
         Config.newBuilder()
@@ -37,4 +37,3 @@ public class StorytellerConfig {
     return (Config) fileUtils.readPrototxtUnchecked(CONFIG_FILE, config);
   }
 }
-

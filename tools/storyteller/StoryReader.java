@@ -3,23 +3,22 @@ package tools.storyteller;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
-import dagger.Module;
 import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.ScreenshotMetadata;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Optional;
 
 /* Storyteller reader that reads story files into a Story proto. */
-@Module (includes = CommonModule.class)
+@Singleton
 public class StoryReader {
   private static final Logger log = Logger.getForClass();
 
