@@ -39,6 +39,7 @@ import com.google.startupos.common.CommonModule;
 import dagger.Component;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
+import tools.storyteller.Protos.Config;
 
 /* UI tool for Storyteller */
 public class StorytellerUiTool {
@@ -84,7 +85,7 @@ public class StorytellerUiTool {
   private JComboBox projectDropDown;
   private JTextField storyTextArea;
   private Mode mode;
-  private StorytellerConfig storytellerConfig;
+  private Config config;
 
   enum Mode {
     TIME_AND_SCREENSHOT,
@@ -113,7 +114,7 @@ public class StorytellerUiTool {
   @Inject
   StorytellerUiTool(Storyteller storyteller, StorytellerConfig storytellerConfig) {
     this.storyteller = storyteller;
-    this.storytellerConfig = storytellerConfig;
+    this.config = storytellerConfig.getConfig();
   }
 
   private void init() {
@@ -362,11 +363,11 @@ public class StorytellerUiTool {
   private String[] getProjects() {
     ImmutableList.Builder<String> result = new ImmutableList.Builder<>();
     for (String project : uiDefaults.getProjectList()) {
-      if (storytellerConfig.getConfig().getProjectsList().contains(project)) {
+      if (config.getProjectsList().contains(project)) {
         result.add(project);
       }
     }
-    for (String project : storytellerConfig.getConfig().getProjectsList()) {
+    for (String project : config.getProjectsList()) {
       // No contains in builder.. :(
       if (!result.build().contains(project)) {
         result.add(project);
