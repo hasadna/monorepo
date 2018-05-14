@@ -18,6 +18,8 @@ import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,12 +35,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.StatusData;
+import com.google.startupos.common.CommonModule;
+import dagger.Component;
 import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.UiDefaults;
+import tools.storyteller.Protos.Config;
 
 /* UI tool for Storyteller */
 public class StorytellerUiTool {
@@ -84,28 +85,39 @@ public class StorytellerUiTool {
   private JComboBox projectDropDown;
   private JTextField storyTextArea;
   private Mode mode;
+  private Config config;
 
   enum Mode {
     TIME_AND_SCREENSHOT,
     SCREENSHOT_ONLY
   }
 
+  @Singleton
+  @Component(modules = { CommonModule.class })
+  interface StorytellerUiToolComponent {
+    StorytellerUiTool getStoryTellerUiTool();
+  }
+
   public static void main(String[] args) {
 
     checkInputArgs(args);
 
+    StorytellerUiTool uiTool = DaggerStorytellerUiTool_StorytellerUiToolComponent.create().getStoryTellerUiTool();
+
     EventQueue.invokeLater(
         () -> {
-          StorytellerUiTool uiTool = new StorytellerUiTool();
           uiTool.mode = getMode(args[0]);
           uiTool.init();
         });
   }
 
-  private StorytellerUiTool() {}
+  @Inject
+  StorytellerUiTool(Storyteller storyteller, StorytellerConfig storytellerConfig) {
+    this.storyteller = storyteller;
+    this.config = storytellerConfig.getConfig();
+  }
 
   private void init() {
-    storyteller = new Storyteller(StorytellerConfig.getConfig());
     unsharedStories = storyteller.getUnsharedStories();
     for (Story story : unsharedStories) {
       unsharedStoriesTime += story.getEndTimeMs() - story.getStartTimeMs();
@@ -351,11 +363,11 @@ public class StorytellerUiTool {
   private String[] getProjects() {
     ImmutableList.Builder<String> result = new ImmutableList.Builder<>();
     for (String project : uiDefaults.getProjectList()) {
-      if (StorytellerConfig.getConfig().getProjectsList().contains(project)) {
+      if (config.getProjectsList().contains(project)) {
         result.add(project);
       }
     }
-    for (String project : StorytellerConfig.getConfig().getProjectsList()) {
+    for (String project : config.getProjectsList()) {
       // No contains in builder.. :(
       if (!result.build().contains(project)) {
         result.add(project);

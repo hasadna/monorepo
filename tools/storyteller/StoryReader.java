@@ -1,33 +1,32 @@
 package tools.storyteller;
 
-import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
-import com.google.protobuf.ByteString;
-import com.google.protobuf.MessageLite.Builder;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
-import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.Protos.ScreenshotMetadata;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Optional;
 
 /* Storyteller reader that reads story files into a Story proto. */
+@Singleton
 public class StoryReader {
   private static final Logger log = Logger.getForClass();
 
-  private Config config;
+  private FileUtils fileUtils;
 
-  public StoryReader(Config config) {
-    this.config = config;
+  @Inject
+  public StoryReader(FileUtils fileUtils) {
+    this.fileUtils = fileUtils;
   }
 
   private ImmutableList<FileData> getFileData(String path) throws ParseException {
@@ -55,14 +54,14 @@ public class StoryReader {
         type = FileData.Type.SCREENSHOT_METADATA;
         ScreenshotMetadata metadata =
             (ScreenshotMetadata)
-                FileUtils.readPrototxtUnchecked(
+                fileUtils.readPrototxtUnchecked(
                     Paths.get(path, filename).toString(), ScreenshotMetadata.newBuilder());
         fileData.setScreenshotMetadata(metadata);
       } else {
         type = FileData.Type.valueOf(extension);
         StatusData statusData =
             (StatusData)
-                FileUtils.readPrototxtUnchecked(
+                fileUtils.readPrototxtUnchecked(
                     Paths.get(path, filename).toString(), StatusData.newBuilder());
         fileData.setStatusData(statusData);
       }
@@ -76,8 +75,7 @@ public class StoryReader {
     return list.stream().filter(x -> x.getType() == type && x.getTimeMs() == timeMs).findFirst();
   }
 
-  private ImmutableList<Story> toStories(ImmutableList<FileData> fileDataList)
-      throws ParseException {
+  private ImmutableList<Story> toStories(ImmutableList<FileData> fileDataList) {
     StoryVerifier.checkFiles(fileDataList);
     ImmutableList.Builder<Story> result = new ImmutableList.Builder<>();
     Story.Builder currentStory = Story.newBuilder();
@@ -117,7 +115,6 @@ public class StoryReader {
           result.add(currentStory.build());
           currentStory =
               Story.newBuilder().setProject(project).setStartTimeMs(fileData.getTimeMs());
-          ;
         }
         currentStory.addItem(
             StoryItem.newBuilder()
@@ -139,4 +136,3 @@ public class StoryReader {
     return toStories(getFileData(path));
   }
 }
-

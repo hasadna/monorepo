@@ -2,14 +2,10 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.io.Files;
 import com.google.startupos.common.Logger;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
-import com.google.startupos.common.flags.Flag;
-import com.google.startupos.common.flags.FlagDesc;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.Instant;
@@ -21,6 +17,7 @@ import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
+import javax.inject.Inject;
 
 /*
  * Storyteller logic.
@@ -38,12 +35,13 @@ public class Storyteller {
   private int screenshotFrequency;
   private StoryReader reader;
   private StoryWriter writer;
-  
-  public Storyteller(Config config) {
-    this.config = config;
+
+  @Inject
+  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer) {
+    config = storytellerConfig.getConfig();
+    this.reader = reader;
+    this.writer = writer;
     screenshotFrequency = getScreenshotFrequency();
-    reader = new StoryReader(config);
-    writer = new StoryWriter(config);
   }
 
   /*
@@ -233,4 +231,3 @@ public class Storyteller {
     return -1; // We should never get here
   }
 }
-

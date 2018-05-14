@@ -1,9 +1,12 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.FileUtils;
+import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.Logger;
 import com.google.startupos.common.flags.Flags;
+import dagger.Component;
+
+import javax.inject.Singleton;
 
 /*
 * A way to tell the story of what you're up to.
@@ -51,11 +54,17 @@ public class StorytellerTool {
   private static final String INVOICE = "invoice";
   private static final ImmutableList<String> COMMANDS =
       ImmutableList.of(HELP, LIST, SHARE, INVOICE);
+
+  @Singleton
+  @Component(modules = { CommonModule.class })
+  interface StorytellerToolComponent {
+    Storyteller getStoryteller();
+  }
     
   public static void main(String[] args) throws Exception {
     // TODO: Add Flags.parse current package.
     String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage());
-    Storyteller storyteller = new Storyteller(StorytellerConfig.getConfig());
+    Storyteller storyteller = DaggerStorytellerTool_StorytellerToolComponent.create().getStoryteller();
 
     String option = leftoverArgs.length > 0 ? leftoverArgs[0] : null;
 
@@ -72,4 +81,3 @@ public class StorytellerTool {
     }
   }
 }
-

@@ -16,15 +16,18 @@ java_library(
         "StoryVerifier.java",
         "StoryWriter.java",
         "Storyteller.java",
+        "StorytellerComponent.java",
         "StorytellerConfig.java",
     ],
     deps = [
         ":invoicer",
         ":storyteller_java_proto",
-        "//tools/storyteller/service:service_lib",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/javax/inject:javax_inject",
+        "//tools/storyteller/service:service_lib",
         "@startup_os//common",
+        "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
     ],
 )
@@ -36,13 +39,15 @@ java_library(
     ],
     deps = [
         ":storyteller_java_proto",
-        "//tools/storyteller/service:service_lib",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/commons_logging",
+        "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/pdfbox",
         "//third_party/maven/org/apache/pdfbox:fontbox",
+        "//tools/storyteller/service:service_lib",
         "@startup_os//common",
+        "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
     ],
 )
@@ -58,7 +63,9 @@ java_binary(
         ":storyteller_java_proto",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/javax/inject:javax_inject",
         "@startup_os//common",
+        "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
     ],
 )
@@ -71,6 +78,8 @@ STORYTELLER_UI_TOOL_DEPS = [
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",
     "@startup_os//common/flags",
+    "//third_party/maven/javax/inject:javax_inject",
+    "@startup_os//common:dagger_with_annotation_processor",
 ]
 
 java_binary(

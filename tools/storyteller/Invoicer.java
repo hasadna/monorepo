@@ -3,7 +3,6 @@ package tools.storyteller;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
-import com.google.startupos.common.Logger;
 import com.google.startupos.common.Time;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
+import javax.inject.Inject;
 
 /* Invoicer - a class that generates invoice PDFs.
  *
@@ -61,6 +61,8 @@ public class Invoicer {
   private InvoiceItemList items;
   private long invoiceNumber;
   private long timeOfIssueMs;
+
+  @Inject FileUtils fileUtils;
 
   private Invoicer(
       InvoiceCreator creator,
@@ -101,7 +103,7 @@ public class Invoicer {
   }
 
   void saveInvoice(String path) throws IOException {
-    FileUtils.mkdirs(path);
+    fileUtils.mkdirs(path);
     document.save(path);
   }
 
@@ -365,4 +367,3 @@ public class Invoicer {
     return Math.ceil(value * 100) / 100.0;
   }
 }
-

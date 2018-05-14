@@ -15,20 +15,26 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.FileData;
 import tools.storyteller.Protos.ScreenshotMetadata;
 
 
 /* Storyteller writer that writes story files. */
+@Singleton
 public class StoryWriter {
   private static final Logger log = Logger.getForClass();
   public static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");
 
   private Config config;
+  private FileUtils fileUtils;
 
-  public StoryWriter(Config config) {
-    this.config = config;
+  @Inject
+  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
+    this.config = storytellerConfig.getConfig();
+    this.fileUtils = fileUtils;
   }
 
   private String getSharedStoriesPath() {
@@ -40,7 +46,7 @@ public class StoryWriter {
   }
 
   public void writeStatusFile(FileData.Type type, Message contents) {
-    FileUtils.mkdirs(getUnsharedStoriesPath());
+    fileUtils.mkdirs(getUnsharedStoriesPath());
     // We shift by a second to screenshots will be within START and END.
     int secondsShift = 0;
     if (type == FileData.Type.START) {
@@ -57,7 +63,7 @@ public class StoryWriter {
       if (contents == null) {
         statusFile.createNewFile();
       } else {
-        FileUtils.writePrototxt(contents, statusFile.toString());
+        fileUtils.writePrototxt(contents, statusFile.toString());
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -77,7 +83,7 @@ public class StoryWriter {
   }
 
   public void saveScreenshot(String project, String story) {
-    FileUtils.mkdirs(getUnsharedStoriesPath());
+    fileUtils.mkdirs(getUnsharedStoriesPath());
     Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
     try {
       Robot robot = new Robot();
@@ -87,7 +93,7 @@ public class StoryWriter {
       ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
       // Replace empty with one space, so that the prototxt will have the entry
       story = story.isEmpty() ? " " : story;
-      FileUtils.writePrototxt(
+      fileUtils.writePrototxt(
           ScreenshotMetadata.newBuilder().setProject(project).setOneliner(story).build(),
           filenameWithoutExtension + ".prototxt");
     } catch (AWTException | IOException e) {
@@ -95,4 +101,3 @@ public class StoryWriter {
     }
   }
 }
-
