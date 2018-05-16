@@ -13,10 +13,8 @@ java_library(
     srcs = [
         "ArrowButton.java",
         "StoryReader.java",
-        "StoryVerifier.java",
         "StoryWriter.java",
         "Storyteller.java",
-        "StorytellerComponent.java",
         "StorytellerConfig.java",
     ],
     deps = [
@@ -25,6 +23,8 @@ java_library(
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/javax/inject:javax_inject",
+        "//third_party/maven/org/slf4j:slf4j_api",
+        "//third_party/maven/org/slf4j:slf4j_simple",
         "//tools/storyteller/service:service_lib",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
@@ -64,6 +64,8 @@ java_binary(
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/javax/inject:javax_inject",
+        "//third_party/maven/org/slf4j:slf4j_api",
+        "//third_party/maven/org/slf4j:slf4j_simple",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",

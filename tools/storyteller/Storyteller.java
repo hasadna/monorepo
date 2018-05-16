@@ -7,17 +7,15 @@ import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import javax.inject.Inject;
+import tools.storyteller.service.Protos.StoryList;
 
 /*
  * Storyteller logic.
@@ -35,6 +33,12 @@ public class Storyteller {
   private int screenshotFrequency;
   private StoryReader reader;
   private StoryWriter writer;
+
+  enum StorytellerStatus {
+    START,
+    RUNNING,
+    END
+  }
 
   @Inject
   public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer) {
@@ -61,7 +65,7 @@ public class Storyteller {
 
   /* Periodic update should be called every minute.*/
   public void periodicUpdate(int passedMinutes, String project, String story) {
-    // Print '.' every minute, 'T' every 10 minutes and 'H' every hour.
+    // Print '.' every minute, 'R' every 10 minutes and 'H' every hour.
     if (passedMinutes % 60 == 0) {
       System.out.print("H");
     } else if (passedMinutes % screenshotFrequency == 0) {
@@ -69,8 +73,7 @@ public class Storyteller {
       writer.saveScreenshot(project, story);
     } else if (passedMinutes % UPDATE_RUNNING_STATUS_MINUTES == 0) {
       System.out.print("R");
-      writer.writeStatusFile(
-          FileData.Type.RUNNING, StatusData.newBuilder().setProject(project).build());
+      writer.writeStory(StorytellerStatus.RUNNING, project);
     } else {
       System.out.print(".");
     }
@@ -139,12 +142,12 @@ public class Storyteller {
   }
 
   /* Prints a summary of the unshared and recently shared stories. */
-  public void list() throws Exception {
+  public void list() {
     StringBuilder sb = new StringBuilder();
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
     sb.appendln("=======================");
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
+    ImmutableList<Story> stories = ImmutableList.copyOf(reader.getStories(getSharedStoriesPath()).getStoryList());
     sb.appendln(
         storiesToString(
             stories.subList(
@@ -152,13 +155,13 @@ public class Storyteller {
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
-    sb.appendln(storiesToString(reader.getStories(getUnsharedStoriesPath())));
+    sb.appendln(storiesToString(ImmutableList.copyOf(reader.getStories(getUnsharedStoriesPath() + "/stories.prototxt").getStoryList())));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
+    ImmutableList<Story> stories = ImmutableList.copyOf(reader.getStories(getSharedStoriesPath()).getStoryList());
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
@@ -196,24 +199,19 @@ public class Storyteller {
   }
 
   public void startup(String project) {
-    writer.writeStatusFile(
-        FileData.Type.START, StatusData.newBuilder().setProject(project).build());
+    writer.writeStory(StorytellerStatus.START, project);
   }
 
   public void shutdown(String project) {
-    writer.writeStatusFile(FileData.Type.END, StatusData.newBuilder().setProject(project).build());
+    writer.writeStory(StorytellerStatus.END, project);
   }
 
   public void saveScreenshot(String project, String story) {
     writer.saveScreenshot(project, story);
   }
 
-  public ImmutableList<Story> getUnsharedStories() {
-    try {
-      return reader.getStories(getUnsharedStoriesPath());
-    } catch (ParseException e) {
-      throw new RuntimeException((e));
-    }
+  public StoryList getUnsharedStories() {
+    return reader.getStories(getUnsharedStoriesPath());
   }
 
   private int getScreenshotFrequency() {

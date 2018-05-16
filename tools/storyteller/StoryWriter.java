@@ -1,6 +1,5 @@
 package tools.storyteller;
 
-import com.google.protobuf.Message;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import java.awt.AWTException;
@@ -8,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -18,68 +16,58 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.ScreenshotMetadata;
+import tools.storyteller.service.Protos.Story;
+import tools.storyteller.service.Protos.StoryItem;
+import tools.storyteller.service.Protos.StoryList;
 
 
 /* Storyteller writer that writes story files. */
 @Singleton
 public class StoryWriter {
   private static final Logger log = Logger.getForClass();
-  public static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");
+  private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");
 
   private Config config;
   private FileUtils fileUtils;
+  private Story.Builder storyBuilder;
+  private StoryList.Builder storiesBuilder;
+  private long timeMsLastSavedStoryItem;
 
   @Inject
   public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
+    storyBuilder = Story.newBuilder();
+    storiesBuilder = StoryList.newBuilder();
   }
 
-  private String getSharedStoriesPath() {
-    return Storyteller.getSharedStoriesPath(config);
-  }
-
-  private String getUnsharedStoriesPath() {
-    return Storyteller.getUnsharedStoriesPath(config);
-  }
-
-  public void writeStatusFile(FileData.Type type, Message contents) {
+  public void writeStory(Storyteller.StorytellerStatus status, String project) {
     fileUtils.mkdirs(getUnsharedStoriesPath());
-    // We shift by a second to screenshots will be within START and END.
     int secondsShift = 0;
-    if (type == FileData.Type.START) {
-      secondsShift = -1;
-    }
-    if (type == FileData.Type.END) {
-      secondsShift = 1;
-    }
-
-    String timeString = getCurrentTimeString(secondsShift);
-    String filename = timeString + "." + type;
-    try {
-      File statusFile = Paths.get(getUnsharedStoriesPath(), filename).toFile();
-      if (contents == null) {
-        statusFile.createNewFile();
-      } else {
-        fileUtils.writePrototxt(contents, statusFile.toString());
+    switch (status) {
+      case START: {
+        secondsShift = -1;
+        storyBuilder.setProject(project).setStartTimeMs(getCurrentTimestamp(secondsShift));
+        if (timeMsLastSavedStoryItem == 0) {
+          timeMsLastSavedStoryItem = getCurrentTimestamp();
+        }
+        break;
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      case RUNNING: {
+        storyBuilder.setProject(project);
+        break;
+      }
+      case END: {
+        secondsShift = 1;
+        long currentTime = getCurrentTimestamp(secondsShift);
+        storyBuilder.setEndTimeMs(currentTime);
+        timeMsLastSavedStoryItem = currentTime;
+        storiesBuilder.addStory(storyBuilder.build());
+        fileUtils.writePrototxtUnchecked(storiesBuilder.build(), getUnsharedStoriesPath() + "/stories.prototxt");
+        storyBuilder = Story.newBuilder();
+        break;
+      }
     }
-    if (type != FileData.Type.RUNNING) {
-      System.out.println(String.format("\n%s tracking: %s", type, timeString));
-    }
-  }
-
-  private String getCurrentTimeString(int secondsShift) {
-    long currentTime = System.currentTimeMillis() + secondsShift * 1000;
-    return DATE_FORMATTER.format(new Date(currentTime));
-  }
-
-  private String getCurrentTimeString() {
-    return getCurrentTimeString(0);
   }
 
   public void saveScreenshot(String project, String story) {
@@ -93,11 +81,28 @@ public class StoryWriter {
       ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
       // Replace empty with one space, so that the prototxt will have the entry
       story = story.isEmpty() ? " " : story;
-      fileUtils.writePrototxt(
-          ScreenshotMetadata.newBuilder().setProject(project).setOneliner(story).build(),
-          filenameWithoutExtension + ".prototxt");
+      long currentTime = getCurrentTimestamp();
+      long timeMs = currentTime - timeMsLastSavedStoryItem;
+      timeMsLastSavedStoryItem = currentTime;
+      storyBuilder.setProject(project).addItem(StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story));
     } catch (AWTException | IOException e) {
       log.error("Error in saving screenshot", e);
     }
+  }
+
+  private long getCurrentTimestamp(int secondsShift) {
+    return System.currentTimeMillis() + secondsShift * 1000;
+  }
+
+  private long getCurrentTimestamp() {
+    return getCurrentTimestamp(0);
+  }
+
+  private String getCurrentTimeString() {
+    return DATE_FORMATTER.format(new Date(System.currentTimeMillis()));
+  }
+
+  private String getUnsharedStoriesPath() {
+    return Storyteller.getUnsharedStoriesPath(config);
   }
 }

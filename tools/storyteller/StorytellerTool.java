@@ -3,6 +3,8 @@ package tools.storyteller;
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.Logger;
+import com.google.startupos.common.flags.Flag;
+import com.google.startupos.common.flags.FlagDesc;
 import com.google.startupos.common.flags.Flags;
 import dagger.Component;
 
@@ -47,6 +49,7 @@ import javax.inject.Singleton;
 * bazel run //tools/storyteller:storyteller_time_and_screenshot_ui_tool
 */
 public class StorytellerTool {
+
   private static final Logger log = Logger.getForClass();
   private static final String HELP = "help";
   private static final String LIST = "list";

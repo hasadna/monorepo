@@ -40,6 +40,7 @@ import dagger.Component;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
 import tools.storyteller.Protos.Config;
+import tools.storyteller.service.Protos.StoryList;
 
 /* UI tool for Storyteller */
 public class StorytellerUiTool {
@@ -75,7 +76,7 @@ public class StorytellerUiTool {
   private JToggleButton toggleButton;
   private JLabel timeLabel;
   private Storyteller storyteller;
-  private ImmutableList<Story> unsharedStories;
+  private StoryList unsharedStories;
   private Timer timer;
   private long timerStartTime;
   // Time accumulated by the timer in this run. Restarting the tool resets this
@@ -119,7 +120,7 @@ public class StorytellerUiTool {
 
   private void init() {
     unsharedStories = storyteller.getUnsharedStories();
-    for (Story story : unsharedStories) {
+    for (Story story : unsharedStories.getStoryList()) {
       unsharedStoriesTime += story.getEndTimeMs() - story.getStartTimeMs();
     }
     UIManager.put("ToggleButton.select", Color.WHITE);
