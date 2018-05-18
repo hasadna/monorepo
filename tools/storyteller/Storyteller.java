@@ -2,6 +2,7 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
@@ -33,6 +34,7 @@ public class Storyteller {
   private int screenshotFrequency;
   private StoryReader reader;
   private StoryWriter writer;
+  private FileUtils fileUtils;
 
   enum StorytellerStatus {
     START,
@@ -41,10 +43,11 @@ public class Storyteller {
   }
 
   @Inject
-  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer) {
+  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer, FileUtils fileUtils) {
     config = storytellerConfig.getConfig();
     this.reader = reader;
     this.writer = writer;
+    this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
   }
 
@@ -147,7 +150,7 @@ public class Storyteller {
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
     sb.appendln("=======================");
-    ImmutableList<Story> stories = ImmutableList.copyOf(reader.getStories(getSharedStoriesPath()).getStoryList());
+    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
     sb.appendln(
         storiesToString(
             stories.subList(
@@ -155,13 +158,14 @@ public class Storyteller {
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
-    sb.appendln(storiesToString(ImmutableList.copyOf(reader.getStories(getUnsharedStoriesPath() + "/stories.prototxt").getStoryList())));
+    sb.appendln(storiesToString(
+        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = ImmutableList.copyOf(reader.getStories(getSharedStoriesPath()).getStoryList());
+    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
@@ -211,7 +215,7 @@ public class Storyteller {
   }
 
   public StoryList getUnsharedStories() {
-    return reader.getStories(getUnsharedStoriesPath());
+    return StoryList.newBuilder().addAllStory(reader.getStories(getUnsharedStoriesPath())).build();
   }
 
   private int getScreenshotFrequency() {

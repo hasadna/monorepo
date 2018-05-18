@@ -46,7 +46,9 @@ public class StoryWriter {
     int secondsShift = 0;
     switch (status) {
       case START: {
+        timeMsLastSavedStoryItem = getCurrentTimestamp();
         secondsShift = -1;
+        storyBuilder = Story.newBuilder();
         storyBuilder.setProject(project).setStartTimeMs(getCurrentTimestamp(secondsShift));
         if (timeMsLastSavedStoryItem == 0) {
           timeMsLastSavedStoryItem = getCurrentTimestamp();
@@ -54,7 +56,7 @@ public class StoryWriter {
         break;
       }
       case RUNNING: {
-        storyBuilder.setProject(project);
+        storyBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp());
         break;
       }
       case END: {
@@ -63,7 +65,9 @@ public class StoryWriter {
         storyBuilder.setEndTimeMs(currentTime);
         timeMsLastSavedStoryItem = currentTime;
         storiesBuilder.addStory(storyBuilder.build());
-        fileUtils.writePrototxtUnchecked(storiesBuilder.build(), getUnsharedStoriesPath() + "/stories.prototxt");
+        fileUtils.writePrototxtUnchecked(
+            storiesBuilder.build(),
+            fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
         storyBuilder = Story.newBuilder();
         break;
       }

@@ -1,9 +1,11 @@
 package tools.storyteller;
 
+import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryList;
 
 /* Storyteller reader that reads story files into a Story proto. */
@@ -18,11 +20,12 @@ public class StoryReader {
     this.fileUtils = fileUtils;
   }
 
-  public StoryList getStories(String path) {
+  public ImmutableList<Story> getStories(String path) {
     if (fileUtils.fileExists(path)) {
-      return (StoryList) fileUtils.readPrototxtUnchecked(path, StoryList.newBuilder());
+      StoryList stories = (StoryList) fileUtils.readPrototxtUnchecked(path, StoryList.newBuilder());
+      return ImmutableList.copyOf(stories.getStoryList());
     } else {
-      return StoryList.getDefaultInstance();
+      return ImmutableList.copyOf(StoryList.getDefaultInstance().getStoryList());
     }
   }
 }

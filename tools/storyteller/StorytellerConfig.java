@@ -16,6 +16,7 @@ public class StorytellerConfig {
   private static final String CONFIG_FILE = "~/.storyteller";
   private static final String DEFAULT_STORIES_PATH = "/base/local/storyteller";
   private static final String INVOICES_PATH = "/base/local/storyteller";
+  static final String STORIES_FILENAME = "stories.prototxt";
 
   private FileUtils fileUtils;
 
