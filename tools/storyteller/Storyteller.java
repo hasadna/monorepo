@@ -16,7 +16,6 @@ import tools.storyteller.Protos.Config;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import javax.inject.Inject;
-import tools.storyteller.service.Protos.StoryList;
 
 /*
  * Storyteller logic.
@@ -214,8 +213,8 @@ public class Storyteller {
     writer.saveScreenshot(project, story);
   }
 
-  public StoryList getUnsharedStories() {
-    return StoryList.newBuilder().addAllStory(reader.getStories(getUnsharedStoriesPath())).build();
+  public ImmutableList<Story> getUnsharedStories() {
+    return reader.getStories(getUnsharedStoriesPath());
   }
 
   private int getScreenshotFrequency() {

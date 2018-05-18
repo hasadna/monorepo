@@ -43,31 +43,27 @@ public class StoryWriter {
 
   public void writeStory(Storyteller.StorytellerStatus status, String project) {
     fileUtils.mkdirs(getUnsharedStoriesPath());
-    int secondsShift = 0;
     switch (status) {
       case START: {
         timeMsLastSavedStoryItem = getCurrentTimestamp();
-        secondsShift = -1;
         storyBuilder = Story.newBuilder();
-        storyBuilder.setProject(project).setStartTimeMs(getCurrentTimestamp(secondsShift));
-        if (timeMsLastSavedStoryItem == 0) {
-          timeMsLastSavedStoryItem = getCurrentTimestamp();
-        }
+        storyBuilder.setProject(project)
+                .setStartTimeMs(getCurrentTimestamp())
+                .setEndTimeMs(getCurrentTimestamp());
+        saveStories();
         break;
       }
       case RUNNING: {
         storyBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp());
+        saveStories();
         break;
       }
       case END: {
-        secondsShift = 1;
-        long currentTime = getCurrentTimestamp(secondsShift);
+        long currentTime = getCurrentTimestamp();
         storyBuilder.setEndTimeMs(currentTime);
         timeMsLastSavedStoryItem = currentTime;
         storiesBuilder.addStory(storyBuilder.build());
-        fileUtils.writePrototxtUnchecked(
-            storiesBuilder.build(),
-            fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+        saveStories();
         storyBuilder = Story.newBuilder();
         break;
       }
@@ -88,18 +84,23 @@ public class StoryWriter {
       long currentTime = getCurrentTimestamp();
       long timeMs = currentTime - timeMsLastSavedStoryItem;
       timeMsLastSavedStoryItem = currentTime;
-      storyBuilder.setProject(project).addItem(StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story));
+      storyBuilder.setProject(project)
+              .addItem(StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story))
+              .setEndTimeMs(getCurrentTimestamp());
+      saveStories();
     } catch (AWTException | IOException e) {
       log.error("Error in saving screenshot", e);
     }
   }
 
-  private long getCurrentTimestamp(int secondsShift) {
-    return System.currentTimeMillis() + secondsShift * 1000;
+  private void saveStories() {
+    fileUtils.writePrototxtUnchecked(
+            storiesBuilder.build(),
+            fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private long getCurrentTimestamp() {
-    return getCurrentTimestamp(0);
+    return System.currentTimeMillis();
   }
 
   private String getCurrentTimeString() {

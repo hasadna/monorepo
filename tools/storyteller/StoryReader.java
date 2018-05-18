@@ -25,7 +25,7 @@ public class StoryReader {
       StoryList stories = (StoryList) fileUtils.readPrototxtUnchecked(path, StoryList.newBuilder());
       return ImmutableList.copyOf(stories.getStoryList());
     } else {
-      return ImmutableList.copyOf(StoryList.getDefaultInstance().getStoryList());
+      return ImmutableList.of();
     }
   }
 }
