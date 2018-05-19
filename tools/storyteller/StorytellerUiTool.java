@@ -295,8 +295,7 @@ public class StorytellerUiTool {
           if (!isTimerOn()) {
             storyteller.startup(project);
           }
-          storyteller.saveScreenshot(
-              project, storyTextArea.getText());
+          storyteller.saveScreenshot();
           if (!isTimerOn()) {
             storyteller.shutdown(project);
           }

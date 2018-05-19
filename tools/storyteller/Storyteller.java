@@ -35,12 +35,6 @@ public class Storyteller {
   private StoryWriter writer;
   private FileUtils fileUtils;
 
-  enum StorytellerStatus {
-    START,
-    RUNNING,
-    END
-  }
-
   @Inject
   public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer, FileUtils fileUtils) {
     config = storytellerConfig.getConfig();
@@ -72,10 +66,11 @@ public class Storyteller {
       System.out.print("H");
     } else if (passedMinutes % screenshotFrequency == 0) {
       System.out.print("S");
-      writer.saveScreenshot(project, story);
+      writer.saveScreenshot();
+      writer.saveStoryItem(project, story);
     } else if (passedMinutes % UPDATE_RUNNING_STATUS_MINUTES == 0) {
       System.out.print("R");
-      writer.writeStory(StorytellerStatus.RUNNING, project);
+      writer.updateStory(project);
     } else {
       System.out.print(".");
     }
@@ -202,15 +197,15 @@ public class Storyteller {
   }
 
   public void startup(String project) {
-    writer.writeStory(StorytellerStatus.START, project);
+    writer.startStory(project);
   }
 
   public void shutdown(String project) {
-    writer.writeStory(StorytellerStatus.END, project);
+    writer.endStory(project);
   }
 
-  public void saveScreenshot(String project, String story) {
-    writer.saveScreenshot(project, story);
+  public void saveScreenshot() {
+    writer.saveScreenshot();
   }
 
   public ImmutableList<Story> getUnsharedStories() {

@@ -1,5 +1,6 @@
 package tools.storyteller;
 
+import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import java.awt.AWTException;
@@ -29,48 +30,57 @@ public class StoryWriter {
 
   private Config config;
   private FileUtils fileUtils;
-  private Story.Builder storyBuilder;
   private StoryList.Builder storiesBuilder;
-  private long timeMsLastSavedStoryItem;
+  private Story.Builder storyBuilder;
+  private ImmutableList<StoryItem> storyItems;
+  private long lastSavedStoryItemTimeMs;
+  private long startStoryTimeMs;
 
   @Inject
   public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    storyBuilder = Story.newBuilder();
     storiesBuilder = StoryList.newBuilder();
+    storyItems = ImmutableList.of();
   }
 
-  public void writeStory(Storyteller.StorytellerStatus status, String project) {
-    fileUtils.mkdirs(getUnsharedStoriesPath());
-    switch (status) {
-      case START: {
-        timeMsLastSavedStoryItem = getCurrentTimestamp();
-        storyBuilder = Story.newBuilder();
-        storyBuilder.setProject(project)
-                .setStartTimeMs(getCurrentTimestamp())
-                .setEndTimeMs(getCurrentTimestamp());
-        saveStories();
-        break;
-      }
-      case RUNNING: {
-        storyBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp());
-        saveStories();
-        break;
-      }
-      case END: {
-        long currentTime = getCurrentTimestamp();
-        storyBuilder.setEndTimeMs(currentTime);
-        timeMsLastSavedStoryItem = currentTime;
-        storiesBuilder.addStory(storyBuilder.build());
-        saveStories();
-        storyBuilder = Story.newBuilder();
-        break;
-      }
-    }
+  void startStory(String project) {
+    long currentTimeMS = getCurrentTimestamp();
+    startStoryTimeMs = currentTimeMS;
+    lastSavedStoryItemTimeMs = currentTimeMS;
+    buildStory(project);
+    storiesBuilder.addStory(storyBuilder);
+    saveStories();
   }
 
-  public void saveScreenshot(String project, String story) {
+  void updateStory(String project) {
+    buildStory(project);
+    updateCurrentStory();
+    saveStories();
+  }
+
+  void endStory(String project) {
+    buildStory(project);
+    updateCurrentStory();
+    saveStories();
+    storyItems = ImmutableList.of();
+  }
+
+  void saveStoryItem(String project, String story) {
+    // Replace empty with one space, so that the prototxt will have the entry
+    story = story.isEmpty() ? " " : story;
+    long currentTime = getCurrentTimestamp();
+    long timeMs = currentTime - lastSavedStoryItemTimeMs;
+    lastSavedStoryItemTimeMs = currentTime;
+    StoryItem storyItem = StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story).build();
+    ImmutableList<StoryItem> savedStoryItems = storyItems;
+    storyItems = ImmutableList.<StoryItem>builder().addAll(savedStoryItems).add(storyItem).build();
+    buildStory(project);
+    updateCurrentStory();
+    saveStories();
+  }
+
+  void saveScreenshot() {
     fileUtils.mkdirs(getUnsharedStoriesPath());
     Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
     try {
@@ -79,24 +89,27 @@ public class StoryWriter {
       String filenameWithoutExtension =
           Paths.get(getUnsharedStoriesPath(), getCurrentTimeString()).toString();
       ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
-      // Replace empty with one space, so that the prototxt will have the entry
-      story = story.isEmpty() ? " " : story;
-      long currentTime = getCurrentTimestamp();
-      long timeMs = currentTime - timeMsLastSavedStoryItem;
-      timeMsLastSavedStoryItem = currentTime;
-      storyBuilder.setProject(project)
-              .addItem(StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story))
-              .setEndTimeMs(getCurrentTimestamp());
-      saveStories();
     } catch (AWTException | IOException e) {
       log.error("Error in saving screenshot", e);
     }
   }
 
+  private void buildStory(String project) {
+    storyBuilder = Story.newBuilder()
+        .setStartTimeMs(startStoryTimeMs)
+        .setEndTimeMs(getCurrentTimestamp())
+        .setProject(project)
+        .addAllItem(storyItems);
+  }
+
+  private void updateCurrentStory() {
+    storiesBuilder.setStory(storiesBuilder.getStoryCount() - 1, storyBuilder.build());
+  }
+
   private void saveStories() {
     fileUtils.writePrototxtUnchecked(
-            storiesBuilder.build(),
-            fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+        storiesBuilder.build(),
+        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private long getCurrentTimestamp() {
