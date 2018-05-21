@@ -31,7 +31,7 @@ public class StoryWriter {
 
   private final Config config;
   private final FileUtils fileUtils;
-  private Story currentStory;
+  private Story.Builder currentStoryBuilder;
   private List<Story> allStories;
 
   @Inject
@@ -39,14 +39,14 @@ public class StoryWriter {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
     allStories = new ArrayList<>();
+    currentStoryBuilder = Story.newBuilder();
   }
 
   void startStory(String project) {
-    currentStory = Story.newBuilder()
+    currentStoryBuilder
         .setStartTimeMs(getCurrentTimestamp())
-        .setProject(project)
-        .build();
-    allStories.add(currentStory);
+        .setProject(project);
+    allStories.add(currentStoryBuilder.build());
     saveStories();
   }
 
@@ -58,7 +58,7 @@ public class StoryWriter {
   void endStory(String project) {
     updateCurrentStory(project);
     saveStories();
-    currentStory = Story.getDefaultInstance();
+    currentStoryBuilder = Story.newBuilder();
   }
 
   void saveStoryItem(String project, String story) {
@@ -68,10 +68,11 @@ public class StoryWriter {
         .setTimeMs(getCurrentTimestamp())
         .setOneliner(story)
         .build();
-    currentStory = currentStory.toBuilder()
-        .addItem(storyItem)
-        .build();
-    updateCurrentStory(project);
+    currentStoryBuilder
+        .setProject(project)
+        .setEndTimeMs(getCurrentTimestamp())
+        .addItem(storyItem);
+    allStories.set(allStories.size() - 1, currentStoryBuilder.build());
     saveStories();
   }
 
@@ -90,13 +91,11 @@ public class StoryWriter {
   }
 
   private void updateCurrentStory(String project) {
-    currentStory = Story.newBuilder()
-        .setStartTimeMs(currentStory.getStartTimeMs())
+    currentStoryBuilder
+        .setStartTimeMs(currentStoryBuilder.getStartTimeMs())
         .setEndTimeMs(getCurrentTimestamp())
-        .setProject(project)
-        .addAllItem(currentStory.getItemList())
-        .build();
-    allStories.set(allStories.size() - 1, currentStory);
+        .setProject(project);
+    allStories.set(allStories.size() - 1, currentStoryBuilder.build());
   }
 
   private void saveStories() {
