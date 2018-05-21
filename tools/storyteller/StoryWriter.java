@@ -1,6 +1,5 @@
 package tools.storyteller;
 
-import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import java.awt.AWTException;
@@ -12,7 +11,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,55 +29,49 @@ public class StoryWriter {
   private static final Logger log = Logger.getForClass();
   private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");
 
-  private Config config;
-  private FileUtils fileUtils;
-  private StoryList.Builder storiesBuilder;
-  private Story.Builder storyBuilder;
-  private ImmutableList<StoryItem> storyItems;
-  private long lastSavedStoryItemTimeMs;
-  private long startStoryTimeMs;
+  private final Config config;
+  private final FileUtils fileUtils;
+  private Story currentStory;
+  private List<Story> allStories;
 
   @Inject
   public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    storiesBuilder = StoryList.newBuilder();
-    storyItems = ImmutableList.of();
+    allStories = new ArrayList<>();
   }
 
   void startStory(String project) {
-    long currentTimeMS = getCurrentTimestamp();
-    startStoryTimeMs = currentTimeMS;
-    lastSavedStoryItemTimeMs = currentTimeMS;
-    buildStory(project);
-    storiesBuilder.addStory(storyBuilder);
+    currentStory = Story.newBuilder()
+        .setStartTimeMs(getCurrentTimestamp())
+        .setProject(project)
+        .build();
+    allStories.add(currentStory);
     saveStories();
   }
 
   void updateStory(String project) {
-    buildStory(project);
-    updateCurrentStory();
+    updateCurrentStory(project);
     saveStories();
   }
 
   void endStory(String project) {
-    buildStory(project);
-    updateCurrentStory();
+    updateCurrentStory(project);
     saveStories();
-    storyItems = ImmutableList.of();
+    currentStory = Story.getDefaultInstance();
   }
 
   void saveStoryItem(String project, String story) {
     // Replace empty with one space, so that the prototxt will have the entry
     story = story.isEmpty() ? " " : story;
-    long currentTime = getCurrentTimestamp();
-    long timeMs = currentTime - lastSavedStoryItemTimeMs;
-    lastSavedStoryItemTimeMs = currentTime;
-    StoryItem storyItem = StoryItem.newBuilder().setTimeMs(timeMs).setOneliner(story).build();
-    ImmutableList<StoryItem> savedStoryItems = storyItems;
-    storyItems = ImmutableList.<StoryItem>builder().addAll(savedStoryItems).add(storyItem).build();
-    buildStory(project);
-    updateCurrentStory();
+    StoryItem storyItem = StoryItem.newBuilder()
+        .setTimeMs(getCurrentTimestamp())
+        .setOneliner(story)
+        .build();
+    currentStory = currentStory.toBuilder()
+        .addItem(storyItem)
+        .build();
+    updateCurrentStory(project);
     saveStories();
   }
 
@@ -94,21 +89,19 @@ public class StoryWriter {
     }
   }
 
-  private void buildStory(String project) {
-    storyBuilder = Story.newBuilder()
-        .setStartTimeMs(startStoryTimeMs)
+  private void updateCurrentStory(String project) {
+    currentStory = Story.newBuilder()
+        .setStartTimeMs(currentStory.getStartTimeMs())
         .setEndTimeMs(getCurrentTimestamp())
         .setProject(project)
-        .addAllItem(storyItems);
-  }
-
-  private void updateCurrentStory() {
-    storiesBuilder.setStory(storiesBuilder.getStoryCount() - 1, storyBuilder.build());
+        .addAllItem(currentStory.getItemList())
+        .build();
+    allStories.set(allStories.size() - 1, currentStory);
   }
 
   private void saveStories() {
     fileUtils.writePrototxtUnchecked(
-        storiesBuilder.build(),
+        StoryList.newBuilder().addAllStory(allStories).build(),
         fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
