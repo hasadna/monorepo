@@ -52,7 +52,7 @@ public class StoryWriter {
 
   void updateStory(String project) {
     if(currentStoryBuilder == null){
-      throw new RuntimeException("'currentStoryBuilder' is not initialized");
+      throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
     saveStories();
@@ -60,7 +60,7 @@ public class StoryWriter {
 
   void endStory(String project) {
     if(currentStoryBuilder == null){
-      throw new RuntimeException("'currentStoryBuilder' is not initialized");
+      throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
     saveStories();
