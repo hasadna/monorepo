@@ -39,10 +39,10 @@ public class StoryWriter {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
     allStories = new ArrayList<>();
-    currentStoryBuilder = Story.newBuilder();
   }
 
   void startStory(String project) {
+    currentStoryBuilder = Story.newBuilder();
     currentStoryBuilder
         .setStartTimeMs(getCurrentTimestamp())
         .setProject(project);
@@ -51,11 +51,17 @@ public class StoryWriter {
   }
 
   void updateStory(String project) {
+    if(currentStoryBuilder == null){
+      throw new RuntimeException("'currentStoryBuilder' is not initialized");
+    }
     updateCurrentStory(project);
     saveStories();
   }
 
   void endStory(String project) {
+    if(currentStoryBuilder == null){
+      throw new RuntimeException("'currentStoryBuilder' is not initialized");
+    }
     updateCurrentStory(project);
     saveStories();
     currentStoryBuilder = Story.newBuilder();
@@ -92,7 +98,6 @@ public class StoryWriter {
 
   private void updateCurrentStory(String project) {
     currentStoryBuilder
-        .setStartTimeMs(currentStoryBuilder.getStartTimeMs())
         .setEndTimeMs(getCurrentTimestamp())
         .setProject(project);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
