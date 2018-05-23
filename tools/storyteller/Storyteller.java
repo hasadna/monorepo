@@ -2,19 +2,17 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.Logger;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.FileData;
-import tools.storyteller.Protos.StatusData;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import javax.inject.Inject;
@@ -35,12 +33,14 @@ public class Storyteller {
   private int screenshotFrequency;
   private StoryReader reader;
   private StoryWriter writer;
+  private FileUtils fileUtils;
 
   @Inject
-  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer) {
+  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer, FileUtils fileUtils) {
     config = storytellerConfig.getConfig();
     this.reader = reader;
     this.writer = writer;
+    this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
   }
 
@@ -61,16 +61,16 @@ public class Storyteller {
 
   /* Periodic update should be called every minute.*/
   public void periodicUpdate(int passedMinutes, String project, String story) {
-    // Print '.' every minute, 'T' every 10 minutes and 'H' every hour.
+    // Print '.' every minute, 'R' every 10 minutes and 'H' every hour.
     if (passedMinutes % 60 == 0) {
       System.out.print("H");
     } else if (passedMinutes % screenshotFrequency == 0) {
       System.out.print("S");
-      writer.saveScreenshot(project, story);
+      writer.saveScreenshot();
+      writer.saveStoryItem(project, story);
     } else if (passedMinutes % UPDATE_RUNNING_STATUS_MINUTES == 0) {
       System.out.print("R");
-      writer.writeStatusFile(
-          FileData.Type.RUNNING, StatusData.newBuilder().setProject(project).build());
+      writer.updateStory(project);
     } else {
       System.out.print(".");
     }
@@ -139,7 +139,7 @@ public class Storyteller {
   }
 
   /* Prints a summary of the unshared and recently shared stories. */
-  public void list() throws Exception {
+  public void list() {
     StringBuilder sb = new StringBuilder();
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
@@ -152,7 +152,8 @@ public class Storyteller {
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
-    sb.appendln(storiesToString(reader.getStories(getUnsharedStoriesPath())));
+    sb.appendln(storiesToString(
+        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
     System.out.print(sb);
   }
 
@@ -196,24 +197,19 @@ public class Storyteller {
   }
 
   public void startup(String project) {
-    writer.writeStatusFile(
-        FileData.Type.START, StatusData.newBuilder().setProject(project).build());
+    writer.startStory(project);
   }
 
   public void shutdown(String project) {
-    writer.writeStatusFile(FileData.Type.END, StatusData.newBuilder().setProject(project).build());
+    writer.endStory(project);
   }
 
-  public void saveScreenshot(String project, String story) {
-    writer.saveScreenshot(project, story);
+  public void saveScreenshot() {
+    writer.saveScreenshot();
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    try {
-      return reader.getStories(getUnsharedStoriesPath());
-    } catch (ParseException e) {
-      throw new RuntimeException((e));
-    }
+    return reader.getStories(getUnsharedStoriesPath());
   }
 
   private int getScreenshotFrequency() {

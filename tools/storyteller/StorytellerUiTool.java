@@ -292,12 +292,11 @@ public class StorytellerUiTool {
     button.addActionListener(
         event -> {
           String project = projectDropDown.getSelectedItem().toString();
-          if (!isTimerOn()) {
+          if (!isTimerOn() && mode.equals(Mode.TIME_AND_SCREENSHOT)) {
             storyteller.startup(project);
           }
-          storyteller.saveScreenshot(
-              project, storyTextArea.getText());
-          if (!isTimerOn()) {
+          storyteller.saveScreenshot();
+          if (!isTimerOn() && mode.equals(Mode.TIME_AND_SCREENSHOT)) {
             storyteller.shutdown(project);
           }
           System.out.println("Screenshot saved");
