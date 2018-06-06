@@ -41,11 +41,14 @@ public class StoryWriter {
     allStories = new ArrayList<>();
   }
 
-  void startStory(String project) {
+  void startStory(String project, List<Story> stories) {
     currentStoryBuilder = Story.newBuilder();
     currentStoryBuilder
         .setStartTimeMs(getCurrentTimestamp())
         .setProject(project);
+    if(allStories.isEmpty()) {
+      allStories.addAll(stories);
+    }
     allStories.add(currentStoryBuilder.build());
     saveStories();
   }

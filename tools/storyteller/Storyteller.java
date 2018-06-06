@@ -197,7 +197,7 @@ public class Storyteller {
   }
 
   public void startup(String project) {
-    writer.startStory(project);
+    writer.startStory(project, getUnsharedStories());
   }
 
   public void shutdown(String project) {
@@ -209,7 +209,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getStories(getUnsharedStoriesPath());
+    return reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private int getScreenshotFrequency() {
