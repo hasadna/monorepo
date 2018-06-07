@@ -41,20 +41,23 @@ public class StoryWriter {
     allStories = new ArrayList<>();
   }
 
-  void startStory(String project, List<Story> stories) {
+  void startStory(String project) {
     currentStoryBuilder = Story.newBuilder();
     currentStoryBuilder
         .setStartTimeMs(getCurrentTimestamp())
         .setProject(project);
-    if(allStories.isEmpty()) {
-      allStories.addAll(stories);
-    }
     allStories.add(currentStoryBuilder.build());
     saveStories();
   }
 
+  void addStories(List<Story> stories){
+    if (allStories.isEmpty()) {
+      allStories.addAll(stories);
+    }
+  }
+
   void updateStory(String project) {
-    if(currentStoryBuilder == null){
+    if (currentStoryBuilder == null){
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
@@ -62,7 +65,7 @@ public class StoryWriter {
   }
 
   void endStory(String project) {
-    if(currentStoryBuilder == null){
+    if (currentStoryBuilder == null){
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
