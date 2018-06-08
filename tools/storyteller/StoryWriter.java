@@ -35,10 +35,11 @@ public class StoryWriter {
   private List<Story> allStories;
 
   @Inject
-  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
+  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils, StoryReader reader) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    allStories = new ArrayList<>();
+    this.allStories = new ArrayList<>(
+        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME)));
   }
 
   void startStory(String project) {
@@ -51,7 +52,7 @@ public class StoryWriter {
   }
 
   void updateStory(String project) {
-    if(currentStoryBuilder == null){
+    if (currentStoryBuilder == null){
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
@@ -59,7 +60,7 @@ public class StoryWriter {
   }
 
   void endStory(String project) {
-    if(currentStoryBuilder == null){
+    if (currentStoryBuilder == null){
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
