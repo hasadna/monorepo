@@ -197,7 +197,6 @@ public class Storyteller {
   }
 
   public void startup(String project) {
-    writer.addStories(getUnsharedStories());
     writer.startStory(project);
   }
 

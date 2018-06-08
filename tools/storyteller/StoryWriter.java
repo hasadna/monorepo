@@ -35,10 +35,11 @@ public class StoryWriter {
   private List<Story> allStories;
 
   @Inject
-  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils) {
+  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils, StoryReader reader) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    allStories = new ArrayList<>();
+    this.allStories = new ArrayList<>(
+        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME)));
   }
 
   void startStory(String project) {
@@ -48,11 +49,6 @@ public class StoryWriter {
         .setProject(project);
     allStories.add(currentStoryBuilder.build());
     saveStories();
-  }
-
-  void addStories(List<Story> stories){
-    allStories = new ArrayList<>();
-    allStories.addAll(stories);
   }
 
   void updateStory(String project) {
