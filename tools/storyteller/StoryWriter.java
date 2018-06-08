@@ -51,6 +51,7 @@ public class StoryWriter {
   }
 
   void addStories(List<Story> stories){
+    allStories = new ArrayList<>();
     allStories.addAll(stories);
   }
 
@@ -69,7 +70,6 @@ public class StoryWriter {
     updateCurrentStory(project);
     saveStories();
     currentStoryBuilder = Story.newBuilder();
-    allStories = new ArrayList<>();
   }
 
   void saveStoryItem(String project, String story) {
