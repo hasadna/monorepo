@@ -2,7 +2,7 @@ package projects.noloan.app.filter;
 
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.FileUtils;
-import com.google.startupos.common.Logger;
+import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.FlagDesc;
 import com.google.startupos.common.flags.Flags;
@@ -22,7 +22,7 @@ import dagger.Component;
 /** A tool for running the SMS Spam filter. */
 @Singleton
 public class SpamFilterTool {
-  private static final Logger log = Logger.getForClass();
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
   FileUtils fileUtils;
 
   public static enum CsvColumns {

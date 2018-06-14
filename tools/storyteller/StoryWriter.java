@@ -1,7 +1,7 @@
 package tools.storyteller;
 
 import com.google.startupos.common.FileUtils;
-import com.google.startupos.common.Logger;
+import com.google.common.flogger.FluentLogger;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -26,7 +26,7 @@ import tools.storyteller.service.Protos.StoryList;
 /* Storyteller writer that writes story files. */
 @Singleton
 public class StoryWriter {
-  private static final Logger log = Logger.getForClass();
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
   private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss_z");
 
   private final Config config;
@@ -93,7 +93,7 @@ public class StoryWriter {
           Paths.get(getUnsharedStoriesPath(), getCurrentTimeString()).toString();
       ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
     } catch (AWTException | IOException e) {
-      log.error("Error in saving screenshot", e);
+      log.atSevere().withCause(e).log("Error in saving screenshot");
     }
   }
 

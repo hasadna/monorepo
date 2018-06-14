@@ -1,3 +1,6 @@
+package(default_visibility = ["//visibility:public"])
+load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+
 proto_library(
     name = "storyteller_proto",
     srcs = ["data.proto"],
@@ -25,10 +28,15 @@ java_library(
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_api",
         "//third_party/maven/org/slf4j:slf4j_simple",
-        "//tools/storyteller/service:service_lib",
+        "//tools/storyteller/service:service_java_grpc",
+        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
+        "//third_party/maven/com/google/flogger:flogger",
+        "//third_party/maven/com/google/flogger:flogger_system_backend",
+        "//third_party/maven/io/grpc:grpc_core",
+        "//third_party/maven/io/grpc:grpc_netty",
     ],
 )
 
@@ -45,10 +53,13 @@ java_library(
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/pdfbox",
         "//third_party/maven/org/apache/pdfbox:fontbox",
-        "//tools/storyteller/service:service_lib",
+        "//tools/storyteller/service:service_java_grpc",
+        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
+        "//third_party/maven/io/grpc:grpc_core",
+        "//third_party/maven/io/grpc:grpc_netty",
     ],
 )
 
@@ -69,19 +80,25 @@ java_binary(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
+        "//third_party/maven/com/google/flogger:flogger",
+        "//third_party/maven/com/google/flogger:flogger_system_backend",
     ],
 )
 
 STORYTELLER_UI_TOOL_DEPS = [
     ":storyteller",
     ":storyteller_java_proto",
-    "//tools/storyteller/service:service_lib",
+    "//tools/storyteller/service:service_proto",
     "//third_party/maven/com/google/guava:guava",
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",
     "@startup_os//common/flags",
     "//third_party/maven/javax/inject:javax_inject",
     "@startup_os//common:dagger_with_annotation_processor",
+    "//tools/storyteller/service:service_java_grpc",
+    "//tools/storyteller/service:service_java_proto",
+    "//third_party/maven/io/grpc:grpc_core",
+    "//third_party/maven/io/grpc:grpc_netty",
 ]
 
 java_binary(
