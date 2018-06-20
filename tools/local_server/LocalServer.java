@@ -31,7 +31,7 @@ public class LocalServer {
   public static final Flag<Integer> localServerPort = Flag.create(8001);
 
   @FlagDesc(name = "root_path", description = "Root path for serving files for reviewer service")
-  public static final Flag<String> rootPath = Flag.create("/home/valerii/Work/storyteller/ok");
+  public static final Flag<String> rootPath = Flag.create("");
 
   private Server server;
 
@@ -84,7 +84,11 @@ public class LocalServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    Flags.parse(args, LocalServer.class.getPackage(), StorytellerService.class.getPackage());
+    Flags.parse(
+        args,
+        LocalServer.class.getPackage(),
+        StorytellerService.class.getPackage(),
+        AuthService.class.getPackage());
     checkFlags();
 
     LocalServer server = DaggerLocalServer_LocalServerComponent.builder().build().getLocalServer();
