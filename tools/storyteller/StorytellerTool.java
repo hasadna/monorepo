@@ -2,9 +2,7 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.CommonModule;
-import com.google.startupos.common.Logger;
-import com.google.startupos.common.flags.Flag;
-import com.google.startupos.common.flags.FlagDesc;
+import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flags;
 import dagger.Component;
 
@@ -50,7 +48,7 @@ import javax.inject.Singleton;
 */
 public class StorytellerTool {
 
-  private static final Logger log = Logger.getForClass();
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
   private static final String HELP = "help";
   private static final String LIST = "list";
   private static final String SHARE = "share";

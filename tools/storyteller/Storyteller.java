@@ -3,7 +3,7 @@ package tools.storyteller;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.startupos.common.FileUtils;
-import com.google.startupos.common.Logger;
+import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
  * For an introduction to Storyteller, see StorytellerTool.
  */
 public class Storyteller {
-  private static final Logger log = Logger.getForClass();
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
   // Output a RUNNING file every X minutes.
   private static final int UPDATE_RUNNING_STATUS_MINUTES = 5;
   // Number of most recent shared stories to output

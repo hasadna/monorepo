@@ -37,6 +37,7 @@ java_binary(
     "//third_party/maven/org/slf4j:slf4j_simple",
     "//third_party/maven/org/apache/commons:commons_csv",
     "//third_party/maven/javax/inject:javax_inject",
-    
+    "//third_party/maven/com/google/flogger:flogger",
+    "//third_party/maven/com/google/flogger:flogger_system_backend",
   ]
 )

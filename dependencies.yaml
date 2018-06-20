@@ -27,7 +27,7 @@ dependencies:
     auto-factory:
       lang: java
       version: "1.0-beta5"
-
+  
   com.google.auto.value:
     auto-value:
       lang: java
@@ -44,11 +44,19 @@ dependencies:
       lang: java
       modules: [ "", "compiler" ]
       version: "2.15"
-
+  
   com.google.firebase:
     firebase-admin:
       lang: java
       version: "5.9.0"
+  
+  com.google.flogger:
+      flogger:
+        lang: java
+        version: "0.1"
+      flogger-system-backend:
+        lang: java
+        version: "0.1"
   
   com.google.googlejavaformat:
     google-java-format:
@@ -83,6 +91,12 @@ dependencies:
     commons-logging:
       lang: java
       version: "1.2"
+  
+  io.grpc:
+    grpc:
+      lang: java
+      modules: [ "netty", "protobuf", "stub" ]
+      version: "1.12.0"
   
   javax.annotation:
     javax.annotation-api:
@@ -144,11 +158,6 @@ dependencies:
     objenesis:
       lang: java
       version: "2.6"
-  
-  org.reflections:
-    reflections:
-      lang: java
-      version: "0.9.11"
   
   org.slf4j:
     slf4j-simple:
