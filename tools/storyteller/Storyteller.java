@@ -7,14 +7,21 @@ import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.service.Protos.Story;
+import tools.storyteller.service.Protos.StoryList;
+import tools.storyteller.service.Protos.ShareStoriesRequest;
 import tools.storyteller.service.Protos.StoryItem;
+import tools.storyteller.service.StorytellerServiceGrpc;
+
 import javax.inject.Inject;
 
 /*
@@ -29,6 +36,9 @@ public class Storyteller {
   // Number of most recent shared stories to output
   private static final int RECENT_SHARED_STORIES_COUNT = 10;
 
+  private static final Integer GRPC_PORT = 8001;
+
+  private final StorytellerServiceGrpc.StorytellerServiceBlockingStub storytellerBlockingStub;
   private Config config;
   private int screenshotFrequency;
   private StoryReader reader;
@@ -42,6 +52,10 @@ public class Storyteller {
     this.writer = writer;
     this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
+
+    ManagedChannel channel =
+        ManagedChannelBuilder.forAddress("localhost", GRPC_PORT).usePlaintext().build();
+    storytellerBlockingStub = StorytellerServiceGrpc.newBlockingStub(channel);
   }
 
   /*
@@ -98,25 +112,16 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    // TODO: Change this code to work with local gRPC server
-    // try {
-    //   String firestorePath = FirestorePaths.getStoriesPath(getUser());
-    //   ImmutableList<Story> stories = reader.getStories(getUnsharedStoriesPath());
-    //   for (Story story : stories) {
-    //     client.createDocument(firestorePath, story);
-    //   }
-    //   Paths.get(getSharedStoriesPath()).toFile().mkdirs();
-    //   ImmutableList<String> filenames =
-    //       ImmutableList.copyOf(Paths.get(getUnsharedStoriesPath()).toFile().list());
-    //   for (String filename : filenames) {
-    //     Files.move(
-    //         Paths.get(getUnsharedStoriesPath(), filename).toFile(),
-    //         Paths.get(getSharedStoriesPath(), filename).toFile());
-    //   }
-    //   System.out.println(filenames.size() + " files shared");
-    // } catch (IOException | ParseException e) {
-    //   throw new RuntimeException(e);
-    // }
+    StoryList storyList = StoryList.newBuilder().addAllStory(getUnsharedStories()).build();
+    ShareStoriesRequest req = ShareStoriesRequest.newBuilder().setStories(storyList).build();
+    storytellerBlockingStub.shareStories(req);
+
+    try {
+      fileUtils.copyDirectoryToDirectory(getUnsharedStoriesPath(), getSharedStoriesPath());
+      System.out.println(storyList.getStoryCount() + " stories shared");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private String storiesToString(ImmutableList<Story> stories) {
