@@ -7,12 +7,12 @@ import java.util.TimeZone;
 
 public class Util {
 
-    public static String formatTime(long time) {
-        Date date = new Date(time);
-        Locale locale = new Locale("he", "IL");
-        SimpleDateFormat formatter =
-            new SimpleDateFormat("d לLLLL yyyy", locale);
-        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
-        return formatter.format(date);
-    }
+  public static String formatTime(long time) {
+    Date date = new Date(time);
+    Locale locale = new Locale("he", "IL");
+    SimpleDateFormat formatter = new SimpleDateFormat("d לLLLL yyyy", locale);
+    formatter.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+    return formatter.format(date);
+  }
 }
+

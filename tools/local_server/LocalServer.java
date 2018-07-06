@@ -72,13 +72,13 @@ public class LocalServer {
 
   private static void checkFlags() {
     if (rootPath.get().isEmpty()) {
-        System.out.println("Error: Please set --root_path");
-        System.exit(1);
+      System.out.println("Error: Please set --root_path");
+      System.exit(1);
     }
   }
 
   @Singleton
-  @Component(modules = { CommonModule.class })
+  @Component(modules = {CommonModule.class})
   public interface LocalServerComponent {
     LocalServer getLocalServer();
   }
@@ -96,3 +96,4 @@ public class LocalServer {
     server.blockUntilShutdown();
   }
 }
+

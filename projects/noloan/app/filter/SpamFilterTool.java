@@ -117,9 +117,7 @@ public class SpamFilterTool {
   public static void main(String[] args) throws Exception {
     Flags.parse(args, SpamFilterTool.class.getPackage());
     checkFlags();
-    DaggerSpamFilterTool_SpamFilterToolComponent
-        .create()
-        .getSpamFilterTool()
-        .run();
+    DaggerSpamFilterTool_SpamFilterToolComponent.create().getSpamFilterTool().run();
   }
 }
+

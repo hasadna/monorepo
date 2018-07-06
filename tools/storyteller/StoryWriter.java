@@ -22,7 +22,6 @@ import tools.storyteller.service.Protos.Story;
 import tools.storyteller.service.Protos.StoryItem;
 import tools.storyteller.service.Protos.StoryList;
 
-
 /* Storyteller writer that writes story files. */
 @Singleton
 public class StoryWriter {
@@ -38,21 +37,21 @@ public class StoryWriter {
   public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils, StoryReader reader) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    this.allStories = new ArrayList<>(
-        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME)));
+    this.allStories =
+        new ArrayList<>(
+            reader.getStories(
+                fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME)));
   }
 
   void startStory(String project) {
     currentStoryBuilder = Story.newBuilder();
-    currentStoryBuilder
-        .setStartTimeMs(getCurrentTimestamp())
-        .setProject(project);
+    currentStoryBuilder.setStartTimeMs(getCurrentTimestamp()).setProject(project);
     allStories.add(currentStoryBuilder.build());
     saveStories();
   }
 
   void updateStory(String project) {
-    if (currentStoryBuilder == null){
+    if (currentStoryBuilder == null) {
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
@@ -60,7 +59,7 @@ public class StoryWriter {
   }
 
   void endStory(String project) {
-    if (currentStoryBuilder == null){
+    if (currentStoryBuilder == null) {
       throw new IllegalStateException("'currentStoryBuilder' is not initialized");
     }
     updateCurrentStory(project);
@@ -71,14 +70,9 @@ public class StoryWriter {
   void saveStoryItem(String project, String story) {
     // Replace empty with one space, so that the prototxt will have the entry
     story = story.isEmpty() ? " " : story;
-    StoryItem storyItem = StoryItem.newBuilder()
-        .setTimeMs(getCurrentTimestamp())
-        .setOneliner(story)
-        .build();
-    currentStoryBuilder
-        .setProject(project)
-        .setEndTimeMs(getCurrentTimestamp())
-        .addItem(storyItem);
+    StoryItem storyItem =
+        StoryItem.newBuilder().setTimeMs(getCurrentTimestamp()).setOneliner(story).build();
+    currentStoryBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp()).addItem(storyItem);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
     saveStories();
   }
@@ -98,9 +92,7 @@ public class StoryWriter {
   }
 
   private void updateCurrentStory(String project) {
-    currentStoryBuilder
-        .setEndTimeMs(getCurrentTimestamp())
-        .setProject(project);
+    currentStoryBuilder.setEndTimeMs(getCurrentTimestamp()).setProject(project);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
   }
 
@@ -122,3 +114,4 @@ public class StoryWriter {
     return Storyteller.getUnsharedStoriesPath(config);
   }
 }
+
