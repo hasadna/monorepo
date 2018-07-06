@@ -1,5 +1,7 @@
 # Hasadna monorepo
 
+[![CircleCI](https://circleci.com/gh/hasadna/hasadna.svg?style=svg)](https://circleci.com/gh/hasadna/hasadna)
+
 We're doing an experiment to see what it would be like to work in a monorepo in Hasadna.
 
 For more details on the monorepo approach, see [trunkbaseddevelopment.com/monorepos](http://trunkbaseddevelopment.com/monorepos).
@@ -11,6 +13,3 @@ Some monorepo etiquette:
 4. Kindly provide a LICENSE file for your project.
 
 Happy coding!
-
-
-

@@ -1,5 +1,5 @@
 package(default_visibility = ["//visibility:public"])
-load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("//third_party:java_grpc_library.bzl", "java_grpc_library")
 
 java_binary(
     name = "local_server",

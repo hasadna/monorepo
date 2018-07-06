@@ -14,7 +14,7 @@ android_binary(
         "@com_android_support_support_v4_27_0_2//aar",
 
         '//third_party/maven/com/google/guava:guava',
-        '@com_google_protobuf//:protobuf_java',
+        '//third_party/maven/com/google/protobuf:protobuf_java',
 
         '@com_android_support_multidex_1_0_1//aar',
         '@com_android_support_appcompat_v7_27_0_2//aar',

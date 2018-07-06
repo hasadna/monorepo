@@ -16,7 +16,7 @@ java_library(
     ":bayes_spam_filter",
     "//projects/noloan/app/proto:bayes_protos_java",
     "//projects/noloan/app/proto:data_protos_java",
-    "@com_google_protobuf//:protobuf_java",
+    "//third_party/maven/com/google/protobuf:protobuf_java",
     "//third_party/maven/com/google/guava:guava",
   ],
   resources = ["spam.prototxt"],
@@ -28,7 +28,7 @@ java_binary(
   main_class = "projects.noloan.app.filter.SpamFilterTool",
   deps = [
     ":spam_filter",
-    "//projects/noloan/app/proto:data_protos_java",    
+    "//projects/noloan/app/proto:data_protos_java",
     "@startup_os//common",
     "@startup_os//common:dagger_with_annotation_processor",
     "@startup_os//common/flags",
