@@ -113,12 +113,14 @@ public class Storyteller {
    */
   public void share() {
     StoryList storyList = StoryList.newBuilder().addAllStory(getUnsharedStories()).build();
-    ShareStoriesRequest req = ShareStoriesRequest.newBuilder().setStories(storyList).build();
-    storytellerBlockingStub.shareStories(req);
+    ShareStoriesRequest request = ShareStoriesRequest.newBuilder().setStories(storyList).build();
+    storytellerBlockingStub.shareStories(request);
 
     try {
       fileUtils.copyDirectoryToDirectory(getUnsharedStoriesPath(), getSharedStoriesPath());
       System.out.println(storyList.getStoryCount() + " stories shared");
+      fileUtils.clearDirectory(getUnsharedStoriesPath());
+      System.out.println("Folder with unshared stories is cleared.");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
