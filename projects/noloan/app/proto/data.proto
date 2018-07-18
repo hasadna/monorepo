@@ -6,7 +6,7 @@ option java_package = "projects.noloan.app";
 option java_outer_classname = "Protos";
 
 message SmsMessage {
-   // Unix milliseconds
+  // Unix milliseconds
   int64 receivedDateTime = 1;
   // Sender phone number
   string sender = 2;
@@ -14,6 +14,4 @@ message SmsMessage {
   string contents = 3;
 }
 
-message SmsMessageList {
-  repeated SmsMessage message = 1;
-}
+message SmsMessageList { repeated SmsMessage message = 1; }

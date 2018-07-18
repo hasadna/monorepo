@@ -18,7 +18,7 @@ import com.google.startupos.common.flags.FlagDesc;
  */
 public class StorytellerService extends StorytellerServiceGrpc.StorytellerServiceImplBase {
   private static final Logger logger = Logger.getLogger(StorytellerService.class.getName());
- 
+
   @FlagDesc(name = "firestore_storyteller_root", description = "Storyteller root path in Firestore")
   private static final Flag<String> firestoreStorytellerRoot = Flag.create("/storyteller");
 
@@ -29,10 +29,13 @@ public class StorytellerService extends StorytellerServiceGrpc.StorytellerServic
   }
 
   @Override
-  public void shareStories(ShareStoriesRequest req, StreamObserver<ShareStoriesResponse> responseObserver) {
-    FirestoreClient client = new FirestoreClient(authService.getProjectId(), authService.getToken());
+  public void shareStories(
+      ShareStoriesRequest req, StreamObserver<ShareStoriesResponse> responseObserver) {
+    FirestoreClient client =
+        new FirestoreClient(authService.getProjectId(), authService.getToken());
     client.createDocument(firestoreStorytellerRoot.get(), req.getStories());
     responseObserver.onNext(ShareStoriesResponse.getDefaultInstance());
     responseObserver.onCompleted();
   }
 }
+

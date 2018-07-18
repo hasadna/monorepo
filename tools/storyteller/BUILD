@@ -1,5 +1,6 @@
 package(default_visibility = ["//visibility:public"])
-load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+
+load("//third_party:java_grpc_library.bzl", "java_grpc_library")
 
 proto_library(
     name = "storyteller_proto",
@@ -23,8 +24,12 @@ java_library(
     deps = [
         ":invoicer",
         ":storyteller_java_proto",
+        "//third_party/maven/com/google/flogger",
+        "//third_party/maven/com/google/flogger:flogger_system_backend",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/io/grpc:grpc_core",
+        "//third_party/maven/io/grpc:grpc_netty",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_api",
         "//third_party/maven/org/slf4j:slf4j_simple",
@@ -33,10 +38,6 @@ java_library(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
-        "//third_party/maven/com/google/flogger:flogger",
-        "//third_party/maven/com/google/flogger:flogger_system_backend",
-        "//third_party/maven/io/grpc:grpc_core",
-        "//third_party/maven/io/grpc:grpc_netty",
     ],
 )
 
@@ -50,6 +51,8 @@ java_library(
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/commons_logging",
+        "//third_party/maven/io/grpc:grpc_core",
+        "//third_party/maven/io/grpc:grpc_netty",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/pdfbox",
         "//third_party/maven/org/apache/pdfbox:fontbox",
@@ -58,8 +61,6 @@ java_library(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
-        "//third_party/maven/io/grpc:grpc_core",
-        "//third_party/maven/io/grpc:grpc_netty",
     ],
 )
 
@@ -72,6 +73,8 @@ java_binary(
     deps = [
         ":storyteller",
         ":storyteller_java_proto",
+        "//third_party/maven/com/google/flogger",
+        "//third_party/maven/com/google/flogger:flogger_system_backend",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/javax/inject:javax_inject",
@@ -80,8 +83,6 @@ java_binary(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
-        "//third_party/maven/com/google/flogger:flogger",
-        "//third_party/maven/com/google/flogger:flogger_system_backend",
     ],
 )
 

@@ -140,3 +140,4 @@ public class BayesFilter {
     return probability(sms) > MAX_SPAM_THRESHOLD;
   }
 }
+

@@ -5,13 +5,11 @@ package tools.storyteller.service;
 option java_package = "tools.storyteller.service";
 option java_outer_classname = "Protos";
 
-service StorytellerService { 
+service StorytellerService {
   rpc shareStories(ShareStoriesRequest) returns (ShareStoriesResponse);
 }
 
-message ShareStoriesRequest {
-  StoryList stories = 1;
-}
+message ShareStoriesRequest { StoryList stories = 1; }
 
 message ShareStoriesResponse {}
 
@@ -29,6 +27,4 @@ message Story {
   repeated StoryItem item = 4;
 }
 
-message StoryList {
-  repeated Story story = 1;
-}
+message StoryList { repeated Story story = 1; }
