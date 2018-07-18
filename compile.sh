@@ -9,8 +9,5 @@ if [[ $1 != "build" && $1 != "test" ]]; then
   exit 1
 fi
 
-# Builds all targets and runs all tests
-PROTO_OPTIONS="--proto_compiler //external:proto_compiler --proto_toolchain_for_java //external:proto_java_toolchain"
-
-bazel $1 $PROTO_OPTIONS //...
+bazel $1 //...
 exit $?

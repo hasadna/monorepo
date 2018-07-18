@@ -1,10 +1,7 @@
-# bazel-deps-deploy is a prebuilt version of johnynek/bazel-deps
-# we cannot use it via http_archive directly for the moment
-# relevant issue: https://github.com/johnynek/bazel-deps/issues/126
 git_repository(
-    name = 'bazel_deps',
-    remote = 'https://github.com/vmax/bazel-deps-deploy',
-    commit = 'a15c2f64e099e78871ee78ff1f4e6bec5ec7ed4c'
+    name = "startupos_binaries",
+    commit = "3eaa31c93ca9ecb22ad8c348649d1ba4f61f332c",
+    remote = "https://github.com/oferb/startupos-binaries",
 )
 
 load("//third_party/maven:workspace.bzl", "maven_dependencies")
@@ -58,12 +55,6 @@ maven_jar(
   artifact = "com.squareup.okio:okio:jar:1.6.0"
 )
 
-git_repository(
-    name = 'temp',
-    remote = 'https://github.com/vmax/temp',
-    commit = '40edea85e2c9029de00a18e51a0b70515777ac64'
-)
-
 http_file(
     name = "buildifier",
     executable = True,
@@ -104,5 +95,5 @@ bind(
 
 bind(
     name = "grpc_java_plugin",
-    actual = "@temp//:grpc_java_plugin"
+    actual = "@startupos_binaries//:grpc_java_plugin"
 )
