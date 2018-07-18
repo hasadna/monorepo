@@ -29,7 +29,7 @@ jobs:
           <<: *post_checkout
       - restore_cache:
           key: "v2-bazel_cache"
-      - run: './check-formatting.sh'
+      - run: './fix-formatting.sh'
 
   build:
     <<: *job_defaults

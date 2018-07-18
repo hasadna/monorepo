@@ -9,11 +9,18 @@ RESET=$(tput sgr0)
 
 npm install &>/dev/null
 
-PROTO_OPTIONS="--proto_compiler //external:proto_compiler --proto_toolchain_for_java //external:proto_java_toolchain"
-BUILD_FILES=$(find `pwd` -type f \( -name BUILD.bazel -or -name BUILD \) | grep -v node_modules)
+bazel run @startup_os//tools/simple_formatter -- \
+	--path $(pwd) \
+	--java --python --proto --cpp --build \
+	--ignore_directories $(find $(pwd) -name node_modules -type d | paste -s -d , -) \
+	&>/dev/null
 
-echo "$RED[:] Formatting BUILD files$RESET";
-bazel run $PROTO_OPTIONS @startup_os//tools:buildifier -- -mode=fix $BUILD_FILES &>/dev/null
-
-echo "$RED[:] Formatting source files$RESET";
-bazel run $PROTO_OPTIONS @startup_os//tools/simple_formatter -- --path $(pwd) --java --python --proto --cpp --ignore_directories $(pwd)/node_modules/,$(pwd)/tools/local_server/web_login/node_modules/ &>/dev/null
+# Prints out an error only if both conditions are satisfied:
+# * we are on CircleCI
+# * working tree contains unstaged changes
+# When ran locally it silently fixes everything.
+if [[ ! -z "$CIRCLECI" && ! -z $(git status -s) ]]; then
+	echo "$RED[!] Source files are not formatted$RESET";
+	echo "Please run ''./fix_formatting.sh'' to fix it"
+	exit 1
+fi
