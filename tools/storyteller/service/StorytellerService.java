@@ -14,7 +14,7 @@ import com.google.startupos.common.flags.FlagDesc;
  */
 public class StorytellerService extends StorytellerServiceGrpc.StorytellerServiceImplBase {
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
- 
+
   @FlagDesc(name = "firestore_storyteller_root", description = "Storyteller root path in Firestore")
   private static final Flag<String> firestoreStorytellerRoot = Flag.create("/storyteller");
 
