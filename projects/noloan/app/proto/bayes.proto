@@ -6,18 +6,18 @@ option java_package = "projects.noloan.app.filter.bayes";
 option java_outer_classname = "Protos";
 
 enum WordType {
-    SPAM = 0;
-    HAM = 1;
+  SPAM = 0;
+  HAM = 1;
 }
 
 message WordInfo {
-	string word = 1;
-	int32 spamCount = 2;
-	int32 hamCount = 3;
-	float spamRate = 4;
-	float hamRate = 5;
-	float spamProbability = 6;
-	WordType type = 7;
+  string word = 1;
+  int32 spamCount = 2;
+  int32 hamCount = 3;
+  float spamRate = 4;
+  float hamRate = 5;
+  float spamProbability = 6;
+  WordType type = 7;
 }
 
 message WordInfoList {

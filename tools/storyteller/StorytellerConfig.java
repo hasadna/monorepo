@@ -21,16 +21,17 @@ public class StorytellerConfig {
   private FileUtils fileUtils;
 
   @Inject
-  public StorytellerConfig(FileUtils fileUtils){
+  public StorytellerConfig(FileUtils fileUtils) {
     this.fileUtils = fileUtils;
   }
 
   public Config getConfig() {
     Config.Builder config =
         Config.newBuilder()
-                .setStoriesPath(DEFAULT_STORIES_PATH)
-                .setInvoicesPath(INVOICES_PATH)
-                .addAllProjects(Arrays.asList("Front-end", "Backend", "Fixing issue", "Code review", "Production"));
+            .setStoriesPath(DEFAULT_STORIES_PATH)
+            .setInvoicesPath(INVOICES_PATH)
+            .addAllProjects(
+                Arrays.asList("Front-end", "Backend", "Fixing issue", "Code review", "Production"));
     if (!fileUtils.fileExists(CONFIG_FILE)) {
       log.atFine().log("No config found in %s", CONFIG_FILE);
       return config.build();
@@ -38,3 +39,4 @@ public class StorytellerConfig {
     return (Config) fileUtils.readPrototxtUnchecked(CONFIG_FILE, config);
   }
 }
+

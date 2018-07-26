@@ -25,10 +25,13 @@ public class StorytellerService extends StorytellerServiceGrpc.StorytellerServic
   }
 
   @Override
-  public void shareStories(ShareStoriesRequest req, StreamObserver<ShareStoriesResponse> responseObserver) {
-    FirestoreClient client = new FirestoreClient(authService.getProjectId(), authService.getToken());
+  public void shareStories(
+      ShareStoriesRequest req, StreamObserver<ShareStoriesResponse> responseObserver) {
+    FirestoreClient client =
+        new FirestoreClient(authService.getProjectId(), authService.getToken());
     client.createDocument(firestoreStorytellerRoot.get(), req.getStories());
     responseObserver.onNext(ShareStoriesResponse.getDefaultInstance());
     responseObserver.onCompleted();
   }
 }
+

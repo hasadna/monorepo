@@ -93,7 +93,7 @@ public class StorytellerUiTool {
   }
 
   @Singleton
-  @Component(modules = { CommonModule.class })
+  @Component(modules = {CommonModule.class})
   interface StorytellerUiToolComponent {
     StorytellerUiTool getStoryTellerUiTool();
   }
@@ -102,7 +102,8 @@ public class StorytellerUiTool {
 
     checkInputArgs(args);
 
-    StorytellerUiTool uiTool = DaggerStorytellerUiTool_StorytellerUiToolComponent.create().getStoryTellerUiTool();
+    StorytellerUiTool uiTool =
+        DaggerStorytellerUiTool_StorytellerUiToolComponent.create().getStoryTellerUiTool();
 
     EventQueue.invokeLater(
         () -> {
@@ -136,7 +137,7 @@ public class StorytellerUiTool {
     addScreenshotButton();
     addProjectDropDown();
     addStoryText();
-    if (mode.equals(Mode.TIME_AND_SCREENSHOT)){
+    if (mode.equals(Mode.TIME_AND_SCREENSHOT)) {
       addToggleButton();
       addTimeLabel();
       addBottomTimeSummaries();
@@ -182,16 +183,18 @@ public class StorytellerUiTool {
 
   private void initFrame() {
     frame = new JFrame();
-    
+
     frame.setLayout(null);
     frame.setResizable(false);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // TODO: Fix drift - every time the tool is run, it starts slightly higher.
     frame.setLocation(uiDefaults.getLeft(), uiDefaults.getTop());
-    frame.getContentPane().setPreferredSize(
-        new Dimension(
-            DEFAULT_WIDTH,
-            mode.equals(Mode.SCREENSHOT_ONLY) ? DEFAULT_HEIGHT - 230 : DEFAULT_HEIGHT));
+    frame
+        .getContentPane()
+        .setPreferredSize(
+            new Dimension(
+                DEFAULT_WIDTH,
+                mode.equals(Mode.SCREENSHOT_ONLY) ? DEFAULT_HEIGHT - 230 : DEFAULT_HEIGHT));
     frame.pack();
     frame.setTitle("Storyteller");
     frame.getContentPane().setBackground(Color.WHITE);
@@ -280,7 +283,7 @@ public class StorytellerUiTool {
   private void addScreenshotButton() {
     JButton button = new JButton("Take Screenshot");
     button.setLocation(LEFT, SCREENSHOT_HEIGHT);
-    if (mode.equals(Mode.SCREENSHOT_ONLY)){
+    if (mode.equals(Mode.SCREENSHOT_ONLY)) {
       button.setLocation(LEFT, SCREENSHOT_HEIGHT - 90);
     }
     button.setSize(WIDTH, 40);
@@ -315,14 +318,14 @@ public class StorytellerUiTool {
   }
 
   private void addProjectDropDown() {
-    if (mode.equals(Mode.SCREENSHOT_ONLY)){
+    if (mode.equals(Mode.SCREENSHOT_ONLY)) {
       addLabel("Project:", LEFT, INPUTS_HEIGHT - 100, WIDTH, SMALL_TEXT, SMALL_TEXT);
     } else {
       addLabel("Project:", LEFT, INPUTS_HEIGHT, WIDTH, SMALL_TEXT, SMALL_TEXT);
     }
     projectDropDown = new JComboBox(getProjects());
     projectDropDown.setLocation(LEFT, INPUTS_HEIGHT + 20);
-    if (mode.equals(Mode.SCREENSHOT_ONLY)){
+    if (mode.equals(Mode.SCREENSHOT_ONLY)) {
       projectDropDown.setLocation(LEFT, INPUTS_HEIGHT - 80);
     }
     projectDropDown.setSize(WIDTH, 30);
@@ -333,7 +336,7 @@ public class StorytellerUiTool {
 
   private void addStoryText() {
     int height = INPUTS_HEIGHT + 60;
-    if (mode.equals(Mode.SCREENSHOT_ONLY)){
+    if (mode.equals(Mode.SCREENSHOT_ONLY)) {
       height = INPUTS_HEIGHT - 40;
     }
     addLabel("Story:", LEFT, height, WIDTH, SMALL_TEXT, SMALL_TEXT);
@@ -409,17 +412,26 @@ public class StorytellerUiTool {
       case SCREENSHOT_ONLY_ARG:
         return Mode.SCREENSHOT_ONLY;
       default:
-        throw new IllegalArgumentException("Input arg is incorrect. " +
-                "Expected: " + TIME_AND_SCREENSHOT_ARG + " or " + SCREENSHOT_ONLY_ARG);
+        throw new IllegalArgumentException(
+            "Input arg is incorrect. "
+                + "Expected: "
+                + TIME_AND_SCREENSHOT_ARG
+                + " or "
+                + SCREENSHOT_ONLY_ARG);
     }
   }
 
-  private static void checkInputArgs(String[] args){
-    if (args.length == 0){
-      throw new IllegalArgumentException("Running mode not specified ("
-              + TIME_AND_SCREENSHOT_ARG + " or " + SCREENSHOT_ONLY_ARG + ")");
+  private static void checkInputArgs(String[] args) {
+    if (args.length == 0) {
+      throw new IllegalArgumentException(
+          "Running mode not specified ("
+              + TIME_AND_SCREENSHOT_ARG
+              + " or "
+              + SCREENSHOT_ONLY_ARG
+              + ")");
     } else if (args.length > 1) {
       throw new IllegalArgumentException("Input args contain more then one argument.");
     }
   }
 }
+

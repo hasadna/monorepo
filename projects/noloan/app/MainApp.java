@@ -8,16 +8,16 @@ import java.io.IOException;
 
 import com.google.startupos.android.FirestoreInitializer;
 
-
 public class MainApp extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
 
-        try {
-            FirestoreInitializer.init(getApplicationContext(), "google-services.json");
-        } catch (IOException|JSONException e) {
-            e.printStackTrace();
-        }
+    try {
+      FirestoreInitializer.init(getApplicationContext(), "google-services.json");
+    } catch (IOException | JSONException e) {
+      e.printStackTrace();
     }
+  }
 }
+

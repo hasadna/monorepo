@@ -46,7 +46,11 @@ public class Storyteller {
   private FileUtils fileUtils;
 
   @Inject
-  public Storyteller(StorytellerConfig storytellerConfig, StoryReader reader, StoryWriter writer, FileUtils fileUtils) {
+  public Storyteller(
+      StorytellerConfig storytellerConfig,
+      StoryReader reader,
+      StoryWriter writer,
+      FileUtils fileUtils) {
     config = storytellerConfig.getConfig();
     this.reader = reader;
     this.writer = writer;
@@ -159,8 +163,11 @@ public class Storyteller {
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
-    sb.appendln(storiesToString(
-        reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
+    sb.appendln(
+        storiesToString(
+            reader.getStories(
+                fileUtils.joinPaths(
+                    getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
     System.out.print(sb);
   }
 
@@ -216,7 +223,8 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getStories(fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+    return reader.getStories(
+        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private int getScreenshotFrequency() {
@@ -234,3 +242,4 @@ public class Storyteller {
     return -1; // We should never get here
   }
 }
+
