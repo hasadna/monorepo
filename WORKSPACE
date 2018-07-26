@@ -40,8 +40,8 @@ android_sdk_repository(
 
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/4cc3b0255e55dee7974fbab8d3630661ac92c6ae.zip"],
-    strip_prefix = "startup-os-4cc3b0255e55dee7974fbab8d3630661ac92c6ae"
+    urls = ["https://github.com/google/startup-os/archive/b347b3942bc942707dab743a80865f00fb44b8d0.zip"],
+    strip_prefix = "startup-os-b347b3942bc942707dab743a80865f00fb44b8d0"
 )
 
 # XXX Use maven deps
