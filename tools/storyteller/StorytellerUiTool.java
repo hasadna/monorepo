@@ -36,6 +36,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import com.google.startupos.common.CommonModule;
+import com.google.startupos.tools.aa.AaModule;
 import dagger.Component;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
@@ -93,7 +94,7 @@ public class StorytellerUiTool {
   }
 
   @Singleton
-  @Component(modules = {CommonModule.class})
+  @Component(modules = {CommonModule.class, AaModule.class})
   interface StorytellerUiToolComponent {
     StorytellerUiTool getStoryTellerUiTool();
   }
