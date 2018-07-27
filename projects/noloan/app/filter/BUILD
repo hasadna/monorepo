@@ -34,7 +34,6 @@ java_binary(
         "//third_party/maven/com/google/guava",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/commons:commons_csv",
-        "//third_party/maven/org/slf4j:slf4j_api",
         "//third_party/maven/org/slf4j:slf4j_simple",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
