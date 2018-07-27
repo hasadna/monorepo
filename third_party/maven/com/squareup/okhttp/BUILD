@@ -1,13 +1,13 @@
 java_library(
-    name = "jimfs",
+    name = "okhttp",
     exports = [
-        "//external:jar/com/google/jimfs/jimfs"
+        "//external:jar/com/squareup/okhttp/okhttp"
     ],
     licenses = [
         "permissive"
     ],
     runtime_deps = [
-        "//third_party/maven/com/google/guava:guava"
+        "//third_party/maven/com/squareup/okio:okio"
     ],
     visibility = [
         "//visibility:public"

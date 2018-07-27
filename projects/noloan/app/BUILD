@@ -32,7 +32,7 @@ android_binary(
         "@com_android_support_support_media_compat_27_0_2//aar",
         "@com_android_support_support_v4_27_0_2//aar",
         "@com_android_support_support_vector_drawable_27_0_2//aar",
-        "@startup_os//android:firestore",
-        "@startup_os//android:firestore_config_manager_impl",
+        "@startup_os//examples/android:firestore",
+        "@startup_os//examples/android:firestore_config_manager_impl",
     ],
 )
