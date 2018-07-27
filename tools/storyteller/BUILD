@@ -32,6 +32,7 @@ java_library(
         "//third_party/maven/io/grpc:grpc_netty",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
+        "//tools/storyteller/service",
         "//tools/storyteller/service:service_java_grpc",
         "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
