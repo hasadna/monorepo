@@ -6,7 +6,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
-import com.google.startupos.android.FirestoreInitializer;
+import com.google.startupos.examples.android.FirestoreInitializer;
 
 public class MainApp extends Application {
   @Override

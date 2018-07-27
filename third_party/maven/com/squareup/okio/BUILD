@@ -1,7 +1,7 @@
 java_library(
-    name = "javax_inject",
+    name = "okio",
     exports = [
-        "//external:jar/javax/inject/javax_inject"
+        "//external:jar/com/squareup/okio/okio"
     ],
     licenses = [
         "permissive"

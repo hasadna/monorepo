@@ -1,3 +1,6 @@
+# bazel-deps-deploy is a prebuilt version of johnynek/bazel-deps
+# we cannot use it via http_archive directly for the moment
+# relevant issue: https://github.com/johnynek/bazel-deps/issues/126
 git_repository(
     name = "startupos_binaries",
     commit = "3eaa31c93ca9ecb22ad8c348649d1ba4f61f332c",
@@ -42,17 +45,6 @@ http_archive(
     name = "startup_os",
     urls = ["https://github.com/google/startup-os/archive/4cc3b0255e55dee7974fbab8d3630661ac92c6ae.zip"],
     strip_prefix = "startup-os-4cc3b0255e55dee7974fbab8d3630661ac92c6ae"
-)
-
-# XXX Use maven deps
-maven_jar(
-  name = "com_squareup_okhttp_okhttp_2_7_2",
-  artifact = "com.squareup.okhttp:okhttp:jar:2.7.2",
-)
-
-maven_jar(
-  name = "com_squareup_okio_okio_1_6_0",
-  artifact = "com.squareup.okio:okio:jar:1.6.0"
 )
 
 http_file(
