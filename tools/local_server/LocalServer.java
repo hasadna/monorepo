@@ -28,7 +28,7 @@ public class LocalServer {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   @FlagDesc(name = "local_server_port", description = "Port for local gRPC server")
-  public static final Flag<Integer> localServerPort = Flag.create(8001);
+  static final Flag<Integer> localServerPort = Flag.create(8001);
 
   private Server server;
 
