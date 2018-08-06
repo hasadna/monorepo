@@ -43,8 +43,8 @@ android_sdk_repository(
 
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/4cc3b0255e55dee7974fbab8d3630661ac92c6ae.zip"],
-    strip_prefix = "startup-os-4cc3b0255e55dee7974fbab8d3630661ac92c6ae"
+    urls = ["https://github.com/google/startup-os/archive/b895c41f5c6e6baf69ee83e44a806b9475c854b0.zip"],
+    strip_prefix = "startup-os-b895c41f5c6e6baf69ee83e44a806b9475c854b0"
 )
 
 http_file(

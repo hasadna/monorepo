@@ -28,10 +28,7 @@ public class LocalServer {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   @FlagDesc(name = "local_server_port", description = "Port for local gRPC server")
-  public static final Flag<Integer> localServerPort = Flag.create(8001);
-
-  @FlagDesc(name = "root_path", description = "Root path for serving files for reviewer service")
-  public static final Flag<String> rootPath = Flag.create("");
+  static final Flag<Integer> localServerPort = Flag.create(8001);
 
   private Server server;
 
@@ -70,13 +67,6 @@ public class LocalServer {
     }
   }
 
-  private static void checkFlags() {
-    if (rootPath.get().isEmpty()) {
-      System.out.println("Error: Please set --root_path");
-      System.exit(1);
-    }
-  }
-
   @Singleton
   @Component(modules = {CommonModule.class})
   public interface LocalServerComponent {
@@ -89,7 +79,6 @@ public class LocalServer {
         LocalServer.class.getPackage(),
         StorytellerService.class.getPackage(),
         AuthService.class.getPackage());
-    checkFlags();
 
     LocalServer server = DaggerLocalServer_LocalServerComponent.builder().build().getLocalServer();
     server.start();

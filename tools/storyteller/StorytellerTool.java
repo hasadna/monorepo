@@ -2,6 +2,7 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.CommonModule;
+import com.google.startupos.tools.aa.AaModule;
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flags;
 import dagger.Component;
@@ -57,7 +58,7 @@ public class StorytellerTool {
       ImmutableList.of(HELP, LIST, SHARE, INVOICE);
 
   @Singleton
-  @Component(modules = {CommonModule.class})
+  @Component(modules = {CommonModule.class, AaModule.class})
   interface StorytellerToolComponent {
     Storyteller getStoryteller();
   }

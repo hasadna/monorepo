@@ -6,6 +6,7 @@ import java.util.Arrays;
 import tools.storyteller.Protos.Config;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.inject.Named;
 
 /*
  * Config for Storyteller
@@ -14,22 +15,22 @@ import javax.inject.Singleton;
 public class StorytellerConfig {
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
   private static final String CONFIG_FILE = "~/.storyteller";
-  private static final String DEFAULT_STORIES_PATH = "/base/local/storyteller";
-  private static final String INVOICES_PATH = "/base/local/storyteller";
   static final String STORIES_FILENAME = "stories.prototxt";
 
   private FileUtils fileUtils;
+  private String storytellerPath;
 
   @Inject
-  public StorytellerConfig(FileUtils fileUtils) {
+  public StorytellerConfig(FileUtils fileUtils, @Named("Base path") String basePath) {
     this.fileUtils = fileUtils;
+    this.storytellerPath = fileUtils.joinPaths(basePath, "local", "storyteller");
   }
 
   public Config getConfig() {
     Config.Builder config =
         Config.newBuilder()
-            .setStoriesPath(DEFAULT_STORIES_PATH)
-            .setInvoicesPath(INVOICES_PATH)
+            .setStoriesPath(storytellerPath)
+            .setInvoicesPath(storytellerPath)
             .addAllProjects(
                 Arrays.asList("Front-end", "Backend", "Fixing issue", "Code review", "Production"));
     if (!fileUtils.fileExists(CONFIG_FILE)) {
