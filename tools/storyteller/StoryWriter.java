@@ -91,6 +91,11 @@ public class StoryWriter {
     }
   }
 
+  void saveSharedStories(StoryList stories) {
+    fileUtils.writePrototxtUnchecked(stories,
+        fileUtils.joinPaths(Storyteller.getSharedStoriesPath(config), getCurrentTimeString() + ".prototxt"));
+  }
+
   private void updateCurrentStory(String project) {
     currentStoryBuilder.setEndTimeMs(getCurrentTimestamp()).setProject(project);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());

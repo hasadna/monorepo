@@ -23,7 +23,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 /*
  * Storyteller logic.
@@ -122,19 +121,17 @@ public class Storyteller {
     storytellerBlockingStub.shareStories(request);
 
     try {
-      fileUtils.copyDirectoryToDirectory(getUnsharedStoriesPath(), getSharedStoriesPath(), StorytellerConfig.STORIES_FILENAME);
-      fileUtils.writePrototxt(storyList, fileUtils.joinPaths(getSharedStoriesPath(), getSharedStoriesFilename()));
+      fileUtils.copyDirectoryToDirectory(
+          getUnsharedStoriesPath(),
+          getSharedStoriesPath(),
+          StorytellerConfig.STORIES_FILENAME);
+      writer.saveSharedStories(storyList);
       System.out.println(storyList.getStoryCount() + " stories shared");
       fileUtils.clearDirectory(getUnsharedStoriesPath());
       System.out.println("Folder with unshared stories is cleared.");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private String getSharedStoriesFilename() {
-    LocalDateTime currentTime = LocalDateTime.now();
-    return currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".prototxt";
   }
 
   private String storiesToString(ImmutableList<Story> stories) {
