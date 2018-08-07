@@ -91,9 +91,14 @@ public class StoryWriter {
     }
   }
 
-  void saveSharedStories(StoryList stories) {
-    fileUtils.writePrototxtUnchecked(stories,
-        fileUtils.joinPaths(Storyteller.getSharedStoriesPath(config), getCurrentTimeString() + ".prototxt"));
+  void saveSharedStories(StoryList stories) throws IOException {
+    final String sharedStoriesPath = Storyteller.getSharedStoriesPath(config);
+    fileUtils.copyDirectoryToDirectory(
+        getUnsharedStoriesPath(),
+        sharedStoriesPath,
+        StorytellerConfig.STORIES_FILENAME);
+    fileUtils.writePrototxt(stories,
+        fileUtils.joinPaths(sharedStoriesPath, getCurrentTimeString() + ".prototxt"));
   }
 
   private void updateCurrentStory(String project) {

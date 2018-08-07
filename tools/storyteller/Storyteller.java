@@ -121,10 +121,6 @@ public class Storyteller {
     storytellerBlockingStub.shareStories(request);
 
     try {
-      fileUtils.copyDirectoryToDirectory(
-          getUnsharedStoriesPath(),
-          getSharedStoriesPath(),
-          StorytellerConfig.STORIES_FILENAME);
       writer.saveSharedStories(storyList);
       System.out.println(storyList.getStoryCount() + " stories shared");
       fileUtils.clearDirectory(getUnsharedStoriesPath());
