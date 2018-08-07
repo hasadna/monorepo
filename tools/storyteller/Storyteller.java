@@ -2,27 +2,27 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import tools.storyteller.Protos.Config;
+import tools.storyteller.service.Protos.ShareStoriesRequest;
+import tools.storyteller.service.Protos.Story;
+import tools.storyteller.service.Protos.StoryItem;
+import tools.storyteller.service.Protos.StoryList;
+import tools.storyteller.service.StorytellerServiceGrpc;
+
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import tools.storyteller.Protos.Config;
-import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryList;
-import tools.storyteller.service.Protos.ShareStoriesRequest;
-import tools.storyteller.service.Protos.StoryItem;
-import tools.storyteller.service.StorytellerServiceGrpc;
-
-import javax.inject.Inject;
 
 /*
  * Storyteller logic.
@@ -121,7 +121,7 @@ public class Storyteller {
     storytellerBlockingStub.shareStories(request);
 
     try {
-      fileUtils.copyDirectoryToDirectory(getUnsharedStoriesPath(), getSharedStoriesPath());
+      writer.saveSharedStories(storyList);
       System.out.println(storyList.getStoryCount() + " stories shared");
       fileUtils.clearDirectory(getUnsharedStoriesPath());
       System.out.println("Folder with unshared stories is cleared.");
