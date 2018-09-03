@@ -12,7 +12,7 @@ message Volunteer {
   string last_name = 3;
   string email = 4;
   string image_url = 5;
-  repeated SocialNetwork = 6;
+  repeated SocialNetwork social_network = 6;
   // Skills the volunteer has, e.g programming languages.
   repeated string skill = 7;
   // Projects the volunteer works on
