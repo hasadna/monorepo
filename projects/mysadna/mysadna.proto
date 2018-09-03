@@ -43,4 +43,8 @@ message Project {
   string project_url = 3;
   // Short description
   string description = 4;
+  // This is redundant since Volunteer lists projects, but we don't want to do the calculation
+  // in the front-end. We might add a test to enforce this, or push a better data structure to
+  // Firebase.
+  repeated string github_user = 5;
 }
