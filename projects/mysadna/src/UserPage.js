@@ -10,14 +10,15 @@ import Pro from 'mdi-material-ui/ProfessionalHexagon';
 import GitHub from 'mdi-material-ui/GithubCircle';
 import Email from 'mdi-material-ui/Email';
 import Label from 'mdi-material-ui/Label';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
 
-
-class Page extends Component {
+class UserPage extends Component {
     constructor(props){
         super(props);
     }
 
-    listItem = (icon, label, value) => {
+    listTextItem = (icon, label, value) => {
         const listItemContent = `${label}: ${value}`;
       return (
           <ListItem>
@@ -34,18 +35,25 @@ class Page extends Component {
         return (
                 <MuiThemeProvider theme={this.props.theme}>
                     <Header pageTitle="Volunteers" />
-                    <List component="nav">
-                        {this.listItem(FaceProfile, "First Name", pageData.firstName)}
-                        {this.listItem(FaceProfile, "Last Name", pageData.lastName)}
-                        {this.listItem(Email, "Email", pageData.email)}
-                        {this.listItem(Pro, "Skills", pageData.skill)}
-                        {this.listItem(GitHub, "GitHub", pageData.githubUser)}
-                        {this.listItem(Label, "Project", pageData.projectId)}
-                        {this.listItem(Label, "Image", pageData.imageUrl)}
+                    <Card style={{maxWidth:460, float:"right", padding:"2px", margin:"15px"}}>
+                        <CardMedia
+                            component="img"
+                            style={{maxWidth:460, float:"right"}}
+                            image={pageData.imageUrl}
+                            title={`${pageData.firstName} ${pageData.lastName}`}
+                        />
+                    </Card>
+                    <List component="nav" style={{float:"left", width:"50%", margin:"15px"}}>
+                        {this.listTextItem(FaceProfile, "First Name", pageData.firstName)}
+                        {this.listTextItem(FaceProfile, "Last Name", pageData.lastName)}
+                        {this.listTextItem(Email, "Email", pageData.email)}
+                        {this.listTextItem(Pro, "Skills", pageData.skill)}
+                        {this.listTextItem(GitHub, "GitHub", pageData.githubUser)}
+                        {this.listTextItem(Label, "Project", pageData.projectId)}
                     </List>
                 </MuiThemeProvider>
             );
     }
 }
 
-export default Page;
+export default UserPage;
