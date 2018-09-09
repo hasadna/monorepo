@@ -1,0 +1,19 @@
+{
+  "githubUser": "asafhalili",
+  "firstName": "Asaf",
+  "lastName": "Halili",
+  "email": "email123@gmail.com",
+  "imageUrl": "<IMAGE_URL>",
+  "skill": "Java, Python",
+  "projectId": "123456",
+  "topContribution": [
+    {"url": "",
+      "description": ""}
+  ],
+  "links": [
+    {"name": "My Side Project"}
+  ],
+  "socialNetwork": [
+    {"type": "facebook", "url": "facebook.com/asafhalili"}
+  ]
+}
