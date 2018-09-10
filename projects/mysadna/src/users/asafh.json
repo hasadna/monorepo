@@ -13,7 +13,12 @@
   "links": [
     {"name": "My Side Project"}
   ],
-  "socialNetwork": [
-    {"type": "facebook", "url": "facebook.com/asafhalili"}
-  ]
+  "socialNetwork": {
+    "facebook": {
+      "url": "http://www.facebook.com/asafhalili"
+    },
+    "linkedin": {
+      "url": "http://www.linkedin.com/asafhalili"
+    }
+  }
 }
