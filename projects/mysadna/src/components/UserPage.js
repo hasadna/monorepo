@@ -15,7 +15,7 @@ class UserPage extends Component {
 
 
     render() {
-        const pageData = require('./users/' + this.props.userName); // TODO: Find a better way to import
+        const pageData = require('../users/' + this.props.userName); // TODO: Find a better way to import
         const user = new User(pageData);
         return (
                 <MuiThemeProvider theme={this.props.theme}>
