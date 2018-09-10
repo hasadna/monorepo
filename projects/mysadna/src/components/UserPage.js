@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Header from "./Header";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/es/Grid/Grid";
-import SocialBar from "./components/SocialBar";
-import UserProfile from "./components/UserProfile";
-import ItemsList from "./components/ItemsList";
-import User from "./User";
+import SocialBar from "./SocialBar";
+import UserProfile from "./UserProfile";
+import ItemsList from "./ItemsList";
+import User from "../User";
 
 class UserPage extends Component {
     constructor(props){
