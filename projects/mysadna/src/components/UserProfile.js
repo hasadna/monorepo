@@ -1,45 +1,42 @@
-import React, { Component } from 'react';
-import GitHub from "mdi-material-ui/GithubCircle";
-import FaceProfile from "mdi-material-ui/FaceProfile";
-import Pro from "mdi-material-ui/ProfessionalHexagon";
-import Label from "mdi-material-ui/Label";
-import Email from "mdi-material-ui/Email";
+import React, { PureComponent } from 'react';
 import List from "@material-ui/core/es/List/List";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 
-class UserProfile extends Component {
+class UserProfile extends PureComponent {
 
-    listTextItem = (icon, text, value, url) => {
-        const listItemContent = `${text}: ${value}`;
+    listTextItem = (item) => {
+        const content = `${item.label}: ${item.value}`;
         const linkProps = {
             button: true,
             component: "a",
-            href: url,
+            href: item.url,
             target: "_blank"
         };
-        const itemProps = url ? linkProps : {};
+        const itemProps = item.url ? linkProps : {};
         return (
             <ListItem {...itemProps}>
                 <ListItemIcon>
-                    {React.createElement(icon)}
+                    {React.createElement(item.icon)}
                 </ListItemIcon>
-                <ListItemText inset primary={listItemContent} />
+                <ListItemText inset primary={content} />
             </ListItem>
         );
     };
 
+    items = userData => {
+        console.log(userData);
+        return Object.keys(userData)
+            .map(key => this.listTextItem(userData[key]))
+            .reduce((prev, curr) => [prev, curr]);
+    };
+
     render() {
-        const { user } = this.props;
+        const { profile } = this.props;
         return (
             <List component="div">
-                {this.listTextItem(FaceProfile, user.firstName.label, user.firstName.value)}
-                {this.listTextItem(FaceProfile, user.lastName.label, user.lastName.value)}
-                {this.listTextItem(Email, user.email.label, user.email.value)}
-                {this.listTextItem(Pro, user.skill.label, user.skill.value)}
-                {this.listTextItem(GitHub, user.githubUser.label, user.githubUser.value, user.githubUser.url)}
-                {this.listTextItem(Label, user.projectId.label, user.projectId.value, user.projectId.url)}
+                {this.items(profile)}
             </List>
         );
     }

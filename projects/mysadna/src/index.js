@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
+import ErrorBoundary from './components/ErrorBoundary';
 import registerServiceWorker from './registerServiceWorker';
 import UserPage from './components/UserPage';
 import theme from './themes/theme';
@@ -13,13 +14,15 @@ const UserPageComponent = ({ match }) => {
 };
 
 
-ReactDOM.render(    
-    <BrowserRouter>
-        <div>
-            <CssBaseline />
-            <Route exact path='/' component={App}/>
-            <Route exact path='/volunteers/:userName' component={UserPageComponent}/>
-        </div>
-    </BrowserRouter>
+ReactDOM.render(
+    <ErrorBoundary>
+        <BrowserRouter>
+            <div>
+                <CssBaseline />
+                <Route exact path='/' component={App}/>
+                <Route exact path='/volunteers/:userName' component={UserPageComponent}/>
+            </div>
+        </BrowserRouter>
+    </ErrorBoundary>
 , document.getElementById('root'));
 registerServiceWorker();

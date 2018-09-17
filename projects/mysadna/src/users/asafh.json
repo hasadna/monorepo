@@ -18,7 +18,16 @@
       "url": "http://www.facebook.com/asafhalili"
     },
     "linkedin": {
-      "url": "http://www.linkedin.com/asafhalili"
+      "url": "https://www.linkedin.com/in/asafhalili/"
+    },
+    "twitter": {
+      "url": "invalid-url"
+    },
+    "instagram": {
+      "url": "invalid-url"
+    },
+    "googlePlus": {
+      "url": "invalid-url"
     }
   }
 }

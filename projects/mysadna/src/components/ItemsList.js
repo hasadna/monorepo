@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import List from "@material-ui/core/es/List/List";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
 import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";
 
 
-class ItemsList extends Component {
+class ItemsList extends PureComponent {
 
     link = (text, url) => {
         return (
@@ -23,6 +23,7 @@ class ItemsList extends Component {
     render() {
         return (
             <List component="nav" subheader={<ListSubheader>{this.props.title}</ListSubheader>}>
+                {/* TODO: Load links dynamically via User object*/}
                 {this.link("LINK-DESCRIPTION", "LINK-VALUE")}
             </List>
         );
