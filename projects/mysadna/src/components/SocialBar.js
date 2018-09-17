@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import Card from "@material-ui/core/es/Card/Card";
-import CardActionArea from "@material-ui/core/es/CardActionArea/CardActionArea";
-import CardMedia from "@material-ui/core/es/CardMedia/CardMedia";
-import CardActions from "@material-ui/core/es/CardActions/CardActions";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
-import Grid from "@material-ui/core/es/Grid/Grid";
+import Card from "@material-ui/core/Card/Card";
+import CardActionArea from "@material-ui/core/CardActionArea/CardActionArea";
+import CardMedia from "@material-ui/core/CardMedia/CardMedia";
+import CardActions from "@material-ui/core/CardActions/CardActions";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import Grid from "@material-ui/core/Grid/Grid";
 
 export default class SocialBar extends PureComponent {
 

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import AppBar from '@material-ui/core/es/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
