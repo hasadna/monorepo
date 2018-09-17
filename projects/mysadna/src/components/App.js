@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Header from "./Header";
-import UsersList from "./UsersList";
+// import UsersList from "./UsersList";
 
 class App extends PureComponent {
   render() {
@@ -9,9 +9,9 @@ class App extends PureComponent {
         <Header pageTitle="Main Page"/>
         <div>Here users</div>
         <div>Here projects </div>
-        <UsersList></UsersList>
       </div>
     );
+    // <UsersList></UsersList>
   }
 }
 
