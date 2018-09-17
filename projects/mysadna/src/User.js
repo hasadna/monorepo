@@ -9,7 +9,7 @@ export default class User {
     }
 
     parseLinks = data => {
-      this.createLinks = data.topContribution;
+      this.links = data.topContribution;
     };
 
     parseSocialNetworks = data => {
