@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Header from "./Header";
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/es/Grid/Grid";
+import Grid from "@material-ui/core/Grid/Grid";
 import SocialBar from "./SocialBar";
 import UserProfile from "./UserProfile";
 import ItemsList from "./ItemsList";

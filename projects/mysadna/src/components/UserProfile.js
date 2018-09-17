@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import List from "@material-ui/core/es/List/List";
-import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
-import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 
 class UserProfile extends PureComponent {
 

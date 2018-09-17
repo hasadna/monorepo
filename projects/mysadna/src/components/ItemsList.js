@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import List from "@material-ui/core/es/List/List";
-import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import {LinkVariant} from "mdi-material-ui";
-import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 
 class ItemsList extends PureComponent {
