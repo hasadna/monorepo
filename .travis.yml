@@ -1,0 +1,27 @@
+language: bash
+sudo: required
+env:
+  global:
+    - secure: "fv053wf+Vo/aVdx6qZ+fey8j+ZJnMLgXeaDfVEZJAZmDjs88hkishEfvty6T4xoS6Z1shdwMwDWVLgWlr5+VIXnrRq5MiFlOm0vuU/cknuRIUqlcWNECzYWWOz2Aosa3zLcAroV+ISbouO2MtI90EHsKyAQtgh+LHshG7iQOYKpBGOZDzLoL5d+kbddsBEqHDCd63G3TIgy1wSHG7ZorMoU3/Z2teCMBNVjQ5e40rNPXhgFZ68xdKk8h0Mzs3N+mHzKsOsdNGXIshJTkGfT7Hb4UF7k2TMiAtoirJ/lVX3HuuNuQJ/GerowHLDPP7CiLEdt00WY7CuTAzwqDl68kPQUnVbvUguBUh+x7ekhW0aq8DwA3YUWP1DVXBNROdGXWtFgeBrRGurJPr6/yMRoIaYRgOC7rif5bH8QRVhjJ20YPDJtagfX1CRu7XjaEgYEWi0MdqwhY41d5P+FUhNQ94Y0V4ou+EfVTfaEpKO3xFTe9EBD2uSaYt909hRoL1L4yJjrXv0e8G71cwsRd3U8iXb7IvJY5hR5DByIIDBR84Bh1hS9HX9B1PBsPa2Jn7pK5lWIFu3koPCprqtPySt9FzeWrfvp4A8Q7wv4Xgaex8UtoSHAAhetfu43B3RsqO9KoA3XZl8auzeceO6vEyk+EPpnOHbuqFCVhPPEGBqSHAeI="
+    - secure: "QjBbqSKpgTCSBcm0pkkBnaT1ul1dHkxXP9k1DfPmHjMdEPB9g3NKQSlm6u0fzf8KXpHQc+FsjsHOcirffiuNz+F6HT7PtQ3f1W2cewjKn11KeoRKEo6hOZA5ZJ2dI1xdludDaKnVRqE69HcWoc2CPTQhOChOjnvr6CJGTG67kjqdZJORlIKiNvoudS2KD6Qg0liWkkQmRaiTufoYNRxOUKgg/3h9puPpl9otJIYD+0NgQ+o2BoVVQWNobKLtOC4AlwS2H3PePyGyCaPl1CCkwTKwp4zk1hosbEZgrFQwxgXfa6yHw4dnhTERlfmE0ZHCvayrCvFyhF/GjCXJWZ8j6NE0imwOsSf/reNA0d/PZk+02Nns/OZYwPrecyN1tbMOeN1EAs2iO6oIktWwpYpCv0lp01kfGHk63gCIOmJ4vZSzl/HU2bAsz3BltRgWtilzkIGy7pi7Z8PK4u9V91vscUzubGhsKIyivmCVrlibwRCM/47GFokeFpIAVRnFZCNPiEDh1jvnYSq3W0OcFnekqfT0yz5eIoE/GY4E/G78GMs3v9pUpLJVY94oWxFqBG8CLXqNYziqTMLKtQq0XDBelIPb1D5TMWUx0avS7nQyaRI4ZDcvwANWrH/qt3Yi+SCx7C7cYpXBtN1qOqimB3dVOa3oeuYIRF7hbW2Ima6NCQw="
+    - K8S_OPS_REPO_BRANCH=master
+    - K8S_OPS_REPO_SLUG=hasadna/hasadna-k8s
+    - DOCKER_IMAGE=uumpa/hasadna-mysadna
+    - DEPLOY_YAML_UPDATE_FILE=values.auto-updated.yaml
+    - DEPLOY_VALUES_CHART_NAME=mysadna
+    - DEPLOY_VALUES_IMAGE_PROP=image
+    - DEPLOY_COMMIT_MESSAGE="automatic update of mysadna"
+    - DEPLOY_GIT_EMAIL=mysadna@hasadna.org.il
+    - DEPLOY_GIT_USER=mysadna-deployer
+    - SSH_DEPLOY_KEY_OPENSSL_CMD="openssl aes-256-cbc -K $encrypted_ff5d1c5705e0_key -iv $encrypted_ff5d1c5705e0_iv -in mysadna_github_deploy_key.id_rsa.enc -out mysadna_github_deploy_key.id_rsa -d"
+services:
+  - docker
+script:
+  - curl -s https://raw.githubusercontent.com/hasadna/hasadna-k8s/master/apps_travis_script.sh > .travis.sh
+  - cd projects/mysadna && bash .travis.sh script
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: bash .travis.sh deploy
+  on:
+    branch: master

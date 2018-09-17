@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import AppBar from '@material-ui/core/es/AppBar';
+import React, { PureComponent } from 'react';
+import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'
 
 class Header extends Component {
     
-
     render() {
         return (
             <AppBar position="static">
@@ -19,6 +18,7 @@ class Header extends Component {
         );
     }
 }
+
 Header.prototypes ={
     pageTitle: PropTypes.number
 }

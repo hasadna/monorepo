@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import List from "@material-ui/core/es/List/List";
-import ListItem from "@material-ui/core/es/ListItem/ListItem";
-import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import React, { PureComponent } from 'react';
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import {LinkVariant} from "mdi-material-ui";
-import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
-import ListSubheader from "@material-ui/core/es/ListSubheader/ListSubheader";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 
-class ItemsList extends Component {
+class ItemsList extends PureComponent {
 
-    link = (text, url) => {
+    createLink = (text, url) => {
         return (
             <ListItem button component="a" href={url} target="_blank">
                 <ListItemIcon>
@@ -20,10 +20,17 @@ class ItemsList extends Component {
         );
     };
 
+    createLinks = links => {
+        return links
+            .map(link => this.createLink(link.description, link.url))
+            .reduce((prev, curr) => [prev, curr]);
+    };
+
     render() {
+        const { links } = this.props;
         return (
             <List component="nav" subheader={<ListSubheader>{this.props.title}</ListSubheader>}>
-                {this.link("LINK-DESCRIPTION", "LINK-VALUE")}
+                {this.createLinks(links)}
             </List>
         );
     }

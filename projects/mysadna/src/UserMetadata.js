@@ -1,4 +1,14 @@
-import {FaceProfile, Email, GithubCircle, Label, FacebookBox, Twitter, Instagram, Linkedin} from "mdi-material-ui";
+import {
+    FaceProfile,
+    Email,
+    GithubCircle,
+    Label,
+    FacebookBox,
+    Twitter,
+    Instagram,
+    Linkedin,
+    GooglePlus
+} from "mdi-material-ui";
 import Pro from "mdi-material-ui/ProfessionalHexagon";
 
 class UserMetadata {
@@ -50,6 +60,9 @@ class UserMetadata {
         },
         linkedin: {
             icon: Linkedin
+        },
+        googlePlus: {
+            icon: GooglePlus
         }
     };
 }
