@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'
 
-class Header extends Component {
+class Header extends PureComponent {
     
     render() {
         return (
