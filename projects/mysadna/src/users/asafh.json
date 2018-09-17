@@ -7,8 +7,10 @@
   "skill": "Java, Python",
   "projectId": "123456",
   "topContribution": [
-    {"url": "",
-      "description": ""}
+    {"url": "url1",
+      "description": "My Top Commit"},
+    {"url": "url2",
+      "description": "My Second top commit"}
   ],
   "links": [
     {"name": "My Side Project"}

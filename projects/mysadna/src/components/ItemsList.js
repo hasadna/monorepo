@@ -9,7 +9,7 @@ import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 class ItemsList extends PureComponent {
 
-    link = (text, url) => {
+    createLink = (text, url) => {
         return (
             <ListItem button component="a" href={url} target="_blank">
                 <ListItemIcon>
@@ -20,11 +20,17 @@ class ItemsList extends PureComponent {
         );
     };
 
+    createLinks = links => {
+        return links
+            .map(link => this.createLink(link.description, link.url))
+            .reduce((prev, curr) => [prev, curr]);
+    };
+
     render() {
+        const { links } = this.props;
         return (
             <List component="nav" subheader={<ListSubheader>{this.props.title}</ListSubheader>}>
-                {/* TODO: Load links dynamically via User object*/}
-                {this.link("LINK-DESCRIPTION", "LINK-VALUE")}
+                {this.createLinks(links)}
             </List>
         );
     }

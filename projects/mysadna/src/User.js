@@ -4,13 +4,12 @@ export default class User {
     constructor(userData){
        this.parseProfileData(userData);
        this.parseSocialNetworks(userData);
+       this.parseLinks(userData);
        this.imageUrl = userData.imageUrl;
     }
 
-    static evalTemplateString = function(templateString, params) {
-        const names = Object.keys(params);
-        const values = Object.values(params);
-        return new Function(...names, `return \`${templateString}\`;`)(...values);
+    parseLinks = data => {
+      this.links = data.topContribution;
     };
 
     parseSocialNetworks = data => {
@@ -47,5 +46,11 @@ export default class User {
             if(fieldMetaData['url'])
                 profileData[attributeName]['url'] = User.evalTemplateString(fieldMetaData['url'], {value: data[attributeName]});
         }
+    };
+
+    static evalTemplateString = function(templateString, params) {
+        const names = Object.keys(params);
+        const values = Object.values(params);
+        return new Function(...names, `return \`${templateString}\`;`)(...values);
     };
 }

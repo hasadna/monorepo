@@ -29,7 +29,7 @@ class UserPage extends PureComponent {
                             <SocialBar social={this.state.user.social} imageUrl={this.state.user.imageUrl}/>
                         </Grid>
                         <Grid item lg={12}>
-                            <ItemsList title="Top Contributions"/>
+                            <ItemsList links={this.state.user.links} title="Top Contributions"/>
                         </Grid>
                     </Grid>
                 </MuiThemeProvider>
