@@ -1,7 +1,7 @@
 java_library(
     name = "auto_common",
     exports = [
-        "//external:jar/com/google/auto/auto_common"
+        "//external:jar/mvncom/google/auto/auto_common"
     ],
     licenses = [
         "permissive"

@@ -36,7 +36,7 @@ java_library(
         "//third_party/maven/javax/inject:javax_inject",
         "@startup_os//common/firestore",
         "@startup_os//common/flags",
-        "@startup_os//tools/local_server/service:auth_service",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
 )
 

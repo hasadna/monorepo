@@ -1,7 +1,7 @@
 java_library(
     name = "google_api_client",
     exports = [
-        "//external:jar/com/google/api_client/google_api_client"
+        "//external:jar/mvncom/google/api_client/google_api_client"
     ],
     licenses = [
         "permissive"
@@ -20,7 +20,7 @@ java_library(
 java_library(
     name = "google_api_client_gson",
     exports = [
-        "//external:jar/com/google/api_client/google_api_client_gson"
+        "//external:jar/mvncom/google/api_client/google_api_client_gson"
     ],
     licenses = [
         "permissive"

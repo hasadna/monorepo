@@ -1,7 +1,7 @@
 java_library(
     name = "auto_factory",
     exports = [
-        "//external:jar/com/google/auto/factory/auto_factory"
+        "//external:jar/mvncom/google/auto/factory/auto_factory"
     ],
     licenses = [
         "permissive"

@@ -1,7 +1,7 @@
 java_library(
     name = "mockito_core",
     exports = [
-        "//external:jar/org/mockito/mockito_core"
+        "//external:jar/mvnorg/mockito/mockito_core"
     ],
     licenses = [
         "permissive"

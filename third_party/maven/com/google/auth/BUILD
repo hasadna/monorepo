@@ -1,7 +1,7 @@
 java_library(
     name = "google_auth_library_credentials",
     exports = [
-        "//external:jar/com/google/auth/google_auth_library_credentials"
+        "//external:jar/mvncom/google/auth/google_auth_library_credentials"
     ],
     licenses = [
         "permissive"
@@ -16,7 +16,7 @@ java_library(
 java_library(
     name = "google_auth_library_oauth2_http",
     exports = [
-        "//external:jar/com/google/auth/google_auth_library_oauth2_http"
+        "//external:jar/mvncom/google/auth/google_auth_library_oauth2_http"
     ],
     licenses = [
         "permissive"

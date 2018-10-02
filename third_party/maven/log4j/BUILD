@@ -1,7 +1,7 @@
 java_library(
     name = "log4j",
     exports = [
-        "//external:jar/log4j/log4j"
+        "//external:jar/mvnlog4j/log4j"
     ],
     licenses = [
         "permissive"

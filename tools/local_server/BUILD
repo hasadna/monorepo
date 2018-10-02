@@ -20,7 +20,7 @@ java_binary(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
-        "@startup_os//tools/local_server/service:auth_service",
-        "@startup_os//tools/reviewer/service",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
+        "@startup_os//tools/reviewer/local_server/service:code_review_service",
     ],
 )

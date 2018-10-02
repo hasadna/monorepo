@@ -82,7 +82,7 @@ java_binary(
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
-        "@startup_os//tools/aa:aa_module",
+        "@startup_os//tools/reviewer/aa:aa_module",
     ],
 )
 
@@ -94,7 +94,7 @@ STORYTELLER_UI_TOOL_DEPS = [
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",
     "@startup_os//common/flags",
-    "@startup_os//tools/aa:aa_module",
+    "@startup_os//tools/reviewer/aa:aa_module",
     "//third_party/maven/javax/inject:javax_inject",
     "@startup_os//common:dagger_with_annotation_processor",
     "//tools/storyteller/service:service_java_grpc",

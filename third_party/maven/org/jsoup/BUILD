@@ -1,7 +1,7 @@
 java_library(
     name = "jsoup",
     exports = [
-        "//external:jar/org/jsoup/jsoup"
+        "//external:jar/mvnorg/jsoup/jsoup"
     ],
     licenses = [
         "permissive"

@@ -4,7 +4,7 @@ java_library(
         ":auto_value_plugin"
     ],
     exports = [
-        "//external:jar/com/google/auto/value/auto_value"
+        "//external:jar/mvncom/google/auto/value/auto_value"
     ],
     licenses = [
         "permissive"
@@ -16,7 +16,7 @@ java_library(
 java_plugin(
     name = "auto_value_plugin",
     deps = [
-        "//external:jar/com/google/auto/value/auto_value"
+        "//external:jar/mvncom/google/auto/value/auto_value"
     ],
     licenses = [
         "permissive"

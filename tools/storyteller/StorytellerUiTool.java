@@ -36,7 +36,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import com.google.startupos.common.CommonModule;
-import com.google.startupos.tools.aa.AaModule;
+import com.google.startupos.tools.reviewer.aa.AaModule;
 import dagger.Component;
 import tools.storyteller.service.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;

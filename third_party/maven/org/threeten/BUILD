@@ -1,7 +1,7 @@
 java_library(
     name = "threetenbp",
     exports = [
-        "//external:jar/org/threeten/threetenbp"
+        "//external:jar/mvnorg/threeten/threetenbp"
     ],
     licenses = [
         "permissive"

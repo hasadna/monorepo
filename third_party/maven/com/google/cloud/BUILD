@@ -1,7 +1,7 @@
 java_library(
     name = "google_cloud_core",
     exports = [
-        "//external:jar/com/google/cloud/google_cloud_core"
+        "//external:jar/mvncom/google/cloud/google_cloud_core"
     ],
     licenses = [
         "permissive"
@@ -23,7 +23,7 @@ java_library(
 java_library(
     name = "google_cloud_core_grpc",
     exports = [
-        "//external:jar/com/google/cloud/google_cloud_core_grpc"
+        "//external:jar/mvncom/google/cloud/google_cloud_core_grpc"
     ],
     licenses = [
         "permissive"
@@ -43,7 +43,7 @@ java_library(
 java_library(
     name = "google_cloud_core_http",
     exports = [
-        "//external:jar/com/google/cloud/google_cloud_core_http"
+        "//external:jar/mvncom/google/cloud/google_cloud_core_http"
     ],
     licenses = [
         "permissive"
@@ -63,7 +63,7 @@ java_library(
 java_library(
     name = "google_cloud_firestore",
     exports = [
-        "//external:jar/com/google/cloud/google_cloud_firestore"
+        "//external:jar/mvncom/google/cloud/google_cloud_firestore"
     ],
     licenses = [
         "permissive"
@@ -87,7 +87,7 @@ java_library(
 java_library(
     name = "google_cloud_storage",
     exports = [
-        "//external:jar/com/google/cloud/google_cloud_storage"
+        "//external:jar/mvncom/google/cloud/google_cloud_storage"
     ],
     licenses = [
         "permissive"

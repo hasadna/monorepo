@@ -1,7 +1,7 @@
 java_library(
     name = "jimfs",
     exports = [
-        "//external:jar/com/google/jimfs/jimfs"
+        "//external:jar/mvncom/google/jimfs/jimfs"
     ],
     licenses = [
         "permissive"

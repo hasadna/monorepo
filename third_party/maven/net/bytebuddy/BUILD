@@ -1,7 +1,7 @@
 java_library(
     name = "byte_buddy",
     exports = [
-        "//external:jar/net/bytebuddy/byte_buddy"
+        "//external:jar/mvnnet/bytebuddy/byte_buddy"
     ],
     licenses = [
         "permissive"
@@ -16,7 +16,7 @@ java_library(
 java_library(
     name = "byte_buddy_agent",
     exports = [
-        "//external:jar/net/bytebuddy/byte_buddy_agent"
+        "//external:jar/mvnnet/bytebuddy/byte_buddy_agent"
     ],
     licenses = [
         "permissive"
