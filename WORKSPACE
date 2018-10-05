@@ -41,11 +41,14 @@ android_sdk_repository(
 )
 
 
+# MARK: StartupOS start
 http_archive(
     name = "startup_os",
     urls = ["https://github.com/google/startup-os/archive/master.zip"],
     strip_prefix = "startup-os-master"
 )
+# MARK: StartupOS end
+
 
 http_file(
     name = "buildifier",
