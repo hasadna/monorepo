@@ -4,6 +4,7 @@ options:
   # we assume all Maven Central artifacts to not require a notice,
   # but may not appear true for all of them
   licenses: [ "permissive" ]
+  namePrefix: "mvn"
   resolvers: 
     - id: "mavencentral"
       type: "default"
@@ -153,6 +154,11 @@ dependencies:
     pdfbox:
       lang: java
       version: "2.0.8"
+
+  org.checkerframework:
+    checker-qual:
+      lang: java
+      version: "2.5.5"
   
   org.eclipse.jgit:
     org.eclipse.jgit:

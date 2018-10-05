@@ -1,7 +1,7 @@
 java_library(
     name = "fontbox",
     exports = [
-        "//external:jar/org/apache/pdfbox/fontbox"
+        "//external:jar/mvnorg/apache/pdfbox/fontbox"
     ],
     licenses = [
         "permissive"
@@ -19,7 +19,7 @@ java_library(
 java_library(
     name = "pdfbox",
     exports = [
-        "//external:jar/org/apache/pdfbox/pdfbox"
+        "//external:jar/mvnorg/apache/pdfbox/pdfbox"
     ],
     licenses = [
         "permissive"

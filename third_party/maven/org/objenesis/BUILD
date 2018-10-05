@@ -1,7 +1,7 @@
 java_library(
     name = "objenesis",
     exports = [
-        "//external:jar/org/objenesis/objenesis"
+        "//external:jar/mvnorg/objenesis/objenesis"
     ],
     licenses = [
         "permissive"

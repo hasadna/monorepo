@@ -43,8 +43,8 @@ android_sdk_repository(
 
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/b895c41f5c6e6baf69ee83e44a806b9475c854b0.zip"],
-    strip_prefix = "startup-os-b895c41f5c6e6baf69ee83e44a806b9475c854b0"
+    urls = ["https://github.com/google/startup-os/archive/master.zip"],
+    strip_prefix = "startup-os-master"
 )
 
 http_file(
@@ -88,4 +88,18 @@ bind(
 bind(
     name = "grpc_java_plugin",
     actual = "@startupos_binaries//:grpc_java_plugin"
+)
+
+http_file(
+    name = "clang_format_bin",
+    executable = True,
+    sha256 = "320f62a8a20941b7d876c09de96913e0d18f0e2649688c2cd010a5f12b5d7616",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/clang_format_bin"],
+)
+
+http_file(
+    name = "clang_format_bin_osx",
+    executable = True,
+    sha256 = "06986eeed23213c5b6a97440c6a3090eabc62ceaf7fcb72f2b95c4744128dccf",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/clang_format_bin_osx"]
 )

@@ -2,7 +2,7 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.startupos.common.CommonModule;
-import com.google.startupos.tools.aa.AaModule;
+import com.google.startupos.tools.reviewer.aa.AaModule;
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flags;
 import dagger.Component;

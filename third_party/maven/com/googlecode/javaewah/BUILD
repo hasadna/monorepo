@@ -1,7 +1,7 @@
 java_library(
     name = "JavaEWAH",
     exports = [
-        "//external:jar/com/googlecode/javaewah/JavaEWAH"
+        "//external:jar/mvncom/googlecode/javaewah/JavaEWAH"
     ],
     licenses = [
         "permissive"

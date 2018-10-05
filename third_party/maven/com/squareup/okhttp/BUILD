@@ -1,7 +1,7 @@
 java_library(
     name = "okhttp",
     exports = [
-        "//external:jar/com/squareup/okhttp/okhttp"
+        "//external:jar/mvncom/squareup/okhttp/okhttp"
     ],
     licenses = [
         "permissive"

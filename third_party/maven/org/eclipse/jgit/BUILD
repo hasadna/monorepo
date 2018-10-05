@@ -1,7 +1,7 @@
 java_library(
     name = "org_eclipse_jgit",
     exports = [
-        "//external:jar/org/eclipse/jgit/org_eclipse_jgit"
+        "//external:jar/mvnorg/eclipse/jgit/org_eclipse_jgit"
     ],
     licenses = [
         "permissive"

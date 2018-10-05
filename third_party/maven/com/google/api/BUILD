@@ -1,7 +1,7 @@
 java_library(
     name = "api_common",
     exports = [
-        "//external:jar/com/google/api/api_common"
+        "//external:jar/mvncom/google/api/api_common"
     ],
     licenses = [
         "permissive"
@@ -20,7 +20,7 @@ java_library(
 java_library(
     name = "gax",
     exports = [
-        "//external:jar/com/google/api/gax"
+        "//external:jar/mvncom/google/api/gax"
     ],
     licenses = [
         "permissive"
@@ -35,7 +35,7 @@ java_library(
 java_library(
     name = "gax_grpc",
     exports = [
-        "//external:jar/com/google/api/gax_grpc"
+        "//external:jar/mvncom/google/api/gax_grpc"
     ],
     licenses = [
         "permissive"
@@ -54,7 +54,7 @@ java_library(
 java_library(
     name = "gax_httpjson",
     exports = [
-        "//external:jar/com/google/api/gax_httpjson"
+        "//external:jar/mvncom/google/api/gax_httpjson"
     ],
     licenses = [
         "permissive"

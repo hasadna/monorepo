@@ -1,7 +1,7 @@
 java_library(
     name = "google_http_client",
     exports = [
-        "//external:jar/com/google/http_client/google_http_client"
+        "//external:jar/mvncom/google/http_client/google_http_client"
     ],
     licenses = [
         "permissive"
@@ -20,7 +20,7 @@ java_library(
 java_library(
     name = "google_http_client_appengine",
     exports = [
-        "//external:jar/com/google/http_client/google_http_client_appengine"
+        "//external:jar/mvncom/google/http_client/google_http_client_appengine"
     ],
     licenses = [
         "permissive"
@@ -35,7 +35,7 @@ java_library(
 java_library(
     name = "google_http_client_gson",
     exports = [
-        "//external:jar/com/google/http_client/google_http_client_gson"
+        "//external:jar/mvncom/google/http_client/google_http_client_gson"
     ],
     licenses = [
         "permissive"
@@ -53,7 +53,7 @@ java_library(
 java_library(
     name = "google_http_client_jackson",
     exports = [
-        "//external:jar/com/google/http_client/google_http_client_jackson"
+        "//external:jar/mvncom/google/http_client/google_http_client_jackson"
     ],
     licenses = [
         "permissive"
@@ -71,7 +71,7 @@ java_library(
 java_library(
     name = "google_http_client_jackson2",
     exports = [
-        "//external:jar/com/google/http_client/google_http_client_jackson2"
+        "//external:jar/mvncom/google/http_client/google_http_client_jackson2"
     ],
     licenses = [
         "permissive"

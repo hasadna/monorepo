@@ -1,7 +1,7 @@
 java_library(
     name = "firebase_admin",
     exports = [
-        "//external:jar/com/google/firebase/firebase_admin"
+        "//external:jar/mvncom/google/firebase/firebase_admin"
     ],
     licenses = [
         "permissive"
