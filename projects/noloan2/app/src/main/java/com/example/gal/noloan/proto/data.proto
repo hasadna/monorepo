@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package projects.noloan.app;
+
+option java_package = "projects.noloan.app";
+option java_outer_classname = "Protos";
+
+message SmsMessage {
+  // Unix milliseconds
+  int64 receivedDateTime = 1;
+  // Sender phone number
+  string sender = 2;
+  // The text in the message
+  string contents = 3;
+}
+
+message SmsMessageList { repeated SmsMessage message = 1; }
