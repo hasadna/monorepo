@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.example.galgo.noloan;
+
+option java_package = "com.example.galgo.noloan.protobuf";
+option java_outer_classname = "UserProto";
+
+message loguser {
+
+    string name = 1;
+}
