@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.galgo.noloan.protobuf.UserProto.loguser;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,12 +27,13 @@ import noloan.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
   
+  private static final int PERMISSION_REQUEST_CODE = 123;
+  
   EditText name;
   RecyclerView userView;
   
   FirebaseFirestore firestoreClient;
   Query query;
-  
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     add.setOnClickListener(this);
     
     userView = findViewById(R.id.RV_userview);
-    userView.setAdapter(new SmsAdapter(readSms()));
+    userView.setAdapter(new SmsAdapter(readSms())); // I think permission need to be checked anyway.
     // Firestore test
     /*UserAdapter adapter = new UserAdapter(query);
     userView.setAdapter(adapter);
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
-      case R.id.B_adduser:
+      case R.id.B_adduser: // Clicking on the add user button
         loguser user = loguser.newBuilder()
           .setName(name.getText().toString())
           .build();
@@ -86,19 +88,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
   }
   
-  //this work if already have permission
+  // The user can change the permission after the splash screen, so checking for permission is still needed.
   private ArrayList<SMSmessage> readSms() {
     // Check for permission reading sms
-    int hasPermission = checkSelfPermission(Manifest.permission.READ_SMS);
-    if (hasPermission != PackageManager.PERMISSION_GRANTED) // If don't have permission show permission request
+    int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
+    if (permissionStatus != PackageManager.PERMISSION_GRANTED) // If don't have permission show toast and close the app
     {
-      requestPermissions(new String[]{Manifest.permission.READ_SMS}, 11); // Request code is the code for onRequestPermissionsResult
+      Toast.makeText(this, "Permission for reading sms required", Toast.LENGTH_LONG).show();
+      finish();
       return null;
     }
-    
     return getSmsList();
   }
   
+  // Get a list of all SMS messages in the inbox.
   private ArrayList<SMSmessage> getSmsList() {
     ArrayList<SMSmessage> smsList = new ArrayList<>();
     Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
@@ -116,21 +119,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     cursor.close();
     return smsList;
-  }
-  
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    switch (requestCode) {
-      case 11:
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          getSmsList(); // Permission granted, now i need somehow to get the list to the adapter...
-        } else {
-          // Permission denied
-        }
-        
-        break;
-      default:
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
   }
 }
