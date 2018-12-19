@@ -1,0 +1,68 @@
+commit 423bcd9489208e9ee52bffba9173aac156f895d5
+Author: Alon <alony60@gmail.com>
+Date:   Wed Dec 19 14:33:58 2018 +0200
+
+    endline fix
+
+diff --git a/projects/mysadna2/angular.json b/projects/mysadna2/angular.json
+index 5906191..ea1f6f7 100644
+--- a/projects/mysadna2/angular.json
++++ b/projects/mysadna2/angular.json
+@@ -132,4 +132,6 @@
+     }
+   },
+   "defaultProject": "mysadna2"
+-}
+\ No newline at end of file
++}
++
++
+diff --git a/projects/mysadna2/e2e/protractor.conf.js b/projects/mysadna2/e2e/protractor.conf.js
+index 86776a3..88af4fe 100644
+--- a/projects/mysadna2/e2e/protractor.conf.js
++++ b/projects/mysadna2/e2e/protractor.conf.js
+@@ -25,4 +25,6 @@ exports.config = {
+     });
+     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+   }
+-};
+\ No newline at end of file
++};
++
++
+diff --git a/projects/mysadna2/e2e/tsconfig.e2e.json b/projects/mysadna2/e2e/tsconfig.e2e.json
+index a6dd622..73d2027 100644
+--- a/projects/mysadna2/e2e/tsconfig.e2e.json
++++ b/projects/mysadna2/e2e/tsconfig.e2e.json
+@@ -10,4 +10,5 @@
+       "node"
+     ]
+   }
+-}
+\ No newline at end of file
++}
++
+diff --git a/projects/mysadna2/src/browserslist b/projects/mysadna2/src/browserslist
+index 37371cb..4d5241d 100644
+--- a/projects/mysadna2/src/browserslist
++++ b/projects/mysadna2/src/browserslist
+@@ -8,4 +8,5 @@
+ last 2 versions
+ Firefox ESR
+ not dead
+-not IE 9-11
+\ No newline at end of file
++not IE 9-11
++
+diff --git a/projects/mysadna2/src/karma.conf.js b/projects/mysadna2/src/karma.conf.js
+index ee9caa1..63c79c6 100644
+--- a/projects/mysadna2/src/karma.conf.js
++++ b/projects/mysadna2/src/karma.conf.js
+@@ -28,4 +28,5 @@ module.exports = function (config) {
+     browsers: ['Chrome'],
+     singleRun: false
+   });
+-};
+\ No newline at end of file
++};
++
