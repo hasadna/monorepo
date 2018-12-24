@@ -22,7 +22,7 @@ android {
     }
 }
 
-sourceSets{
+sourceSets {
     main.java.srcDirs += "${protobuf.generatedFilesBaseDir}/main/javalite"
 }
 
@@ -41,7 +41,7 @@ protobuf {
                 remove java
             }
             task.plugins {
-                javalite { }
+                javalite {}
             }
         }
     }
