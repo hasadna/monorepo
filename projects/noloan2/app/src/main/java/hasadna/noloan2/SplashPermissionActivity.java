@@ -14,13 +14,13 @@ import java.util.ArrayList;
 
 import noloan.R;
 
-// Base on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
+// Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
 public class SplashPermissionActivity extends AppCompatActivity {
   
   private static final int PERMISSION_REQUEST_CODE = 123;
-  final String[] permissionsNeeded = new String[]{Manifest.permission.READ_SMS};
+  final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
   
-  long splashTime = 1000;
+  static final long SPLASH_TIME_MS = 1000;
   
   long startTime;
   
@@ -49,13 +49,13 @@ public class SplashPermissionActivity extends AppCompatActivity {
   }
   
   private String[] permissionsStillNeeded() {
-    ArrayList<String> stillNeeded = new ArrayList<>();
-    for (String aPermissionsNeeded : permissionsNeeded) {
-      if (checkSelfPermission(aPermissionsNeeded) != PackageManager.PERMISSION_GRANTED) {
-        stillNeeded.add(aPermissionsNeeded);
+    ArrayList<String> result = new ArrayList<>();
+    for (String permission : requiredPermissions) {
+      if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+        result.add(permission);
       }
     }
-    return stillNeeded.toArray(new String[stillNeeded.size()]);
+    return result.toArray(new String[result.size()]);
   }
   
   @Override
@@ -72,6 +72,6 @@ public class SplashPermissionActivity extends AppCompatActivity {
         startActivity(new Intent(SplashPermissionActivity.this, MainActivity.class));
         finish();
       }
-    }, splashTime);
+    }, SPLASH_TIME_MS);
   }
 }

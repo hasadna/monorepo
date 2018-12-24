@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     add.setOnClickListener(this);
     
     userView = findViewById(R.id.RV_userview);
-    userView.setAdapter(new SmsAdapter(readSms())); // I think permission need to be checked anyway.
+    userView.setAdapter(new SmsAdapter(readSms()));
     // Firestore test
     /*UserAdapter adapter = new UserAdapter(query);
     userView.setAdapter(adapter);
@@ -88,12 +88,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
   }
   
-  // The user can change the permission after the splash screen, so checking for permission is still needed.
+  //Reads SMS. If no permissions are granted, exit app.
   private ArrayList<SMSmessage> readSms() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
-    if (permissionStatus != PackageManager.PERMISSION_GRANTED) // If don't have permission show toast and close the app
-    {
+    // If don't have permission show toast and close the app
+    if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
       Toast.makeText(this, "Permission for reading sms required", Toast.LENGTH_LONG).show();
       finish();
       return null;
