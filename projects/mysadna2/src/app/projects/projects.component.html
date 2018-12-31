@@ -1,6 +1,10 @@
 <div class="projects">
   <h2>Projects</h2>
   <ul style="list-style:none">
-    <li *ngFor="let project of projects">{{project.projectName}}</li>
+    <li *ngFor="let project of projects">
+      <a routerLink="/project-details/{{project.projectId}}">
+        {{project.projectName}}
+      </a>
+    </li>
   </ul>
 </div>

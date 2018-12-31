@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
+import { User } from '../user';
+import { Project } from '../project';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-user-details',
@@ -6,10 +12,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
+  user: User;
 
-  constructor() { }
+  userProjects: Project[];
 
-  ngOnInit() {
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: DataService,
+    private location: Location
+  ) { }
+
+  ngOnInit() : void {
+    this.getUser();
   }
 
+  getUser(): void {
+    const userId = +this.route.snapshot.paramMap.get('userId');
+    this.dataService.getUser(userId)
+      .subscribe(user => {
+        this.user = user;
+        this.getUserProjects(userId);
+      });
+  }
+
+  getUserProjects(userId: number): void {
+    this.dataService.getUserProjects(userId)
+      .subscribe(projects => {
+        this.userProjects = projects;
+      })
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
 }
