@@ -14,7 +14,7 @@
       <h4>Projects:</h4>
       <ul>
         <li *ngFor="let project of userProjects">
-          <a routerLink="/project-details/{{project.projectId}}">{{project.projectName}}</a>
+          <a [routerLink]="'/project-details/' + project.projectId">{{project.projectName}}</a>
         </li>
       </ul>
     </div>

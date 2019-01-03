@@ -7,7 +7,7 @@
     <div>
       <span>
         <div class="contributor" *ngFor="let user of projectUsers">
-          <a routerLink="/user-details/{{user.userId}}">
+          <a [routerLink]="'/user-details/' + user.userId">
             <h4>{{user.firstName}} {{user.lastName}}</h4>
             <p>{{user.userName}}</p>
           </a>

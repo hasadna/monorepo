@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../user';
-import { Project } from '../project';
-import { DataService } from '../data.service';
+import { User } from '../models/user';
+import { Project } from '../models/project';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-project-details',
@@ -39,7 +39,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.dataService.getProjectUsers(projectId)
       .subscribe(users => {
         this.projectUsers = users;
-      })
+      });
   }
 
   goBack(): void {

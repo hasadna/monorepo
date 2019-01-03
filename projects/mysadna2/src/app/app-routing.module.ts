@@ -7,10 +7,10 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 const routes: Routes = [
-  {path: 'users', component: UsersComponent},
-    {path: 'user-details/:userId', component: UserDetailsComponent},
-  {path: 'projects', component: ProjectsComponent},
-    {path: 'project-details/:projectId', component: ProjectDetailsComponent},
+  { path: 'users', component: UsersComponent },
+  { path: 'user-details/:userId', component: UserDetailsComponent },
+  { path: 'projects', component: ProjectsComponent },
+  { path: 'project-details/:projectId', component: ProjectDetailsComponent },
 ];
 
 @NgModule({

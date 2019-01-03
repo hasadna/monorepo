@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../user';
-import { Project } from '../project';
-import { DataService } from '../data.service';
+import { User } from '../models/user';
+import { Project } from '../models/project';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-user-details',
@@ -22,7 +22,7 @@ export class UserDetailsComponent implements OnInit {
     private location: Location
   ) { }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     this.getUser();
   }
 
@@ -39,7 +39,7 @@ export class UserDetailsComponent implements OnInit {
     this.dataService.getUserProjects(userId)
       .subscribe(projects => {
         this.userProjects = projects;
-      })
+      });
   }
 
   goBack(): void {
