@@ -54,12 +54,12 @@ export class DataService {
 
   // GET User by userId.
   getUser(userId: number): Observable<User> {
-    return of (USERS.find(user => user.userId === userId));
+    return of(USERS.find(user => user.userId === userId));
   }
 
   // GET Projects by userId.
   getUserProjects(userId: number): Observable<Project[]> {
-    return of (PROJECTS.filter((project) => project.contributors.includes(userId)));
+    return of(PROJECTS.filter((project) => project.contributors.includes(userId)));
   }
 
   // GET Project by projectId.
@@ -69,6 +69,6 @@ export class DataService {
 
   // GET Users by projectId.
   getProjectUsers(projectId: number): Observable<User[]> {
-    return of (USERS.filter((user) => user.projects.includes(projectId)));
+    return of(USERS.filter((user) => user.projects.includes(projectId)));
   }
 }
