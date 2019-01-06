@@ -1,4 +1,5 @@
 import {Project} from './project';
+import {Contribution} from './contribution';
 
 export class User {
     userId: number;
@@ -6,8 +7,8 @@ export class User {
     firstName: string;
     lastName: string;
     email: string;
-    socialNetworks: [string];
-    skills: [string];
-    projects: [Project];
-    contributions: [string];
+    socialNetworks: string[];
+    skills: string[];
+    projects: number[];
+    userContributions: string[];
 }
