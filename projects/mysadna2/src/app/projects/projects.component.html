@@ -1,6 +1,6 @@
 <div class="projects">
   <h2>Projects</h2>
-  <ul style="list-style:none; padding:0">
+  <ul>
     <li *ngFor="let project of projects">
       <a [routerLink]="'/project-details/' + project.projectId">
         {{project.projectName}}
