@@ -27,7 +27,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   getUser(): void {
-    const userId = +this.route.snapshot.paramMap.get('userId');
+    const userId: number = +this.route.snapshot.paramMap.get('userId');
     this.dataService.getUser(userId)
       .subscribe(user => {
         this.user = user;

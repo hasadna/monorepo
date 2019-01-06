@@ -27,7 +27,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   getProject(): void {
-    const projectId = +this.route.snapshot.paramMap.get('projectId');
+    const projectId: number = +this.route.snapshot.paramMap.get('projectId');
     this.dataService.getProject(projectId)
       .subscribe(project => {
         this.project = project;
