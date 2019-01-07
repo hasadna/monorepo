@@ -17,7 +17,9 @@ ul {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
+        >.userImage {
+            margin: 10px;
+        }
         >.social-Networks {
             display: flex;
             flex-direction: row;

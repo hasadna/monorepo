@@ -11,4 +11,5 @@ export class User {
     skills: string[];
     projects: number[];
     userContributions: Contribution[];
+    userImg: string;
 }

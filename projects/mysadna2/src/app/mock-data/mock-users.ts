@@ -33,10 +33,28 @@ export const USERS: User[] = [
     ],
     projects: [1, 2],
     userContributions: [
-      {contributionId: 1, userId: 1, projectId: 1, contributionMessage: 'Added profile pages and project pages.', contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'},
-      {contributionId: 2, userId: 1, projectId: 1, contributionMessage: 'Added profile and project pages.', contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'},
-      {contributionId: 4, userId: 1, projectId: 1, contributionMessage: 'Added profile pages and project pages.', contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'}
-    ]
+      {
+        contributionId: 1,
+        userId: 1, projectId: 1,
+        contributionMessage: 'Added profile pages and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      },
+      {
+        contributionId: 2,
+        userId: 1,
+        projectId: 1,
+        contributionMessage: 'Added profile and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      },
+      {
+        contributionId: 4,
+        userId: 1,
+        projectId: 1,
+        contributionMessage: 'Added profile pages and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      }
+    ],
+    userImg: './assets/images/default-avatar.svg'
   },
   {
     userId: 2,
@@ -55,7 +73,8 @@ export const USERS: User[] = [
     projects: [1, 2, 3],
     userContributions: [
 
-    ]
+    ],
+    userImg: './assets/images/default-avatar.svg'
   },
   {
     userId: 3,
@@ -74,6 +93,7 @@ export const USERS: User[] = [
     projects: [1, 3],
     userContributions: [
 
-    ]
+    ],
+    userImg: './assets/images/default-avatar.svg'
   }
 ];

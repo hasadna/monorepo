@@ -2,6 +2,14 @@
     text-align: center;
 }
 
-.contributor {
-    border-color: gray; 
+.contributors-list {
+    display: flex;
+    justify-content: space-evenly;
+    >.contributor {
+        display: flex;
+        flex-direction: column;
+        .userNames {
+            border: 2px gray solid;
+        } 
+    }
 }

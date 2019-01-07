@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 
 import { User } from '../models/user';
 import { Project } from '../models/project';
-import { Contribution } from '../models/contribution';
 import { DataService } from '../services/data.service';
 
 @Component({

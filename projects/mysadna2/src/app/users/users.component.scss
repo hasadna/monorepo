@@ -1,0 +1,16 @@
+.usersHeader {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.usersContainer {
+    text-align: center;
+    >.users-list {
+        display: flex;
+        justify-content: space-evenly;
+    }
+}
