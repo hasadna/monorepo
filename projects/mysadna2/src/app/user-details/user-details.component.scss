@@ -1,4 +1,67 @@
+.userHeader {
+    text-align: center;
+}
+
 ul {
     list-style: none;
     padding: 0;
+}
+
+.userContainer {
+    display: flex;
+    justify-content: space-around;
+
+    >.leftContainer {
+        flex-grow: 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        >.social-Networks {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            >.socialNetwork {
+                margin: 10px;
+            }
+        }        
+    }
+    >.rightContainer {
+        flex-grow: 7;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        >.projects {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            >.projects-list {
+                border: 2px gray solid;
+                padding: 10px;
+            }
+        }
+        >.skills {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            >.skills-list {
+                border: 2px gray solid;
+                padding: 10px;
+            }
+        }
+        >.contributions {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            >.contributions-list {
+                >.contribution {
+                    border: 2px gray solid;
+                    padding: 10px;
+                }
+            }
+        }
+    }
 }
