@@ -5,7 +5,12 @@
     <div class="email">{{user.email}}</div>
     <ul>
       <li *ngFor="let socialNetwork of user.socialNetworks">
-        {{socialNetwork}}
+        <div class="{{socialNetwork}}">
+          <!-- svg -->
+          <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
+          <!-- png -->
+          <!--<img src="./assets/images/linkedin.png" srcset="./assets/images/linkedin@2x.png 2x,./assets/images/linkedin@3x.png 3x" class="linkedin">-->
+        </div>
       </li>
     </ul>
   </span>
@@ -25,7 +30,7 @@
     <div class="contributions">
       <h4>Contributions</h4>
       <ul>
-        <li *ngFor="let contribution of user.contributions">
+        <li *ngFor="let contribution of user.userContributions">
           {{contribution}}
         </li>
       </ul>
