@@ -5,6 +5,7 @@ options:
   # but may not appear true for all of them
   licenses: [ "permissive" ]
   namePrefix: "mvn"
+  resolverType: "coursier"
   resolvers: 
     - id: "mavencentral"
       type: "default"
@@ -33,7 +34,10 @@ dependencies:
     auto-value:
       lang: java
       processorClasses: [ "com.google.auto.value.processor.AutoValueProcessor" ]
-      version: "1.5"
+      version: "1.6.3"
+    auto-value-annotations:
+      lang: java
+      version: "1.6.3"
 
   com.google.code.findbugs:
     jsr305:
@@ -75,7 +79,7 @@ dependencies:
       # we have to use -android instead of -jre
       # because dexing cannot handle -jre version
       # and we can't include both
-      version: "24.0-android"
+      version: "27.0.1-android"
   
   com.google.jimfs:
     jimfs:
@@ -111,13 +115,19 @@ dependencies:
   io.grpc:
     grpc:
       lang: java
-      modules: [ "core", "netty", "protobuf", "services", "stub" ]
-      version: "1.12.0"
+      modules: [ "core", "netty", "protobuf", "services", "stub", "netty-shaded" ]
+      version: "1.16.1"
 
   io.opencensus:
     opencensus-contrib-grpc-metrics:
       lang: java
-      version: "0.15.0"
+      version: "0.18.0"
+    opencensus-contrib-http-util:
+      lang: java
+      version: "0.18.0"
+    opencensus-contrib-grpc-util:
+      lang: java
+      version: "0.18.0"
 
   javax.annotation:
     javax.annotation-api:

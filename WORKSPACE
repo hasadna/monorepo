@@ -39,11 +39,23 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/11b771318bc0c87e1fcece15030b4798cb78bc97.zip"],
-    strip_prefix = "startup-os-11b771318bc0c87e1fcece15030b4798cb78bc97"
+    urls = ["https://github.com/google/startup-os/archive/672fba099b81a45ddd9c28a39ea783d0435f2b00.zip"],
+    strip_prefix = "startup-os-672fba099b81a45ddd9c28a39ea783d0435f2b00"
 )
 # MARK: StartupOS end
 
+# StartupOS dependencies start
+http_archive(
+    name = "io_bazel_rules_docker",
+    strip_prefix = "rules_docker-0.5.1",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.5.1.tar.gz"],
+)
+http_jar(
+    name = "bazel_deps",
+    sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.01/bazel_deps.jar"],
+)
+# StartupOS dependencies end
 
 http_file(
     name = "buildifier",

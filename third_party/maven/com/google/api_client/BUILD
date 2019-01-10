@@ -7,6 +7,7 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
+        "//third_party/maven/com/google/guava:guava_jdk5",
         "//third_party/maven/com/google/http_client:google_http_client_jackson2",
         "//third_party/maven/com/google/oauth_client:google_oauth_client"
     ],
@@ -26,7 +27,8 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
-        "//third_party/maven/com/google/http_client:google_http_client_gson"
+        "//third_party/maven/com/google/http_client:google_http_client_gson",
+        ":google_api_client"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"
