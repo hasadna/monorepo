@@ -7,7 +7,6 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
-        "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/io/grpc:grpc_context"
     ],
     visibility = [
@@ -26,6 +25,45 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
+        "//third_party/maven/com/google/guava:guava",
+        ":opencensus_api"
+    ],
+    visibility = [
+        "//visibility:public"
+    ]
+)
+
+
+
+java_library(
+    name = "opencensus_contrib_grpc_util",
+    exports = [
+        "//external:jar/mvnio/opencensus/opencensus_contrib_grpc_util"
+    ],
+    licenses = [
+        "permissive"
+    ],
+    runtime_deps = [
+        "//third_party/maven/io/grpc:grpc_core",
+        ":opencensus_api"
+    ],
+    visibility = [
+        "//visibility:public"
+    ]
+)
+
+
+
+java_library(
+    name = "opencensus_contrib_http_util",
+    exports = [
+        "//external:jar/mvnio/opencensus/opencensus_contrib_http_util"
+    ],
+    licenses = [
+        "permissive"
+    ],
+    runtime_deps = [
+        "//third_party/maven/com/google/guava:guava",
         ":opencensus_api"
     ],
     visibility = [

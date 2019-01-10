@@ -6,9 +6,6 @@ java_library(
     licenses = [
         "permissive"
     ],
-    runtime_deps = [
-        "//third_party/maven/log4j:log4j"
-    ],
     visibility = [
         "//visibility:public"
     ]

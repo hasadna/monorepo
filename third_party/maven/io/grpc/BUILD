@@ -6,6 +6,10 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        "//third_party/maven/com/google/auth:google_auth_library_credentials",
+        ":grpc_core"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -43,6 +47,7 @@ java_library(
         "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/io/opencensus:opencensus_api",
         "//third_party/maven/io/opencensus:opencensus_contrib_grpc_metrics",
+        "//third_party/maven/org/codehaus/mojo:animal_sniffer_annotations",
         ":grpc_context"
     ],
     visibility = [
@@ -73,6 +78,24 @@ java_library(
 
 
 java_library(
+    name = "grpc_netty_shaded",
+    exports = [
+        "//external:jar/mvnio/grpc/grpc_netty_shaded"
+    ],
+    licenses = [
+        "permissive"
+    ],
+    runtime_deps = [
+        ":grpc_core"
+    ],
+    visibility = [
+        "//visibility:public"
+    ]
+)
+
+
+
+java_library(
     name = "grpc_protobuf",
     exports = [
         "//external:jar/mvnio/grpc/grpc_protobuf"
@@ -84,7 +107,6 @@ java_library(
         "//third_party/maven/com/google/api/grpc:proto_google_common_protos",
         "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
-        "//third_party/maven/com/google/protobuf:protobuf_java_util",
         ":grpc_core",
         ":grpc_protobuf_lite"
     ],
@@ -103,6 +125,10 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        "//third_party/maven/com/google/guava:guava",
+        ":grpc_core"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -119,7 +145,8 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
-        "//third_party/maven/com/google/instrumentation:instrumentation_api",
+        "//third_party/maven/com/google/protobuf:protobuf_java_util",
+        "//third_party/maven/com/google/re2j:re2j",
         ":grpc_protobuf",
         ":grpc_stub"
     ],

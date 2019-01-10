@@ -24,6 +24,9 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        ":netty_transport"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -76,6 +79,9 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        ":netty_codec"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -107,7 +113,9 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
-        ":netty_buffer"
+        ":netty_buffer",
+        ":netty_codec",
+        ":netty_transport"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"
@@ -125,6 +133,7 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
+        ":netty_codec_http",
         ":netty_codec_socks",
         ":netty_transport"
     ],
@@ -142,6 +151,9 @@ java_library(
     ],
     licenses = [
         "permissive"
+    ],
+    runtime_deps = [
+        ":netty_common"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"
@@ -174,6 +186,7 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
+        ":netty_buffer",
         ":netty_resolver"
     ],
     visibility = [
