@@ -28,7 +28,7 @@ jobs:
       - checkout:
           <<: *post_checkout
       - restore_cache:
-          key: "v2-bazel_cache"
+          key: "v3-bazel_cache"
       - run: sudo apt update && sudo apt -y install yapf3 clang-format python3-pkg-resources libstdc++6
       - run: sudo ln -s /usr/bin/yapf3 /usr/bin/yapf
       - run: './fix-formatting.sh'
@@ -43,7 +43,7 @@ jobs:
           key: "android_sdk"
 
       - restore_cache:
-          key: "v2-bazel_cache"
+          key: "v3-bazel_cache"
 
       - run: sudo apt update && sudo apt -y install libstdc++6
       - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
@@ -55,12 +55,11 @@ jobs:
           environment:
             ANDROID_HOME: /home/circleci/android_sdk/
 
-      # If we get this far, save the node_modules directory for use next time.
       - save_cache:
           key: "android_sdk"
           paths:
             - "/home/circleci/android_sdk"
-          key: "v2-bazel_cache"
+          key: "v3-bazel_cache"
           paths:
             - "/home/circleci/.cache/bazel/"
 
