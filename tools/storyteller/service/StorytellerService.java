@@ -4,7 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import io.grpc.stub.StreamObserver;
 import tools.storyteller.service.Protos.ShareStoriesRequest;
 import tools.storyteller.service.Protos.ShareStoriesResponse;
-import com.google.startupos.common.firestore.FirestoreClient;
+import com.google.startupos.common.firestore.FirestoreProtoClient;
 import com.google.startupos.tools.localserver.service.AuthService;
 import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.FlagDesc;
@@ -27,9 +27,9 @@ public class StorytellerService extends StorytellerServiceGrpc.StorytellerServic
   @Override
   public void shareStories(
       ShareStoriesRequest req, StreamObserver<ShareStoriesResponse> responseObserver) {
-    FirestoreClient client =
-        new FirestoreClient(authService.getProjectId(), authService.getToken());
-    client.createDocument(firestoreStorytellerRoot.get(), req.getStories());
+    FirestoreProtoClient client =
+        new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
+    client.setProtoDocument(firestoreStorytellerRoot.get(), req.getStories());
     responseObserver.onNext(ShareStoriesResponse.getDefaultInstance());
     responseObserver.onCompleted();
   }
