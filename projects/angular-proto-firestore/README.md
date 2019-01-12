@@ -1,27 +1,37 @@
-# ProtobinReader
+# Protobin reader template
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.1.
+To set up your development environment, follow these steps:
 
-## Development server
+## Installation
+Install these:
+* [node](https://nodejs.org/) version 8.11.4  
+* [npm](https://www.npmjs.com/) version 5.6.0  
+* [google-protobuf](https://github.com/protocolbuffers/protobuf/releases), version 3.6.1  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+(Installation of exact versions is not required, but recommended. We can't guarantee that webapp will work properly with different versions.)
 
-## Code scaffolding
+Optional:
+* [firebase](https://firebase.google.com/docs/hosting/quickstart), to be able to deploy.  
+* [angular](https://angular.io/), to use `ng` features.  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `npm install` to install npm modules  
 
-## Build
+Run `npm run protoc` to generate proto functions.  
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Running the server locally
+Run `npm start` to start a dev server. Navigate to `http://localhost:4200/`  
+Run `npm run build` to make a build.  
+Run `npm run deploy` to publish the app on the server.  
+Run `npm run functions` to update cloud functions on the server.  
 
-## Running unit tests
+How to use firebase hosting:  
+https://firebase.google.com/docs/hosting/quickstart  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+How to use firebase functions:  
+https://firebase.google.com/docs/functions/get-started
 
-## Running end-to-end tests
+## Updating protos
+After every proto update, run `npm run protoc`.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Supported platforms
+Development is supported on Linux and Mac only (`npm run protoc` doesn't support Windows).
