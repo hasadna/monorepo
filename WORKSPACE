@@ -141,3 +141,28 @@ http_file(
     sha256 = "aaaa7d639acb30853e2f5008f56526c8dd54a366219ebdc5fa7f13a15277dd0b",
     urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_darwin_amd64"]
 )
+
+# MARK: sample data for analysis pipeline start
+http_archive(
+    name = "step1_data",
+    sha256 = "23927505626ebdb8e17f64368ed8b8f47e1bd5baa4b8e6d9c1f25de045589f11",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/example_input_data_step1.zip",
+    build_file_content = 'exports_files(["file1.txt", "file2.txt"])',
+    strip_prefix = 'example_input_data_step1'
+)
+
+
+http_file(
+    name = "step1_prebuilt_output",
+    urls = ["https://github.com/vmax/bazel-data-analysis-pipeline/releases/download/v1/merged_file1_file2.prototxt"]
+)
+
+
+http_archive(
+    name = "step1_prebuilt_zipped_output",
+    sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
+    url = "https://github.com/vmax/bazel-data-analysis-pipeline/releases/download/v1/merged_file1_file2.prototxt.zip",
+    build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
+)
+# MARK: sample data for analysis pipeline end
+
