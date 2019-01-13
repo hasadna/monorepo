@@ -35,3 +35,8 @@ After every proto update, run `npm run protoc`.
 
 ## Supported platforms
 Development is supported on Linux and Mac only (`npm run protoc` doesn't support Windows).
+
+## Development
+The information might be useful:
+[AngularFire](https://github.com/angular/angularfire2/tree/master/docs)
+[Protocol Buffers](https://developers.google.com/protocol-buffers/)
