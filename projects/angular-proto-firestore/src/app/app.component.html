@@ -1,0 +1,13 @@
+<div *ngIf="!book">
+  Loading
+</div>
+<div *ngIf="book">
+  <div>
+    <span>Title: </span>
+    <span>{{ book.getTitle() }}</span>
+  </div>
+  <div>
+    <span>Amount of pages: </span>
+    <span>{{ book.getPages() }}</span>
+  </div>
+</div>
