@@ -35,3 +35,4 @@ class Task1 {
         Files.write(outfile, TextFormat.printToString(allUsersBuilder).getBytes());
     }
 }
+

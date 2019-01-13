@@ -28,3 +28,4 @@ class Task2 {
         Files.write(outfile, stats.getBytes());
     }
 }
+
