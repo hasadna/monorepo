@@ -96,6 +96,11 @@ dependencies:
     jsch:
       lang: java
       version: "0.1.54"
+
+  com.puppycrawl.tools:
+    checkstyle:
+      lang: java
+      version: "8.15"
   
   com.squareup.okhttp:
     okhttp:

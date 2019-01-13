@@ -31,6 +31,7 @@ jobs:
           key: "v3-bazel_cache"
       - run: sudo apt update && sudo apt -y install yapf3 clang-format python3-pkg-resources libstdc++6
       - run: sudo ln -s /usr/bin/yapf3 /usr/bin/yapf
+      - run: './tools/checkstyle/check-for-missing-targets.sh'
       - run: './fix-formatting.sh'
 
   build:
@@ -52,6 +53,10 @@ jobs:
       - run: bash .circleci/get-android-sdk.sh
       - run:
           command: ./compile.sh build
+          environment:
+            ANDROID_HOME: /home/circleci/android_sdk/
+      - run:
+          command: ./compile.sh test
           environment:
             ANDROID_HOME: /home/circleci/android_sdk/
 
