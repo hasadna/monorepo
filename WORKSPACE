@@ -154,14 +154,14 @@ http_archive(
 
 http_file(
     name = "step1_prebuilt_output",
-    urls = ["https://github.com/vmax/bazel-data-analysis-pipeline/releases/download/v1/merged_file1_file2.prototxt"]
+    urls = ["https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt"]
 )
 
 
 http_archive(
     name = "step1_prebuilt_zipped_output",
     sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
-    url = "https://github.com/vmax/bazel-data-analysis-pipeline/releases/download/v1/merged_file1_file2.prototxt.zip",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt.zip",
     build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
 )
 # MARK: sample data for analysis pipeline end
