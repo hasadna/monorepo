@@ -11,13 +11,20 @@ const exportProtoPath = './src/app/core/proto';
 const functionsPath = path.join(exportProtoPath, 'functions');
 
 gulp.task('protoc', (done) => {
-  // Remove old functions (if they exist)
-  gulp.src(exportProtoPath)
-    .pipe(clean())
-    .on('data', () => {})
-    .on('end', createFunctions);
-
   let protoImportList = [];
+  
+  // Remove old functions (if they exist)
+  fs.exists(exportProtoPath, exists => {
+    if (exists) {
+      gulp.src(exportProtoPath)
+        .pipe(clean())
+        .on('data', () => {})
+        .on('end', createFunctions);
+    } else {
+      createFunctions();
+    }
+  });
+  
   function createFunctions() {
     // Create a proto folder
     fs.mkdirSync(exportProtoPath);
