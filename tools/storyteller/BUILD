@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//third_party:java_grpc_library.bzl", "java_grpc_library")
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 proto_library(
     name = "storyteller_proto",
@@ -41,6 +42,13 @@ java_library(
     ],
 )
 
+checkstyle_test(
+    name = "storyteller-checkstyle",
+    target = ":storyteller",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+)
+
 java_library(
     name = "invoicer",
     srcs = [
@@ -64,6 +72,13 @@ java_library(
     ],
 )
 
+checkstyle_test(
+    name = "invoicer-checkstyle",
+    target = ":invoicer",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+)
+
 java_binary(
     name = "storyteller_tool",
     srcs = [
@@ -84,6 +99,13 @@ java_binary(
         "@startup_os//common/flags",
         "@startup_os//tools/reviewer/aa:aa_module",
     ],
+)
+
+checkstyle_test(
+    name = "storyteller_tool-checkstyle",
+    target = ":storyteller_tool",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )
 
 STORYTELLER_UI_TOOL_DEPS = [
@@ -114,6 +136,13 @@ java_binary(
     deps = STORYTELLER_UI_TOOL_DEPS,
 )
 
+checkstyle_test(
+    name = "storyteller_time_and_screenshot_ui_tool-checkstyle",
+    target = ":storyteller_time_and_screenshot_ui_tool",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+)
+
 java_binary(
     name = "storyteller_screenshot_ui_tool",
     srcs = [
@@ -123,4 +152,11 @@ java_binary(
     main_class = "tools.storyteller.StorytellerUiTool",
     resources = glob(["res/*"]),
     deps = STORYTELLER_UI_TOOL_DEPS,
+)
+
+checkstyle_test(
+    name = "storyteller_screenshot_ui_tool-checkstyle",
+    target = ":storyteller_screenshot_ui_tool",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )

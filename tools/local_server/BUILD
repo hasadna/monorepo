@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//third_party:java_grpc_library.bzl", "java_grpc_library")
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 java_binary(
     name = "local_server",
@@ -23,4 +24,11 @@ java_binary(
         "@startup_os//tools/reviewer/local_server/service:auth_service",
         "@startup_os//tools/reviewer/local_server/service:code_review_service",
     ],
+)
+
+checkstyle_test(
+    name = "local_server-checkstyle",
+    target = ":local_server",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )
