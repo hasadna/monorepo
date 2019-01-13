@@ -39,11 +39,23 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/11b771318bc0c87e1fcece15030b4798cb78bc97.zip"],
-    strip_prefix = "startup-os-11b771318bc0c87e1fcece15030b4798cb78bc97"
+    urls = ["https://github.com/google/startup-os/archive/672fba099b81a45ddd9c28a39ea783d0435f2b00.zip"],
+    strip_prefix = "startup-os-672fba099b81a45ddd9c28a39ea783d0435f2b00"
 )
 # MARK: StartupOS end
 
+# StartupOS dependencies start
+http_archive(
+    name = "io_bazel_rules_docker",
+    strip_prefix = "rules_docker-0.5.1",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.5.1.tar.gz"],
+)
+http_jar(
+    name = "bazel_deps",
+    sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.01/bazel_deps.jar"],
+)
+# StartupOS dependencies end
 
 http_file(
     name = "buildifier",
@@ -129,3 +141,28 @@ http_file(
     sha256 = "aaaa7d639acb30853e2f5008f56526c8dd54a366219ebdc5fa7f13a15277dd0b",
     urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_darwin_amd64"]
 )
+
+# MARK: sample data for analysis pipeline start
+http_archive(
+    name = "step1_data",
+    sha256 = "23927505626ebdb8e17f64368ed8b8f47e1bd5baa4b8e6d9c1f25de045589f11",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/example_input_data_step1.zip",
+    build_file_content = 'exports_files(["file1.txt", "file2.txt"])',
+    strip_prefix = 'example_input_data_step1'
+)
+
+
+http_file(
+    name = "step1_prebuilt_output",
+    urls = ["https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt"]
+)
+
+
+http_archive(
+    name = "step1_prebuilt_zipped_output",
+    sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt.zip",
+    build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
+)
+# MARK: sample data for analysis pipeline end
+

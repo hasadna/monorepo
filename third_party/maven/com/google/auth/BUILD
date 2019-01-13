@@ -22,6 +22,9 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
+        "//third_party/maven/com/google/guava:guava",
+        "//third_party/maven/com/google/http_client:google_http_client",
+        "//third_party/maven/com/google/http_client:google_http_client_jackson2",
         ":google_auth_library_credentials"
     ],
     visibility = [
