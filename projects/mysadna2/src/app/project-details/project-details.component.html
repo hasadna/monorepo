@@ -7,14 +7,14 @@
     <div class="contributors-list">
       <div class="contributor" *ngFor="let user of projectUsers">
         <a [routerLink]="'/user-details/' + user.userId">
-          <div class="userImage">
+          <div class="user-image">
             <img src="{{user.userImg}}">
           </div>
-          <div class="userNames">
-            <div class="userFullName">
+          <div class="user-names">
+            <div class="user-full-name">
               <h4>{{user.firstName}} {{user.lastName}}</h4>
             </div>
-            <div class="userName">
+            <div class="user-name">
               <p>{{user.userName}}</p>
             </div>
           </div>

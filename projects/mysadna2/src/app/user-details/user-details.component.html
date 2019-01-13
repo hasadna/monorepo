@@ -1,12 +1,12 @@
 <div *ngIf="user">
-  <h2 class="userHeader">{{user.firstName}} {{user.lastName}}</h2>
-  <div class="userContainer">
-    <div class="leftContainer">
-      <img src="{{user.userImg}}" class="userImage">
-      <div class="userName">{{user.userName}}</div>
+  <h2 class="user-header">{{user.firstName}} {{user.lastName}}</h2>
+  <div class="user-container">
+    <div class="left-container">
+      <img src="{{user.userImg}}" class="user-image">
+      <div class="user-name">{{user.userName}}</div>
       <div class="email">{{user.email}}</div>
-      <ul class="social-Networks">
-        <li *ngFor="let socialNetwork of user.socialNetworks" class="socialNetwork">
+      <ul class="social-networks">
+        <li *ngFor="let socialNetwork of user.socialNetworks" class="social-network">
           <div class="{{socialNetwork}}">
             <!-- svg -->
             <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
@@ -16,7 +16,7 @@
         </li>
       </ul>
     </div>
-    <div class="rightContainer">
+    <div class="right-container">
       <div class="projects">
         <h4>Projects:</h4>
         <ul class="projects-list">

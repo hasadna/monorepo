@@ -1,16 +1,16 @@
-.usersHeader {
-    text-align: center;
+.users-header {
+  text-align: center;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
-.usersContainer {
-    text-align: center;
-    >.users-list {
-        display: flex;
-        justify-content: space-evenly;
-    }
+.users-container {
+  text-align: center;
+  >.users-list {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }

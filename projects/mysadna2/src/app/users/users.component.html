@@ -1,12 +1,12 @@
-<h2 class="usersHeader">Users</h2>
-<div class="usersContainer">
+<h2 class="users-header">Users</h2>
+<div class="users-container">
   <ul class="users-list">
     <li *ngFor="let user of users" class="user">
       <a [routerLink]="'/user-details/' + user.userId">
-        <div class="userImage">
-          <img src="{{user.userImg}}" class="userImage">
+        <div class="user-image">
+          <img src="{{user.userImg}}" class="user-image">
         </div>
-        <div class="userName">
+        <div class="user-name">
           {{user.userName}}
         </div>
       </a>
