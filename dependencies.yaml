@@ -18,17 +18,17 @@ dependencies:
   com.google.api:
     api-common:
       lang: java
-      version: "1.1.0"
+      version: "1.7.0"
   
   com.google.auto:
     auto-common:
       lang: java
-      version: "0.6"
+      version: "0.10"
   
   com.google.auto.factory:
     auto-factory:
       lang: java
-      version: "1.0-beta5"
+      version: "1.0-beta6"
   
   com.google.auto.value:
     auto-value:
@@ -47,31 +47,29 @@ dependencies:
   com.google.code.gson:
     gson:
       lang: java
-      version: "2.8.2"
+      version: "2.8.5"
   
   com.google.dagger:
     dagger:
       lang: java
       modules: [ "", "compiler" ]
-      version: "2.15"
+      version: "2.20"
   
   com.google.firebase:
     firebase-admin:
       lang: java
-      version: "5.9.0"
+      version: "6.6.0"
   
   com.google.flogger:
-      flogger:
-        lang: java
-        version: "0.1"
-      flogger-system-backend:
-        lang: java
-        version: "0.1"
+    flogger:
+      lang: java
+      modules: [ "", "system-backend" ]
+      version: "0.3.1"
   
   com.google.googlejavaformat:
     google-java-format:
       lang: java
-      version: "1.5"
+      version: "1.6"
   
   com.google.guava:
     guava:
@@ -90,12 +88,12 @@ dependencies:
     protobuf-java:
       lang: java
       modules: [ "", "util" ]
-      version: "3.5.1"
+      version: "3.6.1"
   
   com.jcraft:
     jsch:
       lang: java
-      version: "0.1.54"
+      version: "0.1.55"
 
   com.puppycrawl.tools:
     checkstyle:
@@ -110,7 +108,7 @@ dependencies:
   com.squareup.okio:
     okio:
       lang: java
-      version: "1.15.0"
+      version: "1.16.0"
 
   commons-logging:
     commons-logging:
@@ -123,14 +121,16 @@ dependencies:
       modules: [ "core", "netty", "protobuf", "services", "stub", "netty-shaded" ]
       version: "1.16.1"
 
+  io.netty:
+    netty-codec-http2:
+      lang: java
+      version: "4.1.32.Final"
+    netty-tcnative-boringssl-static:
+      lang: java
+      version: "2.0.20.Final"
+
   io.opencensus:
     opencensus-contrib-grpc-metrics:
-      lang: java
-      version: "0.18.0"
-    opencensus-contrib-http-util:
-      lang: java
-      version: "0.18.0"
-    opencensus-contrib-grpc-util:
       lang: java
       version: "0.18.0"
 
@@ -152,58 +152,53 @@ dependencies:
   org.apache.commons:
     commons-csv:
       lang: java
-      version: "1.5"
+      version: "1.6"
     commons-lang3:
       lang: java
-      version: "3.7"
+      version: "3.8.1"
   
   org.apache.httpcomponents:
     fluent-hc:
       lang: java
-      version: "4.5.5"
+      version: "4.5.6"
   
   org.apache.pdfbox:
     fontbox:
       lang: java
-      version: "2.0.8"
+      version: "2.0.13"
     pdfbox:
       lang: java
-      version: "2.0.8"
+      version: "2.0.13"
 
   org.checkerframework:
     checker-qual:
       lang: java
       version: "2.5.5"
   
-  org.eclipse.jgit:
-    org.eclipse.jgit:
-      lang: java
-      version: "4.10.0.201712302008-r"
-  
   org.javassist:
     javassist:
       lang: java
-      version: "3.22.0-GA"
+      version: "3.24.1-GA"
   
   org.json:
     json:
       lang: java
-      version: "20180130"
+      version: "20180813"
   
   org.jsoup:
     jsoup:
       lang: java
-      version: "1.11.2"
+      version: "1.11.3"
   
   org.mockito:
     mockito-core:
       lang: java
-      version: "2.15.0"
+      version: "2.23.4"
   
   org.objenesis:
     objenesis:
       lang: java
-      version: "2.6"
+      version: "3.0.1"
   
   org.slf4j:
     slf4j-simple:
