@@ -10,5 +10,6 @@ export class User {
     socialNetworks: string[];
     skills: string[];
     projects: number[];
-    userContributions: string[];
+    userContributions: Contribution[];
+    userImg: string;
 }
