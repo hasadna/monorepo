@@ -6,8 +6,8 @@
 Install [Bazel](https://docs.bazel.build/versions/master/install.html). That's it!
 
 ## Build & Test
-* Build everything: `./build.sh`
-* Run all tests: `./test.sh`
+* Build everything: `./compile.sh build`
+* Run all tests: `./compile.sh test`
 
 ## About monorepos
 A monorepo is a software development approach where all code is stored in a single repository. Some things are easier to do in a monorepo, such as sharing a proto file across front-end and backend, some things are harder, such as per-repo control over collaborators, email notifications, commit history etc.
