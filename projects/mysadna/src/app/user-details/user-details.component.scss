@@ -12,13 +12,15 @@ ul {
   justify-content: space-around;
 
   >.left-container {
-    flex-grow: 3;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    >.user-image {
-      margin: 10px;
+    align-items: flex-start;
+    >.user-name {
+      font-size: 1.5em;
+    }
+    >.email {
+      font-size: 1.25em;
     }
     >.social-networks {
       display: flex;
@@ -26,11 +28,11 @@ ul {
       justify-content: space-around;
       >.social-network {
         margin: 10px;
+        border-radius: 0.25em;
       }
     }        
   }
   >.right-container {
-    flex-grow: 7;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +45,11 @@ ul {
       >.projects-list {
         border: 2px gray solid;
         padding: 10px;
+        >li {
+          >.project {
+            font-size: 1.25em;
+          }
+        }
       }
     }
     >.skills {
@@ -51,7 +58,8 @@ ul {
       justify-content: flex-start;
       >.skills-list {
         border: 2px gray solid;
-        padding: 10px;
+        padding: 0.25em;
+        font-size:1.25em;
       }
     }
     >.contributions {
@@ -61,7 +69,10 @@ ul {
       >.contributions-list {
         >.contribution {
           border: 2px gray solid;
-          padding: 10px;
+          padding: 0.5em;
+          >.contribution-message {
+            font-size: 1.25em;
+          }
         }
       }
     }

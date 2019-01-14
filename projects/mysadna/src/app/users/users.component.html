@@ -6,9 +6,14 @@
         <div class="user-image">
           <img src="{{user.userImg}}" class="user-image">
         </div>
-        <div class="user-name">
-          {{user.userName}}
-        </div>
+        <div class="user-names">
+            <div class="user-full-name">
+              <h4>{{user.firstName}} {{user.lastName}}</h4>
+            </div>
+            <div class="user-name">
+              <p>{{user.userName}}</p>
+            </div>
+          </div>
       </a>
     </li>
   </ul>

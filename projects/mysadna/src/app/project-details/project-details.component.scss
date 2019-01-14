@@ -1,15 +1,26 @@
 .project-details {
-    text-align: center;
+  text-align: center;
+}
+
+.project-description {
+  font-weight: 100;
+  color: #4a4a4a;
 }
 
 .contributors-list {
+  display: flex;
+  justify-content: space-evenly;
+  .contributor {
     display: flex;
-    justify-content: space-evenly;
-    >.contributor {
-        display: flex;
-        flex-direction: column;
-        .user-names {
-            border: 2px gray solid;
-        } 
+    flex-direction: column;
+    > a {
+      .user-image {
+        border-radius: 0.25em;
+      }
+      .user-names {
+          border: 2px gray solid;
+          border-radius: 0.25em;
+        }
+      } 
     }
 }

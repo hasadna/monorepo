@@ -12,5 +12,9 @@ ul {
   >.users-list {
     display: flex;
     justify-content: space-evenly;
+    >.user {
+      border: 2px lightgrey solid;
+      border-radius: 0.25em;
+    }
   }
 }

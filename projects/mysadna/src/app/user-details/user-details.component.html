@@ -1,10 +1,16 @@
 <div *ngIf="user">
-  <h2 class="user-header">{{user.firstName}} {{user.lastName}}</h2>
+  <h1 class="user-header">{{user.firstName}} {{user.lastName}}</h1>
   <div class="user-container">
     <div class="left-container">
-      <img src="{{user.userImg}}" class="user-image">
-      <div class="user-name">{{user.userName}}</div>
-      <div class="email">{{user.email}}</div>
+      <div class="user-image-container">
+        <img src="{{user.userImg}}" class="user-image">
+      </div>
+      <p class="user-name">
+        {{user.userName}}
+      </p>
+      <p class="email">
+          {{user.email}}
+      </p>
       <ul class="social-networks">
         <li *ngFor="let socialNetwork of user.socialNetworks" class="social-network">
           <div class="{{socialNetwork}}">
@@ -18,25 +24,25 @@
     </div>
     <div class="right-container">
       <div class="projects">
-        <h4>Projects:</h4>
+        <h3>Projects:</h3>
         <ul class="projects-list">
           <li *ngFor="let project of userProjects">
-            <a [routerLink]="'/project-details/' + project.projectId">{{project.projectName}}</a>
+            <a [routerLink]="'/project-details/' + project.projectId" class="project">{{project.projectName}}</a>
           </li>
         </ul>
       </div>
       <div class="skills">
-        <h4>Skills:</h4>
+        <h3>Skills:</h3>
         <div class="skills-list">
-          {{user.skills}}
+          <p>{{user.skills}}</p>
         </div>
       </div>
       <div class="contributions">
-        <h4>Contributions:</h4>
+        <h3>Contributions:</h3>
         <ul class="contributions-list">
           <li *ngFor="let contribution of user.userContributions" class="contribution">
-            <h4>{{contribution.contributionMessage}}</h4>
-            <p>{{contribution.contributionUrl}}</p>
+            <p class="contribution-message">{{contribution.contributionMessage}}</p>
+            <a href="{{contribution.contributionUrl}}">{{contribution.contributionUrl}}</a>
           </li>
         </ul>
       </div>
