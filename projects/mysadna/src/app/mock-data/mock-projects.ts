@@ -5,9 +5,9 @@ import { Contribution } from '../models/contribution';
 export const PROJECTS: Project[] = [
   {
     projectId: 1,
-    projectName: 'OpenTrain',
+    projectName: 'Open Train',
     // tslint:disable-next-line
-    projectDescription: 'OpenTrain takes Israel Railways train data such as arrival times, analyzes it and makes it available for the public.',
+    projectDescription: 'Open Train takes Israel Railways train data such as arrival times, analyzes it and makes it available for the public.',
     projectSite: 'https://github.com/hasadna/OpenTrainCommunity',
     contributors: [1, 2, 3],
     projectContributions: [
@@ -18,8 +18,8 @@ export const PROJECTS: Project[] = [
   },
   {
     projectId: 2,
-    projectName: 'OpenKnesset',
-    projectDescription: 'OpenKnesset provides data about the goings on in the different offices in the Knesset.',
+    projectName: 'Open Knesset',
+    projectDescription: 'Open Knesset provides data about the goings on in the different offices in the Knesset.',
     projectSite: 'https://github.com/hasadna/OpenKnessetCommunity',
     contributors: [1, 2],
     projectContributions: [
@@ -28,8 +28,8 @@ export const PROJECTS: Project[] = [
   },
   {
     projectId: 3,
-    projectName: 'OpenPension',
-    projectDescription: 'OpenPension offers a look into what is being done with the public\'s pension funds.',
+    projectName: 'Open Pension',
+    projectDescription: 'Open Pension offers a look into what is being done with the public\'s pension funds.',
     projectSite: 'https://github.com/hasadna/OpenPensionCommunity',
     contributors: [2, 3],
     projectContributions: [
