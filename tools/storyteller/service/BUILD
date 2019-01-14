@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//third_party:java_grpc_library.bzl", "java_grpc_library")
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 proto_library(
     name = "service_proto",
@@ -18,6 +19,7 @@ java_grpc_library(
     deps = [
         ":service_java_proto",
     ],
+    tags = ["checkstyle_ignore"]
 )
 
 java_library(
@@ -40,6 +42,13 @@ java_library(
     ],
 )
 
+checkstyle_test(
+    name = "service-checkstyle",
+    target = ":service",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+)
+
 java_binary(
     name = "test_tool",
     srcs = [
@@ -55,4 +64,11 @@ java_binary(
         "//third_party/maven/org/slf4j:slf4j_simple",
         "@startup_os//common",
     ],
+)
+
+checkstyle_test(
+    name = "test_tool-checkstyle",
+    target = ":test_tool",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )

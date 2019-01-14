@@ -1,11 +1,21 @@
 package(default_visibility = ["//projects/noloan/app:__subpackages__"])
 
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
+
+
 java_library(
     name = "bayes_spam_filter",
     srcs = glob(["bayes/*.java"]),
     deps = [
         "//projects/noloan/app/proto:bayes_protos_java",
     ],
+)
+
+checkstyle_test(
+    name = "bayes_spam_filter-checkstyle",
+    target = ":bayes_spam_filter",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )
 
 java_library(
@@ -20,6 +30,13 @@ java_library(
             "//third_party/maven/com/google/guava",
             "//third_party/maven/com/google/protobuf:protobuf_java",
         ],
+)
+
+checkstyle_test(
+    name = "spam_filter-checkstyle",
+    target = ":spam_filter",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )
 
 java_binary(
@@ -39,4 +56,11 @@ java_binary(
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
     ],
+)
+
+checkstyle_test(
+    name = "spam_filter_tool-checkstyle",
+    target = ":spam_filter_tool",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
 )
