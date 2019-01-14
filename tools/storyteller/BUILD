@@ -33,12 +33,11 @@ java_library(
         "//third_party/maven/io/grpc:grpc_netty",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
-        "//tools/storyteller/service",
-        "//tools/storyteller/service:service_java_grpc",
-        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
+        "@startup_os//common/firestore",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
 )
 
@@ -64,8 +63,6 @@ java_library(
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/pdfbox",
         "//third_party/maven/org/apache/pdfbox:fontbox",
-        "//tools/storyteller/service:service_java_grpc",
-        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
@@ -111,7 +108,6 @@ checkstyle_test(
 STORYTELLER_UI_TOOL_DEPS = [
     ":storyteller",
     ":storyteller_java_proto",
-    "//tools/storyteller/service:service_proto",
     "//third_party/maven/com/google/guava:guava",
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",
@@ -119,8 +115,6 @@ STORYTELLER_UI_TOOL_DEPS = [
     "@startup_os//tools/reviewer/aa:aa_module",
     "//third_party/maven/javax/inject:javax_inject",
     "@startup_os//common:dagger_with_annotation_processor",
-    "//tools/storyteller/service:service_java_grpc",
-    "//tools/storyteller/service:service_java_proto",
     "//third_party/maven/io/grpc:grpc_core",
     "//third_party/maven/io/grpc:grpc_netty",
 ]

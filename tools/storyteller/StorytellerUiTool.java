@@ -38,7 +38,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import com.google.startupos.common.CommonModule;
 import com.google.startupos.tools.reviewer.aa.AaModule;
 import dagger.Component;
-import tools.storyteller.service.Protos.Story;
+import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
 import tools.storyteller.Protos.Config;
 

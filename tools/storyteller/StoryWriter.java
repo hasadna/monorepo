@@ -18,9 +18,9 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import tools.storyteller.Protos.Config;
-import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryItem;
-import tools.storyteller.service.Protos.StoryList;
+import tools.storyteller.Protos.Story;
+import tools.storyteller.Protos.StoryItem;
+import tools.storyteller.Protos.StoryList;
 
 /* Storyteller writer that writes story files. */
 @Singleton
