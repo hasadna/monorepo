@@ -1,3 +1,5 @@
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
+
 java_binary(
     name = "Data_Uploader",
     srcs = ["DataUploader.java"],
