@@ -38,21 +38,6 @@ java_library(
 
 
 java_library(
-    name = "guava_jdk5",
-    exports = [
-        "//external:jar/mvncom/google/guava/guava_jdk5"
-    ],
-    licenses = [
-        "permissive"
-    ],
-    visibility = [
-        "//third_party/maven:__subpackages__"
-    ]
-)
-
-
-
-java_library(
     name = "listenablefuture",
     exports = [
         "//external:jar/mvncom/google/guava/listenablefuture"

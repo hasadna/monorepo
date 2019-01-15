@@ -5,6 +5,7 @@ import com.google.startupos.common.CommonModule;
 import com.google.startupos.tools.reviewer.aa.AaModule;
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flags;
+import com.google.startupos.tools.localserver.service.AuthService;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -64,8 +65,7 @@ public class StorytellerTool {
   }
 
   public static void main(String[] args) throws Exception {
-    // TODO: Add Flags.parse current package.
-    String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage());
+    String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
     Storyteller storyteller =
         DaggerStorytellerTool_StorytellerToolComponent.create().getStoryteller();
 
