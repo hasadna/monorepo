@@ -1,34 +1,45 @@
 <div *ngIf="user">
-  <h2>{{user.firstName}} {{user.lastName}}</h2>
-  <span>
-    <div class="userName">{{user.userName}}</div>
-    <div class="email">{{user.email}}</div>
-    <ul>
-      <li *ngFor="let socialNetwork of user.socialNetworks">
-        {{socialNetwork}}
-      </li>
-    </ul>
-  </span>
-  <span>
-    <div class="projects">
-      <h4>Projects:</h4>
-      <ul>
-        <li *ngFor="let project of userProjects">
-          <a [routerLink]="'/project-details/' + project.projectId">{{project.projectName}}</a>
+  <h2 class="user-header">{{user.firstName}} {{user.lastName}}</h2>
+  <div class="user-container">
+    <div class="left-container">
+      <img src="{{user.userImg}}" class="user-image">
+      <div class="user-name">{{user.userName}}</div>
+      <div class="email">{{user.email}}</div>
+      <ul class="social-networks">
+        <li *ngFor="let socialNetwork of user.socialNetworks" class="social-network">
+          <div class="{{socialNetwork}}">
+            <!-- svg -->
+            <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
+            <!-- png -->
+            <!--<img src="./assets/images/linkedin.png" srcset="./assets/images/linkedin@2x.png 2x,./assets/images/linkedin@3x.png 3x" class="linkedin">-->
+          </div>
         </li>
       </ul>
     </div>
-    <div class="skills">
-      <h4>Skills</h4>
-      {{user.skills}}
+    <div class="right-container">
+      <div class="projects">
+        <h4>Projects:</h4>
+        <ul class="projects-list">
+          <li *ngFor="let project of userProjects">
+            <a [routerLink]="'/project-details/' + project.projectId">{{project.projectName}}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="skills">
+        <h4>Skills:</h4>
+        <div class="skills-list">
+          {{user.skills}}
+        </div>
+      </div>
+      <div class="contributions">
+        <h4>Contributions:</h4>
+        <ul class="contributions-list">
+          <li *ngFor="let contribution of user.userContributions" class="contribution">
+            <h4>{{contribution.contributionMessage}}</h4>
+            <p>{{contribution.contributionUrl}}</p>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="contributions">
-      <h4>Contributions</h4>
-      <ul>
-        <li *ngFor="let contribution of user.contributions">
-          {{contribution}}
-        </li>
-      </ul>
-    </div>
-  </span>
+  </div>
 </div>

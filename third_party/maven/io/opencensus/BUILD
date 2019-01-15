@@ -48,7 +48,7 @@ java_library(
         ":opencensus_api"
     ],
     visibility = [
-        "//visibility:public"
+        "//third_party/maven:__subpackages__"
     ]
 )
 
@@ -67,7 +67,7 @@ java_library(
         ":opencensus_api"
     ],
     visibility = [
-        "//visibility:public"
+        "//third_party/maven:__subpackages__"
     ]
 )
 

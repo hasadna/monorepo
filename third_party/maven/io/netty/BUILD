@@ -65,7 +65,7 @@ java_library(
         ":netty_handler"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
@@ -171,7 +171,7 @@ java_library(
         "permissive"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
