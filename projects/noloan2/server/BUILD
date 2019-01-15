@@ -10,3 +10,10 @@ java_binary(
         "@startup_os//common/flags",
     ],
 )
+
+checkstyle_test(
+    name = "DataUplaoder-checkstyle",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+    target = ":Data_Uploader",
+)
