@@ -5,6 +5,8 @@ import android.util.Base64;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -12,24 +14,25 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
 
 
 public class FirestoreClient {
-  FirebaseFirestore client;
+  private final String SMS_MESSAGE_COLLECTION = ""; // Fill this with the collection name
+
+  private CollectionReference collection;
   
-  String collection;
   
-  public FirestoreClient(String collection) {
-    this.collection = collection;
-    client = FirebaseFirestore.getInstance();
+  public FirestoreClient() {
+    collection = FirebaseFirestore.getInstance().collection(SMS_MESSAGE_COLLECTION);
   }
   
   // Write the message to the Firestore
   public void writeMassage(SmsMessage message) {
     FirestoreElement element = encodeMessage(message);
-    client.collection(collection).add(element);
+    collection.add(element);
   }
   
   QuerySnapshot snapshot;
@@ -37,23 +40,24 @@ public class FirestoreClient {
   public ArrayList<SmsMessage> getMessages() {
     ArrayList<SmsMessage> results = new ArrayList<>();
     
-    client.collection(collection).get()
-      .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-        @Override
-        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-          if (task.isSuccessful()) {
-            snapshot = task.getResult();
-          } else {
-            //try again later
-          }
+    Task<QuerySnapshot> task = collection.get();
+    task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+      @Override
+      public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+          snapshot = task.getResult();
+        } else {
+          //try again later
         }
-      });
+      }
+    });
     
-    // wait for the results
-    // TODO limit the time it take
-    while (snapshot == null) {
+    try {
+      snapshot = Tasks.await(task);
+    } catch (ExecutionException | InterruptedException e) {
+      e.printStackTrace();
     }
-    
+  
     if (snapshot != null) {
       List<DocumentSnapshot> list = snapshot.getDocuments();
       for (DocumentSnapshot document : list) {
@@ -67,7 +71,6 @@ public class FirestoreClient {
     }
   }
   
-  
   // Encode user proto to base64 for storing in Firestore
   private FirestoreElement encodeMessage(SmsMessage message) {
     byte[] protoBytes = message.toByteArray();
@@ -75,11 +78,11 @@ public class FirestoreClient {
     return new FirestoreElement(base64BinaryString);
   }
   
-  public SmsMessage decodeMessage(FirestoreElement element) {
-    byte[] userbyte = Base64.decode(element.getBase64(), Base64.DEFAULT);
+  private SmsMessage decodeMessage(FirestoreElement element) {
+    byte[] messageBytes = Base64.decode(element.getBase64(), Base64.DEFAULT);
     SmsMessage message = null;
     try {
-      message = message.newBuilder().build().getParserForType().parseFrom(userbyte);
+      message = SmsMessage.getDefaultInstance().getParserForType().parseFrom(messageBytes);
     } catch (InvalidProtocolBufferException e) {
       e.printStackTrace();
     }

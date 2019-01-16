@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     spamList = new ArrayList<>();
     ArrayList<SmsMessage> messages = readSms();
     
-    // For testing, adding the first message rad to the list of spam.
+    // For testing, adding the first message read to the list of spam.
     spamList.add(SmsMessage.newBuilder().setSender(messages.get(0).getSender()).setBody(messages.get(0).getBody()).build());
     
     int count = 0;
@@ -49,10 +49,7 @@ public class MainActivity extends AppCompatActivity {
   
   // Basic comparing of two SMS massages
   private boolean comparingMessages(SmsMessage m1, SmsMessage m2) {
-    boolean sender = m1.getSender().equals(m2.getSender());
-    boolean contant = m1.getBody().equals(m2.getBody());
-    
-    return sender && contant;
+    return m1.equals(m2);
   }
   
   //Reads SMS. If no permissions are granted, exit app.
@@ -72,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
   private ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
     Cursor cursor = getContentResolver().query(Uri.parse("content://sms/"), null, null, null, null);
-    
-    Log.i("how meny smss", "" + cursor.getColumnCount());
     
     if (cursor.moveToFirst()) {
       for (int i = 0; i < cursor.getColumnCount(); i++, cursor.moveToNext()) {
