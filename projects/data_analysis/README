@@ -1,5 +1,0 @@
-# Sample data analysis pipeline
-
-This project simulates data analysis workflow with two steps:
-* step1: take first names from file1.txt, last names from file2.txt and make a prototxt out of them
-* step2: take prototxt from step1 (either from the task, or uploaded result file, or uploaded archive with file) and count number of users 
