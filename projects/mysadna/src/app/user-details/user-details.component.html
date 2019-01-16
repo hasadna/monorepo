@@ -9,7 +9,7 @@
         {{user.userName}}
       </p>
       <p class="email">
-          {{user.email}}
+        {{user.email}}
       </p>
       <ul class="social-networks">
         <li *ngFor="let socialNetwork of user.socialNetworks" class="social-network">
@@ -24,7 +24,7 @@
     </div>
     <div class="right-container">
       <div class="projects">
-        <h3>Projects:</h3>
+        <h3 class="projects-header">Projects:</h3>
         <ul class="projects-list">
           <li *ngFor="let project of userProjects">
             <a [routerLink]="'/project-details/' + project.projectId" class="project">{{project.projectName}}</a>
@@ -32,13 +32,13 @@
         </ul>
       </div>
       <div class="skills">
-        <h3>Skills:</h3>
+        <h3 class="skills-header">Skills:</h3>
         <div class="skills-list">
           <p>{{user.skills}}</p>
         </div>
       </div>
       <div class="contributions">
-        <h3>Contributions:</h3>
+        <h3 class="contributions-header">Contributions:</h3>
         <ul class="contributions-list">
           <li *ngFor="let contribution of user.userContributions" class="contribution">
             <p class="contribution-message">{{contribution.contributionMessage}}</p>

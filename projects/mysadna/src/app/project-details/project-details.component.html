@@ -1,9 +1,13 @@
 <div *ngIf="project" class="project-details">
-  <h1>{{project.projectName}}</h1>
+  <h1 class="project-name">{{project.projectName}}</h1>
   <h3 class="project-description">{{project.projectDescription}}</h3>
-  <a href="{{project.projectSite}}" target="blank">{{project.projectSite}}</a>
+  <a href="{{project.projectSite}}" target="blank" class="project-link">
+    <h3>
+      {{project.projectSite}}
+    </h3>
+  </a>
   <div class="contributors">
-    <h2>Contributors</h2>
+    <h3>Contributors:</h3>
     <div class="contributors-list">
       <div class="contributor" *ngFor="let user of projectUsers">
         <a [routerLink]="'/user-details/' + user.userId">
