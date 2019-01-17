@@ -1,6 +1,6 @@
 java_binary(
-    name = "handle_data",
-    srcs = ["Main.java"],
-    main_class = "handle_data",
-    visibility = ["//projects/opentrain/gtfs_pipeline:__pkg__"]
+    name = "data_handler",
+    srcs = ["DataHandler.java"],
+    main_class = "projects.opentrain.gtfs_pipeline.handle_data.DataHandler",
+    visibility = ["//visibility:public"],
 )
