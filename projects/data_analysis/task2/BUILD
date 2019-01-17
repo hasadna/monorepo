@@ -11,6 +11,5 @@ java_binary(
 checkstyle_test(
     name = "task2-checkstyle",
     target = ":task2",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
