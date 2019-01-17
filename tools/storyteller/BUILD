@@ -44,7 +44,6 @@ java_library(
 checkstyle_test(
     name = "storyteller-checkstyle",
     target = ":storyteller",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 

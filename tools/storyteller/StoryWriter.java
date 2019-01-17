@@ -1,7 +1,7 @@
 package tools.storyteller;
 
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.FileUtils;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -21,6 +21,7 @@ import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.StoryItem;
 import tools.storyteller.Protos.StoryList;
+
 
 /* Storyteller writer that writes story files. */
 @Singleton
