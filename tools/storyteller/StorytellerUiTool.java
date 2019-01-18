@@ -5,6 +5,11 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.startupos.common.CommonModule;
+import com.google.startupos.common.flags.Flags;
+import com.google.startupos.tools.localserver.service.AuthService;
+import com.google.startupos.tools.reviewer.aa.AaModule;
+import dagger.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -35,14 +40,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import com.google.startupos.common.CommonModule;
-import com.google.startupos.common.flags.Flags;
-import com.google.startupos.tools.localserver.service.AuthService;
-import com.google.startupos.tools.reviewer.aa.AaModule;
-import dagger.Component;
+import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.UiDefaults;
-import tools.storyteller.Protos.Config;
 
 /* UI tool for Storyteller */
 public class StorytellerUiTool {
@@ -211,8 +211,8 @@ public class StorytellerUiTool {
   }
 
   private void addToggleButton() {
-    ImageIcon onIcon = getIcon("pause.png", "Pause");
-    ImageIcon offIcon = getIcon("play.png", "Play");
+    final ImageIcon onIcon = getIcon("pause.png", "Pause");
+    final ImageIcon offIcon = getIcon("play.png", "Play");
 
     toggleButton = new JToggleButton();
     toggleButton.setIcon(offIcon);

@@ -134,7 +134,6 @@ java_binary(
 checkstyle_test(
     name = "storyteller_time_and_screenshot_ui_tool-checkstyle",
     target = ":storyteller_time_and_screenshot_ui_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
