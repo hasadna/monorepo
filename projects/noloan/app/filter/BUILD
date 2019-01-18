@@ -14,7 +14,6 @@ java_library(
 checkstyle_test(
     name = "bayes_spam_filter-checkstyle",
     target = ":bayes_spam_filter",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
