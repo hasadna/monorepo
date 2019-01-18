@@ -151,6 +151,5 @@ java_binary(
 checkstyle_test(
     name = "storyteller_screenshot_ui_tool-checkstyle",
     target = ":storyteller_screenshot_ui_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
