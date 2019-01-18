@@ -1,0 +1,13 @@
+<div *ngIf="!story">
+    Loading
+</div>
+<div *ngIf="story">
+    <div>
+        <span>Title: </span>
+        <span>{{ story.getNote() }}</span>
+    </div>
+    <div>
+        <span>Amount of pages: </span>
+        <span>{{ story.getScreenShot() }}</span>
+    </div>
+</div>
