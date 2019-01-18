@@ -234,7 +234,6 @@ public class Storyteller {
         throw new IllegalStateException(
             "Unknown screenshot frequency " + config.getScreenshotFrequency());
     }
-    return -1; // We should never get here
   }
 }
 
