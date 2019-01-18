@@ -101,7 +101,6 @@ java_binary(
 checkstyle_test(
     name = "storyteller_tool-checkstyle",
     target = ":storyteller_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 

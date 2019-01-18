@@ -1,21 +1,21 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.CommonModule;
-import com.google.startupos.tools.reviewer.aa.AaModule;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.flags.Flags;
 import com.google.startupos.tools.localserver.service.AuthService;
+import com.google.startupos.tools.reviewer.aa.AaModule;
 import dagger.Component;
-
 import javax.inject.Singleton;
+
 
 /*
  * A way to tell the story of what you're up to.
  *
  * Storyteller is a team communication tool. Its purpose is to help you tell people what you're
- * working on, how you're working on it, the problems you encountered on the way that you bravely and
- * creatively solved, as well as funny, sad and amazing things that happened along the way.
+ * working on, how you're working on it, the problems you encountered on the way that you bravely
+ * and creatively solved, as well as funny, sad and amazing things that happened along the way.
  * You can do this by running it, taking screenshots (AKA "desktop selfies"), and later choosing
  * which to share.
  *
@@ -25,9 +25,9 @@ import javax.inject.Singleton;
  *   - Screenshot only
  * - All of storyteller's output files are stored in a folder, configurable using stories_path.
  * - You can review all output files (screenshots, stories, time tracking if enabled).
- * - When you're done, you run 'storyteller_tool share' to upload the files and share them. Stories are
- *   shared with your whole team. This way, everyone can know what you're up to, ask you questions,
- *   offer help, quench their curiosity, etc.
+ * - When you're done, you run 'storyteller_tool share' to upload the files and share them. Stories
+ *   are shared with your whole team. This way, everyone can know what you're up to,
+ *   ask you questions, offer help, quench their curiosity, etc.
  *
  * - Note: If you work hourly, the time tracking part can be used to create invoice pdfs. Note that
  *     some countries may have additional requirements such as digital signatures, which we don't
@@ -65,7 +65,8 @@ public class StorytellerTool {
   }
 
   public static void main(String[] args) throws Exception {
-    String[] leftoverArgs = Flags.parse(args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
+    String[] leftoverArgs = Flags.parse(
+            args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
     Storyteller storyteller =
         DaggerStorytellerTool_StorytellerToolComponent.create().getStoryteller();
 
