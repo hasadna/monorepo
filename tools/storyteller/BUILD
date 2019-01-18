@@ -71,7 +71,6 @@ java_library(
 checkstyle_test(
     name = "invoicer-checkstyle",
     target = ":invoicer",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
