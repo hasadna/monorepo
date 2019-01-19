@@ -1,4 +1,4 @@
-package projects.opentrain.gtfs_pipeline.handle_data;
+package projects.opentrain.gtfs_pipeline.data_handler;
     
 import java.io.IOException;
 import java.nio.file.Files;
