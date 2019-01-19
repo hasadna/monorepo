@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Book } from '@/core/proto';
+import { StoryList,Story } from '@/core/proto';
 import { EncodingService, FirebaseService } from '@/core/services';
 
 @Component({
@@ -9,14 +9,25 @@ import { EncodingService, FirebaseService } from '@/core/services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  book: Book;
+  storylist: StoryList[];
 
   constructor(
-    private encodingService: EncodingService,
+    //private encodingService: EncodingService,
     private firebaseService: FirebaseService,
+    private encodingService: EncodingService,
   ) {
-    this.firebaseService.getBook().subscribe(book => {
-      this.book = book;
+    if (firebaseService.isOnline) {
+      this.load();
+    } else {
+      this.firebaseService.anonymousLogin().then(() => {
+        this.load();
+      });
+    }
+  }
+
+  load(): void {
+    this.firebaseService.getstorylistAll().subscribe(storylist => {
+      this.storylist = storylist;
     });
   }
 }

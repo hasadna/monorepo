@@ -3,47 +3,61 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Book } from '@/core/proto';
+import { StoryList } from '@/core/proto';
 import { EncodingService } from './encoding.service';
-
-interface FirebaseElement {
-  proto: string;
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+interface FirebaseElementStory {
+  story: string;
 }
 
 @Injectable()
 export class FirebaseService {
-  private protobin: AngularFirestoreCollection<FirebaseElement>;
+  isOnline: boolean;
+  private protobin: AngularFirestoreCollection<FirebaseElementStory>;
 
   constructor(
     private db: AngularFirestore,
     private encodingService: EncodingService,
+    private angularFireAuth: AngularFireAuth,
   ) {
-    this.protobin = this.db.collection('protobin');
+      this.angularFireAuth.authState.subscribe(userData => {
+      this.isOnline = !!userData;
+      });
+    this.protobin = this.db.collection('storyteller');
   }
 
-  getBook(): Observable<Book> {
-    return this.protobin
-      .doc('book')
-      .snapshotChanges()
-      .pipe(
-        map(action => {
-          const firebaseElement = action.payload.data() as FirebaseElement;
+  getstorylistAll(): Observable<StoryList[]> {
+    // this.shirts = this.shirtCollection.snapshotChanges().pipe(
+    //   map(actions => actions.map(a => {
+    //     const data = a.payload.doc.data() as Shirt;
+    //     const id = a.payload.doc.id;
+    //     return { id, ...data };
+    //   }))
+    return this.protobin.snapshotChanges().pipe(
+        map(action => action.map(a => {
+          const firebaseElement = a.payload.doc.data() as FirebaseElementStory;
+
           if (firebaseElement === undefined) {
             // Element not found
             return;
           }
-          return this.convertFirebaseElementToBook(firebaseElement);
-        })
-      );
+          console.log(firebaseElement['proto']);
+          return this.convertFirebaseElementToStory(firebaseElement);
+        })))
   }
 
-  private convertFirebaseElementToBook(firebaseElement: FirebaseElement): Book {
-    // Convert firebaseElement to binary
-    const binary: Uint8Array = this.encodingService
-      .decodeBase64StringToUint8Array(firebaseElement.proto);
-    // Convert binary to book
-    const book: Book = Book.deserializeBinary(binary);
+  private convertFirebaseElementToStory(firebaseElement: FirebaseElementStory): StoryList {
 
-    return book;
+    //Convert firebaseElement to binary
+    const binary: Uint8Array = this.encodingService
+      .decodeBase64StringToUint8Array(firebaseElement['proto']);
+
+    // Convert binary to book
+    const storylist: StoryList = StoryList.deserializeBinary(binary);
+    return storylist;
+  }
+  anonymousLogin(): Promise<any> {
+    return this.angularFireAuth.auth.signInAnonymously();
   }
 }
