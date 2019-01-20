@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+import java.lang.String;
 
 class DataHandler {
       public static void main(String[] args) throws IOException {
@@ -17,7 +19,10 @@ class DataHandler {
             List<String> curPathContent = Files.readAllLines(curPath);
             outPut = outPut + curPath.getFileName() + " lines: ";
             outPut = outPut + String.valueOf(curPathContent.size()) + "\n";
-            Files.write(outfilePath, curPathContent);
+            Files.write(outfilePath, new String(curPath.getFileName()+"\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+            Files.write(outfilePath, curPathContent, StandardOpenOption.APPEND);
+            Files.write(outfilePath, new String("\n").getBytes(), StandardOpenOption.APPEND);
+
         }
         System.out.print(outPut);
     }
