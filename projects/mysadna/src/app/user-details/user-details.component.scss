@@ -1,0 +1,107 @@
+.user-header {
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-container {
+  display: flex;
+  justify-content: space-around;
+
+  >.left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    >.user-image {
+      margin: 0.1em;
+    }
+    >.user-name {
+      font-size: 1.5em;
+      color: #565656;
+      margin: 0.1em;
+    }
+    >.email {
+      font-size: 1.25em;
+      margin: 0.1em;
+    }
+    >.social-networks {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      margin-top: 1em;
+      margin-left: 0.1em;
+      >.social-network {
+        border-radius: 0.25em;
+        margin-right: 1.5em;
+      }
+    }        
+  }
+  >.right-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    >.projects {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-bottom: 1.5em;
+      >.projects-header {
+        color: #565656;
+        font-weight: normal;
+        margin: 0;
+      }
+      >.projects-list {
+        border: 2px gray solid;
+        margin: 0;
+        padding: 1.25em;
+        >li {
+          >.project {
+            font-size: 1.25em;
+          }
+        }
+      }
+    }
+    >.skills {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-bottom: 1.5em;
+      >.skills-header {
+        color: #565656;
+        font-weight: normal;
+        margin: 0;
+      }
+      >.skills-list {
+        border: 2px gray solid;
+        padding: 0.25em;
+        font-size:1.25em;
+      }
+    }
+    >.contributions {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      >.contributions-header {
+        color: #565656;
+        font-weight: normal;
+        margin: 0;
+      }
+      >.contributions-list {
+        margin: 0;
+        >.contribution {
+          border: 2px gray solid;
+          padding: 0.5em;
+          >.contribution-message {
+            font-size: 1.25em;
+          }
+        }
+      }
+    }
+  }
+}
