@@ -2,8 +2,13 @@
     Loading
 </div>
 <div *ngIf="storylist">
-    <li *ngFor="let story of storylist ">
-        {{ story }}
-    </li>
-
-</div>
+    <div *ngFor="let storylistChild of storylist">
+        ----
+        <div *ngFor="let story of storylistChild.getStoryList()">
+            {{ story.getProject()}} :
+            <div *ngFor="let storyItem of story.getItemList()">
+                <!-- doesn't show anything -->
+                {{storyItem.getScreenshot()}}
+            </div>
+        </div>
+    </div>

@@ -7,14 +7,14 @@ import { StoryList } from '@/core/proto';
 import { EncodingService } from './encoding.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-interface FirebaseElementStory {
-  story: string;
+interface FirebaseElement {
+  proto: string;
 }
 
 @Injectable()
 export class FirebaseService {
   isOnline: boolean;
-  private protobin: AngularFirestoreCollection<FirebaseElementStory>;
+  private protobin: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
@@ -28,30 +28,23 @@ export class FirebaseService {
   }
 
   getstorylistAll(): Observable<StoryList[]> {
-    // this.shirts = this.shirtCollection.snapshotChanges().pipe(
-    //   map(actions => actions.map(a => {
-    //     const data = a.payload.doc.data() as Shirt;
-    //     const id = a.payload.doc.id;
-    //     return { id, ...data };
-    //   }))
     return this.protobin.snapshotChanges().pipe(
         map(action => action.map(a => {
-          const firebaseElement = a.payload.doc.data() as FirebaseElementStory;
+          const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
           if (firebaseElement === undefined) {
             // Element not found
             return;
           }
-          console.log(firebaseElement['proto']);
           return this.convertFirebaseElementToStory(firebaseElement);
         })))
   }
 
-  private convertFirebaseElementToStory(firebaseElement: FirebaseElementStory): StoryList {
+  private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
 
     //Convert firebaseElement to binary
     const binary: Uint8Array = this.encodingService
-      .decodeBase64StringToUint8Array(firebaseElement['proto']);
+      .decodeBase64StringToUint8Array(firebaseElement.proto);
 
     // Convert binary to book
     const storylist: StoryList = StoryList.deserializeBinary(binary);

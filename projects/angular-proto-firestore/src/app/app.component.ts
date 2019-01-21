@@ -11,6 +11,7 @@ import { EncodingService, FirebaseService } from '@/core/services';
 export class AppComponent {
   storylist: StoryList[];
 
+
   constructor(
     //private encodingService: EncodingService,
     private firebaseService: FirebaseService,
@@ -28,6 +29,7 @@ export class AppComponent {
   load(): void {
     this.firebaseService.getstorylistAll().subscribe(storylist => {
       this.storylist = storylist;
+      
     });
   }
 }
