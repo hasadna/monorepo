@@ -11,19 +11,18 @@ import java.lang.String;
 
 class DataHandler {
       public static void main(String[] args) throws IOException {
-        System.out.println(args[0]);
-        String outPut = "";
-        Path outfilePath = Paths.get(args[args.length-1]);
+        String output = "";
+        Path outputPath = Paths.get(args[args.length-1]);
         for (String path : args) {
             Path curPath = Paths.get(path);
             List<String> curPathContent = Files.readAllLines(curPath);
-            outPut = outPut + curPath.getFileName() + " lines: ";
-            outPut = outPut + String.valueOf(curPathContent.size()) + "\n";
-            Files.write(outfilePath, new String(curPath.getFileName()+"\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-            Files.write(outfilePath, curPathContent, StandardOpenOption.APPEND);
-            Files.write(outfilePath, new String("\n").getBytes(), StandardOpenOption.APPEND);
+            output += curPath.getFileName() + " lines: ";
+            output += curPathContent.size() + "\n";
+            Files.write(outputPath, new String(curPath.getFileName()+"\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+            Files.write(outputPath, curPathContent, StandardOpenOption.APPEND);
+            Files.write(outputPath, new String("\n").getBytes(), StandardOpenOption.APPEND);
 
         }
-        System.out.print(outPut);
+        System.out.print(output);
     }
 }
