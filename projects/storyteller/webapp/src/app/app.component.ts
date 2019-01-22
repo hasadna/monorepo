@@ -13,7 +13,6 @@ export class AppComponent {
 
 
   constructor(
-    //private encodingService: EncodingService,
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
   ) {
