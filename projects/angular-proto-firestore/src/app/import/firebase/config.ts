@@ -1,8 +1,8 @@
 export const config = {
-  apiKey: "AIzaSyAn-A7YXlqR2JNOvlbhkVwcnsOigmphQIw",
-  authDomain: "startupos-5f279.firebaseapp.com",
-  databaseURL: "https://startupos-5f279.firebaseio.com",
-  projectId: "startupos-5f279",
-  storageBucket: "startupos-5f279.appspot.com",
-  messagingSenderId: "160348327132"
+  apiKey: 'AIzaSyAWwTuTi9P6Fy0iK_Ux2R5LWUkFgN7lhEQ',
+  authDomain: 'protobin-reader.firebaseapp.com',
+  databaseURL: 'https://protobin-reader.firebaseio.com',
+  projectId: 'protobin-reader',
+  storageBucket: 'protobin-reader.appspot.com',
+  messagingSenderId: '229513278474',
 };
