@@ -1,0 +1,110 @@
+syntax = "proto3";
+package com.hasadna.protobin_reader;
+
+option java_package = "com.hasadna.protobin_reader";
+option java_outer_classname = "Protos";
+
+message Config {
+  enum Frequency {
+    EVERY_10_MINUTES = 0; // This is the default (=0)
+    EVERY_15_MINUTES = 1;
+    EVERY_20_MINUTES = 2;
+  }
+
+  Frequency screenshot_frequency = 1;
+  string stories_path = 2;
+  string invoices_path = 3;
+  InvoiceCreator invoice_creator = 4;
+  InvoiceReceiver invoice_receiver = 5;
+  repeated string projects = 6;
+}
+
+/* Defaults used in the Storyteller UI tool. */
+message UiDefaults {
+  // Most recently used projects, used to reorder projects drop down
+  repeated string project = 1;
+  int32 left = 2;
+  int32 top = 3;
+}
+
+// Local file used to store status such as current project.
+message StatusData { string project = 1; }
+
+// Local file used to store and edit the screenshot metadata before sharing.
+message ScreenshotMetadata {
+  string project = 1;
+  string oneliner = 2;
+}
+
+message FileData {
+  enum Type {
+    UNKNOWN = 0;
+    START = 1;
+    RUNNING = 2;
+    SCREENSHOT = 3;
+    SCREENSHOT_METADATA = 4;
+    END = 5;
+  }
+
+  Type type = 1;
+  int64 timeMs = 2;
+  string filename = 3;
+  oneof oneof_content {
+    bytes image_bytes = 4;
+    ScreenshotMetadata screenshot_metadata = 5;
+    StatusData status_data = 6;
+  }
+}
+
+message StoryItem {
+  int64 timeMs = 1;
+  bytes screenshot = 2;
+  string oneliner = 3;
+  string note = 4;
+}
+
+message Story {
+  int64 startTimeMs = 1;
+  int64 endTimeMs = 2;
+  string project = 3;
+  repeated StoryItem item = 4;
+}
+
+message StoryList { repeated Story story = 1; }
+
+message InvoiceItem {
+  string title = 1;
+  string description = 2;
+  int64 time_worked_ms = 3;
+  // The hourly rate in USD
+  double hourly_rate = 4;
+  double dollarAmount = 5;
+}
+
+message InvoiceItemList {
+  repeated InvoiceItem item = 1;
+  int64 startTimeMs = 2;
+  int64 endTimeMs = 3;
+  double subtotal = 4;
+  // Total is the subtotal after rounding up.
+  double total = 5;
+}
+
+message InvoiceCreator {
+  string name = 1;
+  string phone_number = 2;
+  string email = 3;
+  string website = 4;
+  string street_and_number = 5;
+  string city_state_country = 6;
+  string zip_code = 7;
+  // Optional tagline at the bottom
+  string tagline = 8;
+  double hourly_rate_usd = 9;
+}
+
+message InvoiceReceiver {
+  string name = 1;
+  string street_and_number = 2;
+  string city_state_country = 3;
+}

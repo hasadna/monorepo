@@ -1,0 +1,13 @@
+<div *ngIf="!storylist">
+    Loading
+</div>
+<div *ngIf="storylist">
+    <div *ngFor="let storylistChild of storylist">
+        ----
+        <div *ngFor="let story of storylistChild.getStoryList()">
+            {{ story.getProject()}}
+            <div *ngFor="let storyItem of story.getItemList()">
+                story: {{storyItem.getScreenshot_asU8()}}
+            </div>
+        </div>
+    </div>
