@@ -14,14 +14,10 @@ class DataHandler {
         String output = "";
         Path outputPath = Paths.get(args[args.length-1]);
         for (String path : args) {
+            // TODO: Read the files in a streaming manner since they are large
             Path curPath = Paths.get(path);
-            List<String> curPathContent = Files.readAllLines(curPath);
             output += curPath.getFileName() + " lines: ";
-            output += curPathContent.size() + "\n";
-            Files.write(outputPath, new String(curPath.getFileName()+"\t").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-            Files.write(outputPath, new String("lines: " + curPathContent.size()).getBytes(), StandardOpenOption.APPEND);
-            Files.write(outputPath, new String("\n").getBytes(), StandardOpenOption.APPEND);
-
+            Files.write(outputPath, new String(curPath.getFileName()+"\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
         }
         System.out.print(output);
     }
