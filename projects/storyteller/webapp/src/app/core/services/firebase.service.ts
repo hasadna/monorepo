@@ -34,19 +34,19 @@ export class FirebaseService {
 
           if (firebaseElement === undefined) {
             // Element not found
-            return;
+          return;
           }
           return this.convertFirebaseElementToStory(firebaseElement);
-        })))
+        })));
   }
 
   private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
 
-    //Convert firebaseElement to binary
+    // Convert firebaseElement to binary
     const binary: Uint8Array = this.encodingService
       .decodeBase64StringToUint8Array(firebaseElement.proto);
 
-    // Convert binary to book
+    // Convert binary to StoryList
     const storylist: StoryList = StoryList.deserializeBinary(binary);
     return storylist;
   }

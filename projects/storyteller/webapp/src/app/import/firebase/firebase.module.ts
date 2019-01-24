@@ -10,7 +10,7 @@ import { config } from './config';
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    
+
   ],
   declarations: [],
   providers: [
@@ -21,7 +21,7 @@ import { config } from './config';
   exports: [
     AngularFirestoreModule,
     AngularFireAuthModule,
-    
+
   ],
 })
 export class FirebaseModule { }

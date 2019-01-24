@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { StoryList,Story } from '@/core/proto';
+import { StoryList, Story } from '@/core/proto';
 import { EncodingService, FirebaseService } from '@/core/services';
 
 @Component({
@@ -28,7 +28,7 @@ export class AppComponent {
   load(): void {
     this.firebaseService.getstorylistAll().subscribe(storylist => {
       this.storylist = storylist;
-      
+
     });
   }
 }
