@@ -65,7 +65,7 @@ public class StorytellerUiTool {
   private static final Color LIGHT_BLUE = new Color(0xF4F6F8);
 
   // Debug mode means things related to clock happen faster
-  private static final boolean DEBUG_MODE = true;
+  private static final boolean DEBUG_MODE = false;
 
   // Input args
   private static final String TIME_AND_SCREENSHOT_ARG = "time_and_screenshot";
