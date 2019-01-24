@@ -70,25 +70,32 @@ public class StoryWriter {
   void saveStoryItem(String project, String story) {
     // Replace empty with one space, so that the prototxt will have the entry
     story = story.isEmpty() ? " " : story;
+    String screenshotFilename = saveScreenshot();
     StoryItem storyItem =
-        StoryItem.newBuilder().setTimeMs(getCurrentTimestamp()).setOneliner(story).build();
+        StoryItem.newBuilder()
+            .setTimeMs(getCurrentTimestamp())
+            .setOneliner(story)
+            .setScreenshotFilename(screenshotFilename)
+            .build();
     currentStoryBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp()).addItem(storyItem);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
     saveStories();
   }
 
-  void saveScreenshot() {
+  // Returns filename of a saved screenshot
+  String saveScreenshot() {
     fileUtils.mkdirs(getUnsharedStoriesPath());
     Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+    String filenameWithExtension =
+        Paths.get(getUnsharedStoriesPath(), getCurrentTimeString()).toString() + ".jpg";
     try {
       Robot robot = new Robot();
       BufferedImage screenshot = robot.createScreenCapture(rectangle);
-      String filenameWithoutExtension =
-          Paths.get(getUnsharedStoriesPath(), getCurrentTimeString()).toString();
-      ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
+      ImageIO.write(screenshot, "jpg", Paths.get(filenameWithExtension).toFile());
     } catch (AWTException | IOException e) {
       log.atSevere().withCause(e).log("Error in saving screenshot");
     }
+    return filenameWithExtension.substring(filenameWithExtension.lastIndexOf('/') + 1);
   }
 
   void saveSharedStories(StoryList stories) throws IOException {

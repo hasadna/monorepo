@@ -80,7 +80,6 @@ public class Storyteller {
       System.out.print("H");
     } else if (passedMinutes % screenshotFrequency == 0) {
       System.out.print("S");
-      writer.saveScreenshot();
       writer.saveStoryItem(project, story);
     } else if (passedMinutes % UPDATE_RUNNING_STATUS_MINUTES == 0) {
       System.out.print("R");
@@ -112,11 +111,12 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    StoryList storyList = StoryList.newBuilder().addAllStory(getUnsharedStories()).build();
+    StoryList storyList = StoryList.newBuilder().addAllStory(reader.getStoriesWithScreenshots(
+        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))).build();
     firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
 
     try {
-      writer.saveSharedStories(storyList);
+      writer.saveSharedStories(StoryList.newBuilder().addAllStory(getUnsharedStories()).build());
       System.out.println(storyList.getStoryCount() + " stories shared");
       fileUtils.clearDirectory(getUnsharedStoriesPath());
       System.out.println("Folder with unshared stories is cleared.");

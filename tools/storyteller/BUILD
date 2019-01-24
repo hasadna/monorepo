@@ -35,17 +35,17 @@ java_library(
         "//third_party/maven/org/slf4j:slf4j_simple",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
-        "@startup_os//common/flags",
         "@startup_os//common/firestore",
-        "@startup_os//tools/reviewer/local_server/service:auth_service",        
+        "@startup_os//common/flags",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
 )
 
 checkstyle_test(
     name = "storyteller-checkstyle",
-    target = ":storyteller",
     allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
+    target = ":storyteller",
 )
 
 java_library(
@@ -71,9 +71,9 @@ java_library(
 
 checkstyle_test(
     name = "invoicer-checkstyle",
-    target = ":invoicer",
     allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
+    target = ":invoicer",
 )
 
 java_binary(
@@ -89,9 +89,9 @@ java_binary(
         "//third_party/maven/com/google/flogger:flogger_system_backend",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
-        "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
@@ -102,9 +102,9 @@ java_binary(
 
 checkstyle_test(
     name = "storyteller_tool-checkstyle",
-    target = ":storyteller_tool",
     allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
+    target = ":storyteller_tool",
 )
 
 STORYTELLER_UI_TOOL_DEPS = [
@@ -136,9 +136,9 @@ java_binary(
 
 checkstyle_test(
     name = "storyteller_time_and_screenshot_ui_tool-checkstyle",
-    target = ":storyteller_time_and_screenshot_ui_tool",
     allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
+    target = ":storyteller_time_and_screenshot_ui_tool",
 )
 
 java_binary(
@@ -154,7 +154,7 @@ java_binary(
 
 checkstyle_test(
     name = "storyteller_screenshot_ui_tool-checkstyle",
-    target = ":storyteller_screenshot_ui_tool",
     allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
+    target = ":storyteller_screenshot_ui_tool",
 )
