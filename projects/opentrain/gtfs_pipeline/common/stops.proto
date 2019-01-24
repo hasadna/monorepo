@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "StopsProtos";
+
+message Stop {
+   int32 stop_id = 1;
+   int32 stop_code = 2;
+   int32 stop_name = 3;
+   string stop_desc = 4;
+   double stop_lat = 5;
+   double stop_lon = 6;
+   int32 location_type = 7;
+   int32 parent_station = 8;
+   int32 zone_id = 9;
+}
+
+message Stops {
+  repeated Stop stops = 1;
+}
