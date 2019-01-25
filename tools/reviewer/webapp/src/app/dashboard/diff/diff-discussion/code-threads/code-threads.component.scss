@@ -1,0 +1,28 @@
+.cr-header {
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.file-groups {
+  padding: 14px 0;
+  >.file-group {
+    >.filename {
+      margin-bottom: 10px;
+      margin-left: 22px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: #1a1a1a;
+    }
+    >.thread {
+      margin-bottom: 14px;
+    }
+    >.hr {
+      margin: 14px 0;
+      height: 1px;
+      background: #d8d8d8;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.google.startupos.tools.reviewer.local_server.service";
+
+option java_outer_classname = "AuthProtos";
+
+package com.google.startupos.tools.reviewer.local_server.service;
+
+service AuthService {
+  rpc postAuthData(AuthDataRequest) returns (AuthDataResponse);
+}
+
+message AuthDataRequest {
+  string projectId = 1;
+  string apiKey = 2;
+  string jwtToken = 3;
+  string refreshToken = 4;
+}
+
+// TODO: Use Empty:
+// https://github.com/google/protobuf/blob/master/src/google/protobuf/empty.proto
+message AuthDataResponse {}

@@ -1,0 +1,44 @@
+<div class="reply-popup">
+  <speech-arrow
+    [size]=15
+    [border]=2
+    color="#fff4db"
+    bordercolor="#8c8c8c"
+    [shadow]=[2,2,2,0.8]
+  ></speech-arrow>
+
+  <div class="titlebar">
+    <span>Reply</span>
+    <mat-spinner [diameter]="20" *ngIf="isLoading"></mat-spinner>
+  </div>
+  <div class="message">
+    <textarea
+      matInput
+      matTextareaAutosize
+      matAutosizeMinRows="3"
+      [(ngModel)]="message"
+    ></textarea>
+  </div>
+  <div class="action-checkbox">
+    <mat-checkbox
+      color="primary"
+      [(ngModel)]="actionRequired"
+    >Action Required</mat-checkbox>
+  </div>
+  <div class="buttons">
+    <!-- Hide Approved checkbox when Author is the current user -->
+    <mat-checkbox
+      color="primary"
+      *ngIf="userService.email !== diff.getAuthor().getEmail()"
+      [(ngModel)]="approved" 
+    >Approved</mat-checkbox>
+    
+    <button
+      mat-button
+      class="cr-light-button orange-button"
+      (click)="reply()"
+      [disabled]="isLoading"
+    >Reply</button>
+  </div>
+</div>
+<div class="reply-popup-overlay" (click)="closeReplyPopup()"></div>

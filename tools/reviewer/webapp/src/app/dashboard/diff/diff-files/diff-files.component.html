@@ -1,0 +1,51 @@
+<div class="cr-titlebar">
+  <div class="title">
+    <span class="bold">Files</span>
+  </div>
+  <div class="buttons" fxFlex>
+    <button
+      mat-button
+      class="cr-light-button sky-button"
+      (click)="toggleExpand()"
+      [disabled]="isCodeLoading"
+    >{{ isExpanded ? 'Collapse' : 'Expand' }}</button>
+  </div>
+</div>
+<div class="files" *ngIf="files.length > 0">
+  <div class="cr-header">
+    <div class="column column-file">File</div>
+    <div class="column column-comments">Comments</div>
+    <div class="column column-modified">Modified</div>
+    <div class="column column-delta">Delta</div>
+  </div>
+
+  <!-- Collapsed files -->
+  <ng-container *ngIf="!isExpanded || !changes">
+    <a class="file" [routerLink]="file.getFilenameWithRepo()" *ngFor="let file of files">
+      {{ file.getFilenameWithRepo() }}
+    </a>
+  </ng-container>
+  
+  <!-- Expanded files -->
+  <ng-container *ngIf="isExpanded && changes">
+    <ng-container *ngFor="let change of changes; let changesIndex = index">
+      <a class="file" [routerLink]="change.leftFile.getFilenameWithRepo()">
+        {{ change.leftFile.getFilenameWithRepo() }}
+      </a>
+      <code-changes
+        [diff]="diff"
+        [branchInfo]="change.branchInfo"
+        [textDiff]="change.textDiff"
+        [threads]="change.localThreads"
+        [leftFile]="change.leftFile"
+        [rightFile]="change.rightFile"
+        [isShared]="true"
+        [sections]="sectionsList[changesIndex]"
+        (sectionsEmitter)="saveSections($event, changesIndex)"
+      ></code-changes>
+    </ng-container>
+  </ng-container>
+</div>
+<div class="cr-table-placeholder" *ngIf="files.length === 0">
+  No Files yet
+</div>
