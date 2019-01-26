@@ -1,0 +1,10 @@
+syntax = "proto3";
+package com.hasadna.protobin_reader;
+
+option java_package = "com.hasadna.protobin_reader";
+option java_outer_classname = "Protos";
+
+message Book {
+  string title = 1;
+  int32 pages = 2;
+}
