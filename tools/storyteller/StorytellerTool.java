@@ -5,7 +5,7 @@ import com.google.startupos.common.CommonModule;
 import com.google.startupos.tools.reviewer.aa.AaModule;
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.flags.Flags;
-import com.google.startupos.tools.localserver.service.AuthService;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import dagger.Component;
 
 import javax.inject.Singleton;
