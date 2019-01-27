@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-    
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,7 +40,6 @@ class DataHandler {
 
       //remove the first record which are columns title
       csvRecords.remove(csvRecords.get(0));
-      
       //iterate each record, create a message with builder
       for (CSVRecord record : csvRecords) {
         /*System.out.println(record.get(0));
@@ -55,12 +54,12 @@ class DataHandler {
         allStopsBuilder.addStops(Stop.newBuilder()
                 .setStopId(Integer.parseInt(record.get(0)))
                 .setStopCode(Integer.parseInt(record.get(1)))
-                .setStopName(Integer.parseInt(record.get(2)))
+                .setStopName(record.get(2))
                 .setStopDesc(record.get(3))
                 .setStopLat(Double.parseDouble(record.get(4)))
                 .setStopLon(Double.parseDouble(record.get(5)))
                 .setLocationType(Integer.parseInt(record.get(6)))
-                .setParentStation(Integer.parseInt(record.get(7)))
+                .setParentStation(record.get(7))
                 .setZoneId(Integer.parseInt(record.get(8)))
                 .build());
       }
@@ -68,6 +67,7 @@ class DataHandler {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
     return allStopsBuilder;
   }
 
