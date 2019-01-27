@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
     
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,42 +28,22 @@ import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.lang.String;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 class DataHandler {
-  private enum Columns {
-    STOP_ID("stop_id"),
-    STOP_CODE("stop_code"),
-    STOP_NAME("stopname"),
-    STOP_DESC("stop_desc"),
-    STOP_LAT("stop_lat"),
-    STOP_LON("stop_lon"),
-    LOCATION_TYPE("location_type"),
-    PARENT_STATION("parent_station"),
-    ZONE_ID("zone_id");
-
-    // The CSV column name
-    private final String name;
-
-    Columns(String name) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-  }
-
-  public static Stops.Builder getStops(Path csvPath) {
+  
+    //method "getStops" for protobuf the file stops.txt  
+    public static Stops.Builder getStops(Path csvPath) {
     Stops.Builder allStopsBuilder = Stops.newBuilder();
     try {
-      Reader reader = Files.newBufferedReader(csvPath);
-      CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT);
       List<CSVRecord> csvRecords = parser.getRecords();
+
+      //remove the first record which are columns title
       csvRecords.remove(csvRecords.get(0));
+      
+      //iterate each record, create a message with builder
       for (CSVRecord record : csvRecords) {
-        System.out.println(record.get(0));
+        /*System.out.println(record.get(0));
         System.out.println(record.get(1));
         System.out.println(record.get(2));
         System.out.println(record.get(3));
@@ -70,21 +51,18 @@ class DataHandler {
         System.out.println(record.get(5));
         System.out.println(record.get(6));
         System.out.println(record.get(7));
-        System.out.println(record.get(8));
-
-        /*allStopsBuilder.addStops(
-            Stop.newBuilder()
-                .setStopId(parseInt(record.get(0)))
-                .setStopCode(parseInt(record.get(1)))
-                .setStopName(parseInt(record.get(2)))
+        System.out.println(record.get(8));*/
+        allStopsBuilder.addStops(Stop.newBuilder()
+                .setStopId(Integer.parseInt(record.get(0)))
+                .setStopCode(Integer.parseInt(record.get(1)))
+                .setStopName(Integer.parseInt(record.get(2)))
                 .setStopDesc(record.get(3))
-                .setStopLat(parseDouble(record.get(4)))
-                .setStopLon(parseDouble(record.get(5)))
-                .setLocationType(parseInt(record.get(6)))
-                .setParentStation(parseInt(record.get(7)))
-                .setZoneId(parseInt(record.get(8)))
-                .build());*/
-
+                .setStopLat(Double.parseDouble(record.get(4)))
+                .setStopLon(Double.parseDouble(record.get(5)))
+                .setLocationType(Integer.parseInt(record.get(6)))
+                .setParentStation(Integer.parseInt(record.get(7)))
+                .setZoneId(Integer.parseInt(record.get(8)))
+                .build());
       }
 
     } catch (IOException e) {
@@ -93,13 +71,7 @@ class DataHandler {
     return allStopsBuilder;
   }
 
-  private static double parseDouble(String value) {
-    return Double.parseDouble(value);
-  }
 
-  private static int parseInt(String value) {
-    return Integer.parseInt(value);
-  }
 
 
       public static void main(String[] args) throws IOException {
