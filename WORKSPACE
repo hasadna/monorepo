@@ -39,8 +39,8 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/672fba099b81a45ddd9c28a39ea783d0435f2b00.zip"],
-    strip_prefix = "startup-os-672fba099b81a45ddd9c28a39ea783d0435f2b00"
+    urls = ["https://github.com/google/startup-os/archive/b10384644056cc9ac44388a76dbd0a4a8350e76d.zip"],
+    strip_prefix = "startup-os-b10384644056cc9ac44388a76dbd0a4a8350e76d"
 )
 # MARK: StartupOS end
 
@@ -166,3 +166,9 @@ http_archive(
 )
 # MARK: sample data for analysis pipeline end
 
+#gtfs_data
+http_archive(
+    name = "gtfs_data",
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+    build_file_content = 'exports_files(["agency.txt", "calendar.txt", "fare_attributes.txt", "fare_rules.txt", "routes.txt", "shapes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+)
