@@ -10,6 +10,6 @@ message SmsMessage {
     string body = 2;
 }
 
-message SmsList {
+message SpamList {
     repeated SmsMessage sms = 1;
 }

@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -17,19 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import hasadna.noloan2.protobuf.SMSProto.SpamList;
 import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
 
 
 public class FirestoreClient {
-  private final String SMS_MESSAGE_COLLECTION = "noloan/smss";
+  private final String SPAM_DOCUMENT_PATH = "noloan/smss";
   
   // < - 22 > - 31 for removing and changing with the user name
   private final String USER_SUGGEST_COLLECTION = "noloan/user_data/user/<username>/spam_suggestions";
   
-  private CollectionReference collection;
+  private FirebaseFirestore client;
   
   public FirestoreClient() {
-    collection = FirebaseFirestore.getInstance().collection(SMS_MESSAGE_COLLECTION);
+    client = FirebaseFirestore.getInstance();
   }
   
   // Write the message to the Firestore
@@ -38,15 +40,22 @@ public class FirestoreClient {
     
     // TODO add code to remove the <username> from the path and add the actual user name
     
-    FirebaseFirestore.getInstance().collection(USER_SUGGEST_COLLECTION).add(element);
+    client.collection(USER_SUGGEST_COLLECTION).add(element);
   }
   
-  QuerySnapshot snapshot;
+  public SpamList getSpam() {
+    DocumentReference document = client.document(SPAM_DOCUMENT_PATH);
+    SpamList spam = decodeSpam(document.get().getResult().toObject(FirestoreElement.class));
+    return spam;
+  }
   
+  
+  // Not in use, there for future reference
+  /* QuerySnapshot snapshot;
   public ArrayList<SmsMessage> getMessages() {
     ArrayList<SmsMessage> results = new ArrayList<>();
     
-    Task<QuerySnapshot> task = collection.get();
+    Task<QuerySnapshot> task = client.get();
     task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
       @Override
       public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -63,7 +72,7 @@ public class FirestoreClient {
     } catch (ExecutionException | InterruptedException e) {
       Log.e("Firesotre", "Wait interrupted");
     }
-  
+    
     if (snapshot != null) {
       List<DocumentSnapshot> list = snapshot.getDocuments();
       for (DocumentSnapshot document : list) {
@@ -75,7 +84,7 @@ public class FirestoreClient {
       // onComplete failed
       return null;
     }
-  }
+  }*/
   
   // Encode user proto to base64 for storing in Firestore
   private FirestoreElement encodeMessage(SmsMessage message) {
@@ -93,5 +102,17 @@ public class FirestoreClient {
       e.printStackTrace();
     }
     return message;
+  }
+  
+  // TODO combine the two decoders
+  private SpamList decodeSpam(FirestoreElement element) {
+    byte[] messageBytes = Base64.decode(element.getBase64(), Base64.DEFAULT);
+    SpamList spam = null;
+    try {
+      spam = SpamList.getDefaultInstance().getParserForType().parseFrom(messageBytes);
+    } catch (InvalidProtocolBufferException e) {
+      e.printStackTrace();
+    }
+    return spam;
   }
 }
