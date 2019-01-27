@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package hasadna.noloan2;
+
+option java_package = "hasadna.noloan2.protobuf";
+option java_outer_classname = "SMSProto";
+
+message SmsMessage {
+    string sender = 1;
+    string body = 2;
+}
+
+message SpamList {
+    repeated SmsMessage sms = 1;
+}
