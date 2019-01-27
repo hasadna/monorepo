@@ -27,6 +27,7 @@ java_library(
     ],
     runtime_deps = [
         "//third_party/maven/commons_codec:commons_codec",
+        "//third_party/maven/commons_logging:commons_logging",
         ":httpcore"
     ],
     visibility = [

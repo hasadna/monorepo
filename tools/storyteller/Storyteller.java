@@ -7,22 +7,19 @@ import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import tools.storyteller.Protos.Config;
-import tools.storyteller.service.Protos.ShareStoriesRequest;
-import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryItem;
-import tools.storyteller.service.Protos.StoryList;
-import tools.storyteller.service.StorytellerServiceGrpc;
-
-import javax.inject.Inject;
+import com.google.startupos.common.firestore.FirestoreProtoClient;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import javax.inject.Inject;
+import tools.storyteller.Protos.Config;
+import tools.storyteller.Protos.Story;
+import tools.storyteller.Protos.StoryItem;
+import tools.storyteller.Protos.StoryList;
 
 /*
  * Storyteller logic.
@@ -36,30 +33,28 @@ public class Storyteller {
   // Number of most recent shared stories to output
   private static final int RECENT_SHARED_STORIES_COUNT = 10;
 
-  private static final Integer GRPC_PORT = 8001;
+  private static final String FIRESTORE_STORYTELLER_ROOT = "/storyteller";
 
-  private final StorytellerServiceGrpc.StorytellerServiceBlockingStub storytellerBlockingStub;
   private Config config;
   private int screenshotFrequency;
   private StoryReader reader;
   private StoryWriter writer;
   private FileUtils fileUtils;
+  private FirestoreProtoClient firestoreClient;
 
   @Inject
   public Storyteller(
       StorytellerConfig storytellerConfig,
       StoryReader reader,
       StoryWriter writer,
-      FileUtils fileUtils) {
+      FileUtils fileUtils,
+      AuthService authService) {
     config = storytellerConfig.getConfig();
     this.reader = reader;
     this.writer = writer;
     this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
-
-    ManagedChannel channel =
-        ManagedChannelBuilder.forAddress("localhost", GRPC_PORT).usePlaintext().build();
-    storytellerBlockingStub = StorytellerServiceGrpc.newBlockingStub(channel);
+    firestoreClient = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
   }
 
   /*
@@ -98,12 +93,12 @@ public class Storyteller {
     return Paths.get(config.getStoriesPath(), "shared").toString();
   }
 
-  public static String getUnsharedStoriesPath(Config config) {
-    return Paths.get(config.getStoriesPath(), "unshared").toString();
-  }
-
   private String getSharedStoriesPath() {
     return getSharedStoriesPath(config);
+  }
+
+  public static String getUnsharedStoriesPath(Config config) {
+    return Paths.get(config.getStoriesPath(), "unshared").toString();
   }
 
   private String getUnsharedStoriesPath() {
@@ -117,8 +112,7 @@ public class Storyteller {
    */
   public void share() {
     StoryList storyList = StoryList.newBuilder().addAllStory(getUnsharedStories()).build();
-    ShareStoriesRequest request = ShareStoriesRequest.newBuilder().setStories(storyList).build();
-    storytellerBlockingStub.shareStories(request);
+    firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
 
     try {
       writer.saveSharedStories(storyList);
@@ -236,10 +230,10 @@ public class Storyteller {
       case EVERY_20_MINUTES:
         return 20;
       case UNRECOGNIZED:
+      default:
         throw new IllegalStateException(
             "Unknown screenshot frequency " + config.getScreenshotFrequency());
     }
-    return -1; // We should never get here
   }
 }
 

@@ -1,12 +1,13 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.FileUtils;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import tools.storyteller.service.Protos.Story;
-import tools.storyteller.service.Protos.StoryList;
+import tools.storyteller.Protos.Story;
+import tools.storyteller.Protos.StoryList;
+
 
 /* Storyteller reader that reads story files into a Story proto. */
 @Singleton

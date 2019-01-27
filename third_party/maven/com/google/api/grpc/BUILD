@@ -6,6 +6,11 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        "//third_party/maven/com/google/api:api_common",
+        "//third_party/maven/com/google/protobuf:protobuf_java",
+        ":proto_google_common_protos"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -21,6 +26,9 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        "//third_party/maven/com/google/protobuf:protobuf_java"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
@@ -35,6 +43,11 @@ java_library(
     ],
     licenses = [
         "permissive"
+    ],
+    runtime_deps = [
+        "//third_party/maven/com/google/api:api_common",
+        "//third_party/maven/com/google/protobuf:protobuf_java",
+        ":proto_google_common_protos"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"

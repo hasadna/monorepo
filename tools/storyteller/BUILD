@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//third_party:java_grpc_library.bzl", "java_grpc_library")
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 proto_library(
     name = "storyteller_proto",
@@ -32,13 +33,18 @@ java_library(
         "//third_party/maven/io/grpc:grpc_netty",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
-        "//tools/storyteller/service",
-        "//tools/storyteller/service:service_java_grpc",
-        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
+        "@startup_os//common/firestore",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",        
     ],
+)
+
+checkstyle_test(
+    name = "storyteller-checkstyle",
+    target = ":storyteller",
+    config = "//tools/checkstyle:config.xml",
 )
 
 java_library(
@@ -56,12 +62,16 @@ java_library(
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/apache/pdfbox",
         "//third_party/maven/org/apache/pdfbox:fontbox",
-        "//tools/storyteller/service:service_java_grpc",
-        "//tools/storyteller/service:service_java_proto",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
     ],
+)
+
+checkstyle_test(
+    name = "invoicer-checkstyle",
+    target = ":invoicer",
+    config = "//tools/checkstyle:config.xml",
 )
 
 java_binary(
@@ -79,17 +89,24 @@ java_binary(
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
+        "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",
         "@startup_os//tools/reviewer/aa:aa_module",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
+)
+
+checkstyle_test(
+    name = "storyteller_tool-checkstyle",
+    target = ":storyteller_tool",
+    config = "//tools/checkstyle:config.xml",
 )
 
 STORYTELLER_UI_TOOL_DEPS = [
     ":storyteller",
     ":storyteller_java_proto",
-    "//tools/storyteller/service:service_proto",
     "//third_party/maven/com/google/guava:guava",
     "//third_party/maven/com/google/protobuf:protobuf_java",
     "@startup_os//common",
@@ -97,10 +114,10 @@ STORYTELLER_UI_TOOL_DEPS = [
     "@startup_os//tools/reviewer/aa:aa_module",
     "//third_party/maven/javax/inject:javax_inject",
     "@startup_os//common:dagger_with_annotation_processor",
-    "//tools/storyteller/service:service_java_grpc",
-    "//tools/storyteller/service:service_java_proto",
+    "@startup_os//tools/reviewer/local_server/service:auth_service",
     "//third_party/maven/io/grpc:grpc_core",
     "//third_party/maven/io/grpc:grpc_netty",
+    "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
 ]
 
 java_binary(
@@ -114,6 +131,12 @@ java_binary(
     deps = STORYTELLER_UI_TOOL_DEPS,
 )
 
+checkstyle_test(
+    name = "storyteller_time_and_screenshot_ui_tool-checkstyle",
+    target = ":storyteller_time_and_screenshot_ui_tool",
+    config = "//tools/checkstyle:config.xml",
+)
+
 java_binary(
     name = "storyteller_screenshot_ui_tool",
     srcs = [
@@ -123,4 +146,10 @@ java_binary(
     main_class = "tools.storyteller.StorytellerUiTool",
     resources = glob(["res/*"]),
     deps = STORYTELLER_UI_TOOL_DEPS,
+)
+
+checkstyle_test(
+    name = "storyteller_screenshot_ui_tool-checkstyle",
+    target = ":storyteller_screenshot_ui_tool",
+    config = "//tools/checkstyle:config.xml",
 )

@@ -1,11 +1,6 @@
-# bazel-deps-deploy is a prebuilt version of johnynek/bazel-deps
-# we cannot use it via http_archive directly for the moment
-# relevant issue: https://github.com/johnynek/bazel-deps/issues/126
-git_repository(
-    name = "startupos_binaries",
-    commit = "3eaa31c93ca9ecb22ad8c348649d1ba4f61f332c",
-    remote = "https://github.com/oferb/startupos-binaries",
-)
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 
 load("//third_party/maven:workspace.bzl", "maven_dependencies")
 
@@ -13,9 +8,9 @@ maven_dependencies()
 
 http_archive(
     name = "io_grpc_grpc_java",
-    sha256 = "5ba69890c9fe7bf476093d8863f26b861184c623ba43b70ef938a190cfb95bdc",
-    strip_prefix = "grpc-java-1.12.0",
-    urls = ["https://github.com/grpc/grpc-java/archive/v1.12.0.tar.gz"],
+    sha256 = "48425cd631afb117fd355fd961deb313b3ac8e43f2b95c1598f35fbfcf684fbc",
+    strip_prefix = "grpc-java-1.16.1",
+    urls = ["https://github.com/grpc/grpc-java/archive/v1.16.1.tar.gz"],
 )
 
 # Google Maven Repository
@@ -24,8 +19,8 @@ GMAVEN_TAG = "20180513-1"
 http_archive(
     name = "gmaven_rules",
     sha256 = "da44017f6d7bc5148a73cfd9bf8dbb1ee5a1301a596edad9181c5dc7648076ae",
-    strip_prefix = "gmaven_rules-%s" % GMAVEN_TAG,
-    url = "https://github.com/bazelbuild/gmaven_rules/archive/%s.tar.gz" % GMAVEN_TAG,
+    strip_prefix = "gmaven_rules-20180513-1",
+    url = "https://github.com/bazelbuild/gmaven_rules/archive/20180513-1.tar.gz",
 )
 
 load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
@@ -44,11 +39,23 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    urls = ["https://github.com/google/startup-os/archive/master.zip"],
-    strip_prefix = "startup-os-master"
+    urls = ["https://github.com/google/startup-os/archive/b10384644056cc9ac44388a76dbd0a4a8350e76d.zip"],
+    strip_prefix = "startup-os-b10384644056cc9ac44388a76dbd0a4a8350e76d"
 )
 # MARK: StartupOS end
 
+# StartupOS dependencies start
+http_archive(
+    name = "io_bazel_rules_docker",
+    strip_prefix = "rules_docker-0.5.1",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.5.1.tar.gz"],
+)
+http_jar(
+    name = "bazel_deps",
+    sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.01/bazel_deps.jar"],
+)
+# StartupOS dependencies end
 
 http_file(
     name = "buildifier",
@@ -67,15 +74,15 @@ http_file(
 http_file(
     name = "protoc_bin",
     executable = True,
-    sha256 = "84e29b25de6896c6c4b22067fb79472dac13cf54240a7a210ef1cac623f5231d",
-    urls = ["https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip"]
+    sha256 = "6003de742ea3fcf703cfec1cd4a3380fd143081a2eb0e559065563496af27807",
+    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip"]
 )
 
 http_file(
     name = "protoc_bin_osx",
     executable = True,
-    sha256 = "768a42032718accd12e056447b0d93d42ffcdc27d1b0f21fc1e30a900da94842",
-    urls = ["https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-osx-x86_64.zip"]
+    sha256 = "0decc6ce5beed07f8c20361ddeb5ac7666f09cf34572cca530e16814093f9c0c",
+    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-osx-x86_64.zip"]
 )
 
 bind(
@@ -90,7 +97,21 @@ bind(
 
 bind(
     name = "grpc_java_plugin",
-    actual = "@startupos_binaries//:grpc_java_plugin"
+    actual = "@startup_os//tools:grpc_java_plugin"
+)
+
+http_file(
+    name = "grpc_java_plugin_linux",
+    executable = True,
+    sha256 = "cdd93cdf24d11ccd7bad6a4d55c9bbe55e776c3972ef177974512d5aa58debd7",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.02/grpc_java_plugin_linux"],
+)
+
+http_file(
+    name = "grpc_java_plugin_osx",
+    executable = True,
+    sha256 = "e69af502d906199675454ac8af7dfddff78e6213df9abc63434c522adea6c6fb",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/grpc_java_plugin_osx"],
 )
 
 http_file(
@@ -105,4 +126,49 @@ http_file(
     executable = True,
     sha256 = "06986eeed23213c5b6a97440c6a3090eabc62ceaf7fcb72f2b95c4744128dccf",
     urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/clang_format_bin_osx"]
+)
+
+http_file(
+    name = "shfmt",
+    executable = True,
+    sha256 = "bdf8e832a903a80806b93a9ad80d8f95a70966fbec3258a565ed5edc2ae5bcdc",
+    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_linux_amd64"]
+)
+
+http_file(
+    name = "shfmt_osx",
+    executable = True,
+    sha256 = "aaaa7d639acb30853e2f5008f56526c8dd54a366219ebdc5fa7f13a15277dd0b",
+    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_darwin_amd64"]
+)
+
+# MARK: sample data for analysis pipeline start
+http_archive(
+    name = "step1_data",
+    sha256 = "23927505626ebdb8e17f64368ed8b8f47e1bd5baa4b8e6d9c1f25de045589f11",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/example_input_data_step1.zip",
+    build_file_content = 'exports_files(["file1.txt", "file2.txt"])',
+    strip_prefix = 'example_input_data_step1'
+)
+
+
+http_file(
+    name = "step1_prebuilt_output",
+    urls = ["https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt"]
+)
+
+
+http_archive(
+    name = "step1_prebuilt_zipped_output",
+    sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt.zip",
+    build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
+)
+# MARK: sample data for analysis pipeline end
+
+#gtfs_data
+http_archive(
+    name = "gtfs_data",
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+    build_file_content = 'exports_files(["agency.txt", "calendar.txt", "fare_attributes.txt", "fare_rules.txt", "routes.txt", "shapes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
 )

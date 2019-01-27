@@ -10,11 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import tools.storyteller.Protos.InvoiceCreator;
-import tools.storyteller.Protos.InvoiceReceiver;
-import tools.storyteller.Protos.InvoiceItemList;
-import tools.storyteller.Protos.InvoiceItem;
-import tools.storyteller.service.Protos.Story;
+import javax.inject.Inject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -23,7 +19,11 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
-import javax.inject.Inject;
+import tools.storyteller.Protos.InvoiceCreator;
+import tools.storyteller.Protos.InvoiceItem;
+import tools.storyteller.Protos.InvoiceItemList;
+import tools.storyteller.Protos.InvoiceReceiver;
+import tools.storyteller.Protos.Story;
 
 /* Invoicer - a class that generates invoice PDFs.
  *
@@ -98,13 +98,13 @@ public class Invoicer {
     invoicer.close();
   }
 
-  void close() throws IOException {
-    document.close();
-  }
-
   void saveInvoice(String path) throws IOException {
     fileUtils.mkdirs(path);
     document.save(path);
+  }
+
+  void close() throws IOException {
+    document.close();
   }
 
   void renderInvoice() throws IOException {
@@ -141,7 +141,7 @@ public class Invoicer {
 
     int billedToY = TOP + 115;
     int dateOfIssueY = billedToY + 40;
-    int invoicePeriodY = dateOfIssueY + 40;
+    final int invoicePeriodY = dateOfIssueY + 40;
     write("Billed To", LEFT, billedToY, BOLD, SMALL_SIZE, GRAY);
     write("Invoice Number", LEFT + 200, billedToY, BOLD, SMALL_SIZE, GRAY);
     write("Date Of Issue", LEFT + 200, dateOfIssueY, BOLD, SMALL_SIZE, GRAY);
@@ -196,7 +196,7 @@ public class Invoicer {
       PDColor color,
       boolean rightAlign)
       throws IOException {
-    PDColor currentDefaultColor = defaultColor;
+    final PDColor currentDefaultColor = defaultColor;
     PDFont font = bold ? BOLD_FONT : FONT;
     if (color != null) {
       setDefaultColor(color);
@@ -206,7 +206,7 @@ public class Invoicer {
     content.newLineAtOffset(x, MAX_Y - y);
     for (String text : texts) {
       if (rightAlign) {
-        float text_width = (font.getStringWidth(text) / 1000.0f) * fontSize;
+        final float text_width = (font.getStringWidth(text) / 1000.0f) * fontSize;
         content.moveTextPositionByAmount(-text_width, 0);
         content.showText(text);
         content.moveTextPositionByAmount(text_width, 0);
@@ -220,7 +220,7 @@ public class Invoicer {
   }
 
   void addRect(int x, int y, int width, int height) throws IOException {
-    PDColor currentDefaultColor = defaultColor;
+    final PDColor currentDefaultColor = defaultColor;
     setDefaultColor(GREEN);
     content.addRect(x, MAX_Y - y - height, width, height);
     content.fill();
@@ -237,11 +237,11 @@ public class Invoicer {
   }
 
   void addTable() throws IOException {
-    int col1x = LEFT;
-    int col2x = LEFT + 300;
-    int col3x = LEFT + 415;
-    int col4x = LEFT + 513;
-    int summaryX = LEFT + 440;
+    final int col1x = LEFT;
+    final int col2x = LEFT + 300;
+    final int col3x = LEFT + 415;
+    final int col4x = LEFT + 513;
+    final int summaryX = LEFT + 440;
     int top = TOP + 280;
     // Add table headers
     write("Description", col1x, top, BOLD, NORMAL_SIZE, GREEN);
@@ -299,7 +299,7 @@ public class Invoicer {
     String text = creator.getTagline();
     if (!Strings.isNullOrEmpty(text)) {
       int fontSize = 14;
-      float text_width = (BOLD_FONT.getStringWidth(text) / 1000.0f) * fontSize;
+      final float text_width = (BOLD_FONT.getStringWidth(text) / 1000.0f) * fontSize;
       write(text, (int) ((MAX_X + text_width) / 2), MAX_Y - 40, BOLD, fontSize, GRAY, true);
     }
   }

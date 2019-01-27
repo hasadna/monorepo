@@ -50,7 +50,10 @@ java_library(
         "permissive"
     ],
     runtime_deps = [
-        "//third_party/maven/org/checkerframework:checker_compat_qual"
+        "//third_party/maven/com/google/guava:guava",
+        "//third_party/maven/javax/inject:javax_inject",
+        "//third_party/maven/org/checkerframework:checker_compat_qual",
+        ":dagger"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"
@@ -66,6 +69,12 @@ java_library(
     ],
     licenses = [
         "permissive"
+    ],
+    runtime_deps = [
+        "//third_party/maven/com/google/guava:guava",
+        "//third_party/maven/javax/inject:javax_inject",
+        ":dagger",
+        ":dagger_producers"
     ],
     visibility = [
         "//third_party/maven:__subpackages__"
