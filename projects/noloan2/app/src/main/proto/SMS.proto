@@ -9,3 +9,7 @@ message SmsMessage {
     string sender = 1;
     string body = 2;
 }
+
+message SmsList {
+    repeated SmsMessage sms = 1;
+}

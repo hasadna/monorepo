@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     text = findViewById(R.id.TV_text);
     
     spamList = new ArrayList<>();
-    ArrayList<SmsMessage> messages = readSms();
+    ArrayList<SmsMessage> messages = readSmsFromDevice();
     
     // For testing, adding the first message read to the list of spam.
     spamList.add(SmsMessage.newBuilder().setSender(messages.get(0).getSender()).setBody(messages.get(0).getBody()).build());
@@ -53,11 +53,12 @@ public class MainActivity extends AppCompatActivity {
   }
   
   //Reads SMS. If no permissions are granted, exit app.
-  private ArrayList<SmsMessage> readSms() {
+  private ArrayList<SmsMessage> readSmsFromDevice() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
     // If don't have permission show toast and close the app
     if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+      Log.e("ReadSms", "No permission for reading SMSs");
       Toast.makeText(this, "Permission for reading sms required", Toast.LENGTH_LONG).show();
       finish();
       return null;

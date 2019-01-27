@@ -2,6 +2,7 @@ package hasadna.noloan2;
 
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,19 +21,24 @@ import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
 
 
 public class FirestoreClient {
-  private final String SMS_MESSAGE_COLLECTION = ""; // Fill this with the collection name
-
-  private CollectionReference collection;
+  private final String SMS_MESSAGE_COLLECTION = "noloan/smss";
   
+  // < - 22 > - 31 for removing and changing with the user name
+  private final String USER_SUGGEST_COLLECTION = "noloan/user_data/user/<username>/spam_suggestions";
+  
+  private CollectionReference collection;
   
   public FirestoreClient() {
     collection = FirebaseFirestore.getInstance().collection(SMS_MESSAGE_COLLECTION);
   }
   
   // Write the message to the Firestore
-  public void writeMassage(SmsMessage message) {
+  public void writeMessage(SmsMessage message) {
     FirestoreElement element = encodeMessage(message);
-    collection.add(element);
+    
+    // TODO add code to remove the <username> from the path and add the actual user name
+    
+    FirebaseFirestore.getInstance().collection(USER_SUGGEST_COLLECTION).add(element);
   }
   
   QuerySnapshot snapshot;
@@ -47,7 +53,7 @@ public class FirestoreClient {
         if (task.isSuccessful()) {
           snapshot = task.getResult();
         } else {
-          //try again later
+          Log.e("Firesotre", "Failed to get snapsot from the Firestore");
         }
       }
     });
@@ -55,7 +61,7 @@ public class FirestoreClient {
     try {
       snapshot = Tasks.await(task);
     } catch (ExecutionException | InterruptedException e) {
-      e.printStackTrace();
+      Log.e("Firesotre", "Wait interrupted");
     }
   
     if (snapshot != null) {
