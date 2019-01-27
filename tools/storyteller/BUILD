@@ -44,7 +44,6 @@ java_library(
 checkstyle_test(
     name = "storyteller-checkstyle",
     target = ":storyteller",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
@@ -72,7 +71,6 @@ java_library(
 checkstyle_test(
     name = "invoicer-checkstyle",
     target = ":invoicer",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
@@ -103,7 +101,6 @@ java_binary(
 checkstyle_test(
     name = "storyteller_tool-checkstyle",
     target = ":storyteller_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
@@ -137,7 +134,6 @@ java_binary(
 checkstyle_test(
     name = "storyteller_time_and_screenshot_ui_tool-checkstyle",
     target = ":storyteller_time_and_screenshot_ui_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
@@ -155,6 +151,5 @@ java_binary(
 checkstyle_test(
     name = "storyteller_screenshot_ui_tool-checkstyle",
     target = ":storyteller_screenshot_ui_tool",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
