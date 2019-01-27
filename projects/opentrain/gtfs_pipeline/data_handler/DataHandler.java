@@ -8,7 +8,7 @@ import java.io.Reader;
 
 //imports for Appache
 import org.apache.commons.csv.CSVFormat;
-import org. apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileInputStream;
@@ -32,15 +32,15 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 class DataHandler {
   private enum Columns {
-    STOP_ID("Stop id"),
-    STOP_CODE("Stop code"),
-    STOP_NAME("Stopname"),
-    STOP_DESC("Stop desc"),
-    STOP_LAT("Stop lat"),
-    STOP_LON("Stop lon"),
-    LOCATION_TYPE("Location type"),
-    PARENT_STATION("Parent station"),
-    ZONE_ID("Zone id");
+    STOP_ID("stop_id"),
+    STOP_CODE("stop_code"),
+    STOP_NAME("stopname"),
+    STOP_DESC("stop_desc"),
+    STOP_LAT("stop_lat"),
+    STOP_LON("stop_lon"),
+    LOCATION_TYPE("location_type"),
+    PARENT_STATION("parent_station"),
+    ZONE_ID("zone_id");
 
     // The CSV column name
     private final String name;
@@ -54,41 +54,40 @@ class DataHandler {
     }
   }
 
-  public static Stops.Builder getStops(String csvPath) {
+  public static Stops.Builder getStops(Path csvPath) {
     Stops.Builder allStopsBuilder = Stops.newBuilder();
     try {
-      CSVParser parser =
-          new CSVParser(
-              new InputStreamReader(new FileInputStream(csvPath), UTF_8),
-              CSVFormat.DEFAULT.withHeader());
+      Reader reader = Files.newBufferedReader(csvPath);
+      CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+      List<CSVRecord> csvRecords = parser.getRecords();
+      csvRecords.remove(csvRecords.get(0));
+      for (CSVRecord record : csvRecords) {
+        System.out.println(record.get(0));
+        System.out.println(record.get(1));
+        System.out.println(record.get(2));
+        System.out.println(record.get(3));
+        System.out.println(record.get(4));
+        System.out.println(record.get(5));
+        System.out.println(record.get(6));
+        System.out.println(record.get(7));
+        System.out.println(record.get(8));
 
-      for (CSVRecord record : parser) {
-        int stopId = parseInt((record.get(Columns.STOP_ID.getName())));
-        int stopCode = parseInt(record.get(Columns.STOP_CODE.getName()));
-        int stopName = parseInt(record.get(Columns.STOP_NAME.getName()));
-        String stopDesc = record.get(Columns.STOP_DESC.getName());
-        double stopLat = parseDouble(record.get(Columns.STOP_LAT.getName()));
-        double stopLon = parseDouble(record.get(Columns.STOP_LON.getName()));
-        int locationType = parseInt(record.get(Columns.LOCATION_TYPE.getName()));
-        int parentStation = parseInt(record.get(Columns.PARENT_STATION.getName()));
-        int zoneId = parseInt(record.get(Columns.ZONE_ID.getName()));
-
-        Stop stop =
+        /*allStopsBuilder.addStops(
             Stop.newBuilder()
-                .setStopId(stopId)
-                .setStopCode(stopCode)
-                .setStopName(stopName)
-                .setStopDesc(stopDesc)
-                .setStopLat(stopLat)
-                .setStopLon(stopLon)
-                .setLocationType(locationType)
-                .setParentStation(parentStation)
-                .setZoneId(zoneId)
-                .build();
+                .setStopId(parseInt(record.get(0)))
+                .setStopCode(parseInt(record.get(1)))
+                .setStopName(parseInt(record.get(2)))
+                .setStopDesc(record.get(3))
+                .setStopLat(parseDouble(record.get(4)))
+                .setStopLon(parseDouble(record.get(5)))
+                .setLocationType(parseInt(record.get(6)))
+                .setParentStation(parseInt(record.get(7)))
+                .setZoneId(parseInt(record.get(8)))
+                .build());*/
 
-                allStopsBuilder.addStops(stop);
       }
-    } catch (IOException | ParseException e) {
+
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
     return allStopsBuilder;
@@ -117,8 +116,8 @@ class DataHandler {
             // TODO: Read the files in a streaming manner since they are large
            // Path curPath = Paths.get(path);
            // output += curPath.getFileName() + " lines: ";
-            Files.write(outputPath, TextFormat.printToString(getStops(stops_txt.toString())).getBytes());
-       // }
+           Files.write(outputPath, TextFormat.printToString(getStops(stops_txt)).getBytes());
+           // }
        // System.out.print(output);
     }
 }
