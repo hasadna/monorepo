@@ -14,25 +14,25 @@ import javax.inject.Singleton;
 @Singleton
 public class DataUploader {
 
-    private FileUtils fileUtils;
+  private FileUtils fileUtils;
 
-    @Inject
-    DataUploader(FileUtils fileUtils) {
-        this.fileUtils = fileUtils;
-    }
+  @Inject
+  DataUploader(FileUtils fileUtils) {
+    this.fileUtils = fileUtils;
+  }
 
-    void run() throws IOException {
-      //TODO Implement
-    }
+  void run() throws IOException {
+    //TODO Implement
+  }
 
-    @Singleton
-    @Component(modules = CommonModule.class)
-    interface ToolComponent {
-        DataUploader getTool();
-    }
+  @Singleton
+  @Component(modules = CommonModule.class)
+  interface ToolComponent {
+    DataUploader getTool();
+  }
 
-    public static void main(String[] args) throws IOException {
-        Flags.parseCurrentPackage(args);
-        DaggerDataUploader_ToolComponent.create().getTool().run();
-    }
+  public static void main(String[] args) throws IOException {
+    Flags.parseCurrentPackage(args);
+    DaggerDataUploader_ToolComponent.create().getTool().run();
+  }
 }
