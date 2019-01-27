@@ -8,7 +8,7 @@ import com.google.startupos.common.StringBuilder;
 import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
 import com.google.startupos.common.firestore.FirestoreProtoClient;
-import com.google.startupos.tools.localserver.service.AuthService;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;

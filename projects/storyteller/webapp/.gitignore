@@ -7,6 +7,7 @@
 
 # dependencies
 /node_modules
+/src/app/core/proto
 
 # profiling files
 chrome-profiler-events.json
@@ -27,6 +28,7 @@ speed-measure-plugin.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
 # misc
 /.sass-cache
