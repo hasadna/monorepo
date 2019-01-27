@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { FirebaseModule } from './import/firebase/firebase.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FirebaseModule
   ],
   providers: [],
   bootstrap: [AppComponent]

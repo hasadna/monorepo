@@ -1,0 +1,40 @@
+syntax = "proto3";
+package com.hasadna.protobin_reader;
+
+option java_package = "com.hasadna.protobin_reader";
+option java_outer_classname = "Protos";
+
+message Contribution {
+  int32 contributionId = 1;
+  int32 userId = 2;
+  int32 projectId = 3;
+  string contributionMessage = 4;
+  string contributionUrl = 5;
+}
+
+message User {
+  int32 userId = 1;
+  string userName = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string email = 5;
+  repeated string socialNetwork = 6;
+  repeated string skill = 7;
+  repeated int32 project = 8;
+  repeated Contribution userContribution = 9;
+  string userImg = 10;
+}
+
+message Project {
+  int32 projectId = 1;
+  string projectName = 2;
+  string projectDescription = 3;
+  string projectSite = 4;
+  repeated int32 contributor = 5;
+  repeated string projectContribution = 6;
+}
+
+message Data {
+  repeated User user = 1;
+  repeated Project project = 2;
+}
