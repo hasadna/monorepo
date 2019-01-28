@@ -9,7 +9,7 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { FirebaseModule } from './import/firebase/firebase.module';
 import { EncodingService } from './services/encoding.service';
-import {FirebaseService } from './services/firbase.service';
+import { FirebaseService } from './services/firbase.service';
 
 @NgModule({
   declarations: [
