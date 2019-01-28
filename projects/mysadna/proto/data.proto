@@ -1,7 +1,7 @@
 syntax = "proto3";
-package com.hasadna.protobin_reader;
+package com.hasadna.mysadna;
 
-option java_package = "com.hasadna.protobin_reader";
+option java_package = "com.hasadna.mysadna";
 option java_outer_classname = "Protos";
 
 message Contribution {
@@ -31,7 +31,7 @@ message Project {
   string projectDescription = 3;
   string projectSite = 4;
   repeated int32 contributor = 5;
-  repeated string projectContribution = 6;
+  repeated Contribution projectContribution = 6;
 }
 
 message Data {

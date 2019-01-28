@@ -1,4 +1,4 @@
-// package: com.hasadna.protobin_reader
+// package: com.hasadna.mysadna
 // file: data.proto
 
 import * as jspb from "google-protobuf";
@@ -122,9 +122,9 @@ export class Project extends jspb.Message {
   addContributor(value: number, index?: number): number;
 
   clearProjectcontributionList(): void;
-  getProjectcontributionList(): Array<string>;
-  setProjectcontributionList(value: Array<string>): void;
-  addProjectcontribution(value: string, index?: number): string;
+  getProjectcontributionList(): Array<Contribution>;
+  setProjectcontributionList(value: Array<Contribution>): void;
+  addProjectcontribution(value?: Contribution, index?: number): Contribution;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Project.AsObject;
@@ -143,7 +143,7 @@ export namespace Project {
     projectdescription: string,
     projectsite: string,
     contributorList: Array<number>,
-    projectcontributionList: Array<string>,
+    projectcontributionList: Array<Contribution.AsObject>,
   }
 }
 
