@@ -1,16 +1,18 @@
-<div class="app-header">
-  <div class="app-logo">
-    <img src="/assets/images/pkw-logo.png" class="my-sadna-logo">
-    <h3 class="my-sadna">MySadna</h3>
+<div class="app-container">
+  <div class="app-header">
+    <div class="app-logo">
+      <img src="/assets/images/pkw-logo.png" class="my-sadna-logo">
+      <h3 class="my-sadna">MySadna</h3>
+    </div>
+    <div class="app-navigation-bar">
+      <nav class="app-navigation">
+        <a [routerLink]="'/projects'">Projects</a>
+        <a [routerLink]="'/users'">Users</a>
+      </nav>
+    </div>
   </div>
-  <div class="app-navigation-bar">
-    <nav class="app-navigation">
-      <a [routerLink]="'/projects'">Projects</a>
-      <a [routerLink]="'/users'">Users</a>
-    </nav>
+  <div class="app">
+  
   </div>
+  <router-outlet></router-outlet>
 </div>
-<div class="app">
-
-</div>
-<router-outlet></router-outlet>

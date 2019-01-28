@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { EncodingService } from './services/encoding.service';
 import { FirebaseService } from './services/firbase.service';
-import { Data } from './proto';
+import { Data } from '@/proto';
 
 
 @Component({
@@ -11,7 +11,6 @@ import { Data } from './proto';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'mysadna';
   data: Data;
 
   constructor(
