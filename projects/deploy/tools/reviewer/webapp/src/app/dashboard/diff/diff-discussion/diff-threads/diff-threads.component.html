@@ -1,0 +1,15 @@
+<div class="cr-header">
+  General discussions {{ discussionService.getHeader(threads) }}
+</div>
+<div class="threads">
+  <!-- Threads -->
+  <div class="thread" *ngFor="let thread of threadList; let threadsIndex = index;">
+    <cr-thread
+      [diff]="diff"
+      [thread]="thread"
+      [commentExpandedMap]="threadStateService.getState(thread)"
+      (saveStateEmitter)="saveStave(thread, $event)"
+      (isFreezeModeEmitter)="threadStateService.saveFreezeMode(thread, $event)"
+    ></cr-thread>
+  </div>
+</div>

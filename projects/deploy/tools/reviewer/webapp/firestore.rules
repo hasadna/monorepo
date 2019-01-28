@@ -1,0 +1,20 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth.uid != null;
+    }
+    match /reviewer/config {
+      allow read: if true;
+    }
+    match /reviewer/config_binary {
+      allow read: if true;
+    }
+    match /reviewer/registry {
+      allow read: if true;
+    }
+    match /reviewer/registry_binary {
+      allow read: if true;
+    }
+  }
+}
+

@@ -1,0 +1,98 @@
+syntax = "proto3";
+package com.google.startupos.tools.build_file_generator;
+
+option java_package = "com.google.startupos.tools.build_file_generator";
+option java_outer_classname = "Protos";
+
+message Import {
+  string package = 1;
+  string class_name = 2;
+  bool whole_package_import = 3;
+  bool is_static = 4;
+}
+
+message JavaClass {
+  string package = 1;
+  repeated Import import = 2;
+  string class_name = 3;
+  bool has_main_method = 4;
+  bool is_test_class = 5;
+}
+
+message ProtoFile {
+  string package = 1;
+  string file_name = 2;
+  string java_package = 3;
+  string java_outer_classname = 4;
+  repeated string messages = 5;
+  repeated string services = 6;
+  repeated string enums = 7;
+  repeated string imports = 8;
+}
+
+message ThirdPartyDep {
+  string target = 1;
+  repeated string java_class = 2;
+}
+
+message ThirdPartyDeps { repeated ThirdPartyDep third_party_dep = 1; }
+
+message BuildFile {
+  message LoadExtensionStatement {
+    string path = 1;
+    string symbol = 2;
+  }
+
+  message ProtoLibrary {
+    string name = 1;
+    repeated string deps = 2;
+    repeated string srcs = 3;
+  }
+
+  message JavaProtoLibrary {
+    string name = 1;
+    repeated string deps = 2;
+  }
+
+  message JavaLibrary {
+    string name = 1;
+    repeated string srcs = 2;
+    repeated string deps = 3;
+  }
+
+  message JavaBinary {
+    string name = 1;
+    repeated string srcs = 2;
+    string main_class = 3;
+    repeated string deps = 4;
+  }
+
+  message JavaTest {
+    string name = 1;
+    repeated string srcs = 2;
+    repeated string resources = 3;
+    string test_class = 4;
+    repeated string deps = 5;
+  }
+
+  message CheckstyleTestExtension {
+    string name = 1;
+    string target = 2;
+  }
+
+  message JavaGrpcLibrary {
+    string name = 1;
+    repeated string srcs = 2;
+    repeated string tags = 3;
+    repeated string deps = 4;
+  }
+
+  repeated ProtoLibrary proto_library = 1;
+  repeated JavaProtoLibrary java_proto_library = 2;
+  repeated JavaLibrary java_library = 3;
+  repeated JavaBinary java_binary = 4;
+  repeated JavaTest java_test = 5;
+  repeated LoadExtensionStatement extension = 6;
+  repeated CheckstyleTestExtension checkstyle_test = 7;
+  repeated JavaGrpcLibrary java_grpc_library = 8;
+}

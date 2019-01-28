@@ -1,0 +1,27 @@
+.dashboard {
+  >.diff-group {
+    >.diff-group-title {
+      >.group-name {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+    }
+    >.diff {
+      display: flex;
+      padding: 10px 23px;
+      border-bottom: 1px solid #d8d8d8;
+      text-decoration: none;
+      color: #1a1a1a;
+      >div {
+        font-size: 14px;
+      }
+    }
+    .column-id { width: 8%; }
+    .column-author,
+    .column-status { width: 11%; }
+    .column-action,
+    .column-reviewers,
+    .column-workspace { width: 15%; }
+    .column-description { width: 25%; }
+  }
+}

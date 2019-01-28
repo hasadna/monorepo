@@ -1,0 +1,23 @@
+<!-- Loading -->
+<page-loading [isLoading]="isLoading"></page-loading>
+
+<!-- Diff-->
+<ng-container *ngIf="!isLoading">
+  <diff-header [diff]="diff"></diff-header>
+  <diff-files [diff]="diff" [files]="files"></diff-files>
+  <diff-discussion [diff]="diff"></diff-discussion>
+
+  <!-- Button to delete the diff -->
+  <div class="cr-panel cr-titlebar">
+    <div class="title">
+      <span class="bold">Extra actions</span>
+    </div>
+    <div class="buttons" fxFlex *ngIf="diffCanBeDeleted()">
+      <button
+        mat-button
+        class="cr-light-button grey-button"
+        (click)="deleteDiff()"
+      >Delete Diff</button>
+    </div>
+  </div>
+</ng-container>

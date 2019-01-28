@@ -1,0 +1,23 @@
+<div class="cr-header">
+  Code discussions {{ discussionService.getHeader(threads) }}
+</div>
+<div class="file-groups">
+  <!-- List of groups -->
+  <div class="file-group" *ngFor="let fileGroup of fileGroupList; let fileGroupIndex = index;">
+    <a
+      class="filename"
+      [routerLink]="fileGroup[0].getFile().getFilenameWithRepo()"
+    >{{ getFileLabel(fileGroup) }}</a>
+    <!-- List of threads in a group -->
+    <div class="thread" *ngFor="let thread of fileGroup">
+      <cr-thread
+        [diff]="diff"
+        [thread]="thread"
+        [commentExpandedMap]="threadStateService.getState(thread)"
+        (saveStateEmitter)="saveStave(thread, $event)"
+        (isFreezeModeEmitter)="threadStateService.saveFreezeMode(thread, $event)"
+      ></cr-thread>
+    </div>
+    <div class="hr" *ngIf="fileGroupIndex !== fileGroupList.length - 1"></div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div *ngIf="!storylist">
+  Loading
+</div>
+<div *ngIf="storylist">
+  <div *ngFor="let storylistChild of storylist">
+    <div class="container">
+      <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+        <div *ngFor="let storyItem of story.getItemList()">
+          <div *ngIf="storyItem.getScreenshot() != ''">
+            <div>
+                <strong>
+                    {{story.getProject()}}
+                  </strong>
+            </div>
+                  
+              <img src="data:image/png;base64,{{storyItem.getScreenshot_asB64()}}" height="600" width="800"/>
+              <div>
+                  <strong>
+                      Notes: 
+                    </strong> 
+                    {{storyItem.getOneliner()}}
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
