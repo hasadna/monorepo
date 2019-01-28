@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 
 import { config } from './config';
 
@@ -16,6 +16,7 @@ import { config } from './config';
   providers: [
     AngularFireDatabase,
     AngularFireAuth,
+    { provide: FirestoreSettingsToken, useValue: {} },
   ],
   exports: [
     AngularFirestoreModule,
