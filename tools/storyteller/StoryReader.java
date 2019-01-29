@@ -1,10 +1,9 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
-import com.google.protobuf.ByteString;
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
-
+import com.google.startupos.common.FileUtils;
+import com.google.protobuf.ByteString;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

@@ -9,18 +9,17 @@ import com.google.startupos.common.Strings;
 import com.google.startupos.common.Time;
 import com.google.startupos.common.firestore.FirestoreProtoClient;
 import com.google.startupos.tools.reviewer.local_server.service.AuthService;
-import tools.storyteller.Protos.Config;
-import tools.storyteller.Protos.Story;
-import tools.storyteller.Protos.StoryItem;
-import tools.storyteller.Protos.StoryList;
-
-import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import javax.inject.Inject;
+import tools.storyteller.Protos.Config;
+import tools.storyteller.Protos.Story;
+import tools.storyteller.Protos.StoryItem;
+import tools.storyteller.Protos.StoryList;
 
 /*
  * Storyteller logic.
@@ -233,10 +232,10 @@ public class Storyteller {
       case EVERY_20_MINUTES:
         return 20;
       case UNRECOGNIZED:
+      default:
         throw new IllegalStateException(
             "Unknown screenshot frequency " + config.getScreenshotFrequency());
     }
-    return -1; // We should never get here
   }
 }
 

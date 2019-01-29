@@ -1,12 +1,12 @@
 package tools.storyteller;
 
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.FileUtils;
 import java.util.Arrays;
-import tools.storyteller.Protos.Config;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.inject.Named;
+import javax.inject.Singleton;
+import tools.storyteller.Protos.Config;
 
 /*
  * Config for Storyteller

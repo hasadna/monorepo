@@ -1,23 +1,23 @@
 package projects.noloan.app.filter;
 
 import com.google.common.collect.ImmutableList;
-import com.google.startupos.common.FileUtils;
 import com.google.common.flogger.FluentLogger;
+import com.google.startupos.common.CommonModule;
+import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.FlagDesc;
 import com.google.startupos.common.flags.Flags;
+import dagger.Component;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import projects.noloan.app.Protos.SmsMessage;
 import projects.noloan.app.Protos.SmsMessageList;
-import com.google.startupos.common.CommonModule;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import dagger.Component;
 
 /** A tool for running the SMS Spam filter. */
 @Singleton
