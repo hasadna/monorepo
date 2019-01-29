@@ -89,20 +89,20 @@ public class Storyteller {
     }
   }
 
-  public static String getSharedStoriesPath(Config config) {
+  public static String getSharedStoriesFolderPath(Config config) {
     return Paths.get(config.getStoriesPath(), "shared").toString();
   }
 
-  public static String getUnsharedStoriesPath(Config config) {
+  public static String getUnsharedStoriesFolderPath(Config config) {
     return Paths.get(config.getStoriesPath(), "unshared").toString();
   }
 
-  private String getSharedStoriesPath() {
-    return getSharedStoriesPath(config);
+  private String getSharedStoriesFolderPath() {
+    return getSharedStoriesFolderPath(config);
   }
 
-  private String getUnsharedStoriesPath() {
-    return getUnsharedStoriesPath(config);
+  private String getUnsharedStoriesFolderPath() {
+    return getUnsharedStoriesFolderPath(config);
   }
 
   /*
@@ -111,14 +111,17 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    StoryList storyList = StoryList.newBuilder().addAllStory(reader.getStoriesWithScreenshots(
-        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))).build();
+    // TODO: Add the ability to save stories larger than 1 MB to Firebase. It can be done by 2 options:
+    // 1. Separate the `StoryList` into items and upload those. Each item should fit 1MB.
+    // 2. Upload the images themselves to Firebase Storage and just store the filename in `StoryList`.
+    StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
+        fileUtils.joinPaths(getUnsharedStoriesFolderPath()), true)).build();
     firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
 
     try {
       writer.saveSharedStories(StoryList.newBuilder().addAllStory(getUnsharedStories()).build());
       System.out.println(storyList.getStoryCount() + " stories shared");
-      fileUtils.clearDirectory(getUnsharedStoriesPath());
+      fileUtils.clearDirectory(getUnsharedStoriesFolderPath());
       System.out.println("Folder with unshared stories is cleared.");
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -150,7 +153,7 @@ public class Storyteller {
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
     sb.appendln("=======================");
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
+    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesFolderPath(), false);
     sb.appendln(
         storiesToString(
             stories.subList(
@@ -160,20 +163,20 @@ public class Storyteller {
     sb.appendln("=========================");
     sb.appendln(
         storiesToString(
-            reader.getStories(
+            reader.getUnsharedStories(
                 fileUtils.joinPaths(
-                    getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
+                    getUnsharedStoriesFolderPath()), false)));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
+    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesFolderPath(), false);
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
     long startTime = Time.getMillis(lastMonth.atDay(1));
-    // For sime reason, Time.format formats endTimeForFilter on the next day,
+    // For same reason, Time.format formats endTimeForFilter on the next day,
     //     so we separate the exact time as endTimeForFilter and the
     //     not-exact-but-formats-correctly as endTime
     long endTimeForFilter = Time.getMillis(lastMonth.atEndOfMonth().plusDays(1)) - 1;
@@ -218,8 +221,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getStories(
-        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+    return reader.getUnsharedStories(fileUtils.joinPaths(getUnsharedStoriesFolderPath()), false);
   }
 
   private int getScreenshotFrequency() {
