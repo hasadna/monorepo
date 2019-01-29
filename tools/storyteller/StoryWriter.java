@@ -91,7 +91,11 @@ public class StoryWriter {
     try {
       Robot robot = new Robot();
       BufferedImage screenshot = robot.createScreenCapture(rectangle);
-      ImageIO.write(screenshot, "jpg", Paths.get(getUnsharedStoriesFolderPath(), filename).toFile());
+      ImageIO.write(
+          screenshot,
+          "jpg",
+          Paths.get(getUnsharedStoriesFolderPath(), filename)
+              .toFile());
     } catch (AWTException | IOException e) {
       log.atSevere().withCause(e).log("Error in saving screenshot");
     }

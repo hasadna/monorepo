@@ -2,26 +2,25 @@ package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.flogger.FluentLogger;
-import com.google.startupos.common.FileUtils;
 import com.google.protobuf.ByteString;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import tools.storyteller.Protos.Story;
-import tools.storyteller.Protos.StoryList;
-
+import com.google.startupos.common.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import tools.storyteller.Protos.Story;
+import tools.storyteller.Protos.StoryList;
 
 /* Storyteller reader that reads story files into a Story proto. */
 @Singleton
 public class StoryReader {
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
-  // Maximum size for a document in Firestore is 1,048,576 bytes. We reserve 10,240 bytes for other fields.
+  // Maximum size for a document in Firestore is 1,048,576 bytes.
+  // We reserve 10,240 bytes for other fields.
   private static final int MAX_SCREENSHOT_SIZE_BYTES = 1038336;
 
   private FileUtils fileUtils;
@@ -39,7 +38,8 @@ public class StoryReader {
     return getStories(storiesFolderPath, loadScreenshots, StoriesState.SHARED);
   }
 
-  private ImmutableList<Story> getStories(String storiesFolderPath, boolean loadScreenshots, StoriesState state) {
+  private ImmutableList<Story> getStories(
+      String storiesFolderPath, boolean loadScreenshots, StoriesState state) {
     List<String> storiesFilePaths = new ArrayList<>();
     try {
       storiesFilePaths = fileUtils
@@ -47,7 +47,10 @@ public class StoryReader {
           .stream()
           .filter(
               file -> file.endsWith(
-                      state.equals(StoriesState.UNSHARED) ? StorytellerConfig.STORIES_FILENAME : ".prototxt"))
+                      state.equals(
+                          StoriesState.UNSHARED)
+                          ? StorytellerConfig.STORIES_FILENAME
+                          : ".prototxt"))
           .sorted()
           .map(filename -> fileUtils.joinPaths(storiesFolderPath, filename))
           .collect(Collectors.toList());
@@ -61,7 +64,8 @@ public class StoryReader {
       storiesFilePaths.forEach(
           path
               -> storiesBuilder.addAllStory(
-              ((StoryList) fileUtils.readPrototxtUnchecked(path, StoryList.newBuilder())).getStoryList()));
+              ((StoryList) fileUtils.readPrototxtUnchecked(
+                  path, StoryList.newBuilder())).getStoryList()));
       if (!loadScreenshots) {
         return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
       } else {
@@ -70,7 +74,8 @@ public class StoryReader {
     }
   }
 
-  private ImmutableList<Story> addScreenshots(StoryList.Builder storiesBuilder, String storiesFolderPath) {
+  private ImmutableList<Story> addScreenshots(
+      StoryList.Builder storiesBuilder, String storiesFolderPath) {
     for (Protos.Story.Builder story : storiesBuilder.getStoryBuilderList()) {
       for (Protos.StoryItem.Builder storyItem : story.getItemBuilderList()) {
         storyItem
@@ -81,7 +86,6 @@ public class StoryReader {
     }
     return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
   }
-
 
   private ByteString readScreenshot(String path) {
     ByteString result = ByteString.EMPTY;

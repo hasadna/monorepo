@@ -92,12 +92,12 @@ public class Storyteller {
     return Paths.get(config.getStoriesPath(), "shared").toString();
   }
 
-  public static String getUnsharedStoriesFolderPath(Config config) {
-    return Paths.get(config.getStoriesPath(), "unshared").toString();
-  }
-
   private String getSharedStoriesFolderPath() {
     return getSharedStoriesFolderPath(config);
+  }
+
+  public static String getUnsharedStoriesFolderPath(Config config) {
+    return Paths.get(config.getStoriesPath(), "unshared").toString();
   }
 
   private String getUnsharedStoriesFolderPath() {
@@ -110,9 +110,11 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    // TODO: Add the ability to save stories larger than 1 MB to Firebase. It can be done by 2 options:
-    // 1. Separate the `StoryList` into items and upload those. Each item should fit 1MB.
-    // 2. Upload the images themselves to Firebase Storage and just store the filename in `StoryList`.
+    // TODO: Add the ability to save stories larger than 1 MB to Firebase.
+    //  It can be done by 2 options:
+    //  1. Separate the `StoryList` into items and upload those. Each item should fit 1MB.
+    //  2. Upload the images themselves to Firebase Storage and
+    //  just store the filename in `StoryList`.
     StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
         fileUtils.joinPaths(getUnsharedStoriesFolderPath()), true)).build();
     firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
