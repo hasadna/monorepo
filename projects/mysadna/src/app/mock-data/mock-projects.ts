@@ -11,9 +11,26 @@ export const PROJECTS: Project[] = [
     projectSite: 'https://github.com/hasadna/OpenTrainCommunity',
     contributors: [1, 2, 3],
     projectContributions: [
-      'Added profile pages and project pages.',
-      'Added profile and project pages.',
-      'Added profile pages and project pages.'
+      {
+        contributionId: 1,
+        userId: 1, projectId: 1,
+        contributionMessage: 'Added profile pages and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      },
+      {
+        contributionId: 2,
+        userId: 1,
+        projectId: 1,
+        contributionMessage: 'Added profile and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      },
+      {
+        contributionId: 4,
+        userId: 1,
+        projectId: 1,
+        contributionMessage: 'Added profile pages and project pages.',
+        contributionUrl: 'https://github.com/proj/demo/mysadna/commit/34ed7598d30022b798a75b375eb254a1f0682ecg'
+      }
     ]
   },
   {

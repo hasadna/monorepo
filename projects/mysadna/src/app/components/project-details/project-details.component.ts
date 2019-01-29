@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../models/user';
-import { Project } from '../models/project';
-import { DataService } from '../services/data.service';
+import { User } from '@/models/user';
+import { Project } from '@/models/project';
+import { DataService } from '@/services/data.service';
 
 @Component({
   selector: 'app-project-details',

@@ -7,5 +7,5 @@ export class Project {
     projectDescription: string;
     projectSite: string;
     contributors: number[];
-    projectContributions: string[];
+    projectContributions: Contribution[];
 }
