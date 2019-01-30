@@ -41,7 +41,7 @@ public class StoryWriter {
     this.allStories =
         new ArrayList<>(
             reader.getUnsharedStories(
-                fileUtils.joinPaths(getUnsharedStoriesFolderPath()), false));
+                fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath()), false));
   }
 
   void startStory(String project) {
@@ -71,12 +71,12 @@ public class StoryWriter {
   void saveStoryItem(String project, String story) {
     // Replace empty with one space, so that the prototxt will have the entry
     story = story.isEmpty() ? " " : story;
-    String screenshotFilename = saveScreenshot();
+    String filename = saveScreenshot();
     StoryItem storyItem =
         StoryItem.newBuilder()
             .setTimeMs(getCurrentTimestamp())
             .setOneliner(story)
-            .setScreenshotFilename(screenshotFilename)
+            .setScreenshotFilename(filename)
             .build();
     currentStoryBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp()).addItem(storyItem);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
@@ -85,7 +85,7 @@ public class StoryWriter {
 
   // Returns filename of a saved screenshot
   String saveScreenshot() {
-    fileUtils.mkdirs(getUnsharedStoriesFolderPath());
+    fileUtils.mkdirs(getAbsUnsharedStoriesFolderPath());
     Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
     String filename = getCurrentTimeString() + ".jpg";
     try {
@@ -94,7 +94,7 @@ public class StoryWriter {
       ImageIO.write(
           screenshot,
           "jpg",
-          Paths.get(getUnsharedStoriesFolderPath(), filename)
+          Paths.get(getAbsUnsharedStoriesFolderPath(), filename)
               .toFile());
     } catch (AWTException | IOException e) {
       log.atSevere().withCause(e).log("Error in saving screenshot");
@@ -103,13 +103,13 @@ public class StoryWriter {
   }
 
   void saveSharedStories(StoryList stories) throws IOException {
-    final String sharedStoriesFolderPath = Storyteller.getSharedStoriesFolderPath(config);
+    final String absPath = Storyteller.getAbsSharedStoriesFolderPath(config);
     fileUtils.copyDirectoryToDirectory(
-        getUnsharedStoriesFolderPath(),
-        sharedStoriesFolderPath,
+        getAbsUnsharedStoriesFolderPath(),
+        absPath,
         StorytellerConfig.STORIES_FILENAME);
     fileUtils.writePrototxt(stories,
-        fileUtils.joinPaths(sharedStoriesFolderPath, getCurrentTimeString() + ".prototxt"));
+        fileUtils.joinPaths(absPath, getCurrentTimeString() + ".prototxt"));
   }
 
   private void updateCurrentStory(String project) {
@@ -120,7 +120,7 @@ public class StoryWriter {
   private void saveStories() {
     fileUtils.writePrototxtUnchecked(
         StoryList.newBuilder().addAllStory(allStories).build(),
-        fileUtils.joinPaths(getUnsharedStoriesFolderPath(), StorytellerConfig.STORIES_FILENAME));
+        fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private long getCurrentTimestamp() {
@@ -131,8 +131,8 @@ public class StoryWriter {
     return DATE_FORMATTER.format(new Date(System.currentTimeMillis()));
   }
 
-  private String getUnsharedStoriesFolderPath() {
-    return Storyteller.getUnsharedStoriesFolderPath(config);
+  private String getAbsUnsharedStoriesFolderPath() {
+    return Storyteller.getAbsUnsharedStoriesFolderPath(config);
   }
 }
 

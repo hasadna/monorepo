@@ -30,20 +30,20 @@ public class StoryReader {
     this.fileUtils = fileUtils;
   }
 
-  ImmutableList<Story> getUnsharedStories(String storiesFolderPath, boolean loadScreenshots) {
-    return getStories(storiesFolderPath, loadScreenshots, StoriesState.UNSHARED);
+  ImmutableList<Story> getUnsharedStories(String absPath, boolean loadScreenshots) {
+    return getStories(absPath, loadScreenshots, StoriesState.UNSHARED);
   }
 
-  ImmutableList<Story> getSharedStories(String storiesFolderPath, boolean loadScreenshots) {
-    return getStories(storiesFolderPath, loadScreenshots, StoriesState.SHARED);
+  ImmutableList<Story> getSharedStories(String absPath, boolean loadScreenshots) {
+    return getStories(absPath, loadScreenshots, StoriesState.SHARED);
   }
 
   private ImmutableList<Story> getStories(
-      String storiesFolderPath, boolean loadScreenshots, StoriesState state) {
-    List<String> storiesFilePaths = new ArrayList<>();
+      String absPath, boolean loadScreenshots, StoriesState state) {
+    List<String> absPaths = new ArrayList<>();
     try {
-      storiesFilePaths = fileUtils
-          .listContents(storiesFolderPath)
+      absPaths = fileUtils
+          .listContents(absPath)
           .stream()
           .filter(
               file -> file.endsWith(
@@ -52,16 +52,16 @@ public class StoryReader {
                           ? StorytellerConfig.STORIES_FILENAME
                           : ".prototxt"))
           .sorted()
-          .map(filename -> fileUtils.joinPaths(storiesFolderPath, filename))
+          .map(filename -> fileUtils.joinPaths(absPath, filename))
           .collect(Collectors.toList());
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if (storiesFilePaths.isEmpty()) {
+    if (absPaths.isEmpty()) {
       return ImmutableList.of();
     } else {
       StoryList.Builder storiesBuilder = StoryList.newBuilder();
-      storiesFilePaths.forEach(
+      absPaths.forEach(
           path
               -> storiesBuilder.addAllStory(
               ((StoryList) fileUtils.readPrototxtUnchecked(
@@ -69,28 +69,27 @@ public class StoryReader {
       if (!loadScreenshots) {
         return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
       } else {
-        return addScreenshots(storiesBuilder, storiesFolderPath);
+        return addScreenshots(storiesBuilder, absPath);
       }
     }
   }
 
   private ImmutableList<Story> addScreenshots(
-      StoryList.Builder storiesBuilder, String storiesFolderPath) {
+      StoryList.Builder storiesBuilder, String absPath) {
     for (Protos.Story.Builder story : storiesBuilder.getStoryBuilderList()) {
       for (Protos.StoryItem.Builder storyItem : story.getItemBuilderList()) {
         storyItem
             .setScreenshot(readScreenshot(
-                fileUtils.joinPaths(storiesFolderPath,
-                    storyItem.getScreenshotFilename())));
+                fileUtils.joinPaths(absPath, storyItem.getScreenshotFilename())));
       }
     }
     return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
   }
 
-  private ByteString readScreenshot(String path) {
+  private ByteString readScreenshot(String absFilename) {
     ByteString result = ByteString.EMPTY;
     // TODO: Use fileUtils.getFile() when it will be available
-    File file = new File(path);
+    File file = new File(absFilename);
     long fileSize = file.length();
     if (fileSize < MAX_SCREENSHOT_SIZE_BYTES) {
       try {
@@ -103,7 +102,7 @@ public class StoryReader {
           "Screenshot size is %d bytes, %d bytes larger than maximum size. Path: %s",
           fileSize,
           fileSize - MAX_SCREENSHOT_SIZE_BYTES,
-          path);
+          absFilename);
     }
     return result;
   }

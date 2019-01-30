@@ -88,20 +88,20 @@ public class Storyteller {
     }
   }
 
-  public static String getSharedStoriesFolderPath(Config config) {
+  public static String getAbsSharedStoriesFolderPath(Config config) {
     return Paths.get(config.getStoriesPath(), "shared").toString();
   }
 
-  private String getSharedStoriesFolderPath() {
-    return getSharedStoriesFolderPath(config);
+  private String getAbsSharedStoriesFolderPath() {
+    return getAbsSharedStoriesFolderPath(config);
   }
 
-  public static String getUnsharedStoriesFolderPath(Config config) {
+  public static String getAbsUnsharedStoriesFolderPath(Config config) {
     return Paths.get(config.getStoriesPath(), "unshared").toString();
   }
 
-  private String getUnsharedStoriesFolderPath() {
-    return getUnsharedStoriesFolderPath(config);
+  private String getAbsUnsharedStoriesFolderPath() {
+    return getAbsUnsharedStoriesFolderPath(config);
   }
 
   /*
@@ -116,13 +116,13 @@ public class Storyteller {
     //  2. Upload the images themselves to Firebase Storage and
     //  just store the filename in `StoryList`.
     StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
-        fileUtils.joinPaths(getUnsharedStoriesFolderPath()), true)).build();
+        fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath()), true)).build();
     firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
 
     try {
       writer.saveSharedStories(StoryList.newBuilder().addAllStory(getUnsharedStories()).build());
       System.out.println(storyList.getStoryCount() + " stories shared");
-      fileUtils.clearDirectory(getUnsharedStoriesFolderPath());
+      fileUtils.clearDirectory(getAbsUnsharedStoriesFolderPath());
       System.out.println("Folder with unshared stories is cleared.");
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -154,11 +154,14 @@ public class Storyteller {
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
     sb.appendln("=======================");
-    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesFolderPath(), false);
-    sb.appendln(
-        storiesToString(
-            stories.subList(
-                Math.max(stories.size() - RECENT_SHARED_STORIES_COUNT, 0), stories.size())));
+
+    if (fileUtils.folderExists(getAbsSharedStoriesFolderPath())) {
+      ImmutableList<Story> stories = reader.getSharedStories(getAbsSharedStoriesFolderPath(), false);
+      sb.appendln(
+          storiesToString(
+              stories.subList(
+                  Math.max(stories.size() - RECENT_SHARED_STORIES_COUNT, 0), stories.size())));
+    }
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
@@ -166,13 +169,13 @@ public class Storyteller {
         storiesToString(
             reader.getUnsharedStories(
                 fileUtils.joinPaths(
-                    getUnsharedStoriesFolderPath()), false)));
+                    getAbsUnsharedStoriesFolderPath()), false)));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesFolderPath(), false);
+    ImmutableList<Story> stories = reader.getSharedStories(getAbsSharedStoriesFolderPath(), false);
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
@@ -222,7 +225,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getUnsharedStories(fileUtils.joinPaths(getUnsharedStoriesFolderPath()), false);
+    return reader.getUnsharedStories(fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath()), false);
   }
 
   private int getScreenshotFrequency() {
