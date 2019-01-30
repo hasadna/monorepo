@@ -40,56 +40,65 @@ public class StoryReader {
 
   private ImmutableList<Story> getStories(
       String absPath, boolean loadScreenshots, StoriesState state) {
+    ImmutableList.Builder<Story> result = ImmutableList.builder();
     List<String> absPaths = new ArrayList<>();
     try {
-      absPaths = fileUtils
-          .listContents(absPath)
-          .stream()
-          .filter(
-              file -> file.endsWith(
-                      state.equals(
-                          StoriesState.UNSHARED)
-                          ? StorytellerConfig.STORIES_FILENAME
-                          : ".prototxt"))
-          .sorted()
-          .map(filename -> fileUtils.joinPaths(absPath, filename))
-          .collect(Collectors.toList());
+      if (state.equals(StoriesState.UNSHARED)) {
+        String storiesAbsPath = fileUtils.joinPaths(absPath, StorytellerConfig.STORIES_FILENAME);
+        if (fileUtils.fileExists(storiesAbsPath)) {
+          absPaths.add(storiesAbsPath);
+        }
+      } else {
+        absPaths = fileUtils
+            .listContents(absPath)
+            .stream()
+            .filter(file -> file.endsWith(".prototxt"))
+            .sorted()
+            .map(filename -> fileUtils.joinPaths(absPath, filename))
+            .collect(Collectors.toList());
+      }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new RuntimeException("Can't read the stories properly by path: " + absPath);
     }
     if (absPaths.isEmpty()) {
-      return ImmutableList.of();
+      return result.build();
     } else {
-      StoryList.Builder storiesBuilder = StoryList.newBuilder();
       absPaths.forEach(
           path
-              -> storiesBuilder.addAllStory(
+              -> result.addAll(
               ((StoryList) fileUtils.readPrototxtUnchecked(
                   path, StoryList.newBuilder())).getStoryList()));
       if (!loadScreenshots) {
-        return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
+        return result.build();
       } else {
-        return addScreenshots(storiesBuilder, absPath);
+        return addScreenshots(new ArrayList<>(result.build()), absPath);
       }
     }
   }
 
   private ImmutableList<Story> addScreenshots(
-      StoryList.Builder storiesBuilder, String absPath) {
-    for (Protos.Story.Builder story : storiesBuilder.getStoryBuilderList()) {
+      List<Story> stories, String absPath) {
+    List<Story.Builder> result = stories
+        .stream()
+        .map(Story::toBuilder)
+        .collect(Collectors.toList());
+    for (Protos.Story.Builder story : result) {
       for (Protos.StoryItem.Builder storyItem : story.getItemBuilderList()) {
         storyItem
             .setScreenshot(readScreenshot(
                 fileUtils.joinPaths(absPath, storyItem.getScreenshotFilename())));
       }
     }
-    return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
+    return ImmutableList.copyOf(
+        result
+            .stream()
+            .map(Story.Builder::build)
+            .collect(Collectors.toList()));
   }
 
   private ByteString readScreenshot(String absFilename) {
     ByteString result = ByteString.EMPTY;
-    // TODO: Use fileUtils.getFile() when it will be available
-    File file = new File(absFilename);
+    File file = fileUtils.getFile(absFilename);
     long fileSize = file.length();
     if (fileSize < MAX_SCREENSHOT_SIZE_BYTES) {
       try {

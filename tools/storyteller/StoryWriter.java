@@ -103,7 +103,7 @@ public class StoryWriter {
   }
 
   void saveSharedStories(StoryList stories) throws IOException {
-    final String absPath = Storyteller.getAbsSharedStoriesFolderPath(config);
+    final String absPath = Storyteller.getSharedStoriesAbsPath(config);
     fileUtils.copyDirectoryToDirectory(
         getAbsUnsharedStoriesFolderPath(),
         absPath,
@@ -132,7 +132,7 @@ public class StoryWriter {
   }
 
   private String getAbsUnsharedStoriesFolderPath() {
-    return Storyteller.getAbsUnsharedStoriesFolderPath(config);
+    return Storyteller.getUnsharedStoriesAbsPath(config);
   }
 }
 
