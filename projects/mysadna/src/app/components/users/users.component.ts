@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import {User} from '@/models/user';
-import {DataService} from '@/services/data.service';
+import { User } from '@/models/user';
+import { DataService } from '@/services/data.service';
 
 @Component({
   selector: 'app-users',
@@ -9,7 +9,6 @@ import {DataService} from '@/services/data.service';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-
   users: User[];
 
   constructor(private dataService: DataService) { }

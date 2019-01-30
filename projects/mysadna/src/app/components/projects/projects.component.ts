@@ -9,7 +9,6 @@ import { DataService } from '@/services/data.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-
   projects: Project[];
 
   constructor(private dataService: DataService) { }
