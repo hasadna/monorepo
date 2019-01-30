@@ -156,7 +156,8 @@ public class Storyteller {
     sb.appendln("=======================");
 
     if (fileUtils.folderExists(getAbsSharedStoriesFolderPath())) {
-      ImmutableList<Story> stories = reader.getSharedStories(getAbsSharedStoriesFolderPath(), false);
+      ImmutableList<Story> stories = reader.getSharedStories(
+          getAbsSharedStoriesFolderPath(), false);
       sb.appendln(
           storiesToString(
               stories.subList(
