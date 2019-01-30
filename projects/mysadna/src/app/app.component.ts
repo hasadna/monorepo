@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 
-import { EncodingService } from '@/services/encoding.service';
-import { FirebaseService } from '@/services/firbase.service';
+import { EncodingService, FirebaseService } from '@/services';
 import { Data } from '@/proto';
-
 
 @Component({
   selector: 'app-root',
