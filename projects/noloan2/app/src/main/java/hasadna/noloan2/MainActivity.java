@@ -10,8 +10,11 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
+import hasadna.noloan2.protobuf.SMSProto;
 import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
 import noloan.R;
 
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SmsMessage> messages = readSmsFromDevice();
     
     // For testing, adding the first message read to the list of spam.
-    spamList.add(SmsMessage.newBuilder().setSender(messages.get(0).getSender()).setBody(messages.get(0).getBody()).build());
+   /* spamList.add(SmsMessage.newBuilder().setSender(messages.get(0).getSender()).setBody(messages.get(0).getBody()).build());
     
     int count = 0;
     for (SmsMessage message : messages) {
@@ -44,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
       }
     }
     
-    text.setText(count + "");
+    text.setText(count + "");*/
+    FirestoreClient client = new FirestoreClient();
+    SMSProto.SpamList spamList = client.getSpam();
+    text.setText(spamList.getSms(0).getBody());
   }
   
   // Basic comparing of two SMS massages

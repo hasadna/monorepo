@@ -3,18 +3,18 @@ package hasadna.noloan2;
 // For storing proto type to Firestore
 public class FirestoreElement {
   
-  private String base64;
+  private String proto;
   
-  public FirestoreElement(String base64) {
+  public FirestoreElement(String proto) {
     
-    this.base64 = base64;
+    this.proto = proto;
   }
   
-  public String getBase64() {
-    return base64;
+  public String getProto() {
+    return proto;
   }
   
-  public void setBase64(String base64) {
-    this.base64 = base64;
+  public void setProto(String proto) {
+    this.proto = proto;
   }
 }

@@ -1,22 +1,14 @@
 package hasadna.noloan2;
 
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.InvalidProtocolBufferException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import hasadna.noloan2.protobuf.SMSProto.SpamList;
 import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
@@ -43,9 +35,53 @@ public class FirestoreClient {
     client.collection(USER_SUGGEST_COLLECTION).add(element);
   }
   
+  DocumentSnapshot snapshot;
+  
   public SpamList getSpam() {
     DocumentReference document = client.document(SPAM_DOCUMENT_PATH);
-    SpamList spam = decodeSpam(document.get().getResult().toObject(FirestoreElement.class));
+    
+    // Fix for the busy waiting don't work
+    //Unable to start activity ComponentInfo{hasadna.noloan2/hasadna.noloan2.MainActivity}: java.lang.IllegalStateException: Must not be called on the main application thread
+    /*
+    Task<DocumentSnapshot> task = document.get();
+    task.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+      @Override
+      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if (task.isSuccessful()) {
+          snapshot = task.getResult();
+        } else {
+          Log.e("Firesotre", "Failed to get snapsot from the Firestore");
+        }
+      }
+    });
+    try {
+      snapshot = Tasks.await(task);
+    } catch (ExecutionException | InterruptedException e) {
+      Log.e("Firesotre", "Wait interrupted");
+    }
+    SpamList spam = null;
+    if (snapshot != null) {
+      spam = decodeSpam(snapshot.toObject(FirestoreElement.class));
+    }
+    */
+    
+    Task<DocumentSnapshot> task = document.get();
+    while (!task.isComplete()) {
+    }
+    DocumentSnapshot result = task.getResult();
+    // The problematic code
+    //FirestoreElement element = result.toObject(FirestoreElement.class);
+    
+    byte[] bytes = Base64.decode(result.getString("proto"), Base64.DEFAULT);
+    SpamList spam = null;
+    try {
+      spam = SpamList.getDefaultInstance().getParserForType().parseFrom(bytes);
+    } catch (InvalidProtocolBufferException e) {
+      e.printStackTrace();
+    }
+    
+    //SpamList spam = decodeSpam(element);
+    
     return spam;
   }
   
@@ -94,7 +130,7 @@ public class FirestoreClient {
   }
   
   private SmsMessage decodeMessage(FirestoreElement element) {
-    byte[] messageBytes = Base64.decode(element.getBase64(), Base64.DEFAULT);
+    byte[] messageBytes = Base64.decode(element.getProto(), Base64.DEFAULT);
     SmsMessage message = null;
     try {
       message = SmsMessage.getDefaultInstance().getParserForType().parseFrom(messageBytes);
@@ -106,7 +142,7 @@ public class FirestoreClient {
   
   // TODO combine the two decoders
   private SpamList decodeSpam(FirestoreElement element) {
-    byte[] messageBytes = Base64.decode(element.getBase64(), Base64.DEFAULT);
+    byte[] messageBytes = Base64.decode(element.getProto(), Base64.DEFAULT);
     SpamList spam = null;
     try {
       spam = SpamList.getDefaultInstance().getParserForType().parseFrom(messageBytes);
