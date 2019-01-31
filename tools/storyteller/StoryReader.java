@@ -40,7 +40,7 @@ public class StoryReader {
 
   private ImmutableList<Story> getStories(
       String absPath, boolean loadScreenshots, StoriesState state) {
-    ImmutableList.Builder<Story> result = ImmutableList.builder();
+    StoryList.Builder storiesBuilder = StoryList.newBuilder();
     List<String> absPaths = new ArrayList<>();
     try {
       if (state.equals(StoriesState.UNSHARED)) {
@@ -61,39 +61,31 @@ public class StoryReader {
       throw new RuntimeException("Can't read the stories properly by path: " + absPath);
     }
     if (absPaths.isEmpty()) {
-      return result.build();
+      return ImmutableList.of();
     } else {
       absPaths.forEach(
           path
-              -> result.addAll(
+              -> storiesBuilder.addAllStory(
               ((StoryList) fileUtils.readPrototxtUnchecked(
                   path, StoryList.newBuilder())).getStoryList()));
       if (!loadScreenshots) {
-        return result.build();
+        return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
       } else {
-        return addScreenshots(new ArrayList<>(result.build()), absPath);
+        return addScreenshots(storiesBuilder, absPath);
       }
     }
   }
 
   private ImmutableList<Story> addScreenshots(
-      List<Story> stories, String absPath) {
-    List<Story.Builder> result = stories
-        .stream()
-        .map(Story::toBuilder)
-        .collect(Collectors.toList());
-    for (Protos.Story.Builder story : result) {
+      StoryList.Builder storiesBuilder, String absPath) {
+    for (Protos.Story.Builder story : storiesBuilder.getStoryBuilderList()) {
       for (Protos.StoryItem.Builder storyItem : story.getItemBuilderList()) {
         storyItem
             .setScreenshot(readScreenshot(
                 fileUtils.joinPaths(absPath, storyItem.getScreenshotFilename())));
       }
     }
-    return ImmutableList.copyOf(
-        result
-            .stream()
-            .map(Story.Builder::build)
-            .collect(Collectors.toList()));
+    return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
   }
 
   private ByteString readScreenshot(String absFilename) {
