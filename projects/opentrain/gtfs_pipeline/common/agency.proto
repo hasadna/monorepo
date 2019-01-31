@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "AgencyProtos";
+
+message Agency {
+   int32 agency_id = 1;
+   string agency_name = 2;
+   string agency_url = 3;
+   string agency_timezone = 4;
+   string agency_lang = 5;
+   string agency_phone = 6;
+   string agency_fare_url = 7;
+}
+
+message Agencies {
+  repeated Agency agencies = 1;
+}

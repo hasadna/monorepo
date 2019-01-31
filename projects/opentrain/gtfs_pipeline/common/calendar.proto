@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "CalendarProtos";
+// service_id,sunday,monday,tuesday,wednesday,thursday,friday,saturday,start_date,end_date
+message Calendar {
+   int32 service_id = 1;
+   int32 sunday = 2;
+   int32 monday = 3;
+   int32 tuesday = 4;
+   int32 wednesday = 5;
+   int32 thursday = 6;
+   int32 friday = 7;
+   int32 saturday = 8;
+   int32 start_date = 9;
+   int32 end_date = 10;
+}
+
+message Calendars {
+  repeated Calendar calendars = 1;
+}
