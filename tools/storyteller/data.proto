@@ -62,6 +62,7 @@ message StoryItem {
   bytes screenshot = 2;
   string oneliner = 3;
   string note = 4;
+  string screenshot_filename = 5;
 }
 
 message Story {

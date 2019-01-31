@@ -79,7 +79,6 @@ public class Storyteller {
       System.out.print("H");
     } else if (passedMinutes % screenshotFrequency == 0) {
       System.out.print("S");
-      writer.saveScreenshot();
       writer.saveStoryItem(project, story);
     } else if (passedMinutes % UPDATE_RUNNING_STATUS_MINUTES == 0) {
       System.out.print("R");
@@ -89,20 +88,20 @@ public class Storyteller {
     }
   }
 
-  public static String getSharedStoriesPath(Config config) {
+  public static String getSharedStoriesAbsPath(Config config) {
     return Paths.get(config.getStoriesPath(), "shared").toString();
   }
 
-  private String getSharedStoriesPath() {
-    return getSharedStoriesPath(config);
+  private String getSharedStoriesAbsPath() {
+    return getSharedStoriesAbsPath(config);
   }
 
-  public static String getUnsharedStoriesPath(Config config) {
+  public static String getUnsharedStoriesAbsPath(Config config) {
     return Paths.get(config.getStoriesPath(), "unshared").toString();
   }
 
-  private String getUnsharedStoriesPath() {
-    return getUnsharedStoriesPath(config);
+  private String getUnsharedStoriesAbsPath() {
+    return getUnsharedStoriesAbsPath(config);
   }
 
   /*
@@ -111,13 +110,17 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    StoryList storyList = StoryList.newBuilder().addAllStory(getUnsharedStories()).build();
+    // TODO: Add the ability to save stories larger than 1 MB to Firebase.
+    //  Upload the images themselves to Firebase Storage and
+    //  just store the filename in `StoryList`.
+    StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
+        getUnsharedStoriesAbsPath(), true)).build();
     firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
 
     try {
-      writer.saveSharedStories(storyList);
+      writer.saveSharedStories(StoryList.newBuilder().addAllStory(getUnsharedStories()).build());
       System.out.println(storyList.getStoryCount() + " stories shared");
-      fileUtils.clearDirectory(getUnsharedStoriesPath());
+      fileUtils.clearDirectory(getUnsharedStoriesAbsPath());
       System.out.println("Folder with unshared stories is cleared.");
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -149,30 +152,34 @@ public class Storyteller {
     sb.appendln();
     sb.appendln("*** Recent stories: ***");
     sb.appendln("=======================");
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
-    sb.appendln(
-        storiesToString(
-            stories.subList(
-                Math.max(stories.size() - RECENT_SHARED_STORIES_COUNT, 0), stories.size())));
+
+    if (fileUtils.folderExists(getSharedStoriesAbsPath())) {
+      ImmutableList<Story> stories = reader.getSharedStories(
+          getSharedStoriesAbsPath(), false);
+      sb.appendln(
+          storiesToString(
+              stories.subList(
+                  Math.max(stories.size() - RECENT_SHARED_STORIES_COUNT, 0), stories.size())));
+    }
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
     sb.appendln(
         storiesToString(
-            reader.getStories(
+            reader.getUnsharedStories(
                 fileUtils.joinPaths(
-                    getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME))));
+                    getUnsharedStoriesAbsPath()), false)));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = reader.getStories(getSharedStoriesPath());
+    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesAbsPath(), false);
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
     long startTime = Time.getMillis(lastMonth.atDay(1));
-    // For sime reason, Time.format formats endTimeForFilter on the next day,
+    // For same reason, Time.format formats endTimeForFilter on the next day,
     //     so we separate the exact time as endTimeForFilter and the
     //     not-exact-but-formats-correctly as endTime
     long endTimeForFilter = Time.getMillis(lastMonth.atEndOfMonth().plusDays(1)) - 1;
@@ -217,8 +224,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getStories(
-        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+    return reader.getUnsharedStories(fileUtils.joinPaths(getUnsharedStoriesAbsPath()), false);
   }
 
   private int getScreenshotFrequency() {
