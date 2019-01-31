@@ -14,9 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.StoryItem;
@@ -31,22 +34,32 @@ public class StoryWriter {
 
   private final Config config;
   private final FileUtils fileUtils;
+  private final String author;
   private Story.Builder currentStoryBuilder;
   private List<Story> allStories;
 
   @Inject
-  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils, StoryReader reader) {
+  public StoryWriter(
+      StorytellerConfig storytellerConfig,
+      FileUtils fileUtils,
+      StoryReader reader,
+      AuthService authService) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
     this.allStories =
         new ArrayList<>(
             reader.getUnsharedStories(
-                fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath()), false));
+                fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath())));
+    author = authService.getUserName();
   }
 
   void startStory(String project) {
     currentStoryBuilder = Story.newBuilder();
-    currentStoryBuilder.setStartTimeMs(getCurrentTimestamp()).setProject(project);
+    currentStoryBuilder
+        .setId(getId())
+        .setStartTimeMs(getCurrentTimestamp())
+        .setProject(project)
+        .setAuthor(author);
     allStories.add(currentStoryBuilder.build());
     saveStories();
   }
@@ -74,6 +87,7 @@ public class StoryWriter {
     String filename = saveScreenshot();
     StoryItem storyItem =
         StoryItem.newBuilder()
+            .setId(getId())
             .setTimeMs(getCurrentTimestamp())
             .setOneliner(story)
             .setScreenshotFilename(filename)
@@ -133,6 +147,10 @@ public class StoryWriter {
 
   private String getAbsUnsharedStoriesFolderPath() {
     return Storyteller.getUnsharedStoriesAbsPath(config);
+  }
+
+  private String getId() {
+    return getCurrentTimestamp() + "_" + UUID.randomUUID().toString().split("-")[0];
   }
 }
 

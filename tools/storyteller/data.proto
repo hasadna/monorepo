@@ -57,12 +57,17 @@ message FileData {
   }
 }
 
+message Screenshot {
+  string filename = 1;
+  bytes screenshot = 2;
+}
+
 message StoryItem {
   int64 timeMs = 1;
-  bytes screenshot = 2;
-  string oneliner = 3;
-  string note = 4;
-  string screenshot_filename = 5;
+  string oneliner = 2;
+  string note = 3;
+  string screenshot_filename = 4;
+  string id = 5;
 }
 
 message Story {
@@ -70,6 +75,8 @@ message Story {
   int64 endTimeMs = 2;
   string project = 3;
   repeated StoryItem item = 4;
+  string id = 5;
+  string author = 6;
 }
 
 message StoryList { repeated Story story = 1; }
