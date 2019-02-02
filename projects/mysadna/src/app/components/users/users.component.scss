@@ -1,0 +1,38 @@
+.users {
+  width: 100%;
+}
+
+.users-header {
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.users-container {
+  text-align: center;
+  >.users-list {
+    display: flex;
+    justify-content: space-evenly;
+    >.user {
+      border: 2px lightgrey solid;
+      border-radius: 0.25em;
+      >a {
+        text-decoration: none;
+        >.user-names {
+          text-align: left;
+          >.user-full-name {
+            color: black;
+            margin: 1em;
+          }
+          >.user-name {
+            color: gray;
+            margin: 1em;
+          }
+        }
+      }
+    }
+  }
+}

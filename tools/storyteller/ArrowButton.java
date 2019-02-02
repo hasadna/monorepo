@@ -27,9 +27,10 @@ public class ArrowButton extends JButton implements SwingConstants {
   }
 
   public void paint(Graphics g) {
-    Color origColor = g.getColor();
-    boolean isPressed = getModel().isPressed();
-    int w, h, size;
+    final Color origColor = g.getColor();
+    final boolean isPressed = getModel().isPressed();
+    int w;
+    int h;
 
     w = getSize().width;
     h = getSize().height;
@@ -41,7 +42,7 @@ public class ArrowButton extends JButton implements SwingConstants {
     g.drawLine(0, 0, 0, h - 1);
 
     // Draw the arrow
-    size = Math.min((h - 4) / 3, (w - 4) / 3);
+    int size = Math.min((h - 4) / 3, (w - 4) / 3);
     size = Math.max(size, 2);
     if (isPressed) {
       g.translate(1, 1);
@@ -75,18 +76,18 @@ public class ArrowButton extends JButton implements SwingConstants {
    * @param size the size of the triangle to draw
    */
   public void paintTriangle(Graphics g, int x, int y, int size) {
-    Color oldColor = g.getColor();
-    int mid, i, j;
+    final Color oldColor = g.getColor();
+    int mid;
 
-    j = 0;
     size = Math.max(size, 2);
     mid = (size / 2) - 1;
 
     g.translate(x, y);
     g.setColor(arrowColor);
 
-    j = 0;
-    for (i = size - 1; i >= 0; i--) {
+    int j = 0;
+
+    for (int i = size - 1; i >= 0; i--) {
       g.drawLine(mid - i, j, mid + i, j);
       j++;
     }

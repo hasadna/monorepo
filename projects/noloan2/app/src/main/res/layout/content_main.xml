@@ -8,47 +8,11 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main2">
 
-    <Button
-        android:id="@+id/B_adduser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="14dp"
-        android:text="Add User "
-        app:layout_constraintStart_toEndOf="@+id/ET_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/ET_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RV_userview"
-        android:layout_width="match_parent"
-        android:layout_height="377dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TV_usernames"></android.support.v7.widget.RecyclerView>
-
     <TextView
-        android:id="@+id/TV_usernames"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginBottom="24dp"
-        android:text="users"
-        app:layout_constraintBottom_toTopOf="@+id/RV_userview"
+        android:id="@+id/TV_text"
+        android:layout_width="416dp"
+        android:layout_height="663dp"
+        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ET_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
