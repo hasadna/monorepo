@@ -32,7 +32,7 @@ sudo apt-get purge -y ubuntu-web-launchers
 mkdir -p wifis
 sudo cp /etc/NetworkManager/system-connections/* wifis/
 sudo cp wifis/* /etc/NetworkManager/system-connections/
-# TODO: Figure out how to connect using credentials. Also, just copying the files doesn't change the UI. It still asks for password.
+sudo systemctl restart NetworkManager
 
 # Download apt installs if needed
 # TODO: Figure out how to download packages from a predefined list, instead of "latest". This list will be generated from "latest" at some point in time.
