@@ -107,6 +107,7 @@ cd /media/$USER/data/base/head/startup-os
 ./test.sh
 # FIXME: Why does it not add to PATH:
 source ~/.bashrc
+# TODO: Add aa startserver to be explicit about doing just that action.
 aa
 echo "Please sign-in at https://web-login-startupos.firebaseapp.com and then check that ~/.aa_token exists"
 cd /media/$USER/data
