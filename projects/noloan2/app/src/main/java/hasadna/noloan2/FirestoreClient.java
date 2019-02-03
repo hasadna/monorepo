@@ -1,10 +1,8 @@
 package hasadna.noloan2;
 
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,6 +10,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import hasadna.noloan2.protobuf.SMSProto.SpamList;
 import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+
+import com.google.protobuf.MessageLite;
 
 
 public class FirestoreClient {
@@ -69,58 +69,14 @@ public class FirestoreClient {
     while (!task.isComplete()) {
     }
     DocumentSnapshot result = task.getResult();
-    // The problematic code
-    //FirestoreElement element = result.toObject(FirestoreElement.class);
-    
-    byte[] bytes = Base64.decode(result.getString("proto"), Base64.DEFAULT);
     SpamList spam = null;
     try {
-      spam = SpamList.getDefaultInstance().getParserForType().parseFrom(bytes);
+      spam = (SpamList) decodeMessage(result.getString("proto"), SpamList.Builder);
     } catch (InvalidProtocolBufferException e) {
       e.printStackTrace();
     }
-    
-    //SpamList spam = decodeSpam(element);
-    
     return spam;
   }
-  
-  
-  // Not in use, there for future reference
-  /* QuerySnapshot snapshot;
-  public ArrayList<SmsMessage> getMessages() {
-    ArrayList<SmsMessage> results = new ArrayList<>();
-    
-    Task<QuerySnapshot> task = client.get();
-    task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-      @Override
-      public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-          snapshot = task.getResult();
-        } else {
-          Log.e("Firesotre", "Failed to get snapsot from the Firestore");
-        }
-      }
-    });
-    
-    try {
-      snapshot = Tasks.await(task);
-    } catch (ExecutionException | InterruptedException e) {
-      Log.e("Firesotre", "Wait interrupted");
-    }
-    
-    if (snapshot != null) {
-      List<DocumentSnapshot> list = snapshot.getDocuments();
-      for (DocumentSnapshot document : list) {
-        FirestoreElement element = document.toObject(FirestoreElement.class);
-        results.add(decodeMessage(element));
-      }
-      return results;
-    } else {
-      // onComplete failed
-      return null;
-    }
-  }*/
   
   // Encode user proto to base64 for storing in Firestore
   private FirestoreElement encodeMessage(SmsMessage message) {
@@ -129,26 +85,11 @@ public class FirestoreClient {
     return new FirestoreElement(base64BinaryString);
   }
   
-  private SmsMessage decodeMessage(FirestoreElement element) {
-    byte[] messageBytes = Base64.decode(element.getProto(), Base64.DEFAULT);
-    SmsMessage message = null;
-    try {
-      message = SmsMessage.getDefaultInstance().getParserForType().parseFrom(messageBytes);
-    } catch (InvalidProtocolBufferException e) {
-      e.printStackTrace();
-    }
-    return message;
-  }
   
-  // TODO combine the two decoders
-  private SpamList decodeSpam(FirestoreElement element) {
-    byte[] messageBytes = Base64.decode(element.getProto(), Base64.DEFAULT);
-    SpamList spam = null;
-    try {
-      spam = SpamList.getDefaultInstance().getParserForType().parseFrom(messageBytes);
-    } catch (InvalidProtocolBufferException e) {
-      e.printStackTrace();
-    }
-    return spam;
+  private MessageLite decodeMessage(String message, MessageLite.Builder builder)
+    throws InvalidProtocolBufferException {
+    byte[] messageBytes = Base64.decode(message, Base64.DEFAULT);
+    return builder.build().getParserForType().parseFrom(messageBytes);
+    
   }
 }
