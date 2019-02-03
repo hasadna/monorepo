@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "FareAttributesProtos";
+
+message FareAttributes {
+   int32 fare_id = 1;
+   double price = 2;
+   string currency_type = 3;
+   int32 payment_method = 4;
+   int32 transfers = 5;
+   int32 agency_id = 6;
+   string transfer_duration = 7;
+}
+
+message FaresAttributes {
+  repeated FareAttributes faresattributes = 1;
+}
