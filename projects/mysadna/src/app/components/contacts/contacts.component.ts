@@ -4,11 +4,11 @@ import { User } from '@/models/user';
 import { DataService } from '@/services/data.service';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  selector: 'app-contacts',
+  templateUrl: './contacts.component.html',
+  styleUrls: ['./contacts.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class ContactsComponent implements OnInit {
   users: User[];
 
   constructor(private dataService: DataService) { }

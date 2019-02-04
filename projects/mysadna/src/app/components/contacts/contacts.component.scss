@@ -1,8 +1,8 @@
-.users {
+.contacts {
   width: 100%;
 }
 
-.users-header {
+.contacts-header {
   text-align: center;
 }
 
@@ -11,14 +11,14 @@ ul {
   padding: 0;
 }
 
-.users-container {
-  text-align: center;
-  >.users-list {
+.contacts-container {
+  >.contacts-list {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     >.user {
       border: 2px lightgrey solid;
       border-radius: 0.25em;
+      margin: 10px;
       >a {
         text-decoration: none;
         >.user-names {

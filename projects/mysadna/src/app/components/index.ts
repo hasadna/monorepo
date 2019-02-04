@@ -1,16 +1,16 @@
 export * from './project-details';
 export * from './projects';
 export * from './user-details';
-export * from './users';
+export * from './contacts';
 
 import { ProjectDetailsComponent } from './project-details';
 import { ProjectsComponent } from './projects';
 import { UserDetailsComponent } from './user-details';
-import { UsersComponent } from './users';
+import { ContactsComponent } from './contacts';
 
 export const ComponentList = [
   ProjectDetailsComponent,
   ProjectsComponent,
   UserDetailsComponent,
-  UsersComponent,
+  ContactsComponent,
 ];
