@@ -59,7 +59,7 @@ public class Storyteller {
     this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
     firestoreClient = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
-    author = authService.getUserName();
+    author = authService.getUserEmail();
   }
 
   /*
@@ -119,12 +119,12 @@ public class Storyteller {
     StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
         getUnsharedStoriesAbsPath())).build();
     firestoreClient.addProtoDocumentToCollection(
-        firestoreAuthor + "/" + FIRESTORE_STORIES_COLLECTION,
+        firestoreAuthor + FIRESTORE_STORIES_COLLECTION,
         storyList);
 
-    for(Screenshot screenshot: reader.getScreenshots(getSharedStoriesAbsPath())) {
+    for(Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
       firestoreClient.addProtoDocumentToCollection(
-          firestoreAuthor + FIRESTORE_SCREENSHOT_COLLECTION + "/" + screenshot.getFilename(),
+          firestoreAuthor + FIRESTORE_SCREENSHOT_COLLECTION,
           screenshot);
     }
 

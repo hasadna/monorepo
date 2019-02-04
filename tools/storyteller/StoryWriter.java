@@ -2,6 +2,7 @@ package tools.storyteller;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.FileUtils;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -18,8 +19,6 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.StoryItem;
@@ -50,7 +49,7 @@ public class StoryWriter {
         new ArrayList<>(
             reader.getUnsharedStories(
                 fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath())));
-    author = authService.getUserName();
+    author = authService.getUserEmail();
   }
 
   void startStory(String project) {
