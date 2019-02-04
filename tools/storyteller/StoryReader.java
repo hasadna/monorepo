@@ -59,16 +59,16 @@ public class StoryReader {
               -> storiesBuilder.addAllStory(
               ((StoryList) fileUtils.readPrototxtUnchecked(
                   path, StoryList.newBuilder())).getStoryList()));
-        return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
+      return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
     }
   }
 
   public ImmutableList<Screenshot> getScreenshots(String absPath) {
-   ImmutableList.Builder<Screenshot> result = ImmutableList.builder();
-   for (String absFilename: getAbsFilenamesFromFolderByExtension(absPath, "jpg")) {
-     result.add(getScreenshot(absFilename));
-   }
-   return result.build();
+    ImmutableList.Builder<Screenshot> result = ImmutableList.builder();
+    for (String absFilename: getAbsFilenamesFromFolderByExtension(absPath, "jpg")) {
+      result.add(getScreenshot(absFilename));
+    }
+    return result.build();
   }
 
   private Screenshot getScreenshot(String absFilename) {
@@ -93,7 +93,8 @@ public class StoryReader {
     return screenBuilder.build();
   }
 
-  private ImmutableList<String> getAbsFilenamesFromFolderByExtension(String absPath, String extension) {
+  private ImmutableList<String> getAbsFilenamesFromFolderByExtension(
+      String absPath, String extension) {
     try {
       return ImmutableList.copyOf(fileUtils
           .listContents(absPath)

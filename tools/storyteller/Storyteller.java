@@ -122,7 +122,7 @@ public class Storyteller {
         firestoreAuthor + FIRESTORE_STORIES_COLLECTION,
         storyList);
 
-    for(Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
+    for (Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
       firestoreClient.addProtoDocumentToCollection(
           firestoreAuthor + FIRESTORE_SCREENSHOT_COLLECTION,
           screenshot);
