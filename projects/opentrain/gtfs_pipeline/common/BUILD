@@ -85,3 +85,25 @@ java_proto_library(
     deps = [":stopsproto"],
     visibility = ["//visibility:public"]
 )
+
+proto_library(
+    name = "translationsproto",
+    srcs = ["translations.proto"]
+)
+
+java_proto_library(
+    name = "java_translationsproto",
+    deps = [":translationsproto"],
+    visibility = ["//visibility:public"]
+)
+
+proto_library(
+    name = "tripsproto",
+    srcs = ["trips.proto"]
+)
+
+java_proto_library(
+    name = "java_tripsproto",
+    deps = [":tripsproto"],
+    visibility = ["//visibility:public"]
+)

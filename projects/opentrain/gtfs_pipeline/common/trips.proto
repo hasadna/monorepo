@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "TripsProtos";
+message Trip {
+   int32 route_id = 1;
+   int32 service_id = 2;
+   string trip_id = 3;
+   string trip_headsign = 4;
+   int32 direction_id = 5;
+   string shape_id = 6;
+}
+
+message Trips {
+  repeated Trip trips = 1;
+}

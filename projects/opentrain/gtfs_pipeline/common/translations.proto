@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "TranslationsProtos";
+
+message Translation {
+   string trans_id = 1;
+   string lang = 2;
+   string translation = 3;
+}
+
+message Translations {
+  repeated Translation translations = 1;
+}
