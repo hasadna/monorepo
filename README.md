@@ -29,6 +29,7 @@ It gives you a Linux environment, without the overhead of a virtual machine.
 
 #### Installing Windows Subsystem for Linux:
 Please follow the [guide](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10).
+It's hasadna project
 Note: You may have to do a Windows upgrade. If you need it, it will ask for it at the beginning of the installation.
 
 ## Contributing
