@@ -63,8 +63,8 @@ message Screenshot {
 }
 
 message StoryItem {
+  reserved 2;
   int64 timeMs = 1;
-  bytes screenshot = 2 [deprecated = true];
   string oneliner = 3;
   string note = 4;
   string screenshot_filename = 5;

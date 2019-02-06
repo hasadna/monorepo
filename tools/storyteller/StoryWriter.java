@@ -150,7 +150,7 @@ public class StoryWriter {
 
   /* Returns the first element of UUID.
    * UUID represents a 128-bit long value that is unique.
-   * It is represented in 32 Hexadecimal characters and is mixed with 4 dashes characters.
+   * It is represented in 32 Hexadecimal characters separated by 4 dashes.
    */
   private String generateId() {
     return getCurrentTimestamp() + "_" + UUID.randomUUID().toString().split("-")[0];
