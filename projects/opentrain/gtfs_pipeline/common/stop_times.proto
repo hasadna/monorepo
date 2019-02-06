@@ -3,19 +3,15 @@ syntax = "proto3";
 package com.projects.opentrain.gtfs_pipeline;
 
 option java_package = "com.projects.opentrain.gtfs_pipeline";
-option java_outer_classname = "StopTimesProtos";
+option java_outer_classname = "StopTimeListProtos";
 
-message StopTimes {
+message StopTime {
    string trip_id = 1;
    string arrival_time = 2;
    string departure_time = 3;
-   int32 stop_id = 4;
-   int32 stop_sequence = 5;
-   int32 pickup_type = 6;
-   int32 drop_off_type = 7;
-   int32 shape_dist_traveled = 8;
-}
-
-message StopsTimes {
-  repeated StopTimes stopstimes = 1;
+   string stop_id = 4;
+   string stop_sequence = 5;
+   string pickup_type = 6;
+   string drop_off_type = 7;
+   string shape_dist_traveled = 8;
 }

@@ -65,13 +65,13 @@ java_proto_library(
 )
 
 proto_library(
-    name = "stoptimesproto",
+    name = "stoptimeproto",
     srcs = ["stop_times.proto"]
 )
 
 java_proto_library(
-    name = "java_stoptimesproto",
-    deps = [":stoptimesproto"],
+    name = "java_stoptimeproto",
+    deps = [":stoptimeproto"],
     visibility = ["//visibility:public"]
 )
 
