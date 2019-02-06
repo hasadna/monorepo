@@ -64,10 +64,11 @@ message Screenshot {
 
 message StoryItem {
   int64 timeMs = 1;
-  string oneliner = 2;
-  string note = 3;
-  string screenshot_filename = 4;
-  string id = 5;
+  bytes screenshot = 2 [deprecated = true];
+  string oneliner = 3;
+  string note = 4;
+  string screenshot_filename = 5;
+  string id = 6;
 }
 
 message Story {
