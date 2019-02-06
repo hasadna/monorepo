@@ -7,6 +7,7 @@ import com.google.startupos.common.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class StoryReader {
       String absPath, StoriesState state) {
     StoryList.Builder storiesBuilder = StoryList.newBuilder();
     List<String> absFilenames = new ArrayList<>();
-    if (state.equals(StoriesState.UNSHARED)) {
+    if (state == StoriesState.UNSHARED) {
       String storiesAbsPath = fileUtils.joinPaths(absPath, StorytellerConfig.STORIES_FILENAME);
       if (fileUtils.fileExists(storiesAbsPath)) {
         absFilenames.add(storiesAbsPath);
@@ -78,10 +79,10 @@ public class StoryReader {
     if (fileSize < MAX_SCREENSHOT_SIZE_BYTES) {
       try {
         screenBuilder
-            .setFilename(absFilename.substring(absFilename.lastIndexOf('/') + 1))
+            .setFilename(Paths.get(absFilename).getFileName().toString())
             .setScreenshot(ByteString.copyFrom(Files.readAllBytes(file.toPath())));
       } catch (IOException e) {
-        e.printStackTrace();
+        throw new RuntimeException(e);
       }
     } else {
       log.atSevere().log(

@@ -34,10 +34,10 @@ public class Storyteller {
   // Number of most recent shared stories to output
   private static final int RECENT_SHARED_STORIES_COUNT = 10;
 
-  private static final String FIRESTORE_STORYTELLER_ROOT = "/storyteller-new";
-  private static final String FIRESTORE_SCREENSHOT_COLLECTION = "screenshots";
-  private static final String FIRESTORE_STORIES_COLLECTION = "stories";
+  private static final String FIRESTORE_SCREENSHOT_COLLECTION = "storyteller/data/user/%s/story";
+  private static final String FIRESTORE_STORIES_COLLECTION = "storyteller/data/user/%s/screenshot";
 
+  // User's email
   private final String author;
   private Config config;
   private int screenshotFrequency;
@@ -115,16 +115,19 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    final String firestoreAuthor = FIRESTORE_STORYTELLER_ROOT + "/" + author + "/";
     StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
         getUnsharedStoriesAbsPath())).build();
     firestoreClient.addProtoDocumentToCollection(
-        firestoreAuthor + FIRESTORE_STORIES_COLLECTION,
+        String.format(
+            FIRESTORE_STORIES_COLLECTION,
+            author),
         storyList);
 
     for (Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
       firestoreClient.addProtoDocumentToCollection(
-          firestoreAuthor + FIRESTORE_SCREENSHOT_COLLECTION,
+          String.format(
+              FIRESTORE_SCREENSHOT_COLLECTION,
+              author),
           screenshot);
     }
 
@@ -177,9 +180,7 @@ public class Storyteller {
     sb.appendln("=========================");
     sb.appendln(
         storiesToString(
-            reader.getUnsharedStories(
-                fileUtils.joinPaths(
-                    getUnsharedStoriesAbsPath()))));
+            reader.getUnsharedStories(getUnsharedStoriesAbsPath())));
     System.out.print(sb);
   }
 
@@ -235,7 +236,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getUnsharedStories(fileUtils.joinPaths(getUnsharedStoriesAbsPath()));
+    return reader.getUnsharedStories(getUnsharedStoriesAbsPath());
   }
 
   private int getScreenshotFrequency() {

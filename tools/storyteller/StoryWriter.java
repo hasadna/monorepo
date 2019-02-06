@@ -33,6 +33,7 @@ public class StoryWriter {
 
   private final Config config;
   private final FileUtils fileUtils;
+  // User's email
   private final String author;
   private Story.Builder currentStoryBuilder;
   private List<Story> allStories;
@@ -47,15 +48,14 @@ public class StoryWriter {
     this.fileUtils = fileUtils;
     this.allStories =
         new ArrayList<>(
-            reader.getUnsharedStories(
-                fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath())));
+            reader.getUnsharedStories(getAbsUnsharedStoriesFolderPath()));
     author = authService.getUserEmail();
   }
 
   void startStory(String project) {
     currentStoryBuilder = Story.newBuilder();
     currentStoryBuilder
-        .setId(getId())
+        .setId(generateId())
         .setStartTimeMs(getCurrentTimestamp())
         .setProject(project)
         .setAuthor(author);
@@ -86,7 +86,7 @@ public class StoryWriter {
     String filename = saveScreenshot();
     StoryItem storyItem =
         StoryItem.newBuilder()
-            .setId(getId())
+            .setId(generateId())
             .setTimeMs(getCurrentTimestamp())
             .setOneliner(story)
             .setScreenshotFilename(filename)
@@ -148,7 +148,11 @@ public class StoryWriter {
     return Storyteller.getUnsharedStoriesAbsPath(config);
   }
 
-  private String getId() {
+  /* Returns the first element of UUID.
+   * UUID represents a 128-bit long value that is unique.
+   * It is represented in 32 Hexadecimal characters and is mixed with 4 dashes characters.
+   */
+  private String generateId() {
     return getCurrentTimestamp() + "_" + UUID.randomUUID().toString().split("-")[0];
   }
 }
