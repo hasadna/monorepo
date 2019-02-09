@@ -1,0 +1,7 @@
+# This file is run in .bashrc (when the terminal opens).
+export PATH="$PATH:$HOME/bin:/media/$USER/data/opt/intellij/bin"
+
+if [ -d /media/$USER/data/base ]; then
+  source /media/$USER/data/base/head/startup-os/tools/reviewer/aa/aa_tool.sh
+fi
+
