@@ -14,7 +14,3 @@ message FareAttributes {
    int32 agency_id = 6;
    string transfer_duration = 7;
 }
-
-message FaresAttributes {
-  repeated FareAttributes faresattributes = 1;
-}

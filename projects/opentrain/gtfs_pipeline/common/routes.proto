@@ -14,7 +14,3 @@ message Route {
    int32 route_type = 6;
    string route_color = 7;
 }
-
-message Routes {
-  repeated Route routes = 1;
-}

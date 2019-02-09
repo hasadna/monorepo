@@ -12,7 +12,3 @@ message FareRules {
    int32 destination_id = 4;
    string contains_id = 5;
 }
-
-message FaresRules {
-  repeated FareRules faresrules = 1;
-}

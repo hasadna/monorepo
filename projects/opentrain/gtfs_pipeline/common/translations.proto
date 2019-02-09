@@ -10,7 +10,3 @@ message Translation {
    string lang = 2;
    string translation = 3;
 }
-
-message Translations {
-  repeated Translation translations = 1;
-}

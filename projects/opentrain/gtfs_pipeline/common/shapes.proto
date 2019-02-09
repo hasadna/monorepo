@@ -11,7 +11,3 @@ message Shape {
    double shape_pt_lot = 3;
    int32 shape_pt_sequence = 4;
 }
-
-message Shapes {
-  repeated Shape shapes = 1;
-}

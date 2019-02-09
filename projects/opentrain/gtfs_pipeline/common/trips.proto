@@ -12,7 +12,3 @@ message Trip {
    int32 direction_id = 5;
    string shape_id = 6;
 }
-
-message Trips {
-  repeated Trip trips = 1;
-}

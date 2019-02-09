@@ -14,7 +14,3 @@ message Agency {
    string agency_phone = 6;
    string agency_fare_url = 7;
 }
-
-message Agencies {
-  repeated Agency agencies = 1;
-}

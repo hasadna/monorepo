@@ -16,7 +16,3 @@ message Stop {
    string parent_station = 8;
    int32 zone_id = 9;
 }
-
-message Stops {
-  repeated Stop stops = 1;
-}
