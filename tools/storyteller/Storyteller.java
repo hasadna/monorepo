@@ -17,6 +17,7 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import javax.inject.Inject;
 import tools.storyteller.Protos.Config;
+import tools.storyteller.Protos.Screenshot;
 import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.StoryItem;
 import tools.storyteller.Protos.StoryList;
@@ -33,8 +34,11 @@ public class Storyteller {
   // Number of most recent shared stories to output
   private static final int RECENT_SHARED_STORIES_COUNT = 10;
 
-  private static final String FIRESTORE_STORYTELLER_ROOT = "/storyteller";
+  private static final String FIRESTORE_SCREENSHOT_COLLECTION = "storyteller/data/user/%s/story";
+  private static final String FIRESTORE_STORIES_COLLECTION = "storyteller/data/user/%s/screenshot";
 
+  // User's email
+  private final String author;
   private Config config;
   private int screenshotFrequency;
   private StoryReader reader;
@@ -55,6 +59,7 @@ public class Storyteller {
     this.fileUtils = fileUtils;
     screenshotFrequency = getScreenshotFrequency();
     firestoreClient = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
+    author = authService.getUserEmail();
   }
 
   /*
@@ -110,12 +115,21 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    // TODO: Add the ability to save stories larger than 1 MB to Firebase.
-    //  Upload the images themselves to Firebase Storage and
-    //  just store the filename in `StoryList`.
     StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
-        getUnsharedStoriesAbsPath(), true)).build();
-    firestoreClient.addProtoDocumentToCollection(FIRESTORE_STORYTELLER_ROOT, storyList);
+        getUnsharedStoriesAbsPath())).build();
+    firestoreClient.addProtoDocumentToCollection(
+        String.format(
+            FIRESTORE_STORIES_COLLECTION,
+            author),
+        storyList);
+
+    for (Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
+      firestoreClient.addProtoDocumentToCollection(
+          String.format(
+              FIRESTORE_SCREENSHOT_COLLECTION,
+              author),
+          screenshot);
+    }
 
     try {
       writer.saveSharedStories(StoryList.newBuilder().addAllStory(getUnsharedStories()).build());
@@ -155,7 +169,7 @@ public class Storyteller {
 
     if (fileUtils.folderExists(getSharedStoriesAbsPath())) {
       ImmutableList<Story> stories = reader.getSharedStories(
-          getSharedStoriesAbsPath(), false);
+          getSharedStoriesAbsPath());
       sb.appendln(
           storiesToString(
               stories.subList(
@@ -166,15 +180,13 @@ public class Storyteller {
     sb.appendln("=========================");
     sb.appendln(
         storiesToString(
-            reader.getUnsharedStories(
-                fileUtils.joinPaths(
-                    getUnsharedStoriesAbsPath()), false)));
+            reader.getUnsharedStories(getUnsharedStoriesAbsPath())));
     System.out.print(sb);
   }
 
   /* Saves an invoice. */
   public void invoice() throws Exception {
-    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesAbsPath(), false);
+    ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesAbsPath());
     Instant timeOfIssue = Instant.now();
     long invoiceNumber = timeOfIssue.getEpochSecond();
     YearMonth lastMonth = getLastMonth(timeOfIssue);
@@ -224,7 +236,7 @@ public class Storyteller {
   }
 
   public ImmutableList<Story> getUnsharedStories() {
-    return reader.getUnsharedStories(fileUtils.joinPaths(getUnsharedStoriesAbsPath()), false);
+    return reader.getUnsharedStories(getUnsharedStoriesAbsPath());
   }
 
   private int getScreenshotFrequency() {
