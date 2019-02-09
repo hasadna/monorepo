@@ -32,6 +32,9 @@ elif [[ "$verb" = "download" ]]; then
 elif [[ "$verb" = "install" ]]; then
     echo "Installing debs from directory debs/"
 
+    # TODO: --force-depends installs all packages
+    # regardless of their dependencies. Figure out a
+    # proper way to fetch packages so flag is not needed.
     dpkg --force-depends -i debs/*.deb
 else
   echo "Incorrect verb: '$verb'. Should be one of [generate|download|install]"
