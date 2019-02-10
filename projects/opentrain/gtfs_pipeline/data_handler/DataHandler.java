@@ -1,7 +1,5 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
-//imports for proto
-
 import com.projects.opentrain.gtfs_pipeline.AgencyProtos.Agency;
 import com.projects.opentrain.gtfs_pipeline.CalendarProtos.Calendar;
 import com.projects.opentrain.gtfs_pipeline.FareAttributesProtos.FareAttributes;
@@ -14,13 +12,10 @@ import com.projects.opentrain.gtfs_pipeline.TranslationsProtos.Translation;
 import com.projects.opentrain.gtfs_pipeline.TripsProtos.Trip;
 import com.google.protobuf.TextFormat;
 import java.io.Reader;
-
-//imports for Appache
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.omg.CORBA.portable.InputStream;
-
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
@@ -28,7 +23,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,6 +31,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
+
 import java.lang.String;
 import java.lang.Iterable;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -53,18 +50,24 @@ import java.io.FileInputStream;
 class DataHandler {
 
   public static void saveAgency(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-        .withHeader("agency_id", "agency_name", "agency_url", "agency_timezone", "agency_lang", "agency_phone", "agency_fare_url"));
+     try (FileOutputStream output = new FileOutputStream(path);)
+
+      {
+        CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+        .withHeader(
+          "agency_id",
+          "agency_name",
+          "agency_url",
+          "agency_timezone",
+          "agency_lang",
+          "agency_phone",
+          "agency_fare_url"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Agency.Builder agency = Agency.newBuilder();
@@ -77,26 +80,35 @@ class DataHandler {
               .setAgencyFareUrl(record.get("agency_fare_url"))
               .build()
               .writeDelimitedTo(output);
-        messageCount++;
       }
       output.close();
   } catch (IOException e) {
+    throw new RuntimeException(e);
     }
   }
 
-  public static void saveCalebdar(Path csvPath, String path) {
-    try {
+  public static void saveCalendar(Path csvPath, String path) {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
+    try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  
       CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("service_id", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "start_date", "end_date"));
+      .withHeader(
+       "service_id",
+       "sunday",
+       "monday",
+       "tuesday",
+       "wednesday",
+       "thursday",
+       "friday",
+       "saturday",
+       "start_date",
+       "end_date"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Calendar.Builder calendar = Calendar.newBuilder();
@@ -112,26 +124,31 @@ class DataHandler {
                 .setEndDate(Integer.parseInt(record.get("end_date")))
                 .build()
                 .writeDelimitedTo(output);
-        messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveFareAttributes(Path csvPath, String path) {
-      try {
+       
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("fare_id", "price", "currency_type", "payment_method", "transfers", "agency_id", "transfer_duration"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "fare_id",
+        "price",
+        "currency_type",
+        "payment_method",
+        "transfers",
+        "agency_id",
+        "transfer_duration"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         FareAttributes.Builder fareAttributes = FareAttributes.newBuilder();
@@ -144,26 +161,29 @@ class DataHandler {
                 .setTransferDuration(record.get("transfer_duration"))
                 .build()
                 .writeDelimitedTo(output);
-            messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveFareRules(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("fare_id", "route_id", "origin_id", "destination_id", "contains_id"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "fare_id",
+        "route_id",
+        "origin_id",
+        "destination_id",
+        "contains_id"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         FareRules.Builder fareRule = FareRules.newBuilder();
@@ -174,26 +194,31 @@ class DataHandler {
             .setContainsId(record.get("contains_id"))
             .build()
             .writeDelimitedTo(output);
-            messageCount++;
           }
           output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveRoutes(Path csvPath, String path) {
-    try {
+     
        // where we serialize the messages
-       FileOutputStream output = new FileOutputStream(path);
-       // Creates a parser for the given path (csvPath argument)
-       CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-       .withHeader("route_id", "agency_id", "route_short_name", "route_long_name", "route_desc", "route_type", "route_color"));
+       try(FileOutputStream output = new FileOutputStream(path);)
+ 
+      { CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+       .withHeader(
+         "route_id",
+         "agency_id",
+         "route_short_name",
+         "route_long_name",
+         "route_desc",
+         "route_type",
+         "route_color"));
        // Creat iterator - to create from each record a message
        Iterator<CSVRecord> iterator = parser.iterator();
        // We need to ignore the first CSVRecord which holds the csv headers
        iterator.next();
-       // messageCount will keep tracking how many message we serilize in the file.
-       int messageCount = 0;
        while (iterator.hasNext()) {
          CSVRecord record = iterator.next();
          Route.Builder route = Route.newBuilder();
@@ -206,26 +231,28 @@ class DataHandler {
                 .setRouteColor(record.get("route_color"))
                 .build()
                 .writeDelimitedTo(output);
-        messageCount++;
               }
               output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveShapes(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("shape_id", "shape_pt_lat", "shape_pt_lon", "shape_pt_sequence"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "shape_id",
+        "shape_pt_lat",
+        "shape_pt_lon",
+        "shape_pt_sequence"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Shape.Builder shap = Shape.newBuilder();
@@ -235,26 +262,32 @@ class DataHandler {
             .setShapePtSequence(Integer.parseInt(record.get("shape_pt_sequence")))
             .build()
             .writeDelimitedTo(output);
-            messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveStopTimes(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("trip_id", "arrival_time", "departure_time", "stop_id", "stop_sequence", "pickup_type", "drop_off_type", "shape_dist_traveled"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+         "trip_id",
+         "arrival_time",
+         "departure_time",
+         "stop_id",
+         "stop_sequence",
+         "pickup_type",
+         "drop_off_type",
+         "shape_dist_traveled"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         StopTime.Builder stopTime = StopTime.newBuilder();
@@ -268,28 +301,34 @@ class DataHandler {
             .setShapeDistTraveled(record.get("shape_dist_traveled"))
             .build()
             .writeDelimitedTo(output);
-        // for next use when we parse from the file
-        messageCount++;
       }
       output.close();
 
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveStops(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("stop_id", "stop_code", "stop_name", "stop_desc", "stop_lat", "stop_lon", "location_type", "parent_station", "zone_id"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "stop_id",
+        "stop_code",
+        "stop_name",
+        "stop_desc",
+        "stop_lat",
+        "stop_lon",
+        "location_type",
+        "parent_station",
+        "zone_id"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Stop.Builder stop = Stop.newBuilder();
@@ -304,26 +343,27 @@ class DataHandler {
                 .setZoneId(Integer.parseInt(record.get("zone_id")))
                 .build()
                 .writeDelimitedTo(output);
-        messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveTranslations(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("trans_id", "lang", "translation"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "trans_id",
+        "lang",
+        "translation"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Translation.Builder translation = Translation.newBuilder();
@@ -332,26 +372,30 @@ class DataHandler {
             .setTranslation(record.get("translation"))
             .build()
             .writeDelimitedTo(output);
-        messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   public static void saveTrips(Path csvPath, String path) {
-    try {
+     
       // where we serialize the messages
-      FileOutputStream output = new FileOutputStream(path);
-      // Creates a parser for the given path (csvPath argument)
-      CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
-      .withHeader("route_id", "service_id", "trip_id", "trip_headsign", "direction_id", "shape_id"));
+      try(FileOutputStream output = new FileOutputStream(path);)
+
+    {  CSVParser parser = CSVParser.parse(csvPath, StandardCharsets.UTF_8, CSVFormat.DEFAULT
+      .withHeader(
+        "route_id",
+        "service_id",
+        "trip_id",
+        "trip_headsign",
+        "direction_id",
+        "shape_id"));
       // Creat iterator - to create from each record a message
       Iterator<CSVRecord> iterator = parser.iterator();
       // We need to ignore the first CSVRecord which holds the csv headers
       iterator.next();
-      // messageCount will keep tracking how many message we serilize in the file.
-      int messageCount = 0;
       while (iterator.hasNext()) {
         CSVRecord record = iterator.next();
         Trip.Builder trip = Trip.newBuilder();
@@ -363,20 +407,20 @@ class DataHandler {
             .setShapeId(record.get("shape_id"))
             .build()
             .writeDelimitedTo(output);
-            messageCount++;
       }
       output.close();
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   //TEST: test by deserialize and reach last message and print it
   //we deserialize the file and create Message Object for each message (that coded into the file by the "writeDelimitedTo" method)
   public static void test(String[] paths){
-    try{
+
     //test for Agency
     System.out.println("-----------------------Agency test result-----------------------");
-     FileInputStream in = new FileInputStream(paths[0]);
+    try(FileInputStream in = new FileInputStream(paths[0]);){
       for (;;) {
         Agency a = Agency.parseDelimitedFrom(in);
         //if we already pared everything then break the loop
@@ -385,58 +429,57 @@ class DataHandler {
         if (a.getAgencyId() == 51)
                   System.out.println(a.toString());
       }
-    in.close();
+    }
+    catch(IOException e){throw new RuntimeException(e);}
     //test for Calendar
     System.out.println("-----------------------Calendar test result-----------------------");
-    in = new FileInputStream(paths[1]);
-    for (;;) {
+    try(FileInputStream in = new FileInputStream(paths[1]);){
+     for (;;) {
         Calendar c = Calendar.parseDelimitedFrom(in);
         if(c == null)
         break;
         if (c.getServiceId() == 19079)
           System.out.println(c.toString());
       }
+    }
 
-      in.close();
+    catch(IOException e){throw new RuntimeException(e);}
       //test for FareAttributes
       System.out.println("-----------------------fareAttributes test result-----------------------");
-      in = new FileInputStream(paths[2]);
+      try(FileInputStream in = new FileInputStream(paths[2]);){
       for (;;) {
         FareAttributes f = FareAttributes.parseDelimitedFrom(in);
         if(f==null)
           break;
         if (f.getFareId() == 702) // the last fareId is 702 here we test if it reach the last message
           System.out.println(f.toString());
-      }
-
-      in.close();
+      }}
+      catch(IOException e){throw new RuntimeException(e);}
       //test for FareRules
       System.out.println("-----------------------FareRules test result-----------------------");
-      in = new FileInputStream(paths[3]);
+      try(FileInputStream in = new FileInputStream(paths[3]);){
       for (;;) {
             FareRules f = FareRules.parseDelimitedFrom(in);
             if(f == null)
               break;
             if (f.getFareId() == 441 && f.getRouteId() == 1136) 
               System.out.println(f.toString());
-          }
-
-      in.close();
+          }}
+          catch(IOException e){throw new RuntimeException(e);}
       //test for Routes
       System.out.println("-----------------------Routes test result-----------------------");
-      in = new FileInputStream(paths[4]);
+      try(FileInputStream in = new FileInputStream(paths[4]);){
       for (;;) {
            Route r = Route.parseDelimitedFrom(in);
            if(r == null)
               break;
            if (r.getRouteId() == 25341)
            System.out.println(r.toString());
-              }
-
-      in.close();
+              }}
+              catch(IOException e){throw new RuntimeException(e);}
       //test for Shapes
       System.out.println("-----------------------Shapes test result-----------------------");
-      in = new FileInputStream(paths[5]);
+      try(FileInputStream in = new FileInputStream(paths[5]);){
 
       for (;;) {
         Shape s = Shape.parseDelimitedFrom(in);
@@ -444,12 +487,11 @@ class DataHandler {
           break;
         if (s.getShapeId() == 102763) // the last agency_id is 51 here we test if it reach the last message
           System.out.println(s.toString());
-      }
-      in.close();
-
+      }}
+      catch(IOException e){throw new RuntimeException(e);}
       //test for StopTimes
       System.out.println("-----------------------StopTimes test result-----------------------");
-      in = new FileInputStream(paths[6]);
+      try(FileInputStream in = new FileInputStream(paths[6]);){
 
       for (;;) {
         StopTime st = StopTime.parseDelimitedFrom(in);
@@ -460,13 +502,12 @@ class DataHandler {
             && st.getStopSequence().equals("19") && st.getPickupType().equals("1") && st.getDropOffType().equals("0")
             && st.getShapeDistTraveled().equals("39581"))
           System.out.println(st.toString());
-      }
-      in.close();
-
+      }}
+      catch(IOException e){throw new RuntimeException(e);}
       //test for Stops
       System.out.println("-----------------------Stops test result-----------------------");
 
-      in = new FileInputStream(paths[7]);
+      try(FileInputStream in = new FileInputStream(paths[7]);){
 
       for (;;) {
         Stop s = Stop.parseDelimitedFrom(in);
@@ -474,37 +515,37 @@ class DataHandler {
           break;
         if (s.getStopId() == 42972) 
           System.out.println(s.toString());
-      }
-      in.close();
+      }}
+      catch(IOException e){throw new RuntimeException(e);}
       /*
       //test for Translations
       System.out.println("-----------------------Translations test result-----------------------");
-      FileInputStream in = new FileInputStream(paths[8]);
+      try(FileInputStream in = new FileInputStream(paths[8]);){
 
       for (;;) {
         t = Translation.parseDelimitedFrom(in);
         if(t==null)
           break;
           System.out.println(t.toString()); //print every message
-      } */
-      in.close();
+      }} 
+      catch(IOException e){throw new RuntimeException(e);}*/
 
       //test for Trips
       System.out.println("-----------------------Trips test result-----------------------");
-      in = new FileInputStream(paths[9]);
+      try(FileInputStream in = new FileInputStream(paths[9]);){
       for (;;) {
         Trip t = Trip.parseDelimitedFrom(in);
         if(t==null)
         break;
         if (t.getTripId().equals("36453859_250119"))
           System.out.println(t.toString());
-      }
-    } catch(IOException e){}
+      }}
+     catch(IOException e){throw new RuntimeException(e);}
   }
   
 
   public static void main(String[] args) throws IOException {
-    // Path
+    // Paths to the CSVs files
     Path agency_txt = Paths.get(args[0]);
     Path calendar_txt = Paths.get(args[1]);
     Path fare_attributes_txt = Paths.get(args[2]);
@@ -516,7 +557,7 @@ class DataHandler {
     Path translations_txt = Paths.get(args[8]);  //NOTICE: problem with CSVParser
     Path trips_txt = Paths.get(args[9]);
 
-    //Path output file
+    //Paths to the output files
     String agency_p = args[args.length - 10];
     String calendar_p = args[args.length - 9];
     String fare_attributes_p = args[args.length - 8];
@@ -531,7 +572,7 @@ class DataHandler {
     String[] outPaths = {agency_p, calendar_p, fare_attributes_p, fare_rules_p, routes_p, shapes_p, stop_times_p, stops_p, translations_p, trips_p};
 
      saveAgency(agency_txt, agency_p);
-     saveCalebdar(calendar_txt, calendar_p);
+     saveCalendar(calendar_txt, calendar_p);
      saveFareAttributes(fare_attributes_txt, fare_attributes_p);
      saveFareRules(fare_rules_txt, fare_rules_p);
      saveRoutes(routes_txt, routes_p);
@@ -543,18 +584,7 @@ class DataHandler {
      
     test(outPaths);
 
-     //after fix the saveTranslations remove the followed line
-     Files.write(Paths.get(translations_p), "".getBytes());
-
-     //debug
-     //Files.write(Paths.get(agency_p), "".getBytes());
-     //Files.write(Paths.get(calendar_p), "".getBytes());
-     //Files.write(Paths.get(fare_attributes_p), "".getBytes());
-     //Files.write(Paths.get(fare_rules_p), "".getBytes());
-     //Files.write(Paths.get(routes_p), "".getBytes());
-     //Files.write(Paths.get(shapes_p), "".getBytes());
-     //Files.write(Paths.get(stop_times_p), "".getBytes());
-     //Files.write(Paths.get(stops_p), "".getBytes());
-     //Files.write(Paths.get(trips_p), "".getBytes());
+    //TODO: Remove this line after fix the saveTranslations
+    Files.write(Paths.get(translations_p), "".getBytes());
   }
 }

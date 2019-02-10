@@ -1,109 +1,109 @@
 proto_library(
-    name = "agencyproto",
+    name = "agency_proto",
     srcs = ["agency.proto"]
 )
 
 java_proto_library(
-    name = "java_agencyproto",
-    deps = [":agencyproto"],
+    name = "agency_java_proto",
+    deps = [":agency_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "calendarproto",
+    name = "calendar_proto",
     srcs = ["calendar.proto"]
 )
 
 java_proto_library(
-    name = "java_calendarproto",
-    deps = [":calendarproto"],
+    name = "calendar_java_proto",
+    deps = [":calendar_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "fareattributesproto",
+    name = "fare_attributes_proto",
     srcs = ["fare_attributes.proto"]
 )
 
 java_proto_library(
-    name = "java_fareattributesproto",
-    deps = [":fareattributesproto"],
+    name = "fare_attributes_java_proto",
+    deps = [":fare_attributes_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "farerulesproto",
+    name = "fare_rules_proto",
     srcs = ["fare_rules.proto"]
 )
 
 java_proto_library(
-    name = "java_farerulesproto",
-    deps = [":farerulesproto"],
+    name = "fare_rules_java_proto",
+    deps = [":fare_rules_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "routesproto",
+    name = "routes_proto",
     srcs = ["routes.proto"]
 )
 
 java_proto_library(
-    name = "java_routesproto",
-    deps = [":routesproto"],
+    name = "routes_java_proto",
+    deps = [":routes_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "shapesproto",
+    name = "shapes_proto",
     srcs = ["shapes.proto"]
 )
 
 java_proto_library(
-    name = "java_shapesproto",
-    deps = [":shapesproto"],
+    name = "shapes_java_proto",
+    deps = [":shapes_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "stoptimeproto",
+    name = "stop_time_proto",
     srcs = ["stop_times.proto"]
 )
 
 java_proto_library(
-    name = "java_stoptimeproto",
-    deps = [":stoptimeproto"],
+    name = "stop_time_java_proto",
+    deps = [":stop_time_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "stopsproto",
+    name = "stops_proto",
     srcs = ["stops.proto"]
 )
 
 java_proto_library(
-    name = "java_stopsproto",
-    deps = [":stopsproto"],
+    name = "stops_java_proto",
+    deps = [":stops_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "translationsproto",
+    name = "translations_proto",
     srcs = ["translations.proto"]
 )
 
 java_proto_library(
-    name = "java_translationsproto",
-    deps = [":translationsproto"],
+    name = "translations_java_proto",
+    deps = [":translations_proto"],
     visibility = ["//visibility:public"]
 )
 
 proto_library(
-    name = "tripsproto",
+    name = "trips_proto",
     srcs = ["trips.proto"]
 )
 
 java_proto_library(
-    name = "java_tripsproto",
-    deps = [":tripsproto"],
+    name = "trips_java_proto",
+    deps = [":trips_proto"],
     visibility = ["//visibility:public"]
 )
