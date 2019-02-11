@@ -17,18 +17,16 @@ export class AppComponent {
     private encodingService: EncodingService,
     private firebaseService: FirebaseService,
   ) {
-    this.firebaseService.InitData();
+    // this.firebaseService.initData();
     this.data = new Data();
     this.firebaseService.getUserList()
     .subscribe(userList => {
       this.userList = userList;
-      console.log(this.userList);
       this.data.setUserList(this.userList);
     });
     this.firebaseService.getProjectList()
     .subscribe(projectList => {
       this.projectList = projectList;
-      console.log(this.projectList);
       this.data.setProjectList(this.projectList);
     });
   }

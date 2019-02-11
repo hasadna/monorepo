@@ -14,10 +14,7 @@
       <ul class="social-networks">
         <li *ngFor="let socialNetwork of user.getSocialNetworkList()" class="social-network">
           <div class="{{socialNetwork}}">
-            <!-- svg -->
             <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
-            <!-- png -->
-            <!--<img src="./assets/images/linkedin.png" srcset="./assets/images/linkedin@2x.png 2x,./assets/images/linkedin@3x.png 3x" class="linkedin">-->
           </div>
         </li>
       </ul>
@@ -27,7 +24,9 @@
         <h3 class="projects-header">Projects:</h3>
         <ul class="projects-list">
           <li *ngFor="let project of userProjects">
-            <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">{{project.getProjectName()}}</a>
+            <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">
+              {{project.getProjectName()}}
+            </a>
           </li>
         </ul>
       </div>
@@ -42,7 +41,9 @@
         <ul class="contributions-list">
           <li *ngFor="let contribution of user.getUserContributionList()" class="contribution">
             <p class="contribution-message">{{contribution.getContributionMessage()}}</p>
-            <a href="{{contribution.getContributionUrl()}}">{{contribution.getContributionUrl()}}</a>
+            <a href="{{contribution.getContributionUrl()}}">
+              {{contribution.getContributionUrl()}}
+            </a>
           </li>
         </ul>
       </div>
