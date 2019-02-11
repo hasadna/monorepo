@@ -15,7 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-public class DataExtractor {
+public class DataExtractorTool {
 
   // paths of the files that we read from and write to
   private String inputFilePath;
@@ -166,7 +166,7 @@ public class DataExtractor {
   }
 
   public static void main(String[] args) {
-    DataExtractor extractor = new DataExtractor();
+    DataExtractorTool extractor = new DataExtractorTool();
     extractor.setInputFilePath("Posts.xml");
     extractor.setOutputFilePath("Posts-extracted.xml");
     extractor.extractData();
