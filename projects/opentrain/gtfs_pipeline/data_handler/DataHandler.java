@@ -1,51 +1,27 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
-import com.projects.opentrain.gtfs_pipeline.AgencyProtos.Agency;
-import com.projects.opentrain.gtfs_pipeline.CalendarProtos.Calendar;
-import com.projects.opentrain.gtfs_pipeline.FareAttributesProtos.FareAttributes;
-import com.projects.opentrain.gtfs_pipeline.FareRulesProtos.FareRules;
-import com.projects.opentrain.gtfs_pipeline.RoutesProtos.Route;
-import com.projects.opentrain.gtfs_pipeline.ShapesProtos.Shape;
-import com.projects.opentrain.gtfs_pipeline.StopTimeListProtos.StopTime;
-import com.projects.opentrain.gtfs_pipeline.StopsProtos.Stop;
-import com.projects.opentrain.gtfs_pipeline.TranslationsProtos.Translation;
-import com.projects.opentrain.gtfs_pipeline.TripsProtos.Trip;
-import com.google.protobuf.TextFormat;
-import java.io.Reader;
+import com.projects.opentrain.gtfs_pipeline.Protos.Agency;
+import com.projects.opentrain.gtfs_pipeline.Protos.Calendar;
+import com.projects.opentrain.gtfs_pipeline.Protos.FareAttributes;
+import com.projects.opentrain.gtfs_pipeline.Protos.FareRules;
+import com.projects.opentrain.gtfs_pipeline.Protos.Route;
+import com.projects.opentrain.gtfs_pipeline.Protos.Shape;
+import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
+import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
+import com.projects.opentrain.gtfs_pipeline.Protos.Translation;
+import com.projects.opentrain.gtfs_pipeline.Protos.Trip;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.omg.CORBA.portable.InputStream;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.management.RuntimeErrorException;
-
-import java.lang.String;
-import java.lang.Iterable;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.Iterator;
-import java.lang.Object;
-import java.io.OutputStream;
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileInputStream;
 
 class DataHandler {
 
