@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '@/models/user';
-import { DataService } from '@/services/data.service';
+import { User } from '@/proto';
+import { FirebaseService } from '@/services';
 
 @Component({
   selector: 'app-contacts',
@@ -11,14 +11,12 @@ import { DataService } from '@/services/data.service';
 export class ContactsComponent implements OnInit {
   users: User[];
 
-  constructor(private dataService: DataService) { }
+  constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    this.getAllUsers();
-  }
-
-  getAllUsers(): void {
-    this.dataService.getAllUsers()
-      .subscribe(users => this.users = users);
+    this.firebaseService.getUserList()
+    .subscribe(userList => {
+      this.users = userList;
+    });
   }
 }

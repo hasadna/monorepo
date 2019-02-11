@@ -1,15 +1,28 @@
+// portrait phones: 576px
+// landscape phones: 768px
+// tablets: 992px
+// desktops: 1200px
+
 .app-container {
-  width: 100%;
   font-family: 'OpenSans', sans-serif;
+  @media(max-width: 575.98px) {
+    font-size: 10px;
+  }
 }
 
 .app-header {
   display: flex;
   justify-content: space-between;
+  @media (max-width: 575.98px) {
+    flex-direction: column;
+  }
   >.app-logo {
     justify-self: flex-start;
     display: flex;
     justify-content: space-around;
+    @media(max-width:575.98px) {
+      justify-content: flex-start;
+    }
     >.my-sadna-logo {
       height: 5em;
       width: 5em;
@@ -23,6 +36,9 @@
   }
   >.app-navigation-bar {
     justify-self: flex-end;
+    @media(max-width: 575.98px) {
+      align-self: center;  
+    }
     >.app-navigation {
       >a {
         margin: 1em;

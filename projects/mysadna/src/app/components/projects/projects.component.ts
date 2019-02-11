@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Project } from '@/models/project';
-import { DataService } from '@/services/data.service';
+import { Project } from '@/proto';
+import { FirebaseService } from '@/services';
 
 @Component({
   selector: 'app-projects',
@@ -11,14 +11,16 @@ import { DataService } from '@/services/data.service';
 export class ProjectsComponent implements OnInit {
   projects: Project[];
 
-  constructor(private dataService: DataService) { }
+  constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
     this.getAllProjects();
   }
 
   getAllProjects(): void {
-    this.dataService.getAllProjects()
-      .subscribe(projects => this.projects = projects);
+    this.firebaseService.getProjectList()
+    .subscribe(projectList => {
+      this.projects = projectList;
+    });
   }
 }

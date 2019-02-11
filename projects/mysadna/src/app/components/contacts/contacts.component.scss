@@ -1,5 +1,13 @@
+// portrait phones: 576px
+// landscape phones: 768px
+// tablets: 992px
+// desktops: 1200px
+
 .contacts {
   width: 100%;
+  @media(max-width: 575.98px) {
+    font-size: 10px;
+  }
 }
 
 .contacts-header {
@@ -15,6 +23,9 @@ ul {
   >.contacts-list {
     display: flex;
     justify-content: flex-start;
+    @media(max-width: 575.98px) {
+      flex-wrap: wrap;
+    }
     >.user {
       border: 2px lightgrey solid;
       border-radius: 0.25em;
