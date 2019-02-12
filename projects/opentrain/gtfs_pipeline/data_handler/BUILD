@@ -3,7 +3,7 @@ load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 checkstyle_test(
     name = "data_handler-checkstyle",
     target = ":data_handler",
-    #allow_failure = 1,
+    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
 )
 
