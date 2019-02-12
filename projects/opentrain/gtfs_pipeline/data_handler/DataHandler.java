@@ -373,7 +373,7 @@ class DataHandler {
     }
   }
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     // Paths to the CSVs files
     final Path agencyTxt = Paths.get(args[0]);
     final Path calendarTxt = Paths.get(args[1]);
