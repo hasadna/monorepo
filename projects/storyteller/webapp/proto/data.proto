@@ -1,9 +1,10 @@
 syntax = "proto3";
-package com.hasadna.protobin_reader;
+package projects.storyteller.proto;
 
-option java_package = "com.hasadna.protobin_reader";
+option java_package = "projects.storyteller.proto";
 option java_outer_classname = "Protos";
 
+/* Storyteller protos. */
 message Config {
   enum Frequency {
     EVERY_10_MINUTES = 0; // This is the default (=0)
@@ -56,11 +57,18 @@ message FileData {
   }
 }
 
-message StoryItem {
-  int64 timeMs = 1;
+message Screenshot {
+  string filename = 1;
   bytes screenshot = 2;
+}
+
+message StoryItem {
+  reserved 2;
+  int64 timeMs = 1;
   string oneliner = 3;
   string note = 4;
+  string screenshot_filename = 5;
+  string id = 6;
 }
 
 message Story {
@@ -68,6 +76,8 @@ message Story {
   int64 endTimeMs = 2;
   string project = 3;
   repeated StoryItem item = 4;
+  string id = 5;
+  string author = 6;
 }
 
 message StoryList { repeated Story story = 1; }

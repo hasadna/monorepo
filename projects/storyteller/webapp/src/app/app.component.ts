@@ -9,26 +9,26 @@ import { EncodingService, FirebaseService } from '@/core/services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  storylist: StoryList[];
+  // storylist: StoryList[];
 
 
-  constructor(
-    private firebaseService: FirebaseService,
-    private encodingService: EncodingService,
-  ) {
-    if (firebaseService.isOnline) {
-      this.load();
-    } else {
-      this.firebaseService.anonymousLogin().then(() => {
-        this.load();
-      });
-    }
-  }
+  // constructor(
+  //   private firebaseService: FirebaseService,
+  //   private encodingService: EncodingService,
+  // ) {
+  //   if (firebaseService.isOnline) {
+  //     this.load();
+  //   } else {
+  //     this.firebaseService.anonymousLogin().then(() => {
+  //       this.load();
+  //     });
+  //   }
+  // }
 
-  load(): void {
-    this.firebaseService.getstorylistAll().subscribe(storylist => {
-      this.storylist = storylist;
+  // load(): void {
+  //   this.firebaseService.getstorylistAll().subscribe(storylist => {
+  //     this.storylist = storylist;
 
-    });
-  }
+  //   });
+  // }
 }

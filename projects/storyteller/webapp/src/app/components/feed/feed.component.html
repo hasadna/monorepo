@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<div *ngIf="!storylist">
+  Loading
+</div>
+<div *ngIf="storylist">
+  <div *ngFor="let storylistChild of storylist">
+    <div class="Rectangle" >
+      <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+        <div *ngFor="let storyItem of story.getItemList()" class="strotyItemRec">
+              <div>
+                <strong class="title">
+                  {{story.getAuthor()}}
+                  on 
+                  {{story.getProject()}}
+                  <label class="timestamp">{{storyItem.getTimems() | date:'short'}}</label>
+                </strong>
+              </div>   
+              <div>
+                <a routerLink="/single-screenshot">
+                  <strong>Notes: </strong> {{storyItem.getOneliner()}}
+                </a>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+
+  
+
+

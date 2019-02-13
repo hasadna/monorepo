@@ -1,10 +1,5 @@
-<div *ngIf="!storylist">
-  Loading
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<div class="container">
+  <app-header></app-header>
+  <router-outlet></router-outlet>
 </div>
-<div *ngIf="storylist">
-  <div *ngFor="let storylistChild of storylist">
-    ----
-    <div *ngFor="let story of storylistChild.getStoryList()">
-      {{ story.getProject()}}
-    </div>
-  </div>

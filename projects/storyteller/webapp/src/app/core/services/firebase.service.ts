@@ -34,7 +34,7 @@ export class FirebaseService {
 
           if (firebaseElement === undefined) {
             // Element not found
-          return;
+            return;
           }
           return this.convertFirebaseElementToStory(firebaseElement);
         })));
@@ -46,7 +46,7 @@ export class FirebaseService {
     const binary: Uint8Array = this.encodingService
       .decodeBase64StringToUint8Array(firebaseElement.proto);
 
-    // Convert binary to StoryList
+    // Convert binary to book
     const storylist: StoryList = StoryList.deserializeBinary(binary);
     return storylist;
   }
