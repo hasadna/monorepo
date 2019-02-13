@@ -2,8 +2,8 @@
   <h1>Projects</h1>
   <ul>
     <li *ngFor="let project of projects">
-      <a [routerLink]="'/project-details/' + project.projectId" class="project">
-        {{project.projectName}}
+      <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">
+        {{project.getProjectName()}}
       </a>
     </li>
   </ul>

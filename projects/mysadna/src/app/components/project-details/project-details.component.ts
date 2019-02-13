@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '@/models/user';
-import { Project } from '@/models/project';
-import { DataService } from '@/services/data.service';
+import { User, Project } from '@/proto';
+import { FirebaseService } from '@/services';
 
 @Component({
   selector: 'app-project-details',
@@ -18,7 +17,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dataService: DataService,
+    private firebaseService: FirebaseService,
     private location: Location
   ) { }
 
@@ -28,17 +27,17 @@ export class ProjectDetailsComponent implements OnInit {
 
   getProject(): void {
     const projectId: number = +this.route.snapshot.paramMap.get('projectId');
-    this.dataService.getProject(projectId)
-      .subscribe(project => {
-        this.project = project;
+    this.firebaseService.getProjectList()
+      .subscribe(projectList => {
+        this.project = projectList.find(project => (project.getProjectId() === projectId));
         this.getProjectUsers(projectId);
       });
   }
 
   getProjectUsers(projectId: number): void {
-    this.dataService.getProjectUsers(projectId)
+    this.firebaseService.getUserList()
       .subscribe(users => {
-        this.projectUsers = users;
+        this.projectUsers = users.filter(user => user.getProjectList().includes(projectId));
       });
   }
 
