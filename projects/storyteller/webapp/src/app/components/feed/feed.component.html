@@ -1,0 +1,25 @@
+<div *ngIf="!storylist">
+  Loading
+</div>
+<div *ngIf="storylist">
+  <div *ngFor="let storylistChild of storylist">
+    <div class="container">
+      <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+        <div *ngFor="let storyItem of story.getItemList()">
+          <div class="title">
+            <div class="timestamp">{{storyItem.getTimems() | date:'short'}}</div>
+            <div class="head">
+              {{story.getAuthor()}}
+               on 
+               {{story.getProject()}}
+            </div>
+
+          </div>
+          <div class="notes"><strong>Notes: </strong>
+            {{storyItem.getOneliner()}}
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
