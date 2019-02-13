@@ -18,7 +18,11 @@
     "@angular/forms": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
+<<<<<<< HEAD
     "@angular/router": "^7.2.4",
+=======
+    "@angular/router": "~7.2.0",
+>>>>>>> c5bb66de788bac5bc3f1e955a0c7eb234ea340d2
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
@@ -34,7 +38,11 @@
     "@types/node": "~8.9.4",
     "angularfire2": "^5.1.1",
     "codelyzer": "~4.5.0",
+<<<<<<< HEAD
     "firebase": "^5.7.3",
+=======
+    "firebase": "^5.8.1",
+>>>>>>> c5bb66de788bac5bc3f1e955a0c7eb234ea340d2
     "fs-extra": "^7.0.1",
     "google-protobuf": "^3.6.1",
     "gulp": "^4.0.0",

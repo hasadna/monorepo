@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+verb=$1
+
+if [[ "$verb" = "generate" ]]; then
+    infile=$2
+    outfile=$3
+
+    if [[ ! -f "$infile" ]] || [[ -z "$outfile" ]]; then
+      echo "Should supply input and output files: $0 $1 [input] [output]"
+      exit 1;
+    fi
+
+    echo "Running apt-get update, installing wget"
+    apt-get update &> /dev/null
+    apt-get install -y wget &> /dev/null
+    echo "Generating ${outfile}"
+    apt-get -qq -y install --reinstall --print-uris $(cat ${infile}) | awk $'{ gsub(/\'/, "", $1); print $1}' >  ${outfile}
+elif [[ "$verb" = "download" ]]; then
+    echo "Downloading debs from file ${infile}"
+
+    infile=$2
+
+    if [[ ! -f "$infile" ]]; then
+      echo "Should supply input file: $0 $1 [input]"
+      exit 1;
+    fi
+
+    echo "Downloading to debs/"
+    mkdir -p debs/
+    wget --directory-prefix=debs/ --input-file=${infile}
+elif [[ "$verb" = "install" ]]; then
+    echo "Installing debs from directory debs/"
+
+    # TODO: --force-depends installs all packages
+    # regardless of their dependencies. Figure out a
+    # proper way to fetch packages so flag is not needed.
+    dpkg --force-depends -i debs/*.deb
+else
+  echo "Incorrect verb: '$verb'. Should be one of [generate|download|install]"
+fi

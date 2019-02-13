@@ -1,6 +1,7 @@
 <div *ngIf="!book">
   Loading
 </div>
+<<<<<<< HEAD
 <nav class="pull-right">
   <a routerLink="/projects">  Projects  </a>
   <a routerLink="/participants">  Participants  </a>
@@ -8,3 +9,15 @@
   <a routerLink="/contact"> Contact Us! </a>
 </nav>
 <router-outlet></router-outlet>
+=======
+<div *ngIf="book">
+  <div>
+    <span>Title: </span>
+    <span>{{ book.getTitle() }}</span>
+  </div>
+  <div>
+    <span>Amount of pages: </span>
+    <span>{{ book.getPages() }}</span>
+  </div>
+</div>
+>>>>>>> c5bb66de788bac5bc3f1e955a0c7eb234ea340d2

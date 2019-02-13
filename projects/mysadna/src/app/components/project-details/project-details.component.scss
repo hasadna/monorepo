@@ -1,6 +1,14 @@
+// portrait phones: 576px
+// landscape phones: 768px
+// tablets: 992px
+// desktops: 1200px
+
 .project-details {
   text-align: center;
   width: 100%;
+  @media(max-width: 575.98px) {
+    font-size: 10px;
+  }
 
   >.project-name {
     margin: 1.5em;
@@ -23,6 +31,9 @@
     >.contributors-list {
       display: flex;
       justify-content: space-evenly;
+      @media(max-width: 575.98px) {
+        flex-wrap: wrap
+      }
       .contributor {
         display: flex;
         flex-direction: column;

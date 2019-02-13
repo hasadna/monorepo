@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { User, Project, Contribution, Data } from '../proto';
+import { Book } from '@/core/proto';
 import { EncodingService } from './encoding.service';
 
 interface FirebaseElement {
@@ -21,9 +21,9 @@ export class FirebaseService {
     this.protobin = this.db.collection('protobin');
   }
 
-  getData(): Observable<Data> {
+  getBook(): Observable<Book> {
     return this.protobin
-      .doc('data')
+      .doc('book')
       .snapshotChanges()
       .pipe(
         map(action => {
@@ -32,18 +32,18 @@ export class FirebaseService {
             // Element not found
             return;
           }
-          return this.convertFirebaseElementToData(firebaseElement);
+          return this.convertFirebaseElementToBook(firebaseElement);
         })
       );
   }
 
-  private convertFirebaseElementToData(firebaseElement: FirebaseElement): Data {
+  private convertFirebaseElementToBook(firebaseElement: FirebaseElement): Book {
     // Convert firebaseElement to binary
     const binary: Uint8Array = this.encodingService
       .decodeBase64StringToUint8Array(firebaseElement.proto);
-    // Convert binary to data
-    const data: Data = Data.deserializeBinary(binary);
+    // Convert binary to book
+    const book: Book = Book.deserializeBinary(binary);
 
-    return data;
+    return book;
   }
 }
