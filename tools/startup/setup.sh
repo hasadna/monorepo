@@ -32,7 +32,18 @@ sudo apt-get purge -y ubuntu-web-launchers
 mkdir -p wifis
 sudo cp /etc/NetworkManager/system-connections/* wifis/
 sudo cp wifis/* /etc/NetworkManager/system-connections/
+echo "Restarting system network service"
 sudo systemctl restart NetworkManager
+
+echo "Waiting for internet connection to settle"
+sleep 10
+
+echo "Checking for internet connection"
+http_code=$(curl -LI httpbin.org/get -o /dev/null -w '%{http_code}\n' -s)
+if [[ "$http_code" != "200" ]]; then
+    echo "Please ensure internet connection is available and re-run the script"
+    exit 1
+fi
 
 # Download apt installs if needed
 # TODO: Figure out how to download packages from a predefined list, instead of "latest". This list will be generated from "latest" at some point in time.
