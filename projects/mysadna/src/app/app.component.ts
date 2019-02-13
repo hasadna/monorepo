@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 import { EncodingService, FirebaseService } from '@/services';
-import { Data } from '@/proto';
+import { Data, User, Project } from '@/proto';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,23 @@ import { Data } from '@/proto';
 })
 export class AppComponent {
   data: Data;
+  userList: User[];
+  projectList: Project[];
 
   constructor(
     private encodingService: EncodingService,
     private firebaseService: FirebaseService,
   ) {
-    this.firebaseService.getData().subscribe(data => {
-      this.data = data;
+    this.data = new Data();
+    zip(
+      this.firebaseService.getUserList(),
+      this.firebaseService.getProjectList()
+    ).subscribe(data => {
+      this.userList = data[0];
+      this.projectList = data[1];
+
+      this.data.setUserList(this.userList);
+      this.data.setProjectList(this.projectList);
     });
   }
 }
