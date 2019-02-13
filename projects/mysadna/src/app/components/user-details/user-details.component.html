@@ -1,23 +1,20 @@
 <div *ngIf="user" class="user-details">
-  <h1 class="user-header">{{user.firstName}} {{user.lastName}}</h1>
+  <h1 class="user-header">{{user.getFirstName()}} {{user.getLastName()}}</h1>
   <div class="user-container">
     <div class="left-container">
       <div class="user-image-container">
-        <img src="{{user.userImg}}" class="user-image">
+        <img src="{{user.getUserImg()}}" class="user-image">
       </div>
       <p class="user-name">
-        {{user.userName}}
+        {{user.getUserName()}}
       </p>
       <p class="email">
-        {{user.email}}
+        {{user.getEmail()}}
       </p>
       <ul class="social-networks">
-        <li *ngFor="let socialNetwork of user.socialNetworks" class="social-network">
+        <li *ngFor="let socialNetwork of user.getSocialNetworkList()" class="social-network">
           <div class="{{socialNetwork}}">
-            <!-- svg -->
             <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
-            <!-- png -->
-            <!--<img src="./assets/images/linkedin.png" srcset="./assets/images/linkedin@2x.png 2x,./assets/images/linkedin@3x.png 3x" class="linkedin">-->
           </div>
         </li>
       </ul>
@@ -27,22 +24,26 @@
         <h3 class="projects-header">Projects:</h3>
         <ul class="projects-list">
           <li *ngFor="let project of userProjects">
-            <a [routerLink]="'/project-details/' + project.projectId" class="project">{{project.projectName}}</a>
+            <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">
+              {{project.getProjectName()}}
+            </a>
           </li>
         </ul>
       </div>
       <div class="skills">
         <h3 class="skills-header">Skills:</h3>
         <div class="skills-list">
-          <p>{{user.skills}}</p>
+          <p>{{user.getSkillList()}}</p>
         </div>
       </div>
       <div class="contributions">
         <h3 class="contributions-header">Contributions:</h3>
         <ul class="contributions-list">
-          <li *ngFor="let contribution of user.userContributions" class="contribution">
-            <p class="contribution-message">{{contribution.contributionMessage}}</p>
-            <a href="{{contribution.contributionUrl}}">{{contribution.contributionUrl}}</a>
+          <li *ngFor="let contribution of user.getUserContributionList()" class="contribution">
+            <p class="contribution-message">{{contribution.getContributionMessage()}}</p>
+            <a href="{{contribution.getContributionUrl()}}">
+              {{contribution.getContributionUrl()}}
+            </a>
           </li>
         </ul>
       </div>

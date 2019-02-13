@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class EncodingService {
   encodeUint8ArrayToBase64String(binary: Uint8Array): string {
     return btoa(String.fromCharCode.apply(null, binary));

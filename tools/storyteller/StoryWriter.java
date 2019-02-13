@@ -2,6 +2,7 @@ package tools.storyteller;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.startupos.common.FileUtils;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,22 +33,32 @@ public class StoryWriter {
 
   private final Config config;
   private final FileUtils fileUtils;
+  // User's email
+  private final String author;
   private Story.Builder currentStoryBuilder;
   private List<Story> allStories;
 
   @Inject
-  public StoryWriter(StorytellerConfig storytellerConfig, FileUtils fileUtils, StoryReader reader) {
+  public StoryWriter(
+      StorytellerConfig storytellerConfig,
+      FileUtils fileUtils,
+      StoryReader reader,
+      AuthService authService) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
     this.allStories =
         new ArrayList<>(
-            reader.getStories(
-                fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME)));
+            reader.getUnsharedStories(getAbsUnsharedStoriesFolderPath()));
+    author = authService.getUserEmail();
   }
 
   void startStory(String project) {
     currentStoryBuilder = Story.newBuilder();
-    currentStoryBuilder.setStartTimeMs(getCurrentTimestamp()).setProject(project);
+    currentStoryBuilder
+        .setId(generateId())
+        .setStartTimeMs(getCurrentTimestamp())
+        .setProject(project)
+        .setAuthor(author);
     allStories.add(currentStoryBuilder.build());
     saveStories();
   }
@@ -71,35 +83,46 @@ public class StoryWriter {
   void saveStoryItem(String project, String story) {
     // Replace empty with one space, so that the prototxt will have the entry
     story = story.isEmpty() ? " " : story;
+    String filename = saveScreenshot();
     StoryItem storyItem =
-        StoryItem.newBuilder().setTimeMs(getCurrentTimestamp()).setOneliner(story).build();
+        StoryItem.newBuilder()
+            .setId(generateId())
+            .setTimeMs(getCurrentTimestamp())
+            .setOneliner(story)
+            .setScreenshotFilename(filename)
+            .build();
     currentStoryBuilder.setProject(project).setEndTimeMs(getCurrentTimestamp()).addItem(storyItem);
     allStories.set(allStories.size() - 1, currentStoryBuilder.build());
     saveStories();
   }
 
-  void saveScreenshot() {
-    fileUtils.mkdirs(getUnsharedStoriesPath());
+  // Returns filename of a saved screenshot
+  String saveScreenshot() {
+    fileUtils.mkdirs(getAbsUnsharedStoriesFolderPath());
     Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+    String filename = getCurrentTimeString() + ".jpg";
     try {
       Robot robot = new Robot();
       BufferedImage screenshot = robot.createScreenCapture(rectangle);
-      String filenameWithoutExtension =
-          Paths.get(getUnsharedStoriesPath(), getCurrentTimeString()).toString();
-      ImageIO.write(screenshot, "jpg", Paths.get(filenameWithoutExtension + ".jpg").toFile());
+      ImageIO.write(
+          screenshot,
+          "jpg",
+          Paths.get(getAbsUnsharedStoriesFolderPath(), filename)
+              .toFile());
     } catch (AWTException | IOException e) {
       log.atSevere().withCause(e).log("Error in saving screenshot");
     }
+    return filename;
   }
 
   void saveSharedStories(StoryList stories) throws IOException {
-    final String sharedStoriesPath = Storyteller.getSharedStoriesPath(config);
+    final String absPath = Storyteller.getSharedStoriesAbsPath(config);
     fileUtils.copyDirectoryToDirectory(
-        getUnsharedStoriesPath(),
-        sharedStoriesPath,
+        getAbsUnsharedStoriesFolderPath(),
+        absPath,
         StorytellerConfig.STORIES_FILENAME);
     fileUtils.writePrototxt(stories,
-        fileUtils.joinPaths(sharedStoriesPath, getCurrentTimeString() + ".prototxt"));
+        fileUtils.joinPaths(absPath, getCurrentTimeString() + ".prototxt"));
   }
 
   private void updateCurrentStory(String project) {
@@ -110,7 +133,7 @@ public class StoryWriter {
   private void saveStories() {
     fileUtils.writePrototxtUnchecked(
         StoryList.newBuilder().addAllStory(allStories).build(),
-        fileUtils.joinPaths(getUnsharedStoriesPath(), StorytellerConfig.STORIES_FILENAME));
+        fileUtils.joinPaths(getAbsUnsharedStoriesFolderPath(), StorytellerConfig.STORIES_FILENAME));
   }
 
   private long getCurrentTimestamp() {
@@ -121,8 +144,16 @@ public class StoryWriter {
     return DATE_FORMATTER.format(new Date(System.currentTimeMillis()));
   }
 
-  private String getUnsharedStoriesPath() {
-    return Storyteller.getUnsharedStoriesPath(config);
+  private String getAbsUnsharedStoriesFolderPath() {
+    return Storyteller.getUnsharedStoriesAbsPath(config);
+  }
+
+  /* Returns the first element of UUID.
+   * UUID represents a 128-bit long value that is unique.
+   * It is represented in 32 Hexadecimal characters separated by 4 dashes.
+   */
+  private String generateId() {
+    return getCurrentTimestamp() + "_" + UUID.randomUUID().toString().split("-")[0];
   }
 }
 
