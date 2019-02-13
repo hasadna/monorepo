@@ -15,16 +15,16 @@ public class BayesFilter {
   private int totalHamCount = 0;
 
   private double probability(List<WordInfo> message) {
-    double positive_probabilities_product = 1.0f;
-    double negative_probabilities_product = 1.0f;
+    double positiveProbabilitiesProduct = 1.0f;
+    double negativeProbabilitiesProduct = 1.0f;
     for (int i = 0; i < message.size(); i++) {
       WordInfo wordInfo = message.get(i);
-      positive_probabilities_product *= wordInfo.getSpamProbability();
-      negative_probabilities_product *= (1.0f - wordInfo.getSpamProbability());
+      positiveProbabilitiesProduct *= wordInfo.getSpamProbability();
+      negativeProbabilitiesProduct *= (1.0f - wordInfo.getSpamProbability());
     }
-    double probabilities_products_sum =
-        positive_probabilities_product + negative_probabilities_product;
-    return positive_probabilities_product / probabilities_products_sum;
+    double probabilitiesProductsSum =
+        positiveProbabilitiesProduct + negativeProbabilitiesProduct;
+    return positiveProbabilitiesProduct / probabilitiesProductsSum;
   }
 
   public boolean isSpam(String message) {
@@ -114,9 +114,11 @@ public class BayesFilter {
     return wordInfoList;
   }
 
-  /** Given wordInfo with spam and ham counts, calculate spam/ham rate and spam probability */
+  /** Given wordInfo with spam and ham counts, calculate spam/ham rate and spam probability. */
   private WordInfo wordInfoWithProbability(WordInfo wordInfo) {
-    float spamRate, hamRate, spamProbability = 0;
+    float spamRate;
+    float hamRate;
+    float spamProbability = 0;
 
     spamRate = wordInfo.getSpamCount() / (float) totalSpamCount;
     hamRate = wordInfo.getHamCount() / (float) totalHamCount;

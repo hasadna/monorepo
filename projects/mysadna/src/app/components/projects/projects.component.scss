@@ -1,0 +1,27 @@
+// portrait phones: 576px
+// landscape phones: 768px
+// tablets: 992px
+// desktops: 1200px
+
+.projects {
+  text-align: center;
+  width: 100%;
+  @media(max-width: 575.98px) {
+    font-size: 10px;
+  }
+}
+
+li {
+  margin: 2em;
+}
+
+.project {
+  text-decoration: none;
+  color: black;
+  font-size: 1.5em;
+}
+
+ul {
+  list-style:none; 
+  padding:0;
+}

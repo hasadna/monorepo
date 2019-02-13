@@ -15,7 +15,6 @@ java_binary(
 
 checkstyle_test(
     name = "Data_Uploader-checkstyle",
-    allow_failure = 1,
     config = "//tools/checkstyle:config.xml",
     target = ":Data_Uploader",
 )

@@ -1,0 +1,64 @@
+// portrait phones: 576px
+// landscape phones: 768px
+// tablets: 992px
+// desktops: 1200px
+
+.project-details {
+  text-align: center;
+  width: 100%;
+  @media(max-width: 575.98px) {
+    font-size: 10px;
+  }
+
+  >.project-name {
+    margin: 1.5em;
+  }
+  >.project-description {
+    font-weight: normal;
+    color: #4a4a4a;
+  }
+  >.project-link {
+    h3 {
+      font-weight: 100;
+      margin: 2em;
+    }
+  }
+  >.contributors {
+    >h3 {
+      font-weight: normal;
+      color: #565656;
+    }
+    >.contributors-list {
+      display: flex;
+      justify-content: space-evenly;
+      @media(max-width: 575.98px) {
+        flex-wrap: wrap
+      }
+      .contributor {
+        display: flex;
+        flex-direction: column;
+        > a {
+          text-decoration: none;
+          >.user-image {
+            border-radius: 0.25em;
+            margin: 0;
+          }
+          >.user-names {
+            margin: 0;
+            border: 2px gray solid;
+            border-radius: 0.25em;
+            text-align: left;
+            >.user-full-name {
+              color: black;
+              margin: 1em;
+            }
+            >.user-name {
+              color: gray;
+              margin: 1em;
+            }
+          }
+        } 
+      }
+    }    
+  }
+}

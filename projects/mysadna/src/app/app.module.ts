@@ -3,24 +3,21 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UsersComponent } from './users/users.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { ComponentList } from './components';
+import { FirebaseModule } from './import/firebase/firebase.module';
+import { ServiceList } from './services';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UsersComponent,
-    UserDetailsComponent,
-    ProjectsComponent,
-    ProjectDetailsComponent
+    ...ComponentList
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FirebaseModule
   ],
-  providers: [],
+  providers: [...ServiceList],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
