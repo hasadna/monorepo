@@ -65,13 +65,8 @@ public class StorytellerTool {
   }
 
   public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
-    String[] leftoverArgs =
-        Flags.parse(args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
-=======
     String[] leftoverArgs = Flags.parse(
             args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
->>>>>>> origin/master
     Storyteller storyteller =
         DaggerStorytellerTool_StorytellerToolComponent.create().getStoryteller();
 

@@ -22,11 +22,7 @@ public class DataUploader {
   }
 
   void run() throws IOException {
-<<<<<<< HEAD
     // TODO Implement
-=======
-    //TODO Implement
->>>>>>> origin/master
   }
 
   @Singleton

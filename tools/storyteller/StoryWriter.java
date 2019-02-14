@@ -118,17 +118,12 @@ public class StoryWriter {
   void saveSharedStories(StoryList stories) throws IOException {
     final String absPath = Storyteller.getSharedStoriesAbsPath(config);
     fileUtils.copyDirectoryToDirectory(
-<<<<<<< HEAD
-        getUnsharedStoriesPath(), sharedStoriesPath, StorytellerConfig.STORIES_FILENAME);
-    fileUtils.writePrototxt(
-        stories, fileUtils.joinPaths(sharedStoriesPath, getCurrentTimeString() + ".prototxt"));
-=======
+
         getAbsUnsharedStoriesFolderPath(),
         absPath,
         StorytellerConfig.STORIES_FILENAME);
     fileUtils.writePrototxt(stories,
         fileUtils.joinPaths(absPath, getCurrentTimeString() + ".prototxt"));
->>>>>>> origin/master
   }
 
   private void updateCurrentStory(String project) {
