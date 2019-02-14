@@ -15,8 +15,8 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
     this.firebaseService.getUserList()
-    .subscribe(userList => {
-      this.users = userList;
-    });
+      .subscribe(userList => {
+        this.users = userList;
+      });
   }
 }

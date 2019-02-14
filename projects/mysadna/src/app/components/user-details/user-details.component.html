@@ -1,51 +1,47 @@
-<div *ngIf="user" class="user-details">
-  <h1 class="user-header">{{user.getFirstName()}} {{user.getLastName()}}</h1>
-  <div class="user-container">
-    <div class="left-container">
-      <div class="user-image-container">
-        <img src="{{user.getUserImg()}}" class="user-image">
-      </div>
-      <p class="user-name">
-        {{user.getUserName()}}
-      </p>
-      <p class="email">
-        {{user.getEmail()}}
-      </p>
-      <ul class="social-networks">
-        <li *ngFor="let socialNetwork of user.getSocialNetworkList()" class="social-network">
-          <div class="{{socialNetwork}}">
-            <img src="./assets/images/{{socialNetwork}}.svg" class="{{socialNetwork}}">
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="right-container">
-      <div class="projects">
-        <h3 class="projects-header">Projects:</h3>
-        <ul class="projects-list">
-          <li *ngFor="let project of userProjects">
-            <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">
-              {{project.getProjectName()}}
+<div class="user-details" *ngIf="user">
+  <div class="media">
+    <div class="user-header">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
+    <div class="user-container media-row-col">
+      <div class="user-label">
+        <div class="flex">
+          <img [src]="user.getUserImg()">
+          <div class="user-name">{{ user.getUserName() }}</div>
+          <div class="email">{{ user.getEmail() }}</div>
+          <div class="social-networks">
+            <a
+              href="https://github.com/hasadna/hasadna"
+              *ngFor="let socialNetwork of user.getSocialNetworkList()"
+            >
+              <img src="./assets/images/{{socialNetwork}}.svg">
             </a>
-          </li>
-        </ul>
-      </div>
-      <div class="skills">
-        <h3 class="skills-header">Skills:</h3>
-        <div class="skills-list">
-          <p>{{user.getSkillList()}}</p>
+          </div>
         </div>
       </div>
-      <div class="contributions">
-        <h3 class="contributions-header">Contributions:</h3>
-        <ul class="contributions-list">
-          <li *ngFor="let contribution of user.getUserContributionList()" class="contribution">
-            <p class="contribution-message">{{contribution.getContributionMessage()}}</p>
-            <a href="{{contribution.getContributionUrl()}}">
-              {{contribution.getContributionUrl()}}
-            </a>
-          </li>
-        </ul>
+      <div class="media-large-block"></div>
+      <div class="media-small-block"></div>
+      <div class="user-info media-100">
+        <div class="title">Projects:</div>
+        <div class="info-block">
+          <a
+            *ngFor="let project of userProjects"
+            [routerLink]="'/project-details/' + project.getProjectId()"
+          >{{ project.getProjectName() }}</a>
+        </div>
+
+        <div class="title">Skills:</div>
+        <div class="info-block">
+          {{ getSkills() }}
+        </div>
+
+        <div class="title">Contributions:</div>
+        <div class="info-block">
+          <div class="contribution" *ngFor="let contribution of user.getUserContributionList()">
+            <div class="contribution-message">{{ contribution.getContributionMessage() }}</div>
+            <div class="contribution-url"><a [href]="contribution.getContributionUrl()">
+              {{ contribution.getContributionUrl() }}
+            </a></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
