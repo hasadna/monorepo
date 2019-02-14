@@ -43,17 +43,20 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        Agency.Builder agency = Agency.newBuilder();
-        agency
-            .setAgencyId(Integer.parseInt(record.get("agency_id")))
-            .setAgencyName(record.get("agency_name"))
-            .setAgencyUrl(record.get("agency_url"))
-            .setAgencyTimezone(record.get("agency_timezone"))
-            .setAgencyLang(record.get("agency_lang"))
-            .setAgencyPhone(record.get("agency_phone"))
-            .setAgencyFareUrl(record.get("agency_fare_url"))
-            .build()
-            .writeDelimitedTo(output);
+        //Israel-rail's id is 2
+        if(record.get("agency_id").equals("2")){
+          Agency.Builder agency = Agency.newBuilder();
+          agency
+              .setAgencyId(Integer.parseInt(record.get("agency_id")))
+              .setAgencyName(record.get("agency_name"))
+              .setAgencyUrl(record.get("agency_url"))
+              .setAgencyTimezone(record.get("agency_timezone"))
+              .setAgencyLang(record.get("agency_lang"))
+              .setAgencyPhone(record.get("agency_phone"))
+              .setAgencyFareUrl(record.get("agency_fare_url"))
+              .build()
+              .writeDelimitedTo(output);
+        }
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
