@@ -22,7 +22,7 @@ public class DataUploader {
   }
 
   void run() throws IOException {
-    //TODO Implement
+    // TODO Implement
   }
 
   @Singleton
@@ -36,3 +36,4 @@ public class DataUploader {
     DaggerDataUploader_ToolComponent.create().getTool().run();
   }
 }
+

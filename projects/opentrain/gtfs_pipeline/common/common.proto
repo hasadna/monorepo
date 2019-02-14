@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package com.projects.opentrain.gtfs_pipeline;
+
+option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_outer_classname = "Protos";
+
+message Agency {
+   int32 agency_id = 1;
+   string agency_name = 2;
+   string agency_url = 3;
+   string agency_timezone = 4;
+   string agency_lang = 5;
+   string agency_phone = 6;
+   string agency_fare_url = 7;
+}
+
+message Calendar {
+   int32 service_id = 1;
+   int32 sunday = 2;
+   int32 monday = 3;
+   int32 tuesday = 4;
+   int32 wednesday = 5;
+   int32 thursday = 6;
+   int32 friday = 7;
+   int32 saturday = 8;
+   int32 start_date = 9;
+   int32 end_date = 10;
+}
+
+message FareAttributes {
+   int32 fare_id = 1;
+   double price = 2;
+   string currency_type = 3;
+   int32 payment_method = 4;
+   int32 transfers = 5;
+   int32 agency_id = 6;
+   string transfer_duration = 7;
+}
+
+message FareRules {
+   int32 fare_id = 1;
+   int32 route_id = 2;
+   int32 origin_id = 3;
+   int32 destination_id = 4;
+   string contains_id = 5;
+}
+
+message Route {
+   int32 route_id = 1;
+   int32 agency_id = 2;
+   string route_short_name = 3;
+   string route_long_name = 4;
+   string route_desc = 5;
+   int32 route_type = 6;
+   string route_color = 7;
+}
+
+message Shape {
+   int32 shape_id = 1;
+   double shape_pt_lat = 2;
+   double shape_pt_lot = 3;
+   int32 shape_pt_sequence = 4;
+}
+
+message StopTime {
+   string trip_id = 1;
+   string arrival_time = 2;
+   string departure_time = 3;
+   string stop_id = 4;
+   string stop_sequence = 5;
+   string pickup_type = 6;
+   string drop_off_type = 7;
+   string shape_dist_traveled = 8;
+}
+
+message Stop {
+   int32 stop_id = 1;
+   int32 stop_code = 2;
+   string stop_name = 3;
+   string stop_desc = 4;
+   double stop_lat = 5;
+   double stop_lon = 6;
+   int32 location_type = 7;
+   string parent_station = 8;
+   int32 zone_id = 9;
+}
+
+message Translation {
+   string trans_id = 1;
+   string lang = 2;
+   string translation = 3;
+}
+
+message Trip {
+   int32 route_id = 1;
+   int32 service_id = 2;
+   string trip_id = 3;
+   string trip_headsign = 4;
+   int32 direction_id = 5;
+   string shape_id = 6;
+}

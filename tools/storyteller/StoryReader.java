@@ -40,8 +40,7 @@ public class StoryReader {
     return getStories(absPath, StoriesState.SHARED);
   }
 
-  private ImmutableList<Story> getStories(
-      String absPath, StoriesState state) {
+  private ImmutableList<Story> getStories(String absPath, StoriesState state) {
     StoryList.Builder storiesBuilder = StoryList.newBuilder();
     List<String> absFilenames = new ArrayList<>();
     if (state == StoriesState.UNSHARED) {
@@ -56,17 +55,17 @@ public class StoryReader {
       return ImmutableList.of();
     } else {
       absFilenames.forEach(
-          path
-              -> storiesBuilder.addAllStory(
-              ((StoryList) fileUtils.readPrototxtUnchecked(
-                  path, StoryList.newBuilder())).getStoryList()));
+          path ->
+              storiesBuilder.addAllStory(
+                  ((StoryList) fileUtils.readPrototxtUnchecked(path, StoryList.newBuilder()))
+                      .getStoryList()));
       return ImmutableList.copyOf(storiesBuilder.build().getStoryList());
     }
   }
 
   public ImmutableList<Screenshot> getScreenshots(String absPath) {
     ImmutableList.Builder<Screenshot> result = ImmutableList.builder();
-    for (String absFilename: getAbsFilenamesFromFolderByExtension(absPath, "jpg")) {
+    for (String absFilename : getAbsFilenamesFromFolderByExtension(absPath, "jpg")) {
       result.add(getScreenshot(absFilename));
     }
     return result.build();
@@ -87,9 +86,7 @@ public class StoryReader {
     } else {
       log.atSevere().log(
           "Screenshot size is %d bytes, %d bytes larger than maximum size. Path: %s",
-          fileSize,
-          fileSize - MAX_SCREENSHOT_SIZE_BYTES,
-          absFilename);
+          fileSize, fileSize - MAX_SCREENSHOT_SIZE_BYTES, absFilename);
     }
     return screenBuilder.build();
   }
@@ -97,19 +94,18 @@ public class StoryReader {
   private ImmutableList<String> getAbsFilenamesFromFolderByExtension(
       String absPath, String extension) {
     try {
-      return ImmutableList.copyOf(fileUtils
-          .listContents(absPath)
-          .stream()
-          .filter(file -> file.endsWith("." + extension))
-          .sorted()
-          .map(filename -> fileUtils.joinPaths(absPath, filename))
-          .collect(Collectors.toList()));
+      return ImmutableList.copyOf(
+          fileUtils
+              .listContents(absPath)
+              .stream()
+              .filter(file -> file.endsWith("." + extension))
+              .sorted()
+              .map(filename -> fileUtils.joinPaths(absPath, filename))
+              .collect(Collectors.toList()));
     } catch (IOException e) {
       throw new RuntimeException(
           String.format(
-              "Can't read the files with %s extension properly by path: %s",
-              extension,
-              absPath));
+              "Can't read the files with %s extension properly by path: %s", extension, absPath));
     }
   }
 

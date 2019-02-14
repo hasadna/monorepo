@@ -115,20 +115,16 @@ public class Storyteller {
    * This method shares stories to Firebase and moves them to the shared folder.
    */
   public void share() {
-    StoryList storyList = StoryList.newBuilder().addAllStory(reader.getUnsharedStories(
-        getUnsharedStoriesAbsPath())).build();
+    StoryList storyList =
+        StoryList.newBuilder()
+            .addAllStory(reader.getUnsharedStories(getUnsharedStoriesAbsPath()))
+            .build();
     firestoreClient.addProtoDocumentToCollection(
-        String.format(
-            FIRESTORE_STORIES_COLLECTION,
-            author),
-        storyList);
+        String.format(FIRESTORE_STORIES_COLLECTION, author), storyList);
 
-    for (Screenshot screenshot: reader.getScreenshots(getUnsharedStoriesAbsPath())) {
+    for (Screenshot screenshot : reader.getScreenshots(getUnsharedStoriesAbsPath())) {
       firestoreClient.addProtoDocumentToCollection(
-          String.format(
-              FIRESTORE_SCREENSHOT_COLLECTION,
-              author),
-          screenshot);
+          String.format(FIRESTORE_SCREENSHOT_COLLECTION, author), screenshot);
     }
 
     try {
@@ -168,8 +164,7 @@ public class Storyteller {
     sb.appendln("=======================");
 
     if (fileUtils.folderExists(getSharedStoriesAbsPath())) {
-      ImmutableList<Story> stories = reader.getSharedStories(
-          getSharedStoriesAbsPath());
+      ImmutableList<Story> stories = reader.getSharedStories(getSharedStoriesAbsPath());
       sb.appendln(
           storiesToString(
               stories.subList(
@@ -178,9 +173,7 @@ public class Storyteller {
 
     sb.appendln("*** Unshared stories: ***");
     sb.appendln("=========================");
-    sb.appendln(
-        storiesToString(
-            reader.getUnsharedStories(getUnsharedStoriesAbsPath())));
+    sb.appendln(storiesToString(reader.getUnsharedStories(getUnsharedStoriesAbsPath())));
     System.out.print(sb);
   }
 
