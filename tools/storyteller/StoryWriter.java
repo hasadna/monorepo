@@ -24,7 +24,6 @@ import tools.storyteller.Protos.Story;
 import tools.storyteller.Protos.StoryItem;
 import tools.storyteller.Protos.StoryList;
 
-
 /* Storyteller writer that writes story files. */
 @Singleton
 public class StoryWriter {
@@ -46,9 +45,7 @@ public class StoryWriter {
       AuthService authService) {
     this.config = storytellerConfig.getConfig();
     this.fileUtils = fileUtils;
-    this.allStories =
-        new ArrayList<>(
-            reader.getUnsharedStories(getAbsUnsharedStoriesFolderPath()));
+    this.allStories = new ArrayList<>(reader.getUnsharedStories(getAbsUnsharedStoriesFolderPath()));
     author = authService.getUserEmail();
   }
 
@@ -105,10 +102,7 @@ public class StoryWriter {
       Robot robot = new Robot();
       BufferedImage screenshot = robot.createScreenCapture(rectangle);
       ImageIO.write(
-          screenshot,
-          "jpg",
-          Paths.get(getAbsUnsharedStoriesFolderPath(), filename)
-              .toFile());
+          screenshot, "jpg", Paths.get(getAbsUnsharedStoriesFolderPath(), filename).toFile());
     } catch (AWTException | IOException e) {
       log.atSevere().withCause(e).log("Error in saving screenshot");
     }
@@ -118,11 +112,9 @@ public class StoryWriter {
   void saveSharedStories(StoryList stories) throws IOException {
     final String absPath = Storyteller.getSharedStoriesAbsPath(config);
     fileUtils.copyDirectoryToDirectory(
-        getAbsUnsharedStoriesFolderPath(),
-        absPath,
-        StorytellerConfig.STORIES_FILENAME);
-    fileUtils.writePrototxt(stories,
-        fileUtils.joinPaths(absPath, getCurrentTimeString() + ".prototxt"));
+        getAbsUnsharedStoriesFolderPath(), absPath, StorytellerConfig.STORIES_FILENAME);
+    fileUtils.writePrototxt(
+        stories, fileUtils.joinPaths(absPath, getCurrentTimeString() + ".prototxt"));
   }
 
   private void updateCurrentStory(String project) {

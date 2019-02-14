@@ -9,7 +9,6 @@ import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import dagger.Component;
 import javax.inject.Singleton;
 
-
 /*
  * A way to tell the story of what you're up to.
  *
@@ -65,8 +64,8 @@ public class StorytellerTool {
   }
 
   public static void main(String[] args) throws Exception {
-    String[] leftoverArgs = Flags.parse(
-            args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
+    String[] leftoverArgs =
+        Flags.parse(args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
     Storyteller storyteller =
         DaggerStorytellerTool_StorytellerToolComponent.create().getStoryteller();
 
