@@ -64,26 +64,27 @@ class DataHandler {
     }
   }
 
-  public static String getDayOfToday(){
+  public static String getDayOfToday() {
     Calendar calendar = Calendar.getInstance();
-    int day = calendar.get(Calendar.DAY_OF_WEEK); 
+    int day = calendar.get(Calendar.DAY_OF_WEEK);
     switch (day) {
-    case Calendar.SUNDAY:
+      case Calendar.SUNDAY:
         return "sunday";
-    case Calendar.MONDAY:
+      case Calendar.MONDAY:
         return "monday";
-    case Calendar.TUESDAY:
+      case Calendar.TUESDAY:
         return "tuesday";
-    case Calendar.WEDNESDAY:
+      case Calendar.WEDNESDAY:
         return "wednesday";
-    case Calendar.THURSDAY:
+      case Calendar.THURSDAY:
         return "thursday";
-    case Calendar.FRIDAY:
+      case Calendar.FRIDAY:
         return "friday";
-    case java.util.Calendar.SATURDAY:
+      case java.util.Calendar.SATURDAY:
         return "saturday";
-    default: return "";
-}
+      default:
+        return "";
+    }
   }
 
   public static void saveCalendar(Path csvPath, String path) {
@@ -116,7 +117,7 @@ class DataHandler {
             && ((Integer.parseInt(record.get("end_date"))
                 >= Integer.parseInt(dateFormat.format(date))))
             && Integer.parseInt(record.get(getDayOfToday())) == 1) {
-              Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
+          Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
           calendar
               .setServiceId(Integer.parseInt(record.get("service_id")))
               .setSunday(Integer.parseInt(record.get("sunday")))
