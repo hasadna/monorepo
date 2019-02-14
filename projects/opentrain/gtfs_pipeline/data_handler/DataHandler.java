@@ -1,11 +1,8 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
+import com.projects.opentrain.gtfs_pipeline.Protos;
 import com.projects.opentrain.gtfs_pipeline.Protos.Agency;
-import com.projects.opentrain.gtfs_pipeline.Protos.Calendar;
-import com.projects.opentrain.gtfs_pipeline.Protos.FareAttributes;
-import com.projects.opentrain.gtfs_pipeline.Protos.FareRules;
 import com.projects.opentrain.gtfs_pipeline.Protos.Route;
-import com.projects.opentrain.gtfs_pipeline.Protos.Shape;
 import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
 import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
 import com.projects.opentrain.gtfs_pipeline.Protos.Translation;
@@ -16,6 +13,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -43,8 +44,8 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        //Israel-rail's id is 2
-        if(record.get("agency_id").equals("2")){
+        // Israel-rail's id is 2
+        if (record.get("agency_id").equals("2")) {
           Agency.Builder agency = Agency.newBuilder();
           agency
               .setAgencyId(Integer.parseInt(record.get("agency_id")))
@@ -61,6 +62,28 @@ class DataHandler {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static String getDayOfToday(){
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_WEEK); 
+    switch (day) {
+    case Calendar.SUNDAY:
+        return "sunday";
+    case Calendar.MONDAY:
+        return "monday";
+    case Calendar.TUESDAY:
+        return "tuesday";
+    case Calendar.WEDNESDAY:
+        return "wednesday";
+    case Calendar.THURSDAY:
+        return "thursday";
+    case Calendar.FRIDAY:
+        return "friday";
+    case java.util.Calendar.SATURDAY:
+        return "saturday";
+    default: return "";
+}
   }
 
   public static void saveCalendar(Path csvPath, String path) {
@@ -80,92 +103,34 @@ class DataHandler {
                   "saturday",
                   "start_date",
                   "end_date"));
+      DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+      Date date = new Date();
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
           isHeader = false;
           continue;
         }
-        Calendar.Builder calendar = Calendar.newBuilder();
-        calendar
-            .setServiceId(Integer.parseInt(record.get("service_id")))
-            .setSunday(Integer.parseInt(record.get("sunday")))
-            .setMonday(Integer.parseInt(record.get("monday")))
-            .setTuesday(Integer.parseInt(record.get("tuesday")))
-            .setWednesday(Integer.parseInt(record.get("wednesday")))
-            .setThursday(Integer.parseInt(record.get("thursday")))
-            .setFriday(Integer.parseInt(record.get("friday")))
-            .setSaturday(Integer.parseInt(record.get("saturday")))
-            .setStartDate(Integer.parseInt(record.get("start_date")))
-            .setEndDate(Integer.parseInt(record.get("end_date")))
-            .build()
-            .writeDelimitedTo(output);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static void saveFareAttributes(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
-      CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "fare_id",
-                  "price",
-                  "currency_type",
-                  "payment_method",
-                  "transfers",
-                  "agency_id",
-                  "transfer_duration"));
-      boolean isHeader = true;
-      for (CSVRecord record : parser) {
-        if (isHeader) {
-          isHeader = false;
-          continue;
+        if ((Integer.parseInt(record.get("start_date"))
+                >= Integer.parseInt(dateFormat.format(date)))
+            && ((Integer.parseInt(record.get("end_date"))
+                >= Integer.parseInt(dateFormat.format(date))))
+            && Integer.parseInt(record.get(getDayOfToday())) == 1) {
+              Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
+          calendar
+              .setServiceId(Integer.parseInt(record.get("service_id")))
+              .setSunday(Integer.parseInt(record.get("sunday")))
+              .setMonday(Integer.parseInt(record.get("monday")))
+              .setTuesday(Integer.parseInt(record.get("tuesday")))
+              .setWednesday(Integer.parseInt(record.get("wednesday")))
+              .setThursday(Integer.parseInt(record.get("thursday")))
+              .setFriday(Integer.parseInt(record.get("friday")))
+              .setSaturday(Integer.parseInt(record.get("saturday")))
+              .setStartDate(Integer.parseInt(record.get("start_date")))
+              .setEndDate(Integer.parseInt(record.get("end_date")))
+              .build()
+              .writeDelimitedTo(output);
         }
-        FareAttributes.Builder fareAttributes = FareAttributes.newBuilder();
-        fareAttributes
-            .setFareId(Integer.parseInt(record.get("fare_id")))
-            .setPrice(Double.parseDouble(record.get("price")))
-            .setCurrencyType(record.get("currency_type"))
-            .setPaymentMethod(Integer.parseInt(record.get("payment_method")))
-            .setTransfers(Integer.parseInt(record.get("transfers")))
-            .setAgencyId(Integer.parseInt(record.get("agency_id")))
-            .setTransferDuration(record.get("transfer_duration"))
-            .build()
-            .writeDelimitedTo(output);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static void saveFareRules(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
-      CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "fare_id", "route_id", "origin_id", "destination_id", "contains_id"));
-      boolean isHeader = true;
-      for (CSVRecord record : parser) {
-        if (isHeader) {
-          isHeader = false;
-          continue;
-        }
-        FareRules.Builder fareRule = FareRules.newBuilder();
-        fareRule
-            .setFareId(Integer.parseInt(record.get("fare_id")))
-            .setRouteId(Integer.parseInt(record.get("route_id")))
-            .setOriginId(Integer.parseInt(record.get("origin_id")))
-            .setDestinationId(Integer.parseInt(record.get("destination_id")))
-            .setContainsId(record.get("contains_id"))
-            .build()
-            .writeDelimitedTo(output);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -201,34 +166,6 @@ class DataHandler {
             .setRouteDesc(record.get("route_desc"))
             .setRouteType(Integer.parseInt(record.get("route_type")))
             .setRouteColor(record.get("route_color"))
-            .build()
-            .writeDelimitedTo(output);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static void saveShapes(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
-      CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "shape_id", "shape_pt_lat", "shape_pt_lon", "shape_pt_sequence"));
-      boolean isHeader = true;
-      for (CSVRecord record : parser) {
-        if (isHeader) {
-          isHeader = false;
-          continue;
-        }
-        Shape.Builder shape = Shape.newBuilder();
-        shape
-            .setShapeId(Integer.parseInt(record.get("shape_id")))
-            .setShapePtLat(Double.parseDouble(record.get("shape_pt_lat")))
-            .setShapePtLot(Double.parseDouble(record.get("shape_pt_lon")))
-            .setShapePtSequence(Integer.parseInt(record.get("shape_pt_sequence")))
             .build()
             .writeDelimitedTo(output);
       }
@@ -380,22 +317,16 @@ class DataHandler {
     // Paths to the CSVs files
     final Path agencyTxt = Paths.get(args[0]);
     final Path calendarTxt = Paths.get(args[1]);
-    final Path fareAttributesTxt = Paths.get(args[2]);
-    final Path fareRulesTxt = Paths.get(args[3]);
-    final Path routesTxt = Paths.get(args[4]);
-    final Path shapesTxt = Paths.get(args[5]);
-    final Path stopTimesTxt = Paths.get(args[6]);
-    final Path stopsTxt = Paths.get(args[7]);
-    final Path translationsTxt = Paths.get(args[8]);
-    final Path tripsTxt = Paths.get(args[9]);
+    final Path routesTxt = Paths.get(args[2]);
+    final Path stopTimesTxt = Paths.get(args[3]);
+    final Path stopsTxt = Paths.get(args[4]);
+    final Path translationsTxt = Paths.get(args[5]);
+    final Path tripsTxt = Paths.get(args[6]);
 
     // Paths to the output files
-    final String agencyOutputPath = args[args.length - 10];
-    final String calendarOutputPath = args[args.length - 9];
-    final String fareAttributesOutputPath = args[args.length - 8];
-    final String fareRulesOutputPath = args[args.length - 7];
-    final String routesOutputPath = args[args.length - 6];
-    final String shapesOutputPath = args[args.length - 5];
+    final String agencyOutputPath = args[args.length - 7];
+    final String calendarOutputPath = args[args.length - 6];
+    final String routesOutputPath = args[args.length - 5];
     final String stopTimesOutputPath = args[args.length - 4];
     final String stopsOutputPath = args[args.length - 3];
     final String translationsOutputPath = args[args.length - 2];
@@ -403,10 +334,7 @@ class DataHandler {
 
     saveAgency(agencyTxt, agencyOutputPath);
     saveCalendar(calendarTxt, calendarOutputPath);
-    saveFareAttributes(fareAttributesTxt, fareAttributesOutputPath);
-    saveFareRules(fareRulesTxt, fareRulesOutputPath);
     saveRoutes(routesTxt, routesOutputPath);
-    saveShapes(shapesTxt, shapesOutputPath);
     saveStopTimes(stopTimesTxt, stopTimesOutputPath);
     saveStops(stopsTxt, stopsOutputPath);
     saveTranslations(translationsTxt, translationsOutputPath);
