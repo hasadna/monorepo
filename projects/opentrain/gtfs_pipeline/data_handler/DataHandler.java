@@ -87,6 +87,19 @@ class DataHandler {
     }
   }
 
+  private static boolean isServiceIdRelevantToday(CSVRecord record) {
+    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    Date date = new Date();
+    String todayString = getDayOfToday();
+    int startDate = Integer.parseInt(record.get("start_date"));
+    int endDate = Integer.parseInt(record.get("end_date"));
+    int currentDate = Integer.parseInt(dateFormat.format(date));
+    boolean isRecordDayTrueOnDayOfToday = Boolean.parseBoolean(record.get(todayString));
+    return (startDate <= currentDate
+        && currentDate <= endDate
+        && isRecordDayTrueOnDayOfToday == true);
+  }
+
   public static void saveCalendar(Path csvPath, String path) {
     try (FileOutputStream output = new FileOutputStream(path)) {
       CSVParser parser =
@@ -104,19 +117,13 @@ class DataHandler {
                   "saturday",
                   "start_date",
                   "end_date"));
-      DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-      Date date = new Date();
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
           isHeader = false;
           continue;
         }
-        if ((Integer.parseInt(record.get("start_date"))
-                >= Integer.parseInt(dateFormat.format(date)))
-            && ((Integer.parseInt(record.get("end_date"))
-                >= Integer.parseInt(dateFormat.format(date))))
-            && Integer.parseInt(record.get(getDayOfToday())) == 1) {
+        if (isServiceIdRelevantToday(record)) {
           Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
           calendar
               .setServiceId(Integer.parseInt(record.get("service_id")))
