@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FeedComponent } from '@/components/feed/feed.component';
 import { UserInfoComponent } from '@/components/user-info/user-info.component';
+import { SingleScreenshotComponent } from '@/components/single-screenshot/single-screenshot.component';
 
 const appRoutes: Routes = [
-  {path: 'home', component: FeedComponent, children:[
-    {path:':project', component:FeedComponent}
-  ]},
+  {path: 'home', component: FeedComponent},
+    {path:'single-screenshot/:projectId', component:SingleScreenshotComponent},
   {path: 'info', component: UserInfoComponent},
    {path: '**', redirectTo:'/home'},
 ];

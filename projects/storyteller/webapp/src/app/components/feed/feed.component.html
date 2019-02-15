@@ -1,23 +1,33 @@
-<div *ngIf="!storylist">
+<div *ngIf="!storylist && !screenshots">
   Loading
 </div>
 <div *ngIf="storylist">
   <div *ngFor="let storylistChild of storylist">
+
     <div class="container">
       <div class="list" *ngFor="let story of storylistChild.getStoryList()">
-        <div *ngFor="let storyItem of story.getItemList()">
+        <div *ngFor="let storyItem of story.getItemList()" class="storydiv">
+          <div *ngIf="storyItem.getScreenshotFilename() != ''">
           <div class="title">
-            <div class="timestamp">{{storyItem.getTimems() | date:'short'}}</div>
-            <div class="head">
-              {{story.getAuthor()}}
-               on 
-               {{story.getProject()}}
-            </div>
-
+            <div id="timestamp">{{storyItem.getTimems() | date:'short'}}</div>
+            <a routerLink="/single-screenshot/{{storyItem.getId()}}">
+              <div class="head">
+                {{story.getAuthor()}} on {{story.getProject()}}
+              </div>
+            </a>
           </div>
           <div class="notes"><strong>Notes: </strong>
             {{storyItem.getOneliner()}}
           </div>
+          
+          <div class="screenshotdiv">
+              <div *ngFor="let screenshot of screenshots">
+                <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
+                    <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="600" width="800"/>
+                </div>
+              </div>
+          </div>
+        </div>
         </div>
         </div>
       </div>

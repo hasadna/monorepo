@@ -1,7 +1,41 @@
 .container {
-    padding: 15px;
+    // padding: 15px;
+    background-color: #e6eff0;
+
 }
 
-.timestamp{
+#timestamp{
     text-align: right;
+  font-family: OpenSans;
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+
+  color: #767676;
+}
+.screenshotdiv{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+
+}
+.head{
+  font-family: OpenSans;
+  font-size: 18px;
+  font-weight: bold;
+  font-style: italic;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #4e4e4e;
+}
+.storydiv{
+  padding: 5px;
+  margin: 15px;
+  border-radius: 2px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  background-color: #ffffff;
 }

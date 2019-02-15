@@ -8,6 +8,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { SingleScreenshotComponent } from './components/single-screenshot/single-screenshot.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     HeaderComponent,
     UserInfoComponent,
     FeedComponent,
+    SingleScreenshotComponent,
   ],
   imports: [
     BrowserModule,
