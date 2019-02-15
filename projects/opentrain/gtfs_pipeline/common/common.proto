@@ -17,13 +17,13 @@ message Agency {
 
 message Calendar {
    int32 service_id = 1;
-   int32 sunday = 2;
-   int32 monday = 3;
-   int32 tuesday = 4;
-   int32 wednesday = 5;
-   int32 thursday = 6;
-   int32 friday = 7;
-   int32 saturday = 8;
+   bool sunday = 2;
+   bool monday = 3;
+   bool tuesday = 4;
+   bool wednesday = 5;
+   bool thursday = 6;
+   bool friday = 7;
+   bool saturday = 8;
    int32 start_date = 9;
    int32 end_date = 10;
 }
