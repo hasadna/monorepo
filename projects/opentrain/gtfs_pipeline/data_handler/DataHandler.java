@@ -24,6 +24,8 @@ import org.apache.commons.csv.CSVRecord;
 
 class DataHandler {
 
+  private static String ISRAEL_RAIL_AGENCY_ID = "2";
+
   public static void saveAgency(Path csvPath, String path) {
     try (FileOutputStream output = new FileOutputStream(path)) {
       CSVParser parser =
@@ -44,8 +46,7 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        // Israel-rail's id is 2
-        if (record.get("agency_id").equals("2")) {
+        if (record.get("agency_id").equals(ISRAEL_RAIL_AGENCY_ID)) {
           Agency.Builder agency = Agency.newBuilder();
           agency
               .setAgencyId(Integer.parseInt(record.get("agency_id")))
@@ -64,9 +65,8 @@ class DataHandler {
     }
   }
 
-  public static String getDayOfToday() {
-    Calendar calendar = Calendar.getInstance();
-    int day = calendar.get(Calendar.DAY_OF_WEEK);
+  private static String getDayOfToday() {
+    int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
     switch (day) {
       case Calendar.SUNDAY:
         return "sunday";
