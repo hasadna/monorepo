@@ -24,7 +24,7 @@ import org.apache.commons.csv.CSVRecord;
 
 class DataHandler {
 
-  private static String ISRAEL_RAIL_AGENCY_ID = "2";
+  private static final String ISRAEL_RAIL_AGENCY_ID = "2";
 
   public static void saveAgency(Path csvPath, String path) {
     try (FileOutputStream output = new FileOutputStream(path)) {
@@ -89,16 +89,11 @@ class DataHandler {
 
   private static boolean isServiceIdRelevantToday(CSVRecord record) {
     DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    Date date = new Date();
-    String todayString = getDayOfToday();
     int startDate = Integer.parseInt(record.get("start_date"));
     int endDate = Integer.parseInt(record.get("end_date"));
-    int currentDate = Integer.parseInt(dateFormat.format(date));
-    boolean isRecordDayTrueOnDayOfToday =
-        (Integer.parseInt(record.get(todayString)) == 1) ? true : false;
-    return (startDate <= currentDate
-        && currentDate <= endDate
-        && isRecordDayTrueOnDayOfToday == true);
+    int currentDate = Integer.parseInt(dateFormat.format(new Date()));
+    boolean isRecordDayTrueOnDayOfToday = Integer.parseInt(record.get(getDayOfToday())) == 1;
+    return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
   public static void testCalendarOnlyTodayService(Path csvPath) {
