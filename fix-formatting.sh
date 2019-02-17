@@ -9,7 +9,7 @@ RESET=$(tput sgr0)
 
 npm install &>/dev/null
 
-bazel run @startup_os//tools/simple_formatter -- \
+bazel run @startup_os//tools/formatter -- \
 	--path $(pwd) \
 	--java --python --proto --cpp --build \
 	--ignore_directories $(find $(pwd) -name node_modules -type d | paste -s -d , -) \
