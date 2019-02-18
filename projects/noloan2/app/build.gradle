@@ -64,4 +64,11 @@ dependencies {
 
     //protobuf
     implementation 'com.google.protobuf:protobuf-lite:3.0.1'
+    // iText7 - PDFs
+    implementation 'com.itextpdf:itextpdf:5.5.13'
+    implementation 'com.itextpdf:html2pdf:2.1.1'
+    implementation files('lib/typography-2.0.3.jar')
+    implementation files('lib/typography-2.0.3-javadoc.jar')
+    implementation files('lib/itext-licensekey-3.0.4.jar')
 }
+
