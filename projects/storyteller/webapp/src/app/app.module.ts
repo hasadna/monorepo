@@ -9,6 +9,7 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { SingleScreenshotComponent } from './components/single-screenshot/single-screenshot.component';
+import { StoryService } from './core/services/story.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SingleScreenshotComponent } from './components/single-screenshot/single
     FirebaseModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

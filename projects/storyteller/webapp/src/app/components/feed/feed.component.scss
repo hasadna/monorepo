@@ -1,41 +1,47 @@
 .container {
-    // padding: 15px;
     background-color: #e6eff0;
-
 }
 
-#timestamp{
-    text-align: right;
-  font-family: OpenSans;
+.timestamp{
+  text-align: left;
+  padding-left: 45%;
+  font-family: 'Open Sans';
   font-size: 16px;
   font-weight: 600;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-
   color: #767676;
 }
 .screenshotdiv{
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
-
 }
 .head{
-  font-family: OpenSans;
+  text-align: right;
+  font-family: 'Open Sans';
   font-size: 18px;
-  font-weight: bold;
-  font-style: italic;
+  font-weight: normal;
+  font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   color: #4e4e4e;
 }
 .storydiv{
-  padding: 5px;
+  padding: 25px;
   margin: 15px;
   border-radius: 2px;
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
   background-color: #ffffff;
+}
+.author{
+  font-weight: bold;
+  font-style: normal;
+}
+.project{
+  font-weight: bold;
+  font-style: italic;
 }

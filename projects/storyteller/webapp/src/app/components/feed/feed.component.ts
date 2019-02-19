@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { StoryList, Story, Screenshot } from '@/core/proto';
+import { Component, OnInit, } from '@angular/core';
+import { StoryList, Screenshot,StoryItem } from '@/core/proto';
 import { EncodingService, FirebaseService } from '@/core/services';
 
 import { from } from 'rxjs';
+import { StoryService } from '@/core/services/story.service';
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
@@ -11,20 +12,28 @@ import { from } from 'rxjs';
 export class FeedComponent implements OnInit {
   storylist: StoryList[];
   screenshots: Screenshot[];
+  users: {};
+  story:StoryItem;
+  screenshot: Screenshot;
+
   constructor(
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
+    storyServiceToSingle: StoryService,
   ) {
     if (firebaseService.isOnline) {
       this.loadStory();
-      this.loadcreenshots();
+      this.loadscreenshots();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
         this.loadStory();
-        this.loadcreenshots();
+        this.loadscreenshots();
       });
+      }
+      if(this.story != null && this.screenshot != null){
+        storyServiceToSingle.setData(this.story, this.screenshot);
+      }
     }
-  }
 
   loadStory(): void {
     this.firebaseService.getstorylistAll().subscribe(storylist => {
@@ -32,7 +41,7 @@ export class FeedComponent implements OnInit {
 
     });
   }
-  loadcreenshots(): void {
+  loadscreenshots(): void {
     this.firebaseService.getscreenshotAll().subscribe(screenshots => {
       this.screenshots = screenshots;
     });
@@ -40,7 +49,10 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  sharestory(item:StoryItem,image:Screenshot): void{
+    this.story = item;
+    this.screenshot = image;
+    }
 }
 
-
+//  

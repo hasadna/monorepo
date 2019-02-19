@@ -53,6 +53,7 @@ export class FirebaseService {
           return this.convertFirebaseElementToScreenshot(firebaseElement);
         })));
   }
+
   private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
 
     // Convert firebaseElement to binary
@@ -70,14 +71,11 @@ export class FirebaseService {
       .decodeBase64StringToUint8Array(firebaseElement.proto);
 
     // Convert binary to Screenshot
-    const screenshotlist: Screenshot = Screenshot.deserializeBinary(binary);
-    return screenshotlist;
+    const screenshot: Screenshot = Screenshot.deserializeBinary(binary);
+    return screenshot;
   }
 
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
   }
 }
-
-  
-
