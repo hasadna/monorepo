@@ -29,6 +29,7 @@ java_library(
         "//third_party/maven/com/google/auth:google_auth_library_oauth2_http",
         "//third_party/maven/com/google/code/findbugs:jsr305",
         "//third_party/maven/com/google/guava:guava",
+        "//third_party/maven/io/opencensus:opencensus_api",
         "//third_party/maven/org/threeten:threetenbp",
         ":api_common"
     ],
@@ -54,6 +55,7 @@ java_library(
         "//third_party/maven/com/google/code/findbugs:jsr305",
         "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/io/grpc:grpc_auth",
+        "//third_party/maven/io/grpc:grpc_netty_shaded",
         "//third_party/maven/io/grpc:grpc_protobuf",
         "//third_party/maven/io/grpc:grpc_stub",
         "//third_party/maven/org/threeten:threetenbp",

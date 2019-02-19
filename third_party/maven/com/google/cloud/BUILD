@@ -15,10 +15,10 @@ java_library(
         "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/com/google/http_client:google_http_client",
         "//third_party/maven/com/google/protobuf:protobuf_java_util",
-        "//third_party/maven/joda_time:joda_time"
+        "//third_party/maven/javax/annotation:javax_annotation_api"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
@@ -43,10 +43,11 @@ java_library(
         "//third_party/maven/io/grpc:grpc_netty_shaded",
         "//third_party/maven/io/grpc:grpc_protobuf",
         "//third_party/maven/io/grpc:grpc_stub",
+        "//third_party/maven/javax/annotation:javax_annotation_api",
         ":google_cloud_core"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
@@ -68,11 +69,9 @@ java_library(
         "//third_party/maven/com/google/guava:guava",
         "//third_party/maven/com/google/http_client:google_http_client",
         "//third_party/maven/com/google/http_client:google_http_client_appengine",
-        "//third_party/maven/com/google/http_client:google_http_client_jackson",
-        "//third_party/maven/com/google/http_client:google_http_client_jackson2",
-        "//third_party/maven/com/google/oauth_client:google_oauth_client",
         "//third_party/maven/io/opencensus:opencensus_api",
         "//third_party/maven/io/opencensus:opencensus_contrib_http_util",
+        "//third_party/maven/javax/annotation:javax_annotation_api",
         ":google_cloud_core"
     ],
     visibility = [
@@ -100,11 +99,12 @@ java_library(
         "//third_party/maven/io/grpc:grpc_stub",
         "//third_party/maven/io/opencensus:opencensus_api",
         "//third_party/maven/io/opencensus:opencensus_contrib_grpc_util",
+        "//third_party/maven/javax/annotation:javax_annotation_api",
         ":google_cloud_core",
         ":google_cloud_core_grpc"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
@@ -120,11 +120,12 @@ java_library(
     ],
     runtime_deps = [
         "//third_party/maven/com/google/apis:google_api_services_storage",
+        "//third_party/maven/javax/annotation:javax_annotation_api",
         ":google_cloud_core",
         ":google_cloud_core_http"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 

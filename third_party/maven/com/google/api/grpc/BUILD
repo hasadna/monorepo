@@ -9,6 +9,7 @@ java_library(
     runtime_deps = [
         "//third_party/maven/com/google/api:api_common",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/javax/annotation:javax_annotation_api",
         ":proto_google_common_protos"
     ],
     visibility = [

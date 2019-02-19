@@ -39,6 +39,17 @@ dependencies:
       lang: java
       version: "1.6.3"
 
+  com.google.cloud:
+    google:
+      lang: java
+      modules: [ "cloud-core", "cloud-core-grpc" ]
+    google-cloud-firestore:
+      lang: java
+      version: "0.74.0-beta"
+    google-cloud-storage:
+      lang: java
+      version: "1.62.0"
+
   com.google.code.findbugs:
     jsr305:
       lang: java

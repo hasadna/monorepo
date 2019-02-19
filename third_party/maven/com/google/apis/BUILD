@@ -6,6 +6,9 @@ java_library(
     licenses = [
         "permissive"
     ],
+    runtime_deps = [
+        "//third_party/maven/com/google/api_client:google_api_client"
+    ],
     visibility = [
         "//third_party/maven:__subpackages__"
     ]
