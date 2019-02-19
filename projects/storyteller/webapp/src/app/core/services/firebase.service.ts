@@ -16,6 +16,7 @@ export class FirebaseService {
   isOnline: boolean;
   private protobin: AngularFirestoreCollection<FirebaseElement>;
   private protobin_screenshots: AngularFirestoreCollection<FirebaseElement>;
+  private protobin_users: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
@@ -27,6 +28,7 @@ export class FirebaseService {
       });
     this.protobin = this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story');
     this.protobin_screenshots = this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
+    this.protobin_users = this.db.collection('/storyteller');
   }
 
   getstorylistAll(): Observable<StoryList[]> {
@@ -52,6 +54,10 @@ export class FirebaseService {
           }
           return this.convertFirebaseElementToScreenshot(firebaseElement);
         })));
+  }
+
+  getusersAll(): Observable<{}> {
+    return this.protobin_users.doc('data').valueChanges();
   }
 
   private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
