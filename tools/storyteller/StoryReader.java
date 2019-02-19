@@ -1,6 +1,7 @@
 package tools.storyteller;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.protobuf.ByteString;
 import com.google.startupos.common.FileUtils;
@@ -63,10 +64,11 @@ public class StoryReader {
     }
   }
 
-  public ImmutableList<Screenshot> getScreenshots(String absPath) {
-    ImmutableList.Builder<Screenshot> result = ImmutableList.builder();
+  // TODO: Explain what the method returns
+  public ImmutableMap<String, Screenshot> getScreenshots(String absPath) {
+    ImmutableMap.Builder<String, Screenshot> result = ImmutableMap.builder();
     for (String absFilename : getAbsFilenamesFromFolderByExtension(absPath, "jpg")) {
-      result.add(getScreenshot(absFilename));
+      result.put(absFilename, getScreenshot(absFilename));
     }
     return result.build();
   }

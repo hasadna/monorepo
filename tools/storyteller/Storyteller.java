@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.util.Map;
 import javax.inject.Inject;
 import tools.storyteller.Protos.Config;
 import tools.storyteller.Protos.Screenshot;
@@ -123,9 +124,15 @@ public class Storyteller {
     firestoreClient.addProtoDocumentToCollection(
         String.format(FIRESTORE_STORIES_COLLECTION, author), storyList);
 
-    for (Screenshot screenshot : reader.getScreenshots(getUnsharedStoriesAbsPath())) {
-      firestoreClient.addProtoDocumentToCollection(
-          String.format(FIRESTORE_SCREENSHOT_COLLECTION, author), screenshot);
+    for (Map.Entry<String, Screenshot> entry :
+        reader.getScreenshots(getUnsharedStoriesAbsPath()).entrySet()) {
+      String filePath = entry.getKey();
+      String filename = entry.getValue().getFilename();
+      try {
+        firestoreClient.uploadTo("storyteller-84683", filePath, filename);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
     try {
