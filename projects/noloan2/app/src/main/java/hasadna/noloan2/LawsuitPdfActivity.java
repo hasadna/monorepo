@@ -29,7 +29,7 @@ import noloan.R;
 public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to class functions.
 
 
-    private static final String TAG = "Lawsuit";
+    private static final String TAG = "LawsuitPdfActivity";
 
     // Folder configurations:
     // TODO: Check if preferable to move these to an external folder configuration file.
