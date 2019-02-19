@@ -26,7 +26,7 @@ import java.util.TimeZone;
 
 import noloan.R;
 
-public class LawsuitPdf extends AppCompatActivity { // TODO: Add logs to class functions.
+public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to class functions.
 
 
     private static final String TAG = "Lawsuit";
@@ -63,7 +63,7 @@ public class LawsuitPdf extends AppCompatActivity { // TODO: Add logs to class f
     // User:
     private String userPrivateName = "שם פרטי";
     private String userLastname = "שם משפחה";
-    private String userID = "תז משתמש";
+    private String userID = "ת ז משתמש";
     private String userAddress = "כתובת משתמש";
     private String userPhone = "טלפון משתמש";
     private String userFax = "פקס משתמש";
@@ -75,13 +75,13 @@ public class LawsuitPdf extends AppCompatActivity { // TODO: Add logs to class f
     private String companyPhone = "טלפון החברה";
     private String companyFax = "פקס חברה";
 
-    // Second spam company's details:
+    // Second spam company's det ails:
     private String company2Name = "שם החברה 2";
     private String company2Id = "מספר ח.פ 2";
     private String company2Address = "כתובת החברה 2";
     private String company2Phone = "טלפון החברה 2";
     private String company2Fax = "פקס חברה 2";
-// -------------------------------------------------------------------------------------:
+// ----------------------------- - -------------------------------------------------------:
     Button btnCreate;
 
     @Override
