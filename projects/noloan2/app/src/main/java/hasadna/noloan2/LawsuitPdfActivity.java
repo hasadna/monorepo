@@ -34,9 +34,9 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     // Folder configurations:
     // TODO: Check if preferable to move these to an external folder configuration file.
     private static String appName = "";                                             // Get App's name as main dir.
-    private static final String lawsuitPath = "/Lawsuits/";                         // General lawsuits dir.
-    private static String templatePath = lawsuitPath + "/Templates/template.xhtml"; // Lawsuit Template's dir & template's path.
-    private static final String lawsuitOutput = lawsuitPath;                        // Lawsuits output dir.
+    private static final String LAWSUIT_PATH = "/Lawsuits/";                         // General lawsuits dir.
+    private static String templatePath = LAWSUIT_PATH + "/Templates/template.xhtml"; // Lawsuit Template's dir & template's path.
+    private static final String LAWSUIT_OUTPUT = LAWSUIT_PATH;                        // Lawsuits output dir.
 
     // Date & Time formats: (Used for files names)
     // TODO: Check if this should be as part of a "File manager" class.
@@ -136,7 +136,7 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
         // Create lawsuit's file name with current date:
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + lawsuitOutput;
+        String directory_path = Environment.getExternalStorageDirectory().getPath() + LAWSUIT_OUTPUT;
         Date dt = new Date();
         String targetPdf = directory_path + dateAndTimeFormatter.format(dt) + ".pdf";
 
