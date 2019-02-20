@@ -9,7 +9,7 @@ import {
 } from '@/components';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
+  { path: '', redirectTo: 'projects', pathMatch: 'full' },
   { path: 'contacts', component: ContactsComponent },
   { path: 'user-details/:userId', component: UserDetailsComponent },
   { path: 'projects', component: ProjectsComponent },
