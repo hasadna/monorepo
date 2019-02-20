@@ -24,7 +24,7 @@ import org.apache.commons.csv.CSVRecord;
 
 class DataHandler {
 
-  private static final String ISRAEL_RAIL_AGENCY_ID = "2";
+  private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
 
   public static void saveAgency(Path csvPath, String path) {
     try (FileOutputStream output = new FileOutputStream(path)) {
@@ -46,7 +46,7 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        if (record.get("agency_id").equals(ISRAEL_RAIL_AGENCY_ID)) {
+        if (record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID)) {
           Agency.Builder agency = Agency.newBuilder();
           agency
               .setAgencyId(Integer.parseInt(record.get("agency_id")))
