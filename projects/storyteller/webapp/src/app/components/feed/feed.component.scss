@@ -3,8 +3,7 @@
 }
 
 .timestamp{
-  text-align: left;
-  padding-left: 45%;
+  padding-left: 30%;
   font-family: 'Open Sans';
   font-size: 16px;
   font-weight: 600;
@@ -14,13 +13,21 @@
   letter-spacing: normal;
   color: #767676;
 }
+
+.userImage{
+  border-radius: 100%;
+}
+
 .screenshotdiv{
     padding-top: 10px;
-    padding-bottom: 10px;
     text-align: center;
+}
+.notes{
+  padding-left: 10%;
 }
 .head{
   text-align: right;
+  padding-left: 20px;
   font-family: 'Open Sans';
   font-size: 18px;
   font-weight: normal;
@@ -31,7 +38,7 @@
   color: #4e4e4e;
 }
 .storydiv{
-  padding: 25px;
+  padding: 15px;
   margin: 15px;
   border-radius: 2px;
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);

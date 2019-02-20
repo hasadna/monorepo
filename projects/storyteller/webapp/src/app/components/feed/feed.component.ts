@@ -12,7 +12,6 @@ import { StoryService } from '@/core/services/story.service';
 export class FeedComponent implements OnInit {
   storylist: StoryList[];
   screenshots: Screenshot[];
-  users: {};
   story:StoryItem;
   screenshot: Screenshot;
 
@@ -24,12 +23,10 @@ export class FeedComponent implements OnInit {
     if (firebaseService.isOnline) {
       this.loadStory();
       this.loadscreenshots();
-      this.loadusers();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
         this.loadStory();
         this.loadscreenshots();
-        this.loadusers();
       });
       }
       if(this.story != null && this.screenshot != null){
@@ -46,12 +43,6 @@ export class FeedComponent implements OnInit {
   loadscreenshots(): void {
     this.firebaseService.getscreenshotAll().subscribe(screenshots => {
       this.screenshots = screenshots;
-    });
-  }
-
-  loadusers(): void {
-    this.firebaseService.getusersAll().subscribe(users => {
-      this.users = users;
     });
   }
 

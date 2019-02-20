@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,9 +11,14 @@ interface FirebaseElement {
   proto: string;
 }
 
+interface Users {
+  users: string[];
+}
+
 @Injectable()
-export class FirebaseService {
+export class FirebaseService{
   isOnline: boolean;
+  users: Users;
   private protobin: AngularFirestoreCollection<FirebaseElement>;
   private protobin_screenshots: AngularFirestoreCollection<FirebaseElement>;
   private protobin_users: AngularFirestoreCollection<FirebaseElement>;
@@ -26,9 +31,13 @@ export class FirebaseService {
       this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
       });
-    this.protobin = this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story');
+      this.protobin_users = this.db.collection('/storyteller');
+      this.loadusers();
+      console.log(this.users);
+      // this.protobin = this.db.collection(`/storyteller/data/user/${this.users.users[0]}/story`);
+    this.protobin = this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
     this.protobin_screenshots = this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
-    this.protobin_users = this.db.collection('/storyteller');
+
   }
 
   getstorylistAll(): Observable<StoryList[]> {
@@ -56,8 +65,9 @@ export class FirebaseService {
         })));
   }
 
-  getusersAll(): Observable<{}> {
-    return this.protobin_users.doc('data').valueChanges();
+  getUsersAll(): Observable<string[]> {
+    const users: AngularFirestoreDocument<string[]> = this.protobin_users.doc('data');
+    return users.valueChanges();
   }
 
   private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
@@ -80,6 +90,15 @@ export class FirebaseService {
     const screenshot: Screenshot = Screenshot.deserializeBinary(binary);
     return screenshot;
   }
+
+  loadusers(): void {
+    this.getUsersAll().subscribe(users => {
+      console.log(users);
+      this.users= users;
+
+    });
+  }
+
 
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
