@@ -56,36 +56,6 @@ class DataHandler {
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
-  public static void testCalendarOnlyTodayService(Path csvPath) {
-    try {
-      CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "service_id",
-                  "sunday",
-                  "monday",
-                  "tuesday",
-                  "wednesday",
-                  "thursday",
-                  "friday",
-                  "saturday",
-                  "start_date",
-                  "end_date"));
-      boolean isHeader = true;
-      for (CSVRecord record : parser) {
-        if (isHeader) {
-          isHeader = false;
-          continue;
-        }
-        if (isServiceIdRelevantToday(record)) System.out.println(record.toString());
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static void saveCalendar(Path csvPath, String path) {
     try (FileOutputStream output = new FileOutputStream(path)) {
       CSVParser parser =
@@ -330,9 +300,6 @@ class DataHandler {
     saveStops(stopsTxt, stopsOutputPath);
     saveTranslations(translationsTxt, translationsOutputPath);
     saveTrips(tripsTxt, tripsOutputPath);
-    // TODO: remove later
-    testCalendarOnlyTodayService(calendarTxt);
-    // END TODO
   }
 }
 
