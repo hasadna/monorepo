@@ -10,16 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.itextpdf.licensekey.LicenseKey;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.html2pdf.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -28,15 +31,21 @@ import noloan.R;
 
 public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to class functions.
 
-
     private static final String TAG = "LawsuitPdfActivity";
 
-    // Folder configurations:
-    // TODO: Check if preferable to move these to an external folder configuration file.
-    private static String appName = "";                                             // Get App's name as main dir.
-    private static final String LAWSUIT_PATH = "/Lawsuits/";                         // General lawsuits dir.
-    private static String templatePath = LAWSUIT_PATH + "/Templates/template.xhtml"; // Lawsuit Template's dir & template's path.
-    private static final String LAWSUIT_OUTPUT = LAWSUIT_PATH;                        // Lawsuits output dir.
+    // Folder names configurations:
+    private static final String LAWSUIT_MAIN_DIR_NAME = "Lawsuits";                  // Name of general lawsuit dir.
+    private static final String LAWSUIT_TEMPLATE_DIR_NAME = "Templates";             // Name of lawsuit template's dir.
+    private static final String LAWSUIT_OUTPUT_DIR_NAME = "Lawsuits PDFs";           // Name of resulted lawsuit PDFs output dir.
+    private static final String LAWSUIT_TEMPLATE_FILE_NAME = "LawsuitTemplate.xhtml";// Name of lawsuit's template file.
+    private static String lawsuitOutputPdfFileName = "";                             // Init when user confirms form.
+
+    // Folder paths (See: 'initDirStructure()' for structure between folders)
+    private static String lawsuitMainPath = "";
+    private static String lawsuitTemplateDirPath = "";
+    private static String lawsuitTemplateFilePath = "";
+    private static String lawsuitOutputPath = "";
+    private static String lawsuitOutputPdfFilePath = "";                             // Init when user confirms form.
 
     // Date & Time formats: (Used for files names)
     // TODO: Check if this should be as part of a "File manager" class.
@@ -50,15 +59,18 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     private static String templateContent = "";
 
 // ------------------------------- Lawsuit Form Fields ------------------------------- //
-//  TODO: Check if preferable to move this to an external file holding constant String values of lawsuit form.
     private String spamType = "הודעה אלקטרונית";        // Type: SMS/Phone call/Email.
     private String claimAmount = "סכום תביעה";
     private Date receivedSpamDate;                    // Date received the spam.
     private Date currentDate;                         // Current date of lawsuit creation (used for lawsuit signature).
-    private boolean sentHaser = true;                 // Indicates whether user has sent "haser" or not.
-    private boolean sentMoreThanFiveLawsuits = false; // Indicates whether user has sent more then 5 lawsuits already in the past year or not.
-    private String moreThanFiveLawsuits = sentMoreThanFiveLawsuits ? "הגיש" : "לא הגיש/ו";
-    private String claimCase = sentHaser ? "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת מהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק" : "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+    private boolean sentHaser = true;                 // Indicates whether user has sent.
+    private boolean sentMoreThanFiveLawsuits = false; // Indicates whether user has sent more then 5 lawsuits already in the past year.
+    private String moreThanFiveLawsuits ="הגיש";
+    private String lessThanFiveLawsuits = "לא הגיש/ו";
+    private String fiveLawsuitsStatus ="";            // Init onCreate().
+    private String claimCaseHaser = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+    private String claimCaseSubscription = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+    private String claimCase = "";                    // "Didn't subscribe" / "Sent 'haser' but got spam". Set on fillInTemplate().
 
     // User:
     private String userPrivateName = "שם פרטי";
@@ -82,32 +94,39 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     private String company2Phone = "טלפון החברה 2";
     private String company2Fax = "פקס חברה 2";
 // ----------------------------- - -------------------------------------------------------:
-    Button btnCreate;
+    Button button_create_pdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lawsuit_pdf);
-        btnCreate = (Button) findViewById(R.id.button_createPDF);
-        appName = getString(R.string.app_name); // Get App's name
+        button_create_pdf = (Button) findViewById(R.id.button_createPDF);
 
         // Check Read/Write permissions:
         isWriteStoragePermissionGranted();
 
+        // Initialize folders needed for activity:
+        initDirStructure();
+
         // Read lawsuit template's content:
-        templatePath = Environment.getExternalStorageDirectory().getPath() + "/" + appName + "/" + templatePath;
         templateContent = readTemplate();
 
         // Init dates:
         receivedSpamDate = new Date();
         currentDate = new Date();
+        // Update date values:
+        dateAndTimeFormatter = new SimpleDateFormat(DATE_TIME_FORMAT);
+        dateAndTimeFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
         // Generate lawsuit PDF OnClick:
-        btnCreate.setOnClickListener(new View.OnClickListener() {
+        button_create_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    createPdfLawsuitFileName();
                     createPdf();
                 } catch (IOException e) {
                     Log.w(TAG, "Error creating PDF Lawsuit");
@@ -135,14 +154,10 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         dateFormatter = new SimpleDateFormat(DATE_FORMAT);
         dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
-        // Create lawsuit's file name with current date:
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + LAWSUIT_OUTPUT;
-        Date dt = new Date();
-        String targetPdf = directory_path + dateAndTimeFormatter.format(dt) + ".pdf";
-
         // Convert Html to PDF:
+
         templateContent = fillInTemplate();
-        HtmlConverter.convertToPdf(templateContent, new FileOutputStream(targetPdf));
+        HtmlConverter.convertToPdf(templateContent, new FileOutputStream(lawsuitOutputPdfFilePath));
     }
 
     /**
@@ -153,7 +168,7 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
 
         StringBuilder contentBuilder = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new FileReader(templatePath));
+            BufferedReader in = new BufferedReader(new FileReader(lawsuitTemplateFilePath));
             String str;
             while ((str = in.readLine()) != null) {
                 contentBuilder.append(str);
@@ -167,7 +182,6 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
 
     /**
      * Fill lawsuit template with user & spam company's details.
-     *
      * @return Template's content as Html, with fields replaced.
      */
     public String fillInTemplate() {
@@ -176,10 +190,12 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         String res = templateContent;
 
         // Fill in general form details:
+        claimCase = sentHaser ? claimCaseHaser: claimCaseSubscription;
+        fiveLawsuitsStatus = sentMoreThanFiveLawsuits ? moreThanFiveLawsuits: lessThanFiveLawsuits;
         res = res.replace("&lt;claimCase&gt;", claimCase);
         res = res.replace("&lt;claimAmount&gt;", claimAmount);
         res = res.replace("&lt;spamType&gt;", spamType);
-        res = res.replace("&lt;moreThanFiveLawsuits&gt;", moreThanFiveLawsuits);
+        res = res.replace("&lt;moreThanFiveLawsuits&gt;", fiveLawsuitsStatus);
         res = res.replace("&lt;undefined&gt;", "");
         res = res.replace("&lt;receivedSpamDate&gt;", dateFormatter.format(receivedSpamDate));
         res = res.replace("&lt;currentDate&gt;", dateFormatter.format(currentDate));
@@ -205,6 +221,69 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         res = res.replace("&lt;company2Phone&gt;", company2Phone);
         res = res.replace("&lt;company2Fax&gt;", company2Fax);
 
+        return res;
+    }
+
+    /**
+     * Genereates the lawsuit Pdf file name according to Time & Date user had confirmed the form.
+     */
+    public void createPdfLawsuitFileName(){
+
+        lawsuitOutputPdfFileName = dateAndTimeFormatter.format(new Date()) + ".pdf";
+        lawsuitOutputPdfFilePath = Paths.get(lawsuitOutputPath,lawsuitOutputPdfFileName).toString();
+    }
+
+    /**
+     * This is where configurations of folders structure of Lawsuit Acitivity is been done.
+     * In case where directories don't exists, it creates them.
+     */
+    public void initDirStructure(){
+
+        // Main LawsuitActivity path:
+        // app_name/lawsuit_main_dir/
+        lawsuitMainPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name),LAWSUIT_MAIN_DIR_NAME).toString();
+        if (!dirExists(lawsuitMainPath)){
+            File directory = new File(lawsuitMainPath);
+            directory.mkdirs();
+        }
+
+        // Template's dir:
+        // app_name/lawsuit_main_dir/lawsuit_template_dir/
+        // TODO: Currently template's file is been stored in user's device storage. Check to see if this should be part of the apk package.
+        lawsuitTemplateDirPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name),LAWSUIT_MAIN_DIR_NAME,LAWSUIT_TEMPLATE_DIR_NAME).toString();
+        if (!dirExists(lawsuitTemplateDirPath)){
+            File directory = new File(lawsuitTemplateDirPath);
+            directory.mkdirs();
+        }
+
+        // Template file's path:
+        try {
+            lawsuitTemplateFilePath = Paths.get(lawsuitTemplateDirPath, LAWSUIT_TEMPLATE_FILE_NAME).toString();
+        }
+        catch (Exception e){
+            Toast.makeText(this, "No template file found for the lawsuit",
+                    Toast.LENGTH_LONG).show();
+        }
+        // User's Lawsuit dir:
+        // app_name/lawsuit_output_dir/
+        lawsuitOutputPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name)+" - "+ LAWSUIT_OUTPUT_DIR_NAME).toString();
+        if (!dirExists(lawsuitOutputPath)){
+            File directory = new File(lawsuitOutputPath);
+            directory.mkdirs();
+        }
+    }
+
+    /**
+     * Cehcks if a directory given in the parameter exists.
+     * @param path Directory to look for.
+     * @return True - Exists, False - Doesn't exists.
+     */
+    public boolean dirExists(String path)
+    {
+        boolean res = false;
+        File dir = new File(path);
+        if(dir.exists() && dir.isDirectory())
+            res = true;
         return res;
     }
 
