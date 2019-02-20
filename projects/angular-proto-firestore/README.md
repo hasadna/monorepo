@@ -31,7 +31,7 @@ How to use firebase functions:
 https://firebase.google.com/docs/functions/get-started  
 
 ## Updating protos
-You need to create new proto functions after each update of .proto file.
+You need to [create new proto functions](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md) after each update of .proto file.
 
 ## Development
 The information might be useful:
