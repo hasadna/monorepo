@@ -14,6 +14,9 @@
     padding-left: $margin;
     padding-top: $margin;
     text-align: start;
+    @media(max-width: 579px) {
+      text-align: center;  
+    }
     >app-contributor {
       margin-right: $margin;
       margin-bottom: $margin;
