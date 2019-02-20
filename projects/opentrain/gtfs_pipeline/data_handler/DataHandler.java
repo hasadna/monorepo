@@ -1,7 +1,6 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
 import com.projects.opentrain.gtfs_pipeline.Protos;
-import com.projects.opentrain.gtfs_pipeline.Protos.Agency;
 import com.projects.opentrain.gtfs_pipeline.Protos.Route;
 import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
 import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
@@ -25,45 +24,6 @@ import org.apache.commons.csv.CSVRecord;
 class DataHandler {
 
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
-
-  public static void saveAgency(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
-      CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "agency_id",
-                  "agency_name",
-                  "agency_url",
-                  "agency_timezone",
-                  "agency_lang",
-                  "agency_phone",
-                  "agency_fare_url"));
-      boolean isHeader = true;
-      for (CSVRecord record : parser) {
-        if (isHeader) {
-          isHeader = false;
-          continue;
-        }
-        if (record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID)) {
-          Agency.Builder agency = Agency.newBuilder();
-          agency
-              .setAgencyId(Integer.parseInt(record.get("agency_id")))
-              .setAgencyName(record.get("agency_name"))
-              .setAgencyUrl(record.get("agency_url"))
-              .setAgencyTimezone(record.get("agency_timezone"))
-              .setAgencyLang(record.get("agency_lang"))
-              .setAgencyPhone(record.get("agency_phone"))
-              .setAgencyFareUrl(record.get("agency_fare_url"))
-              .build()
-              .writeDelimitedTo(output);
-        }
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 
   private static String getDayOfToday() {
     int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
@@ -349,16 +309,14 @@ class DataHandler {
 
   public static void main(String[] args) {
     // Paths to the CSVs files
-    final Path agencyTxt = Paths.get(args[0]);
-    final Path calendarTxt = Paths.get(args[1]);
-    final Path routesTxt = Paths.get(args[2]);
-    final Path stopTimesTxt = Paths.get(args[3]);
-    final Path stopsTxt = Paths.get(args[4]);
-    final Path translationsTxt = Paths.get(args[5]);
-    final Path tripsTxt = Paths.get(args[6]);
+    final Path calendarTxt = Paths.get(args[0]);
+    final Path routesTxt = Paths.get(args[1]);
+    final Path stopTimesTxt = Paths.get(args[2]);
+    final Path stopsTxt = Paths.get(args[3]);
+    final Path translationsTxt = Paths.get(args[4]);
+    final Path tripsTxt = Paths.get(args[5]);
 
     // Paths to the output files
-    final String agencyOutputPath = args[args.length - 7];
     final String calendarOutputPath = args[args.length - 6];
     final String routesOutputPath = args[args.length - 5];
     final String stopTimesOutputPath = args[args.length - 4];
@@ -366,7 +324,6 @@ class DataHandler {
     final String translationsOutputPath = args[args.length - 2];
     final String tripsOutputPath = args[args.length - 1];
 
-    saveAgency(agencyTxt, agencyOutputPath);
     saveCalendar(calendarTxt, calendarOutputPath);
     saveRoutes(routesTxt, routesOutputPath);
     saveStopTimes(stopTimesTxt, stopTimesOutputPath);
