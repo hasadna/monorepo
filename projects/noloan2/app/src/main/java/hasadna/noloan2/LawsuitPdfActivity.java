@@ -29,48 +29,56 @@ import java.util.TimeZone;
 
 import noloan.R;
 
-public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to class functions.
-
+public class LawsuitPdfActivity extends AppCompatActivity {
+    // TODO: Add logs to class functions.
     private static final String TAG = "LawsuitPdfActivity";
 
-    // Folder names configurations:
-    private static final String LAWSUIT_MAIN_DIR_NAME = "Lawsuits";                  // Name of general lawsuit dir.
-    private static final String LAWSUIT_TEMPLATE_DIR_NAME = "Templates";             // Name of lawsuit template's dir.
-    private static final String LAWSUIT_OUTPUT_DIR_NAME = "Lawsuits PDFs";           // Name of resulted lawsuit PDFs output dir.
-    private static final String LAWSUIT_TEMPLATE_FILE_NAME = "LawsuitTemplate.xhtml";// Name of lawsuit's template file.
-    private static String lawsuitOutputPdfFileName = "";                             // Init when user confirms form.
+    // Folder names configuration:
+    // Name of general lawsuit dir.
+    private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
+    // Name of lawsuit template's dir.
+    private static final String LAWSUIT_TEMPLATE_DIR_NAME = "templates";
+    // Name of resulted lawsuit PDFs output dir
+    private static final String LAWSUIT_OUTPUT_DIR_NAME = "pdf";
+    // Name of lawsuit's template file.
+    private static final String LAWSUIT_TEMPLATE_FILE_NAME = "template.xhtml";
 
     // Folder paths (See: 'initDirStructure()' for structure between folders)
-    private static String lawsuitMainPath = "";
-    private static String lawsuitTemplateDirPath = "";
-    private static String lawsuitTemplateFilePath = "";
-    private static String lawsuitOutputPath = "";
-    private static String lawsuitOutputPdfFilePath = "";                             // Init when user confirms form.
+    private String lawsuitMainPath = "";
+    private String lawsuitTemplateDirPath = "";
+    private String lawsuitTemplateFilePath = "";
+    private String lawsuitOutputPath = "";
 
     // Date & Time formats: (Used for files names)
     // TODO: Check if this should be as part of a "File manager" class.
     private static final String DATE_TIME_FORMAT = "dd-M-yyyy hh-mm-ss";
     private static final String DATE_FORMAT = "dd-M-yyyy";
     private static final String TIME_ZONE = "Asia/Jerusalem";
-    private static SimpleDateFormat dateAndTimeFormatter;
-    private static SimpleDateFormat dateFormatter;
+    private SimpleDateFormat dateAndTimeFormatter;
+    private SimpleDateFormat dateFormatter;
 
     // Template's inner text (been read on create from template's file):
-    private static String templateContent = "";
+    private String templateContent = "";
 
 // ------------------------------- Lawsuit Form Fields ------------------------------- //
-    private String spamType = "הודעה אלקטרונית";        // Type: SMS/Phone call/Email.
+    // Type: SMS/Phone call/Email.
+    private String spamType = "הודעה אלקטרונית";
     private String claimAmount = "סכום תביעה";
-    private Date receivedSpamDate;                    // Date received the spam.
-    private Date currentDate;                         // Current date of lawsuit creation (used for lawsuit signature).
-    private boolean sentHaser = true;                 // Indicates whether user has sent.
-    private boolean sentMoreThanFiveLawsuits = false; // Indicates whether user has sent more then 5 lawsuits already in the past year.
+    // Date received the spam.
+    private Date receivedSpamDate;
+    // Current date of lawsuit creation (used for lawsuit signature).
+    private Date currentDate;
+    // Indicates whether user has sent 'haser'.
+    private boolean sentHaser = true;
+    // Indicates whether user has sent more then 5 lawsuits already in the past year.
+    private boolean sentMoreThanFiveLawsuits = false;
     private String moreThanFiveLawsuits ="הגיש";
     private String lessThanFiveLawsuits = "לא הגיש/ו";
-    private String fiveLawsuitsStatus ="";            // Init onCreate().
+    private String fiveLawsuitsStatus =""; // Init onCreate().
     private String claimCaseHaser = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
     private String claimCaseSubscription = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
-    private String claimCase = "";                    // "Didn't subscribe" / "Sent 'haser' but got spam". Set on fillInTemplate().
+    // Cases: Didn't subscribe / Sent 'haser' but got spam.
+    private String claimCase = ""; //  Init on fillInTemplate().
 
     // User:
     private String userPrivateName = "שם פרטי";
@@ -94,14 +102,14 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     private String company2Phone = "טלפון החברה 2";
     private String company2Fax = "פקס חברה 2";
 // ----------------------------- - -------------------------------------------------------:
-    Button button_create_pdf;
+    Button createPdfButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lawsuit_pdf);
-        button_create_pdf = (Button) findViewById(R.id.button_createPDF);
+        createPdfButton = (Button) findViewById(R.id.button_createPDF);
 
         // Check Read/Write permissions:
         isWriteStoragePermissionGranted();
@@ -122,11 +130,10 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
         // Generate lawsuit PDF OnClick:
-        button_create_pdf.setOnClickListener(new View.OnClickListener() {
+        createPdfButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    createPdfLawsuitFileName();
                     createPdf();
                 } catch (IOException e) {
                     Log.w(TAG, "Error creating PDF Lawsuit");
@@ -141,7 +148,7 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
      * @throws IOException  Thrown when there's an error reading lawusuit template file.
      * @throws DocumentException
      */
-    public void createPdf() throws IOException {
+    protected void createPdf() throws IOException {
 
         // Activate license:
         // TODO: Find a better solution for reading the licensekey file (This was a just a "quick fix" to get it working).
@@ -155,8 +162,8 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
         // Convert Html to PDF:
-
         templateContent = fillInTemplate();
+        String lawsuitOutputPdfFilePath = Paths.get(lawsuitOutputPath,createPdfLawsuitFileName()).toString();
         HtmlConverter.convertToPdf(templateContent, new FileOutputStream(lawsuitOutputPdfFilePath));
     }
 
@@ -164,7 +171,7 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
      * Reads Html template's content to String. (Template's path stored at 'templatePath' class variable)
      * @return The String holding lawsuit's template's content in an Html format.
      */
-    public String readTemplate() {
+    protected String readTemplate() {
 
         StringBuilder contentBuilder = new StringBuilder();
         try {
@@ -184,7 +191,7 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
      * Fill lawsuit template with user & spam company's details.
      * @return Template's content as Html, with fields replaced.
      */
-    public String fillInTemplate() {
+    protected String fillInTemplate() {
 
         // Read template's content:
         String res = templateContent;
@@ -225,48 +232,47 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     }
 
     /**
-     * Genereates the lawsuit Pdf file name according to Time & Date user had confirmed the form.
+     * Responsible for the output lawsuit PDF file name format.
+     * @return File name with ".pdf" extension.
      */
-    public void createPdfLawsuitFileName(){
+    protected String createPdfLawsuitFileName(){
 
-        lawsuitOutputPdfFileName = dateAndTimeFormatter.format(new Date()) + ".pdf";
-        lawsuitOutputPdfFilePath = Paths.get(lawsuitOutputPath,lawsuitOutputPdfFileName).toString();
+        String fileName = dateAndTimeFormatter.format(new Date()) + ".pdf";
+        return fileName;
     }
 
     /**
-     * This is where configurations of folders structure of Lawsuit Acitivity is been done.
+     * This is where configurations of folders structure of Lawsuit Activity is been done.
      * In case where directories don't exists, it creates them.
      */
-    public void initDirStructure(){
+    protected void initDirStructure(){
 
-        // Main LawsuitActivity path:
-        // app_name/lawsuit_main_dir/
+        // Main LawsuitActivity path: 'app_name/LAWSUIT_MAIN_DIR_NAME/'
         lawsuitMainPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name),LAWSUIT_MAIN_DIR_NAME).toString();
         if (!dirExists(lawsuitMainPath)){
             File directory = new File(lawsuitMainPath);
             directory.mkdirs();
         }
 
-        // Template's dir:
-        // app_name/lawsuit_main_dir/lawsuit_template_dir/
+        // Templates dir path: 'lawsuitMainPath/LAWSUIT_TEMPLATE_DIR_NAME/'
         // TODO: Currently template's file is been stored in user's device storage. Check to see if this should be part of the apk package.
-        lawsuitTemplateDirPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name),LAWSUIT_MAIN_DIR_NAME,LAWSUIT_TEMPLATE_DIR_NAME).toString();
+        lawsuitTemplateDirPath = Paths.get(lawsuitMainPath,LAWSUIT_TEMPLATE_DIR_NAME).toString();
         if (!dirExists(lawsuitTemplateDirPath)){
             File directory = new File(lawsuitTemplateDirPath);
             directory.mkdirs();
         }
 
-        // Template file's path:
+        // Template file's path: 'lawsuitTemplateDirPath/LAWSUIT_TEMPLATE_FILE_NAME/'
         try {
             lawsuitTemplateFilePath = Paths.get(lawsuitTemplateDirPath, LAWSUIT_TEMPLATE_FILE_NAME).toString();
         }
         catch (Exception e){
-            Toast.makeText(this, "No template file found for the lawsuit",
+            Toast.makeText(this, "No template file found for the lawsuit.",
                     Toast.LENGTH_LONG).show();
         }
-        // User's Lawsuit dir:
-        // app_name/lawsuit_output_dir/
-        lawsuitOutputPath = Paths.get(Environment.getExternalStorageDirectory().getPath(),getString(R.string.app_name)+" - "+ LAWSUIT_OUTPUT_DIR_NAME).toString();
+
+        // Generated PDFs path:  'lawsuitMainPath/LAWSUIT_OUTPUT_DIR_NAME'
+        lawsuitOutputPath = Paths.get(lawsuitMainPath,LAWSUIT_OUTPUT_DIR_NAME).toString();
         if (!dirExists(lawsuitOutputPath)){
             File directory = new File(lawsuitOutputPath);
             directory.mkdirs();
@@ -274,11 +280,11 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
     }
 
     /**
-     * Cehcks if a directory given in the parameter exists.
+     * Checks if a directory given in the parameter exists.
      * @param path Directory to look for.
      * @return True - Exists, False - Doesn't exists.
      */
-    public boolean dirExists(String path)
+    protected boolean dirExists(String path)
     {
         boolean res = false;
         File dir = new File(path);
@@ -287,39 +293,22 @@ public class LawsuitPdfActivity extends AppCompatActivity { // TODO: Add logs to
         return res;
     }
 
-    // Check permissions: TODO: Check if this should be done at an earlier activity.
-    public boolean isReadStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.w(TAG, "Permission is granted1");
-                return true;
-            } else {
-
-                Log.v(TAG, "Permission is revoked1");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-                return false;
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG, "Permission is granted1");
-            return true;
-        }
-    }
-
-    public boolean isWriteStoragePermissionGranted() {
+    // Check external storage write permission:
+    // TODO: Check if this should be done at an earlier activity.
+    private boolean isWriteStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG, "Permission is granted2");
+                Log.v(TAG, "Permission is granted");
                 return true;
             } else {
 
-                Log.v(TAG, "Permission is revoked2");
+                Log.v(TAG, "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG, "Permission is granted2");
+            Log.v(TAG, "Permission is granted");
             return true;
         }
     }
