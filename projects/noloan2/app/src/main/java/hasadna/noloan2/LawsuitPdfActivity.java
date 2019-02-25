@@ -1,10 +1,13 @@
 package hasadna.noloan2;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,14 +16,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.itextpdf.licensekey.LicenseKey;
-import com.itextpdf.html2pdf.*;
+import com.itextpdf.html2pdf.HtmlConverter;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +34,7 @@ import noloan.R;
 public class LawsuitPdfActivity extends AppCompatActivity {
     // TODO: Add logs to class functions.
     private static final String TAG = "LawsuitPdfActivity";
+    private final int STORAGE_PERMISSION_CODE = 1;
 
     // Folder names
     private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
@@ -46,11 +49,9 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     private String lawsuitOutputPath = "";
 
     // Date formats
-    private static final String DATE_TIME_FORMAT = "dd-M-yyyy hh-mm-ss";
-    private static final String DATE_FORMAT = "dd-M-yyyy";
     private static final String TIME_ZONE = "Asia/Jerusalem";
-    private SimpleDateFormat dateAndTimeFormatter;
-    private SimpleDateFormat dateFormatter;
+    private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
 
     // Initialise until App has client-side form
     private boolean sentHaser = true;
@@ -97,43 +98,31 @@ public class LawsuitPdfActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lawsuit_pdf);
         createPdfButton = (Button) findViewById(R.id.button_createPDF);
 
-        getWriteStoragePermission();
         initDirStructure();
+        initTimeZones();
 
-        dateAndTimeFormatter = new SimpleDateFormat(DATE_TIME_FORMAT);
-        dateAndTimeFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
-        dateFormatter = new SimpleDateFormat(DATE_FORMAT);
-        dateFormatter.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
-
-        // Generate lawsuit onClick
+        // Call createPdf() from callback
         createPdfButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createPdf();
+                getWriteStoragePermission();
             }
         });
-
     }
 
     private void createPdf() {
-
+        // TODO: Currently success on reading itextkey file only from /res/raw/. Perhaps preferable to store this file in a different dedicated folder.
         // Activate iText license
-        // TODO: Find a better solution for reading the licensekey file (This was a just a "quick fix" to get it working).
-        InputStream licenseIs = getResources().openRawResource(R.raw.itextkey);
-        LicenseKey.loadLicenseFile(licenseIs);
+        LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
         try {
             HtmlConverter.convertToPdf(fillTemplate(), new FileOutputStream(Paths.get(lawsuitOutputPath, getPdfFilename()).toString()));
+            Toast.makeText(LawsuitPdfActivity.this,"Lawsuit created!",Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.w(TAG, "Error creating PDF Lawsuit");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Fill lawsuit template with user & spam company's details.
-     *
-     * @return Template's content as Html with fields replaced.
-     */
     private String fillTemplate() {
 
         String lawsuit = readTemplate();
@@ -144,8 +133,8 @@ public class LawsuitPdfActivity extends AppCompatActivity {
         lawsuit = lawsuit.replace("&lt;spamType&gt;", spamType);
         lawsuit = lawsuit.replace("&lt;moreThanFiveLawsuits&gt;", sentMoreThanFiveLawsuits ? moreThanFiveLawsuits : lessThanFiveLawsuits);
         lawsuit = lawsuit.replace("&lt;undefined&gt;", "");
-        lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", dateFormatter.format(receivedSpamDate));
-        lawsuit = lawsuit.replace("&lt;currentDate&gt;", dateFormatter.format(new Date()));
+        lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", DATE_FORMATTER.format(receivedSpamDate));
+        lawsuit = lawsuit.replace("&lt;currentDate&gt;", DATE_FORMATTER.format(new Date()));
 
         // User fields
         lawsuit = lawsuit.replace("&lt;userFullName&gt;", userPrivateName + " " + userLastName);
@@ -173,33 +162,27 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
     private String readTemplate() {
 
-        StringBuilder contentBuilder = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new FileReader(lawsuitTemplateFilePath));
-            String str;
-            while ((str = in.readLine()) != null) {
-                contentBuilder.append(str);
-            }
-            in.close();
+            return new String(Files.readAllBytes(Paths.get(lawsuitTemplateFilePath)), StandardCharsets.UTF_8);
         } catch (IOException e) {
             Log.w(TAG, "Error reading lawsuit's template.");
             e.printStackTrace();
+            return null;
         }
-        return contentBuilder.toString();
     }
 
     private String getPdfFilename() {
 
-        return dateAndTimeFormatter.format(new Date()) + ".pdf";
+        return DATE_TIME_FORMATTER.format(new Date()) + ".pdf";
     }
 
     private void initDirStructure() {
 
         lawsuitMainPath = Paths.get(Environment.getExternalStorageDirectory().getPath(), getString(R.string.app_name), LAWSUIT_MAIN_DIR_NAME).toString();
-        initDir(lawsuitMainPath);
+        makeDir(lawsuitMainPath);
 
         lawsuitTemplateDirPath = Paths.get(lawsuitMainPath, LAWSUIT_TEMPLATE_DIR_NAME).toString();
-        initDir(lawsuitTemplateDirPath);
+        makeDir(lawsuitTemplateDirPath);
 
         // TODO: Currently template's file is been stored in user's device storage. Check to see if this should be part of the apk package.
         try {
@@ -211,24 +194,71 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
         // Output
         lawsuitOutputPath = Paths.get(lawsuitMainPath, LAWSUIT_OUTPUT_DIR_NAME).toString();
-        initDir(lawsuitOutputPath);
+        makeDir(lawsuitOutputPath);
     }
 
-    /**
-     * Create dir if it doesn't exists.
-     * @param path Directory to look for.
-     */
-    private void initDir(String path) {
+    private void makeDir(String path) {
 
-        File directory = new File(lawsuitTemplateDirPath);
+        File directory = new File(path);
         if (directory.exists() && directory.isDirectory())
             directory.mkdirs();
     }
 
+    private void initTimeZones(){
+
+        DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+    }
+
     private void getWriteStoragePermission() {
 
-        if (Build.VERSION.SDK_INT >= 23)
-            if (!(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        if (Build.VERSION.SDK_INT >= 23) {
+
+            // Permission granted
+            if ((checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+                createPdf();
+            // If user denied permission before, show explanation dialog before requesting
+            else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                    new AlertDialog.Builder(this)
+                            .setTitle("Permission needed")
+                            .setMessage("Write permission needed for creating lawsuit PDF.")
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(LawsuitPdfActivity.this,
+                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                                }
+                            })
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(LawsuitPdfActivity.this,"Write storage permission needed.",Toast.LENGTH_LONG).show();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
+
+                }
+                else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                }
+            }
+        }
+    }
+
+    // Call createPdf() if permission granted
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE)  {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                createPdf();
+            } else {
+                Toast.makeText(LawsuitPdfActivity.this,"Write storage permission needed.",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
