@@ -58,7 +58,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     private boolean sentMoreThanFiveLawsuits = false; // The past year
     private Date receivedSpamDate = new Date();
 
-// ------------------------------- Lawsuit Form Fields ------------------------------- //
+    //region Lawsuit form fields
     // General
     private String spamType = "הודעה אלקטרונית";
     private String claimAmount = "סכום תביעה";
@@ -88,7 +88,8 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     private String company2Address = "כתובת החברה 2";
     private String company2Phone = "טלפון החברה 2";
     private String company2Fax = "פקס חברה 2";
-// ---------------------------------------------------------------------------------------:
+    //endregion
+
     Button createPdfButton;
 
     @Override
