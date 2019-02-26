@@ -1,127 +1,72 @@
-// portrait phones: 576px
-// landscape phones: 768px
-// tablets: 992px
-// desktops: 1200px
+$label-width: 250px;
 
 .user-details {
-  width: 100%;
-  @media(max-width: 575.98px) {
-    font-size: 10px;
-  }
-}
-
-.user-header {
-  text-align: center;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-.user-container {
   display: flex;
-  justify-content: space-around;
-  @media(max-width: 575.98px) {
-    flex-direction: column;
-  }
-  >.left-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    @media(max-width: 575.98px) {
-      align-items: center;
-    }
-    >.user-image {
-      margin: 0.1em;
-      @media(max-width: 575.98px) {
-        height: 0.01em;
-        width: 0.01em;
-      }
-    }
-    >.user-name {
-      font-size: 1.5em;
-      color: #565656;
-      margin: 0.1em;
-    }
-    >.email {
-      font-size: 1.25em;
-      margin: 0.1em;
-    }
-    >.social-networks {
+  justify-content: center;
+  >.media {
+    >.user-header {
       display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      margin-top: 1em;
-      margin-left: 0.1em;
-      >.social-network {
-        border-radius: 0.25em;
-        margin-right: 1.5em;
-      }
-    }        
-  }
-  >.right-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    @media(max-width: 575.98px) {
-      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 50px;
+      color: #4a4a4a;
     }
-    >.projects {
+    >.user-container {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin-bottom: 1.5em;
-      >.projects-header {
-        color: #565656;
-        font-weight: normal;
-        margin: 0;
-      }
-      >.projects-list {
-        border: 2px gray solid;
-        margin: 0;
-        padding: 1.25em;
-        >li {
-          >.project {
-            font-size: 1.25em;
+      $space: 75px;
+      >.user-label {
+        display: flex;
+        justify-content: center;
+        width: $label-width;
+        >.flex {
+          >img {
+            margin-bottom: 16px;
+          }
+          >.user-name {
+            font-size: 24px;
+            color: #565656;
+            margin-bottom: 9px;
+          }
+          >.email {
+            font-size: 19px;
+            color: #565656;
+            margin-bottom: 16px;
+          }
+          >.social-networks {
+            >a {
+              margin-right: 19px;
+            }
           }
         }
       }
-    }
-    >.skills {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      margin-bottom: 1.5em;
-      >.skills-header {
-        color: #565656;
-        font-weight: normal;
-        margin: 0;
+      >.media-large-block {
+        width: $space;
       }
-      >.skills-list {
-        border: 2px gray solid;
-        padding: 0.25em;
-        font-size:1.25em;
+      >.media-small-block {
+        height: 23px;
       }
-    }
-    >.contributions {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      >.contributions-header {
-        color: #565656;
-        font-weight: normal;
-        margin: 0;
-      }
-      >.contributions-list {
-        margin: 0;
-        >.contribution {
-          border: 2px gray solid;
-          padding: 0.5em;
-          >.contribution-message {
-            font-size: 1.25em;
+      >.user-info {
+        width: calc(100% - #{$label-width} - #{$space});
+        >.title {
+          color: #565656;
+          font-size: 20px;
+        }
+        >.info-block {
+          padding: 16px;
+          border: 1px solid #979797;
+          margin-bottom: 22px;
+          font-size: 20px;
+          >a {
+            margin-right: 10px;
+          }
+          >.contribution {
+            >.contribution-message {
+              color: #565656;
+            }
+            >.contribution-url {
+              word-wrap: break-word;
+            }
           }
         }
       }

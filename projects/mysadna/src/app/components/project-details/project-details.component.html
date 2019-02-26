@@ -1,29 +1,18 @@
-<div *ngIf="project" class="project-details">
-  <h1 class="project-name">{{project.getProjectName()}}</h1>
-  <h3 class="project-description">{{project.getProjectDescription()}}</h3>
-  <a href="{{project.getProjectSite()}}" target="blank" class="project-link">
-    <h3>
+<div class="project-details media" *ngIf="project">
+  <div class="project-name">{{project.getProjectName()}}</div>
+  <div class="project-description">{{project.getProjectDescription()}}</div>
+  <div class="project-link">
+    <a  [href]="project.getProjectSite()" target="blank">
       {{project.getProjectSite()}}
-    </h3>
-  </a>
+    </a>
+  </div>
   <div class="contributors">
-    <h3>Contributors:</h3>
+    <div class="title">Contributors:</div>
     <div class="contributors-list">
-      <div class="contributor" *ngFor="let user of projectUsers">
-        <a [routerLink]="'/user-details/' + user.getUserId()">
-          <div class="user-image">
-            <img src="{{user.getUserImg()}}" class="user-image">
-          </div>
-          <div class="user-names">
-            <div class="user-full-name">
-              <h4>{{user.getFirstName()}} {{user.getLastName()}}</h4>
-            </div>
-            <div class="user-name">
-              <p>{{user.getUserName()}}</p>
-            </div>
-          </div>
-        </a>
-      </div>
+      <app-contributor
+        *ngFor="let user of projectUsers"
+        [user]="user"
+      ></app-contributor>
     </div>
   </div>
 </div>

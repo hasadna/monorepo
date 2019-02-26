@@ -6,5 +6,5 @@ import { FirebaseService } from './firebase.service';
 
 export const ServiceList = [
   EncodingService,
-  FirebaseService,
+  FirebaseService
 ];
