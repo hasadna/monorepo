@@ -13,8 +13,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.apache.commons.csv.CSVFormat;
@@ -56,8 +58,9 @@ class DataHandler {
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
-  public static void saveCalendar(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+  public static List<Protos.Calendar> getCalendar(Path csvPath) {
+          List<Protos.Calendar> calendars = new ArrayList<>();
+      try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -81,7 +84,8 @@ class DataHandler {
         }
         if (isServiceIdRelevantToday(record)) {
           Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
-          calendar
+          
+          calendars.add(calendar
               .setServiceId(Integer.parseInt(record.get("service_id")))
               .setSunday(Boolean.parseBoolean(record.get("sunday")))
               .setMonday(Boolean.parseBoolean(record.get("monday")))
@@ -92,17 +96,18 @@ class DataHandler {
               .setSaturday(Boolean.parseBoolean(record.get("saturday")))
               .setStartDate(Integer.parseInt(record.get("start_date")))
               .setEndDate(Integer.parseInt(record.get("end_date")))
-              .build()
-              .writeDelimitedTo(output);
+              .build());
         }
       }
+      return calendars;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void saveRoutes(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+  public static List<Route> getRoutes(Path csvPath) {
+    List<Route> routes = new ArrayList<>();
+    try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -126,7 +131,7 @@ class DataHandler {
           continue;
         }
         Route.Builder route = Route.newBuilder();
-        route
+        routes.add(route
             .setRouteId(Integer.parseInt(record.get("route_id")))
             .setAgencyId(Integer.parseInt(record.get("agency_id")))
             .setRouteShortName(record.get("route_short_name"))
@@ -134,16 +139,17 @@ class DataHandler {
             .setRouteDesc(record.get("route_desc"))
             .setRouteType(Integer.parseInt(record.get("route_type")))
             .setRouteColor(record.get("route_color"))
-            .build()
-            .writeDelimitedTo(output);
+            .build());
       }
+      return routes;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void saveStopTimes(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+  public static List<StopTime> getStopTimes(Path csvPath) {
+    List<StopTime> stopsTime = new ArrayList<>();
+    try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -164,7 +170,7 @@ class DataHandler {
           continue;
         }
         StopTime.Builder stopTime = StopTime.newBuilder();
-        stopTime
+        stopsTime.add(stopTime
             .setTripId(record.get("trip_id"))
             .setArrivalTime(record.get("arrival_time"))
             .setDepartureTime(record.get("departure_time"))
@@ -173,16 +179,18 @@ class DataHandler {
             .setPickupType(record.get("pickup_type"))
             .setDropOffType(record.get("drop_off_type"))
             .setShapeDistTraveled(record.get("shape_dist_traveled"))
-            .build()
-            .writeDelimitedTo(output);
+            .build());
       }
+      return stopsTime;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void saveStops(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+
+  public static List<Stop> getStops(Path csvPath) {
+    List<Stop> stops = new ArrayList<>();
+    try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -204,7 +212,7 @@ class DataHandler {
           continue;
         }
         Stop.Builder stop = Stop.newBuilder();
-        stop.setStopId(Integer.parseInt(record.get("stop_id")))
+        stops.add(stop.setStopId(Integer.parseInt(record.get("stop_id")))
             .setStopCode(Integer.parseInt(record.get("stop_code")))
             .setStopName(record.get("stop_name"))
             .setStopDesc(record.get("stop_desc"))
@@ -213,16 +221,17 @@ class DataHandler {
             .setLocationType(Integer.parseInt(record.get("location_type")))
             .setParentStation(record.get("parent_station"))
             .setZoneId(Integer.parseInt(record.get("zone_id")))
-            .build()
-            .writeDelimitedTo(output);
+            .build());
       }
+      return stops;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void saveTranslations(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+  public static List<Translation> getTranslations(Path csvPath) {
+    List<Translation> translations = new ArrayList<>();
+    try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -235,20 +244,21 @@ class DataHandler {
           continue;
         }
         Translation.Builder translation = Translation.newBuilder();
-        translation
+        translations.add(translation
             .setTransId(record.get("trans_id"))
             .setLang(record.get("lang"))
             .setTranslation(record.get("translation"))
-            .build()
-            .writeDelimitedTo(output);
+            .build());
       }
+      return translations;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void saveTrips(Path csvPath, String path) {
-    try (FileOutputStream output = new FileOutputStream(path)) {
+  public static List<Trip> getTrips(Path csvPath) {
+    List<Trip> trips = new ArrayList<>();
+    try{
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -267,15 +277,15 @@ class DataHandler {
           continue;
         }
         Trip.Builder trip = Trip.newBuilder();
-        trip.setRouteId(Integer.parseInt(record.get("route_id")))
+        trips.add(trip.setRouteId(Integer.parseInt(record.get("route_id")))
             .setServiceId(Integer.parseInt(record.get("service_id")))
             .setTripId(record.get("trip_id"))
             .setTripHeadsign(record.get("trip_headsign"))
             .setDirectionId(Integer.parseInt(record.get("direction_id")))
             .setShapeId(record.get("shape_id"))
-            .build()
-            .writeDelimitedTo(output);
+            .build());
       }
+      return trips;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -290,20 +300,17 @@ class DataHandler {
     final Path translationsTxt = Paths.get(args[4]);
     final Path tripsTxt = Paths.get(args[5]);
 
-    // Paths to the output files
-    final String calendarOutputPath = args[args.length - 6];
-    final String routesOutputPath = args[args.length - 5];
-    final String stopTimesOutputPath = args[args.length - 4];
-    final String stopsOutputPath = args[args.length - 3];
-    final String translationsOutputPath = args[args.length - 2];
-    final String tripsOutputPath = args[args.length - 1];
+    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt);
+    List<Route> routeMessages = getRoutes(routesTxt);
+    List<StopTime> stopTimeMessages = getStopTimes(stopTimesTxt);
+    List<Stop> stopMessages = getStops(stopsTxt);
+    List<Translation> traslationMessages = getTranslations(translationsTxt);
+    List<Trip> tripMessages = getTrips(tripsTxt);
 
-    saveCalendar(calendarTxt, calendarOutputPath);
-    saveRoutes(routesTxt, routesOutputPath);
-    saveStopTimes(stopTimesTxt, stopTimesOutputPath);
-    saveStops(stopsTxt, stopsOutputPath);
-    saveTranslations(translationsTxt, translationsOutputPath);
-    saveTrips(tripsTxt, tripsOutputPath);
+    try(FileOutputStream outPut = new FileOutputStream(args[args.length-1])){
+
+    }catch(Exception e){throw new RuntimeException();}
+    
   }
 }
 
