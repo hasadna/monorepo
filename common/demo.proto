@@ -1,0 +1,9 @@
+syntax = "proto3";
+package com.hasadna.test;
+
+option java_package = "com.hasadna.test";
+option java_outer_classname = "Protos";
+
+message Demo {
+  string message = 1;
+}

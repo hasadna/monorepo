@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import {
   ContactsComponent,
-  UserDetailsComponent,
+  ProjectDetailsComponent,
   ProjectsComponent,
-  ProjectDetailsComponent
+  UserDetailsComponent
 } from '@/components';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'projects', pathMatch: 'full' },
   { path: 'contacts', component: ContactsComponent },
   { path: 'user-details/:userId', component: UserDetailsComponent },
   { path: 'projects', component: ProjectsComponent },
-  { path: 'project-details/:projectId', component: ProjectDetailsComponent },
+  { path: 'project-details/:projectId', component: ProjectDetailsComponent }
 ];
 
 @NgModule({
