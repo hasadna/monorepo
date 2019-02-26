@@ -121,6 +121,10 @@ class DataHandler {
           isHeader = false;
           continue;
         }
+        if(!record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID))
+        {
+          continue;
+        }
         Route.Builder route = Route.newBuilder();
         route
             .setRouteId(Integer.parseInt(record.get("route_id")))
