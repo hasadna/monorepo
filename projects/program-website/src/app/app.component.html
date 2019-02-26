@@ -1,15 +1,17 @@
 <div *ngIf="!book">
   Loading
 </div>
-<<<<<<< HEAD
 <nav class="pull-right">
   <a routerLink="/projects">  Projects  </a>
   <a routerLink="/participants">  Participants  </a>
   <a routerLink="/about"> About </a>
   <a routerLink="/contact"> Contact Us! </a>
 </nav>
+<app-about-component></app-about-component>
+<app-contact-us-component></app-contact-us-component>
+<app-participants-component></app-participants-component>
+<app-projects-component></app-projects-component>
 <router-outlet></router-outlet>
-=======
 <div *ngIf="book">
   <div>
     <span>Title: </span>
@@ -20,4 +22,3 @@
     <span>{{ book.getPages() }}</span>
   </div>
 </div>
->>>>>>> c5bb66de788bac5bc3f1e955a0c7eb234ea340d2
