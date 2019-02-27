@@ -58,7 +58,7 @@ class DataHandler {
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
-  public static List<Integer> getServicesId(){
+  public static List<Integer> getServicesId() {
     List<Protos.Calendar> calendars = getCalendar(calendarTxt);
     List<Integer> serivesId = new ArrayList<>();
     for (Protos.Calendar calendar : calendars) {
@@ -68,8 +68,8 @@ class DataHandler {
   }
 
   public static List<Protos.Calendar> getCalendar(Path csvPath) {
-          List<Protos.Calendar> calendars = new ArrayList<>();
-      try{
+    List<Protos.Calendar> calendars = new ArrayList<>();
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -93,19 +93,20 @@ class DataHandler {
         }
         if (isServiceIdRelevantToday(record)) {
           Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
-          
-          calendars.add(calendar
-              .setServiceId(Integer.parseInt(record.get("service_id")))
-              .setSunday(Boolean.parseBoolean(record.get("sunday")))
-              .setMonday(Boolean.parseBoolean(record.get("monday")))
-              .setTuesday(Boolean.parseBoolean(record.get("tuesday")))
-              .setWednesday(Boolean.parseBoolean(record.get("wednesday")))
-              .setThursday(Boolean.parseBoolean(record.get("thursday")))
-              .setFriday(Boolean.parseBoolean(record.get("friday")))
-              .setSaturday(Boolean.parseBoolean(record.get("saturday")))
-              .setStartDate(Integer.parseInt(record.get("start_date")))
-              .setEndDate(Integer.parseInt(record.get("end_date")))
-              .build());
+
+          calendars.add(
+              calendar
+                  .setServiceId(Integer.parseInt(record.get("service_id")))
+                  .setSunday(Boolean.parseBoolean(record.get("sunday")))
+                  .setMonday(Boolean.parseBoolean(record.get("monday")))
+                  .setTuesday(Boolean.parseBoolean(record.get("tuesday")))
+                  .setWednesday(Boolean.parseBoolean(record.get("wednesday")))
+                  .setThursday(Boolean.parseBoolean(record.get("thursday")))
+                  .setFriday(Boolean.parseBoolean(record.get("friday")))
+                  .setSaturday(Boolean.parseBoolean(record.get("saturday")))
+                  .setStartDate(Integer.parseInt(record.get("start_date")))
+                  .setEndDate(Integer.parseInt(record.get("end_date")))
+                  .build());
         }
       }
       return calendars;
@@ -114,18 +115,18 @@ class DataHandler {
     }
   }
 
-  public static List<Integer> getRoutesId(){
+  public static List<Integer> getRoutesId() {
     List<Integer> routesId = new ArrayList<>();
     List<Route> routes = getRoutes(routesTxt);
     for (Route route : routes) {
       routesId.add(route.getRouteId());
     }
     return routesId;
-  } 
+  }
 
   public static List<Route> getRoutes(Path csvPath) {
     List<Route> routes = new ArrayList<>();
-    try{
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -144,20 +145,20 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        if(!record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID))
-        {
+        if (!record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID)) {
           continue;
         }
         Route.Builder route = Route.newBuilder();
-        routes.add(route
-            .setRouteId(Integer.parseInt(record.get("route_id")))
-            .setAgencyId(Integer.parseInt(record.get("agency_id")))
-            .setRouteShortName(record.get("route_short_name"))
-            .setRouteLongName(record.get("route_long_name"))
-            .setRouteDesc(record.get("route_desc"))
-            .setRouteType(Integer.parseInt(record.get("route_type")))
-            .setRouteColor(record.get("route_color"))
-            .build());
+        routes.add(
+            route
+                .setRouteId(Integer.parseInt(record.get("route_id")))
+                .setAgencyId(Integer.parseInt(record.get("agency_id")))
+                .setRouteShortName(record.get("route_short_name"))
+                .setRouteLongName(record.get("route_long_name"))
+                .setRouteDesc(record.get("route_desc"))
+                .setRouteType(Integer.parseInt(record.get("route_type")))
+                .setRouteColor(record.get("route_color"))
+                .build());
       }
       return routes;
     } catch (IOException e) {
@@ -165,7 +166,7 @@ class DataHandler {
     }
   }
 
-  public static List<Integer> getStopsId(){
+  public static List<Integer> getStopsId() {
     List<StopTime> stopsTime = getStopTimes(stopTimesTxt);
     List<Integer> stopsId = new ArrayList<>();
     for (StopTime stopTime : stopsTime) {
@@ -177,7 +178,7 @@ class DataHandler {
   public static List<StopTime> getStopTimes(Path csvPath) {
     List<String> tripsId = getTripsId();
     List<StopTime> stopsTime = new ArrayList<>();
-    try{
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -197,20 +198,21 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        if(!tripsId.contains(record.get("trip_id"))){
+        if (!tripsId.contains(record.get("trip_id"))) {
           continue;
         }
         StopTime.Builder stopTime = StopTime.newBuilder();
-        stopsTime.add(stopTime
-            .setTripId(record.get("trip_id"))
-            .setArrivalTime(record.get("arrival_time"))
-            .setDepartureTime(record.get("departure_time"))
-            .setStopId(Integer.parseInt(record.get("stop_id")))
-            .setStopSequence(record.get("stop_sequence"))
-            .setPickupType(record.get("pickup_type"))
-            .setDropOffType(record.get("drop_off_type"))
-            .setShapeDistTraveled(record.get("shape_dist_traveled"))
-            .build());
+        stopsTime.add(
+            stopTime
+                .setTripId(record.get("trip_id"))
+                .setArrivalTime(record.get("arrival_time"))
+                .setDepartureTime(record.get("departure_time"))
+                .setStopId(Integer.parseInt(record.get("stop_id")))
+                .setStopSequence(record.get("stop_sequence"))
+                .setPickupType(record.get("pickup_type"))
+                .setDropOffType(record.get("drop_off_type"))
+                .setShapeDistTraveled(record.get("shape_dist_traveled"))
+                .build());
       }
       return stopsTime;
     } catch (IOException e) {
@@ -218,11 +220,10 @@ class DataHandler {
     }
   }
 
-
   public static List<Stop> getStops(Path csvPath) {
     List<Integer> stopsId = getStopsId();
     List<Stop> stops = new ArrayList<>();
-    try{
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -243,20 +244,21 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        if(!stopsId.contains(Integer.parseInt(record.get("stop_id")))){
+        if (!stopsId.contains(Integer.parseInt(record.get("stop_id")))) {
           continue;
         }
         Stop.Builder stop = Stop.newBuilder();
-        stops.add(stop.setStopId(Integer.parseInt(record.get("stop_id")))
-            .setStopCode(Integer.parseInt(record.get("stop_code")))
-            .setStopName(record.get("stop_name"))
-            .setStopDesc(record.get("stop_desc"))
-            .setStopLat(Double.parseDouble(record.get("stop_lat")))
-            .setStopLon(Double.parseDouble(record.get("stop_lon")))
-            .setLocationType(Integer.parseInt(record.get("location_type")))
-            .setParentStation(record.get("parent_station"))
-            .setZoneId(Integer.parseInt(record.get("zone_id")))
-            .build());
+        stops.add(
+            stop.setStopId(Integer.parseInt(record.get("stop_id")))
+                .setStopCode(Integer.parseInt(record.get("stop_code")))
+                .setStopName(record.get("stop_name"))
+                .setStopDesc(record.get("stop_desc"))
+                .setStopLat(Double.parseDouble(record.get("stop_lat")))
+                .setStopLon(Double.parseDouble(record.get("stop_lon")))
+                .setLocationType(Integer.parseInt(record.get("location_type")))
+                .setParentStation(record.get("parent_station"))
+                .setZoneId(Integer.parseInt(record.get("zone_id")))
+                .build());
       }
       return stops;
     } catch (IOException e) {
@@ -266,7 +268,7 @@ class DataHandler {
 
   public static List<Translation> getTranslations(Path csvPath) {
     List<Translation> translations = new ArrayList<>();
-    try{
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -279,11 +281,12 @@ class DataHandler {
           continue;
         }
         Translation.Builder translation = Translation.newBuilder();
-        translations.add(translation
-            .setTransId(record.get("trans_id"))
-            .setLang(record.get("lang"))
-            .setTranslation(record.get("translation"))
-            .build());
+        translations.add(
+            translation
+                .setTransId(record.get("trans_id"))
+                .setLang(record.get("lang"))
+                .setTranslation(record.get("translation"))
+                .build());
       }
       return translations;
     } catch (IOException e) {
@@ -291,11 +294,11 @@ class DataHandler {
     }
   }
 
-  public static List<String> getTripsId(){
+  public static List<String> getTripsId() {
     List<Trip> trips = getTrips(tripsTxt);
     List<String> tripsId = new ArrayList<>();
     for (Trip trip : trips) {
-      tripsId.add(trip.getTripId());      
+      tripsId.add(trip.getTripId());
     }
     return tripsId;
   }
@@ -304,7 +307,7 @@ class DataHandler {
     List<Trip> trips = new ArrayList<>();
     List<Integer> routesId = getRoutesId();
     List<Integer> servicesId = getServicesId();
-    try{
+    try {
       CSVParser parser =
           CSVParser.parse(
               csvPath,
@@ -322,17 +325,19 @@ class DataHandler {
           isHeader = false;
           continue;
         }
-        if(!routesId.contains(Integer.parseInt(record.get("route_id"))) || !servicesId.contains(Integer.parseInt(record.get("service_id")))){
+        if (!routesId.contains(Integer.parseInt(record.get("route_id")))
+            || !servicesId.contains(Integer.parseInt(record.get("service_id")))) {
           continue;
         }
         Trip.Builder trip = Trip.newBuilder();
-        trips.add(trip.setRouteId(Integer.parseInt(record.get("route_id")))
-            .setServiceId(Integer.parseInt(record.get("service_id")))
-            .setTripId(record.get("trip_id"))
-            .setTripHeadsign(record.get("trip_headsign"))
-            .setDirectionId(Integer.parseInt(record.get("direction_id")))
-            .setShapeId(record.get("shape_id"))
-            .build());
+        trips.add(
+            trip.setRouteId(Integer.parseInt(record.get("route_id")))
+                .setServiceId(Integer.parseInt(record.get("service_id")))
+                .setTripId(record.get("trip_id"))
+                .setTripHeadsign(record.get("trip_headsign"))
+                .setDirectionId(Integer.parseInt(record.get("direction_id")))
+                .setShapeId(record.get("shape_id"))
+                .build());
       }
       return trips;
     } catch (IOException e) {
@@ -340,7 +345,7 @@ class DataHandler {
     }
   }
 
-  public static List<String> getStopsName(){
+  public static List<String> getStopsName() {
     List<Stop> stops = getStops(stopsTxt);
     List<String> stopsName = new ArrayList<>();
     for (Stop stop : stops) {
@@ -349,35 +354,38 @@ class DataHandler {
     return stopsName;
   }
 
-      // Paths to the CSVs files
-      static Path calendarTxt;
-      static Path routesTxt;
-      static Path stopTimesTxt;
-      static Path stopsTxt;
-      static Path translationsTxt;
-      static Path tripsTxt;
+  // Paths to the CSVs files
+  static Path calendarTxt;
+  static Path routesTxt;
+  static Path stopTimesTxt;
+  static Path stopsTxt;
+  static Path translationsTxt;
+  static Path tripsTxt;
 
   public static void main(String[] args) {
 
     {
-      calendarTxt = Paths.get(args[0]); routesTxt = Paths.get(args[1]);
+      calendarTxt = Paths.get(args[0]);
+      routesTxt = Paths.get(args[1]);
       stopTimesTxt = Paths.get(args[2]);
       stopsTxt = Paths.get(args[3]);
       translationsTxt = Paths.get(args[4]);
       tripsTxt = Paths.get(args[5]);
     }
 
-    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt); List<Route> routeMessages = getRoutes(routesTxt);
+    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt);
+    List<Route> routeMessages = getRoutes(routesTxt);
     List<StopTime> stopTimeMessages = getStopTimes(stopTimesTxt);
     List<Stop> stopMessages = getStops(stopsTxt);
     List<Translation> traslationMessages = getTranslations(translationsTxt);
     List<Trip> tripMessages = getTrips(tripsTxt);
     getStopsName();
 
-    try(FileOutputStream outPut = new FileOutputStream(args[args.length-1])){
+    try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
 
-    }catch(Exception e){throw new RuntimeException();}
-    
+    } catch (Exception e) {
+      throw new RuntimeException();
+    }
   }
 }
 
