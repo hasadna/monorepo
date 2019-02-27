@@ -1,9 +1,9 @@
 <div class="project-details media" *ngIf="project">
-  <div class="project-name">{{project.getProjectName()}}</div>
-  <div class="project-description">{{project.getProjectDescription()}}</div>
+  <div class="project-name">{{project.getDisplayName()}}</div>
+  <div class="project-description">{{project.getDescription()}}</div>
   <div class="project-link">
-    <a  [href]="project.getProjectSite()" target="blank">
-      {{project.getProjectSite()}}
+    <a  [href]="project.getProjectUrl()" target="blank">
+      {{project.getProjectUrl()}}
     </a>
   </div>
   <div class="contributors">
