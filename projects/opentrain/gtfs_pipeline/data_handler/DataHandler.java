@@ -165,6 +165,15 @@ class DataHandler {
     }
   }
 
+  public static List<Integer> getStopsId(){
+    List<StopTime> stopsTime = getStopTimes(stopTimesTxt);
+    List<Integer> stopsId = new ArrayList<>();
+    for (StopTime stopTime : stopsTime) {
+      stopsId.add(stopTime.getStopId());
+    }
+    return stopsId;
+  }
+
   public static List<StopTime> getStopTimes(Path csvPath) {
     List<String> tripsId = getTripsId();
     List<StopTime> stopsTime = new ArrayList<>();
@@ -196,7 +205,7 @@ class DataHandler {
             .setTripId(record.get("trip_id"))
             .setArrivalTime(record.get("arrival_time"))
             .setDepartureTime(record.get("departure_time"))
-            .setStopId(record.get("stop_id"))
+            .setStopId(Integer.parseInt(record.get("stop_id")))
             .setStopSequence(record.get("stop_sequence"))
             .setPickupType(record.get("pickup_type"))
             .setDropOffType(record.get("drop_off_type"))
@@ -211,6 +220,7 @@ class DataHandler {
 
 
   public static List<Stop> getStops(Path csvPath) {
+    List<Integer> stopsId = getStopsId();
     List<Stop> stops = new ArrayList<>();
     try{
       CSVParser parser =
@@ -231,6 +241,9 @@ class DataHandler {
       for (CSVRecord record : parser) {
         if (isHeader) {
           isHeader = false;
+          continue;
+        }
+        if(!stopsId.contains(Integer.parseInt(record.get("stop_id")))){
           continue;
         }
         Stop.Builder stop = Stop.newBuilder();
@@ -327,6 +340,15 @@ class DataHandler {
     }
   }
 
+  public static List<String> getStopsName(){
+    List<Stop> stops = getStops(stopsTxt);
+    List<String> stopsName = new ArrayList<>();
+    for (Stop stop : stops) {
+      stopsName.add(stop.getStopName());
+    }
+    return stopsName;
+  }
+
       // Paths to the CSVs files
       static Path calendarTxt;
       static Path routesTxt;
@@ -338,20 +360,19 @@ class DataHandler {
   public static void main(String[] args) {
 
     {
-      calendarTxt = Paths.get(args[0]);
-      routesTxt = Paths.get(args[1]);
+      calendarTxt = Paths.get(args[0]); routesTxt = Paths.get(args[1]);
       stopTimesTxt = Paths.get(args[2]);
       stopsTxt = Paths.get(args[3]);
       translationsTxt = Paths.get(args[4]);
       tripsTxt = Paths.get(args[5]);
     }
 
-    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt);
-    List<Route> routeMessages = getRoutes(routesTxt);
+    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt); List<Route> routeMessages = getRoutes(routesTxt);
     List<StopTime> stopTimeMessages = getStopTimes(stopTimesTxt);
     List<Stop> stopMessages = getStops(stopsTxt);
     List<Translation> traslationMessages = getTranslations(translationsTxt);
     List<Trip> tripMessages = getTrips(tripsTxt);
+    getStopsName();
 
     try(FileOutputStream outPut = new FileOutputStream(args[args.length-1])){
 
