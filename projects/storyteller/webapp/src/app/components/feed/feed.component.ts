@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { StoryList, Story,  Screenshot} from '@/core/proto';
 import { EncodingService, FirebaseService } from '@/core/services';
 
-import { from } from 'rxjs';
+import { zip } from 'rxjs';
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent {
   storylist: StoryList[];
   screenshots: Screenshot[];
 
@@ -17,29 +17,23 @@ export class FeedComponent implements OnInit {
     private encodingService: EncodingService,
   ) {
     if (firebaseService.isOnline) {
-      this.loadStory();
-      this.loadscreenshots();
+      zip(
+        this.firebaseService.getStorylistAll(),
+        this.firebaseService.getScreenshotAll()
+      ).subscribe(data => {
+        this.storylist = data[0];
+        this.screenshots = data[1];
+      });
     } else {
       this.firebaseService.anonymousLogin().then(() => {
-        this.loadStory();
-        this.loadscreenshots();
+        zip(
+          this.firebaseService.getStorylistAll(),
+          this.firebaseService.getScreenshotAll()
+        ).subscribe(data => {
+          this.storylist = data[0];
+          this.screenshots = data[1];
+        });
       });
     }
   }
-  loadStory(): void {
-    this.firebaseService.getstorylistAll().subscribe(storylist => {
-      this.storylist = storylist;
-
-    });
-  }
-  loadscreenshots(): void {
-    this.firebaseService.getscreenshotAll().subscribe(screenshots => {
-      this.screenshots = screenshots;
-    });
-  }
-  ngOnInit() {
-  }
-
 }
-
-

@@ -17,7 +17,7 @@
           <div class="screenshotdiv">
             <div *ngFor="let screenshot of screenshots">
               <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
-                <a routerLink="/single-screenshot/{{storyItem.getId()}}">
+                <a [routerLink]="'/single-screenshot/' + storyItem.getId()">
                   <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="480" width="750"/>
                 </a>
               </div>

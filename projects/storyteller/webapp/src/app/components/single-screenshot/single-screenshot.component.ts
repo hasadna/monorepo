@@ -5,11 +5,4 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './single-screenshot.component.html',
   styleUrls: ['./single-screenshot.component.scss']
 })
-export class SingleScreenshotComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class SingleScreenshotComponent {}

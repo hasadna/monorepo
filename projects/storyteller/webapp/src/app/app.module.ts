@@ -7,7 +7,7 @@ import { FirebaseModule } from './import/firebase/firebase.module';
 import { HeaderComponent } from './components/header/header.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { FeedComponent } from './components/feed/feed.component';
-import { AppRoutingModule } from './app-routing/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { SingleScreenshotComponent } from './components/single-screenshot/single-screenshot.component';
@@ -28,16 +28,11 @@ import { SingleScreenshotComponent } from './components/single-screenshot/single
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatIconModule, 
-    MatButtonModule,
-
-  ],
-  exports: [
-    MatToolbarModule,
     MatIconModule,
     MatButtonModule,
 
   ],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })

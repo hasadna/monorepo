@@ -25,11 +25,13 @@ export class FirebaseService {
       this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
       });
-      this.protobin = this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
-      this.protobin_screenshots = this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
+      this.protobin =
+      this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
+      this.protobin_screenshots =
+      this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
   }
 
-  getstorylistAll(): Observable<StoryList[]> {
+  getStorylistAll(): Observable<StoryList[]> {
     return this.protobin.snapshotChanges().pipe(
         map(action => action.map(a => {
           const firebaseElement = a.payload.doc.data() as FirebaseElement;
@@ -41,7 +43,7 @@ export class FirebaseService {
           return this.convertFirebaseElementToStory(firebaseElement);
         })));
   }
-  getscreenshotAll(): Observable<Screenshot[]> {
+  getScreenshotAll(): Observable<Screenshot[]> {
     return this.protobin_screenshots.snapshotChanges().pipe(
         map(action => action.map(a => {
           const firebaseElement = a.payload.doc.data() as FirebaseElement;
