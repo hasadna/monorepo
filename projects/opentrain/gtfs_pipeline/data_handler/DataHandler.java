@@ -58,6 +58,15 @@ class DataHandler {
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
+  public static List<Integer> getServicesId(){
+    List<Protos.Calendar> calendars = getCalendar(calendarTxt);
+    List<Integer> serivesId = new ArrayList<>();
+    for (Protos.Calendar calendar : calendars) {
+      serivesId.add(calendar.getServiceId());
+    }
+    return serivesId;
+  }
+
   public static List<Protos.Calendar> getCalendar(Path csvPath) {
           List<Protos.Calendar> calendars = new ArrayList<>();
       try{
@@ -105,6 +114,15 @@ class DataHandler {
     }
   }
 
+  public static List<Integer> getRoutesId(){
+    List<Integer> routesId = new ArrayList<>();
+    List<Route> routes = getRoutes(routesTxt);
+    for (Route route : routes) {
+      routesId.add(route.getRouteId());
+    }
+    return routesId;
+  } 
+
   public static List<Route> getRoutes(Path csvPath) {
     List<Route> routes = new ArrayList<>();
     try{
@@ -148,6 +166,7 @@ class DataHandler {
   }
 
   public static List<StopTime> getStopTimes(Path csvPath) {
+    List<String> tripsId = getTripsId();
     List<StopTime> stopsTime = new ArrayList<>();
     try{
       CSVParser parser =
@@ -167,6 +186,9 @@ class DataHandler {
       for (CSVRecord record : parser) {
         if (isHeader) {
           isHeader = false;
+          continue;
+        }
+        if(!tripsId.contains(record.get("trip_id"))){
           continue;
         }
         StopTime.Builder stopTime = StopTime.newBuilder();
@@ -256,8 +278,19 @@ class DataHandler {
     }
   }
 
+  public static List<String> getTripsId(){
+    List<Trip> trips = getTrips(tripsTxt);
+    List<String> tripsId = new ArrayList<>();
+    for (Trip trip : trips) {
+      tripsId.add(trip.getTripId());      
+    }
+    return tripsId;
+  }
+
   public static List<Trip> getTrips(Path csvPath) {
     List<Trip> trips = new ArrayList<>();
+    List<Integer> routesId = getRoutesId();
+    List<Integer> servicesId = getServicesId();
     try{
       CSVParser parser =
           CSVParser.parse(
@@ -276,6 +309,9 @@ class DataHandler {
           isHeader = false;
           continue;
         }
+        if(!routesId.contains(Integer.parseInt(record.get("route_id"))) || !servicesId.contains(Integer.parseInt(record.get("service_id")))){
+          continue;
+        }
         Trip.Builder trip = Trip.newBuilder();
         trips.add(trip.setRouteId(Integer.parseInt(record.get("route_id")))
             .setServiceId(Integer.parseInt(record.get("service_id")))
@@ -291,14 +327,24 @@ class DataHandler {
     }
   }
 
+      // Paths to the CSVs files
+      static Path calendarTxt;
+      static Path routesTxt;
+      static Path stopTimesTxt;
+      static Path stopsTxt;
+      static Path translationsTxt;
+      static Path tripsTxt;
+
   public static void main(String[] args) {
-    // Paths to the CSVs files
-    final Path calendarTxt = Paths.get(args[0]);
-    final Path routesTxt = Paths.get(args[1]);
-    final Path stopTimesTxt = Paths.get(args[2]);
-    final Path stopsTxt = Paths.get(args[3]);
-    final Path translationsTxt = Paths.get(args[4]);
-    final Path tripsTxt = Paths.get(args[5]);
+
+    {
+      calendarTxt = Paths.get(args[0]);
+      routesTxt = Paths.get(args[1]);
+      stopTimesTxt = Paths.get(args[2]);
+      stopsTxt = Paths.get(args[3]);
+      translationsTxt = Paths.get(args[4]);
+      tripsTxt = Paths.get(args[5]);
+    }
 
     List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt);
     List<Route> routeMessages = getRoutes(routesTxt);
