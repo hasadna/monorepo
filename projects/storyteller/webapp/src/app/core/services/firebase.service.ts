@@ -14,8 +14,8 @@ interface FirebaseElement {
 @Injectable()
 export class FirebaseService {
   isOnline: boolean;
-  private protobin: AngularFirestoreCollection<FirebaseElement>;
-  private protobin_screenshots: AngularFirestoreCollection<FirebaseElement>;
+  private stories: AngularFirestoreCollection<FirebaseElement>;
+  private screenshots: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
@@ -25,14 +25,13 @@ export class FirebaseService {
       this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
       });
-      this.protobin =
+      this.stories =
       this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
-      this.protobin_screenshots =
+      this.screenshots =
       this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
   }
-
   getStorylistAll(): Observable<StoryList[]> {
-    return this.protobin.snapshotChanges().pipe(
+    return this.stories.snapshotChanges().pipe(
         map(action => action.map(a => {
           const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
@@ -40,11 +39,11 @@ export class FirebaseService {
             // Element not found
             return;
           }
-          return this.convertFirebaseElementToStory(firebaseElement);
+          return StoryList.deserializeBinary(this.getBinary(firebaseElement));
         })));
   }
   getScreenshotAll(): Observable<Screenshot[]> {
-    return this.protobin_screenshots.snapshotChanges().pipe(
+    return this.screenshots.snapshotChanges().pipe(
         map(action => action.map(a => {
           const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
@@ -52,28 +51,16 @@ export class FirebaseService {
             // Element not found
             return;
           }
-          return this.convertFirebaseElementToScreenshot(firebaseElement);
+          return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
         })));
   }
-  private convertFirebaseElementToScreenshot(firebaseElement: FirebaseElement): Screenshot {
-    // Convert firebaseElement to binary
-    const binary: Uint8Array = this.encodingService
-      .decodeBase64StringToUint8Array(firebaseElement.proto);
-
-    // Convert binary to Screenshot
-    const screenshot: Screenshot = Screenshot.deserializeBinary(binary);
-    return screenshot;
-  }
-  private convertFirebaseElementToStory(firebaseElement: FirebaseElement): StoryList {
-
-    // Convert firebaseElement to binary
-    const binary: Uint8Array = this.encodingService
-      .decodeBase64StringToUint8Array(firebaseElement.proto);
-
-    // Convert binary to book
-    const storylist: StoryList = StoryList.deserializeBinary(binary);
-    return storylist;
-  }
+ // Converts firebaseElement to binary
+ private getBinary(firebaseElement: FirebaseElement): Uint8Array {
+  const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
+    firebaseElement.proto
+  );
+  return binary;
+}
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
   }
