@@ -3,7 +3,5 @@
   "projectProtoList": [
     "proto/data.proto"
   ],
-  "repoProtoList": [
-    "common/demo.proto"
-  ]
+  "repoProtoList": []
 }
