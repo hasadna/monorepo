@@ -45,7 +45,7 @@ message FileData {
   }
 
   Type type = 1;
-  int64 timeMs = 2;
+  int64 time_ms = 2;
   string filename = 3;
   oneof oneof_content {
     bytes image_bytes = 4;
@@ -70,7 +70,7 @@ message StoryItem {
 
 message Story {
   int64 start_time_ms = 1;
-  int64 endTimeMs = 2;
+  int64 end_time_ms = 2;
   string project = 3;
   repeated StoryItem item = 4;
   string id = 5;

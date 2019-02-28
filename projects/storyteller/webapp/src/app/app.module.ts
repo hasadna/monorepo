@@ -9,7 +9,7 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {  MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { SingleScreenshotComponent } from './components/single-screenshot/single-screenshot.component';
 
 
@@ -32,8 +32,6 @@ import { SingleScreenshotComponent } from './components/single-screenshot/single
     MatButtonModule,
 
   ],
-  exports: [],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

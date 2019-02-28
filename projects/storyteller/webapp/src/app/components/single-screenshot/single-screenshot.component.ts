@@ -5,4 +5,4 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './single-screenshot.component.html',
   styleUrls: ['./single-screenshot.component.scss']
 })
-export class SingleScreenshotComponent {}
+export class SingleScreenshotComponent { }

@@ -22,45 +22,45 @@ export class FirebaseService {
     private encodingService: EncodingService,
     private angularFireAuth: AngularFireAuth,
   ) {
-      this.angularFireAuth.authState.subscribe(userData => {
+    this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
-      });
-      this.stories =
+    });
+    this.stories =
       this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
-      this.screenshots =
+    this.screenshots =
       this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
   }
   getStorylistAll(): Observable<StoryList[]> {
     return this.stories.snapshotChanges().pipe(
-        map(action => action.map(a => {
-          const firebaseElement = a.payload.doc.data() as FirebaseElement;
+      map(action => action.map(a => {
+        const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
-          if (firebaseElement === undefined) {
-            // Element not found
-            return;
-          }
-          return StoryList.deserializeBinary(this.getBinary(firebaseElement));
-        })));
+        if (firebaseElement === undefined) {
+          // Element not found
+          return;
+        }
+        return StoryList.deserializeBinary(this.getBinary(firebaseElement));
+      })));
   }
   getScreenshotAll(): Observable<Screenshot[]> {
     return this.screenshots.snapshotChanges().pipe(
-        map(action => action.map(a => {
-          const firebaseElement = a.payload.doc.data() as FirebaseElement;
+      map(action => action.map(a => {
+        const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
-          if (firebaseElement === undefined) {
-            // Element not found
-            return;
-          }
-          return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
-        })));
+        if (firebaseElement === undefined) {
+          // Element not found
+          return;
+        }
+        return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
+      })));
   }
- // Converts firebaseElement to binary
- private getBinary(firebaseElement: FirebaseElement): Uint8Array {
-  const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
-    firebaseElement.proto
-  );
-  return binary;
-}
+  // Converts firebaseElement to binary
+  private getBinary(firebaseElement: FirebaseElement): Uint8Array {
+    const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
+      firebaseElement.proto
+    );
+    return binary;
+  }
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
   }

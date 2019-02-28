@@ -1,32 +1,39 @@
 .container {
     padding-left: 10%;
 }
-.head{
+
+.head {
     margin-top: 10px;
 }
-.story{
+
+.story {
     margin: 15px;
     width: 930px;
-  border-radius: 2px;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
-  background-color: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+    background-color: #ffffff;
 }
-.timestamp{
+
+.timestamp {
     text-align: right;
     margin-left: 30%;
 }
-.screenshotdiv{
-       text-align: center;
+
+.screenshotdiv {
+    text-align: center;
 }
-.userimagediv{
+
+.userimagediv {
     width: 60px;
     height: 100%;
 }
-.userImage{
+
+.userImage {
     padding-top: 10px;
     padding-left: 10px;
 }
-.author{
+
+.author {
     margin-left: 2%;
     font-family: OpenSans;
     font-size: 18px;
@@ -36,18 +43,19 @@
     line-height: normal;
     letter-spacing: normal;
     color: #4e4e4e;
-  }
-  .project{
+}
+
+.project {
     font-weight: bold;
     font-style: italic;
     font-size: 18px;
-   
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
     color: #4e4e4e;
-  }
-  .notes{
+}
+
+.notes {
     margin-left: 10%;
     font-family: OpenSans;
     font-size: 17px;
@@ -58,4 +66,4 @@
     letter-spacing: normal;
     color: #4e4e4e;
     padding-bottom: 10px;
-  }
+}
