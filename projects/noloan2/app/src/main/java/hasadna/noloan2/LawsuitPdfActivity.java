@@ -38,7 +38,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
   private static final String LAWSUIT_TEMPLATE_DIR_NAME = "templates";
   private static final String LAWSUIT_OUTPUT_DIR_NAME = "pdf";
-  private static final String LAWSUIT_TEMPLATE_FILE_NAME = "template.xhtml";
+  private static final String LAWSUIT_TEMPLATE_FILE_NAME = "templates.xhtml";
 
   // absPaths
   private String lawsuitMainPath = "";
@@ -94,7 +94,6 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lawsuit_pdf);
     createPdfButton = (Button) findViewById(R.id.button_createPDF);
@@ -115,22 +114,22 @@ public class LawsuitPdfActivity extends AppCompatActivity {
           fillTemplate(),
           new FileOutputStream(Paths.get(lawsuitOutputPath, getPdfFilename()).toString()));
       Toast.makeText(LawsuitPdfActivity.this, "Lawsuit created!", Toast.LENGTH_LONG).show();
+
+      // Read template / write output
     } catch (IOException e) {
-      Log.w(TAG, "Error creating PDF Lawsuit");
+      Log.w(TAG, "Read template / Write file: " + e.getMessage());
       e.printStackTrace();
     }
   }
 
-  private String fillTemplate() {
-
+  private String fillTemplate() throws IOException {
     String lawsuit = null;
     try {
       lawsuit =
           new String(
               Files.readAllBytes(Paths.get(lawsuitTemplateFilePath)), StandardCharsets.UTF_8);
     } catch (IOException e) {
-      Log.w(TAG, "Error reading lawsuit's template.");
-      e.printStackTrace();
+      throw new IOException("Read template error.\nabsPath: " + lawsuitTemplateFilePath);
     }
 
     // General form fields
@@ -140,7 +139,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     lawsuit = lawsuit.replace("&lt;spamType&gt;", spamType);
     lawsuit =
         lawsuit.replace(
-            "&lt;moreThanFiveLawsuits&gt;",
+            "&lt;moreThanFiveLawsuits&gt; ",
             sentMoreThanFiveLawsuits ? moreThanFiveLawsuits : lessThanFiveLawsuits);
     lawsuit = lawsuit.replace("&lt;undefined&gt;", "");
     lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", DATE_FORMATTER.format(receivedSpamDate));
@@ -171,12 +170,10 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   }
 
   private String getPdfFilename() {
-
     return DATE_TIME_FORMATTER.format(new Date()) + ".pdf";
   }
 
   private void initDirStructure() {
-
     lawsuitMainPath =
         Paths.get(
                 Environment.getExternalStorageDirectory().getPath(),
@@ -201,19 +198,16 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   }
 
   private void makeDir(String path) {
-
     File directory = new File(path);
     if (directory.exists() && directory.isDirectory()) directory.mkdirs();
   }
 
   private void setTimeZones() {
-
     DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
     DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
   }
 
   private void checkPermissionsThenCreatePdf() {
-
     // Ask runtime permissions for devices running SDK > 22
     if (Build.VERSION.SDK_INT >= 23) {
 
@@ -229,7 +223,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
           new AlertDialog.Builder(this)
               .setTitle("Permission needed")
-              .setMessage("Write permission needed for creating lawsuit PDF.")
+              .setMessage("File access permission is needed for creating lawsuit PDF.")
               .setPositiveButton(
                   "ok",
                   (dialog, which) ->
@@ -242,7 +236,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
                   (dialog, which) -> {
                     Toast.makeText(
                             LawsuitPdfActivity.this,
-                            "Write storage permission needed.",
+                            "Permission is needed to create PDF.",
                             Toast.LENGTH_LONG)
                         .show();
                     dialog.dismiss();
@@ -272,7 +266,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
         createPdf();
       } else {
         Toast.makeText(
-                LawsuitPdfActivity.this, "Write storage permission needed.", Toast.LENGTH_LONG)
+                LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
     }
