@@ -4,10 +4,12 @@
 /dist
 /tmp
 /out-tsc
+/.firebase
 
 # dependencies
 /node_modules
 /src/app/proto
+/public
 
 # profiling files
 chrome-profiler-events.json
