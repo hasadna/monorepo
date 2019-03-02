@@ -14,7 +14,7 @@ Example:
   // List with paths to each .proto file inside the project.
   // The paths are relative to the project
   "projectProtoList": [
-    "proto/apples.proto"
+    "proto/apples.proto",
     "proto/pineapples.proto"
   ],
   // List with paths to each .proto file inside the repo.
