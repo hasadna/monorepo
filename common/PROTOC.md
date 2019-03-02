@@ -6,7 +6,7 @@ Run `npm install` to install node modules
 ## Setting
 A project must contain `proto.json` file with paths to required files.  
 Example:
-```json
+```
 { 
   // Path to folder, where proto functions will be located.
   // The path is relative to the project
