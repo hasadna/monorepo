@@ -63,3 +63,9 @@ It's last chance to check your code before creating PR :)
 
 When PR is created, don't forget to send a link to slack:
 ![Screenshot 3](https://i.imgur.com/eA1zFQt.png)
+
+# How to merge PR
+Once your PR is approved and all CI checks have passed, you can merge your PR.  
+To do that please select second option in merge options list and click "Squash and merge".
+![Screenshot 4](https://i.imgur.com/Lne6GbI.png)
+Don't forget to set nice and informative name of your merge.
