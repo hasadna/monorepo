@@ -58,7 +58,8 @@ Open page of your repository on github. You will see an offer to create Pull Req
 ![Screenshot 1](https://i.imgur.com/ChTkwOt.png)
 
 Now you can write nice title, ask someone to review, and add some description.  
-It's last chance to check your code before creating PR :)
+Make sure your PR title and description match what you actually did.  
+Also it's last chance to check your code before creating PR :)
 ![Screenshot 2](https://i.imgur.com/lIvipvz.png)
 
 When PR is created, don't forget to send a link to slack:
@@ -68,4 +69,4 @@ When PR is created, don't forget to send a link to slack:
 Once your PR is approved and all CI checks have passed, you can merge your PR.  
 To do that please select second option in merge options list and click "Squash and merge".
 ![Screenshot 4](https://i.imgur.com/Lne6GbI.png)
-Don't forget to set nice and informative name of your merge.
+Don't forget to set nice and informative name of your merge commit. It should be the same as the PR title.
