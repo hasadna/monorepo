@@ -22,6 +22,7 @@ import java.util.Calendar;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import java.util.stream.Collectors;
 
 class DataHandler {
 
@@ -58,13 +59,13 @@ class DataHandler {
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
-  public static List<Integer> getServicesId() {
-    List<Protos.Calendar> calendars = getCalendar(calendarTxt);
-    List<Integer> serivesId = new ArrayList<>();
+  public static List<Integer> getServiceIds() {
+    List<Protos.Calendar> calendars = getCalendar(absCalendar);
+    List<Integer> serviceIds = new ArrayList<>();
     for (Protos.Calendar calendar : calendars) {
-      serivesId.add(calendar.getServiceId());
+      serviceIds.add(calendar.getServiceId());
     }
-    return serivesId;
+    return serviceIds;
   }
 
   public static List<Protos.Calendar> getCalendar(Path csvPath) {
@@ -115,13 +116,8 @@ class DataHandler {
     }
   }
 
-  public static List<Integer> getRoutesId() {
-    List<Integer> routesId = new ArrayList<>();
-    List<Route> routes = getRoutes(routesTxt);
-    for (Route route : routes) {
-      routesId.add(route.getRouteId());
-    }
-    return routesId;
+  public static List<Integer> getRouteIds() {
+    return getRoutes(absRoutes).stream().map(Route::getRouteId).collect(Collectors.toList());
   }
 
   public static List<Route> getRoutes(Path csvPath) {
@@ -167,12 +163,10 @@ class DataHandler {
   }
 
   public static List<Integer> getStopsId() {
-    List<StopTime> stopsTime = getStopTimes(stopTimesTxt);
-    List<Integer> stopsId = new ArrayList<>();
-    for (StopTime stopTime : stopsTime) {
-      stopsId.add(stopTime.getStopId());
-    }
-    return stopsId;
+    return getStopTimes(absStopTimes)
+        .stream()
+        .map(StopTime::getStopId)
+        .collect(Collectors.toList());
   }
 
   public static List<StopTime> getStopTimes(Path csvPath) {
@@ -295,18 +289,13 @@ class DataHandler {
   }
 
   public static List<String> getTripsId() {
-    List<Trip> trips = getTrips(tripsTxt);
-    List<String> tripsId = new ArrayList<>();
-    for (Trip trip : trips) {
-      tripsId.add(trip.getTripId());
-    }
-    return tripsId;
+    return getTrips(absTripsTxt).stream().map(Trip::getTripId).collect(Collectors.toList());
   }
 
   public static List<Trip> getTrips(Path csvPath) {
     List<Trip> trips = new ArrayList<>();
-    List<Integer> routesId = getRoutesId();
-    List<Integer> servicesId = getServicesId();
+    List<Integer> routesId = getRouteIds();
+    List<Integer> serviceIds = getServiceIds();
     try {
       CSVParser parser =
           CSVParser.parse(
@@ -326,7 +315,7 @@ class DataHandler {
           continue;
         }
         if (!routesId.contains(Integer.parseInt(record.get("route_id")))
-            || !servicesId.contains(Integer.parseInt(record.get("service_id")))) {
+            || !serviceIds.contains(Integer.parseInt(record.get("service_id")))) {
           continue;
         }
         Trip.Builder trip = Trip.newBuilder();
@@ -346,39 +335,34 @@ class DataHandler {
   }
 
   public static List<String> getStopsName() {
-    List<Stop> stops = getStops(stopsTxt);
-    List<String> stopsName = new ArrayList<>();
-    for (Stop stop : stops) {
-      stopsName.add(stop.getStopName());
-    }
-    return stopsName;
+    return getStops(absStops).stream().map(Stop::getStopName).collect(Collectors.toList());
   }
 
   // Paths to the CSVs files
-  static Path calendarTxt;
-  static Path routesTxt;
-  static Path stopTimesTxt;
-  static Path stopsTxt;
-  static Path translationsTxt;
-  static Path tripsTxt;
+  static Path absCalendar;
+  static Path absRoutes;
+  static Path absStopTimes;
+  static Path absStops;
+  static Path absTranslations;
+  static Path absTripsTxt;
 
   public static void main(String[] args) {
 
     {
-      calendarTxt = Paths.get(args[0]);
-      routesTxt = Paths.get(args[1]);
-      stopTimesTxt = Paths.get(args[2]);
-      stopsTxt = Paths.get(args[3]);
-      translationsTxt = Paths.get(args[4]);
-      tripsTxt = Paths.get(args[5]);
+      absCalendar = Paths.get(args[0]);
+      absRoutes = Paths.get(args[1]);
+      absStopTimes = Paths.get(args[2]);
+      absStops = Paths.get(args[3]);
+      absTranslations = Paths.get(args[4]);
+      absTripsTxt = Paths.get(args[5]);
     }
 
-    List<Protos.Calendar> caledarMessages = getCalendar(calendarTxt);
-    List<Route> routeMessages = getRoutes(routesTxt);
-    List<StopTime> stopTimeMessages = getStopTimes(stopTimesTxt);
-    List<Stop> stopMessages = getStops(stopsTxt);
-    List<Translation> traslationMessages = getTranslations(translationsTxt);
-    List<Trip> tripMessages = getTrips(tripsTxt);
+    List<Protos.Calendar> calendarMessages = getCalendar(absCalendar);
+    List<Route> routeMessages = getRoutes(absRoutes);
+    List<StopTime> stopTimeMessages = getStopTimes(absStopTimes);
+    List<Stop> stopMessages = getStops(absStops);
+    List<Translation> traslationMessages = getTranslations(absTranslations);
+    List<Trip> tripMessages = getTrips(absTripsTxt);
     getStopsName();
 
     try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
