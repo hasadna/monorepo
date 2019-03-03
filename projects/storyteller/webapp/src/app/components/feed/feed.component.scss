@@ -1,47 +1,69 @@
 .container {
-    background-color: #e6eff0;
+    padding-left: 10%;
 }
 
-.timestamp{
-  text-align: left;
-  padding-left: 45%;
-  font-family: 'Open Sans';
-  font-size: 16px;
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  color: #767676;
+.head {
+    margin-top: 10px;
 }
-.screenshotdiv{
-    padding-top: 10px;
-    padding-bottom: 10px;
+
+.story {
+    margin: 15px;
+    width: 930px;
+    border-radius: 2px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+    background-color: #ffffff;
+}
+
+.timestamp {
+    text-align: right;
+    margin-left: 30%;
+}
+
+.screenshotdiv {
     text-align: center;
 }
-.head{
-  text-align: right;
-  font-family: 'Open Sans';
-  font-size: 18px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  color: #4e4e4e;
+
+.userimagediv {
+    width: 60px;
+    height: 100%;
 }
-.storydiv{
-  padding: 25px;
-  margin: 15px;
-  border-radius: 2px;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
-  background-color: #ffffff;
+
+.userImage {
+    padding-top: 10px;
+    padding-left: 10px;
 }
-.author{
-  font-weight: bold;
-  font-style: normal;
+
+.author {
+    margin-left: 2%;
+    font-family: OpenSans;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4e4e4e;
 }
-.project{
-  font-weight: bold;
-  font-style: italic;
+
+.project {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 18px;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4e4e4e;
+}
+
+.notes {
+    margin-left: 10%;
+    font-family: OpenSans;
+    font-size: 17px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4e4e4e;
+    padding-bottom: 10px;
 }

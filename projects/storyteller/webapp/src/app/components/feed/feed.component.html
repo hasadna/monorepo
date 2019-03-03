@@ -5,25 +5,21 @@
   <div *ngFor="let storylistChild of storylist">
     <div class="container">
       <div class="list" *ngFor="let story of storylistChild.getStoryList()">
-        <div *ngFor="let storyItem of story.getItemList()" class="storydiv">
-          <div *ngIf="storyItem.getScreenshotFilename() != ''">
-            <div class="title">
-              <span class="head">
-                <span class="author">{{story.getAuthor()}}</span> on <span class="project">{{story.getProject()}}</span>
-              </span>
-              <span class="timestamp">{{storyItem.getTimems() | date:'short'}}</span>
-            </div>
-            <div class="notes"><strong>Notes: </strong>
-              {{storyItem.getOneliner()}}
-            </div>
-            <div class="screenshotdiv">
-              <div *ngFor="let screenshot of screenshots">
-                <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
-                  <a routerLink="/single-screenshot/{{storyItem.getId()}}"
-                  (click)="sharestory(storyItem, screenshot)">
-                    <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="600" width="800"/>
-                  </a>
-                </div>
+        <div class="story" *ngFor="let storyItem of story.getItemList()">
+          <span class="userimagediv">
+            <img class="userImage" src="/assets/user.png" width="60" height="50" alt="">
+          </span>
+          <span class="head">
+            <span class="author">{{story.getAuthor()}}</span> on <span class="project">{{story.getProject()}}</span>
+            <span class="timestamp">{{storyItem.getTimems() | date:'short'}}</span>
+            <div class="notes"><span>{{storyItem.getOneliner()}}</span></div>
+          </span>
+          <div class="screenshotdiv">
+            <div *ngFor="let screenshot of screenshots">
+              <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
+                <a [routerLink]="'/single-screenshot/' + story.getId() + '/' + screenshot.getFilename()">
+                  <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="480" width="750" />
+                </a>
               </div>
             </div>
           </div>

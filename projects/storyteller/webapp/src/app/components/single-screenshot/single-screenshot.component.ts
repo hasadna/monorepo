@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { StoryItem, Screenshot } from '@/core/proto';
-import { StoryService } from '@/core/services/story.service';
+import { ActivatedRoute } from '@angular/router';
+import { StoryService } from '@/core/services';
+import { Story, Screenshot } from '@/core/proto';
 
 @Component({
   selector: 'app-single-screenshot',
@@ -8,19 +9,15 @@ import { StoryService } from '@/core/services/story.service';
   styleUrls: ['./single-screenshot.component.scss']
 })
 export class SingleScreenshotComponent implements OnInit {
-  story:StoryItem;
+  storyid: string;
+  screenshot_filename: string;
+  story: Story;
   screenshot: Screenshot;
-  data = [];
-  ;
-
-  constructor(storyservice:StoryService) {
-    this.data = storyservice.getData();
-    this.story = this.data[0];
-    this.screenshot = this.data[1];
-   }
-
-
-
+  constructor(private activatedRoute: ActivatedRoute, private storyService: StoryService) { }
   ngOnInit() {
+    this.storyid = this.activatedRoute.snapshot.params['sotryId'];
+    this.story = this.storyService.getStory(this.storyid);
+    this.screenshot_filename = this.activatedRoute.snapshot.params['screenshot'];
+    this.screenshot = this.storyService.getScreenshot(this.screenshot_filename);
   }
 }

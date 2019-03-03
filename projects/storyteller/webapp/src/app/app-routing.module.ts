@@ -6,10 +6,10 @@ import { UserInfoComponent } from '@/components/user-info/user-info.component';
 import { SingleScreenshotComponent } from '@/components/single-screenshot/single-screenshot.component';
 
 const appRoutes: Routes = [
-  {path: 'home', component: FeedComponent},
-    {path:'single-screenshot/:projectId', component:SingleScreenshotComponent},
-  {path: 'info', component: UserInfoComponent},
-   {path: '**', redirectTo:'/home'},
+  { path: 'home', component: FeedComponent },
+  { path: 'single-screenshot/:sotryId/:screenshot', component: SingleScreenshotComponent },
+  { path: 'info', component: UserInfoComponent },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

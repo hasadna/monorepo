@@ -7,9 +7,11 @@ import { FirebaseModule } from './import/firebase/firebase.module';
 import { HeaderComponent } from './components/header/header.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { FeedComponent } from './components/feed/feed.component';
-import { AppRoutingModule } from './app-routing/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { SingleScreenshotComponent } from './components/single-screenshot/single-screenshot.component';
-import { StoryService } from './core/services/story.service';
+
 
 @NgModule({
   declarations: [
@@ -24,8 +26,11 @@ import { StoryService } from './core/services/story.service';
     CoreModule,
     FirebaseModule,
     AppRoutingModule,
-  ],
-  providers: [
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+
   ],
   bootstrap: [AppComponent]
 })

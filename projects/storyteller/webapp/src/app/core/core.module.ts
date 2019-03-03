@@ -3,17 +3,14 @@ import { NgModule } from '@angular/core';
 import {
   EncodingService,
   FirebaseService,
-  StoryService,
-
+  StoryService
 } from './services';
-
-
 
 @NgModule({
   providers: [
     EncodingService,
     FirebaseService,
-    StoryService,
+    StoryService
   ],
 })
 export class CoreModule { }

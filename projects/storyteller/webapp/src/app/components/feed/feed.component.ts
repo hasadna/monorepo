@@ -1,58 +1,43 @@
-import { Component, OnInit, } from '@angular/core';
-import { StoryList, Screenshot,StoryItem } from '@/core/proto';
-import { EncodingService, FirebaseService } from '@/core/services';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { StoryList, Story, Screenshot } from '@/core/proto';
+import { EncodingService, FirebaseService, StoryService } from '@/core/services';
 
-import { from } from 'rxjs';
-import { StoryService } from '@/core/services/story.service';
+import { zip } from 'rxjs';
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent {//implements OnInit{
+
   storylist: StoryList[];
   screenshots: Screenshot[];
-  users: {};
-  story:StoryItem;
-  screenshot: Screenshot;
 
   constructor(
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
-    storyServiceToSingle: StoryService,
+    private storyService: StoryService,
   ) {
     if (firebaseService.isOnline) {
-      this.loadStory();
-      this.loadscreenshots();
+     this.setData();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
-        this.loadStory();
-        this.loadscreenshots();
+        this.setData();
       });
-      }
-      if(this.story != null && this.screenshot != null){
-        storyServiceToSingle.setData(this.story, this.screenshot);
-      }
-    }
-
-  loadStory(): void {
-    this.firebaseService.getstorylistAll().subscribe(storylist => {
-      this.storylist = storylist;
-
+  }
+}
+// ngOnInit() {
+//   this.storylist = this.storyService.getStoryList();
+//   this.screenshots = this.storyService.getScreenshots();
+// }
+  setData(): void{
+    zip(
+      this.firebaseService.getStorylistAll(),
+      this.firebaseService.getScreenshotAll()
+    ).subscribe(data => {
+      this.storylist = data[0];
+      this.screenshots = data[1];
     });
   }
-  loadscreenshots(): void {
-    this.firebaseService.getscreenshotAll().subscribe(screenshots => {
-      this.screenshots = screenshots;
-    });
-  }
-
-  ngOnInit() {
-  }
-  sharestory(item:StoryItem,image:Screenshot): void{
-    this.story = item;
-    this.screenshot = image;
-    }
 }
 
-//  
