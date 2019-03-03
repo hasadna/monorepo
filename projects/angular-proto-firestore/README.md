@@ -6,17 +6,17 @@ To set up your development environment, follow these steps:
 Install these:
 * [node](https://nodejs.org/) version 8.11.4
 * [npm](https://www.npmjs.com/) version 5.6.0
-* [google-protobuf](https://github.com/protocolbuffers/protobuf/releases), version 3.6.1
+* [protoc](https://github.com/protocolbuffers/protobuf/releases), version 3.6.1
 
-(Installation of exact versions is not required, but recommended. We can't guarantee that webapp will work properly with different versions.)
+(Installation of exact versions is not required, but recommended. We can't guarantee that the app will work properly with different versions.)
 
 Optional:
 * [firebase](https://firebase.google.com/docs/hosting/quickstart), to be able to deploy.
 * [angular](https://angular.io/), to use `ng` features.
 
-Run `npm install` to install npm modules  
-
-Run `npm run protoc` to generate proto functions.  
+Run `npm install` to install node modules  
+ 
+[Create proto functions](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md)
 
 ## Running the server locally
 Run `npm start` to start a dev server. Navigate to `http://localhost:4200/`  
@@ -31,10 +31,7 @@ How to use firebase functions:
 https://firebase.google.com/docs/functions/get-started  
 
 ## Updating protos
-After every proto update, run `npm run protoc`.
-
-## Supported platforms
-Development is supported on Linux and Mac only (`npm run protoc` doesn't support Windows).
+You need to [create new proto functions](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md) after each update of .proto file.
 
 ## Development
 The information might be useful:

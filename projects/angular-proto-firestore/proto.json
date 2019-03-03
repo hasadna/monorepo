@@ -1,0 +1,9 @@
+{
+  "protoPath": "src/app/core/proto",
+  "projectProtoList": [
+    "proto/data.proto"
+  ],
+  "repoProtoList": [
+    "common/demo.proto"
+  ]
+}
