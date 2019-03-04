@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-// import { Project, User } from '@/proto';
 import { ReviewerConfig } from '@/proto';
 import { EncodingService } from './encoding.service';
 
