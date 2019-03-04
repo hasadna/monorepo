@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { zip } from 'rxjs';
 
 import { Project, User } from '@/proto';
 import { FirebaseService } from '@/services';
@@ -20,20 +19,20 @@ export class ProjectDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const projectId: number = +this.route.snapshot.paramMap.get('projectId');
+    const projectId: string = this.route.snapshot.paramMap.get('projectId');
     this.loadData(projectId);
   }
 
-  loadData(projectId: number): void {
-    zip(
-      this.firebaseService.getUserList(),
-      this.firebaseService.getProjectList()
-    ).subscribe(data => {
-      const userList: User[] = data[0];
-      const projectList: Project[] = data[1];
+  loadData(projectId: string): void {
+   this.firebaseService.getReviewerConfig()
+    .subscribe(reviewerConfig => {
+      const userList: User[] = reviewerConfig.getUserList();
+      const projectList: Project[] = reviewerConfig.getProjectList();
 
-      this.project = projectList.find(project => (project.getProjectId() === projectId));
-      this.projectUsers = userList.filter(user => user.getProjectList().includes(projectId));
+      this.project = projectList.find(project => (project.getId() === projectId));
+      this.projectUsers = userList.filter(
+        user => user.getProjectIdList().includes(projectId)
+      );
     });
   }
 }

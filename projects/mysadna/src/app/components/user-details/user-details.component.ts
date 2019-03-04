@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { zip } from 'rxjs';
 
-import { Project, User } from '@/proto';
+import { Project, User, SocialNetwork } from '@/proto';
 import { FirebaseService } from '@/services';
 
 @Component({
@@ -13,6 +12,7 @@ import { FirebaseService } from '@/services';
 export class UserDetailsComponent implements OnInit {
   user: User;
   userProjects: Project[];
+  types: string[] = Object.keys(SocialNetwork.Type);
 
   constructor(
     private route: ActivatedRoute,
@@ -20,23 +20,21 @@ export class UserDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userId: number = +this.route.snapshot.paramMap.get('userId');
+    const userId: string = this.route.snapshot.paramMap.get('userId');
     this.loadData(userId);
   }
 
-  loadData(userId: number): void {
-    zip(
-      this.firebaseService.getUserList(),
-      this.firebaseService.getProjectList()
-    ).subscribe(data => {
-      const userList: User[] = data[0];
-      const projectList: Project[] = data[1];
+  loadData(userId: string): void {
+    this.firebaseService.getReviewerConfig()
+      .subscribe(reviewerConfig => {
+        const userList: User[] = reviewerConfig.getUserList();
+        const projectList: Project[] = reviewerConfig.getProjectList();
 
-      this.user = userList.find(user => user.getUserId() === userId);
-      this.userProjects = projectList.filter(
-        project => project.getContributorList().includes(userId)
-      );
-    });
+        this.user = userList.find(user => user.getId() === userId);
+        this.userProjects = projectList.filter(
+          project => project.getUserIdList().includes(userId)
+        );
+      });
   }
 
   getSkills(): string {

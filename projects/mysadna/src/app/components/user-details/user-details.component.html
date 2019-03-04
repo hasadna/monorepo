@@ -4,16 +4,18 @@
     <div class="user-container media-row-col">
       <div class="user-label">
         <div class="flex">
-          <img [src]="user.getUserImg()">
-          <div class="user-name">{{ user.getUserName() }}</div>
+          <img [src]="user.getImageUrl()">
+          <div class="user-name">{{ user.getId() }}</div>
           <div class="email">{{ user.getEmail() }}</div>
           <div class="social-networks">
-            <a
-              href="https://github.com/hasadna/hasadna"
-              *ngFor="let socialNetwork of user.getSocialNetworkList()"
-            >
-              <img src="./assets/images/{{socialNetwork}}.svg">
-            </a>
+            <div class="social-network" *ngFor="let socialNetwork of user.getSocialNetworkList()">
+              <a [href]="socialNetwork.getUrl()">
+                <img [src]="'./assets/images/' + types[socialNetwork.getType()] + '.svg'">
+              </a>
+            </div>
+          </div>
+          <div class="cv-url">
+            <a href="assets/cv-pages/cv-template.html">CV File</a>
           </div>
         </div>
       </div>
@@ -24,8 +26,8 @@
         <div class="info-block">
           <a
             *ngFor="let project of userProjects"
-            [routerLink]="'/project-details/' + project.getProjectId()"
-          >{{ project.getProjectName() }}</a>
+            [routerLink]="'/project-details/' + project.getId()"
+          >{{ project.getDisplayName() }}</a>
         </div>
 
         <div class="title">Skills:</div>
@@ -35,10 +37,10 @@
 
         <div class="title">Contributions:</div>
         <div class="info-block">
-          <div class="contribution" *ngFor="let contribution of user.getUserContributionList()">
-            <div class="contribution-message">{{ contribution.getContributionMessage() }}</div>
-            <div class="contribution-url"><a [href]="contribution.getContributionUrl()">
-              {{ contribution.getContributionUrl() }}
+          <div class="contribution" *ngFor="let contribution of user.getTopContributionList()">
+            <div class="contribution-message">{{ contribution.getDescription() }}</div>
+            <div class="contribution-url"><a [href]="contribution.getUrl()">
+              {{ contribution.getUrl() }}
             </a></div>
           </div>
         </div>

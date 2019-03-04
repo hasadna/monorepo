@@ -34,7 +34,8 @@ $label-width: 250px;
             margin-bottom: 16px;
           }
           >.social-networks {
-            >a {
+            display: flex;
+            >.social-network {
               margin-right: 19px;
             }
           }
