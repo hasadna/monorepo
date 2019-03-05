@@ -1,4 +1,5 @@
-$sm: 750px;
+$xs: 500px;
+$sm: 760px;
 $md: 970px;
 $lg: 1170px;
 
@@ -25,6 +26,14 @@ $lg: 1170px;
   // Hidden on small screens
   .media-large-block {
     display: none !important;
+  }
+  .contributors-list {
+    app-contributor {
+      width: calc(50% - 20px);
+    }
+  }
+  .contributor {
+    width: 100% !important;
   }
 }
 @media only screen and (min-width: $sm + 1) and (max-width: $md) {

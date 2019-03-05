@@ -1,12 +1,12 @@
 <div class="contributor" *ngIf="user">
   <a [routerLink]="'/user-details/' + user.getId()">
     <div class="user-image">
-      <img class="user-image" [src]="user.getImageUrl()">
+      <div class="image-container">
+        <img class="user-image" [src]="user.getImageUrl()">
+      </div>
     </div>
     <div class="user-names">
-      <div class="user-full-name">
-        {{ user.getFirstName() }} {{ user.getLastName() }}
-      </div>
+      <div class="user-full-name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
       <div class="user-name">
         {{ user.getId() }}
       </div>
