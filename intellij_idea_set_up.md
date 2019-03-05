@@ -3,9 +3,9 @@
 ### Installing the Bazel plugin
 Install it from within the IDE (`Settings > Plugins > Marketplace`, and search for **Bazel**).
   
-  See another option to install the Bazel plugin - https://ij.bazel.build/docs/bazel-plugin.html#getting-started.
+  If that doesn't work, see alternative option - https://ij.bazel.build/docs/bazel-plugin.html#getting-started.
   
-  At the time of writing the plugin is compatible with IntelliJ 2017.3.3 and later.
+  As of `5 March 2019`, the plugin is compatible with IntelliJ 2017.3.3 and later.
 
 ### Importing a Project
 - Launch the IDE
