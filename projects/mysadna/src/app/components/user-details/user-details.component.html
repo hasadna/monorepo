@@ -36,8 +36,11 @@
         </div>
 
         <div class="title">Contributions:</div>
-        <div class="info-block">
-          <div class="contribution" *ngFor="let contribution of user.getTopContributionList()">
+        <div class="contributions">
+          <div
+            class="info-block contribution"
+            *ngFor="let contribution of user.getTopContributionList()"
+          >
             <div class="contribution-message">{{ contribution.getDescription() }}</div>
             <div class="contribution-url"><a [href]="contribution.getUrl()">
               {{ contribution.getUrl() }}
