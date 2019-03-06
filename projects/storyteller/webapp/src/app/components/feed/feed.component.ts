@@ -1,38 +1,40 @@
+// A little bit of code formatting here
 import { Component, OnInit, } from '@angular/core';
-import { StoryList, Screenshot,StoryItem } from '@/core/proto';
-import { EncodingService, FirebaseService } from '@/core/services';
-
 import { from } from 'rxjs';
+
+import { StoryList, Screenshot, StoryItem } from '@/core/proto';
+import { EncodingService, FirebaseService } from '@/core/services';
 import { StoryService } from '@/core/services/story.service';
+
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent {
   storylist: StoryList[];
   screenshots: Screenshot[];
-  story:StoryItem;
+  story: StoryItem;
   screenshot: Screenshot;
 
   constructor(
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
-    storyServiceToSingle: StoryService,
+    private storyServiceToSingle: StoryService,
   ) {
     if (firebaseService.isOnline) {
       this.loadStory();
-      this.loadscreenshots();
+      this.loadScreenshots();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
         this.loadStory();
-        this.loadscreenshots();
+        this.loadScreenshots();
       });
-      }
-      if(this.story != null && this.screenshot != null){
-        storyServiceToSingle.setData(this.story, this.screenshot);
-      }
     }
+    if (this.story != null && this.screenshot != null) {
+      storyServiceToSingle.setData(this.story, this.screenshot);
+    }
+  }
 
   loadStory(): void {
     this.firebaseService.getstorylistAll().subscribe(storylist => {
@@ -40,18 +42,15 @@ export class FeedComponent implements OnInit {
 
     });
   }
-  loadscreenshots(): void {
+
+  loadScreenshots(): void {
     this.firebaseService.getscreenshotAll().subscribe(screenshots => {
       this.screenshots = screenshots;
     });
   }
 
-  ngOnInit() {
-  }
-  sharestory(item:StoryItem,image:Screenshot): void{
+  shareStory(item: StoryItem, image: Screenshot): void {
     this.story = item;
     this.screenshot = image;
-    }
+  }
 }
-
-//  
