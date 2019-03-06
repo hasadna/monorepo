@@ -4,37 +4,100 @@ package com.hasadna.mysadna;
 option java_package = "com.hasadna.mysadna";
 option java_outer_classname = "Protos";
 
-message Contribution {
-  int32 contribution_id = 1;
-  int32 user_id = 2;
-  int32 project_id = 3;
-  string contribution_message = 4;
-  string contribution_url = 5;
+/* Config for a single repo. */
+message Repo {
+  // ID, e.g startup-os. This is used as the folder name in the local workspace.
+  // Should be unique in a Reviewer instance.
+  string id = 1;
+  // Url, e.g https://github.com/google/startup-os
+  string url = 2;
 }
 
+message CiRequest {
+  message Target {
+    Repo repo = 1;
+    string commit_id = 2;
+  }
+  int64 diff_id = 1;
+  repeated Target target = 2;
+  bool for_submission = 3;
+}
+
+message CiResponse {
+  CiRequest request = 1;
+  message TargetResult {
+    enum Status {
+      NONE = 0;
+      SUCCESS = 1;
+      FAIL = 2;
+      RUNNING = 3;
+      OUTDATED = 4;
+    }
+    CiRequest.Target target = 1;
+    Status status = 2;
+    string log = 3;
+  }
+  repeated TargetResult result = 2;
+}
+
+/* Config for a Reviewer instance, stored in config_repo in
+ * ReviewerRegistryConfig. */
+message ReviewerConfig {
+  // Display name for Reviewer instance. Should be same as
+  // ReviewerRegistryConfig.display_name
+  string display_name = 1;
+  // Repos in this Reviewer instance
+  repeated Repo repo = 3;
+  repeated User user = 4;
+  repeated Project project = 5;
+  int32 total_crystal = 6;
+}
+
+// A user, a contributor to the Reviewer repos.
 message User {
-  int32 user_id = 1;
-  string user_name = 2;
-  string first_name = 3;
-  string last_name = 4;
-  string email = 5;
-  repeated string social_network = 6;
+  // A unique identifier for a user, e.g GitHub user
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string image_url = 5;
+  repeated SocialNetwork social_network = 6;
+  // Skills the user has, e.g programming languages.
   repeated string skill = 7;
-  repeated int32 project = 8;
-  repeated Contribution user_contribution = 9;
-  string user_img = 10;
+  // Projects the user works on
+  repeated string project_id = 8;
+  repeated Contribution top_contribution = 9;
+  int32 crystals = 10;
+  // List of things people think are worthy of crystals exchange
+  repeated string offer = 11;
+}
+
+message SocialNetwork {
+  enum Type {
+    NONE = 0;
+    FACEBOOK = 1;
+    TWITTER = 2;
+    LINKEDIN = 3;
+    GITHUB = 4;
+  }
+  Type type = 1;
+  string url = 2;
+}
+
+message Contribution {
+  string description = 1;
+  // E.g link to a GitHub Pull Request.
+  string url = 2;
 }
 
 message Project {
-  int32 project_id = 1;
-  string project_name = 2;
-  string project_description = 3;
-  string project_site = 4;
-  repeated int32 contributor = 5;
-  repeated Contribution project_contribution = 6;
-}
-
-message Data {
-  repeated User user = 1;
-  repeated Project project = 2;
+  string id = 1;
+  string display_name = 2;
+  string project_url = 3;
+  // Short description
+  string description = 4;
+  // This is redundant since User lists projects, but we don't want to do the
+  // calculation in the front-end. We might add a test to enforce this, or push
+  // a better data structure to Firebase.
+  repeated string user_id = 5;
 }
