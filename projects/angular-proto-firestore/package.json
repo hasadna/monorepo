@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "protoc": "node ../../common/protoc.js projects/angular-proto-firestore"
   },
   "dependencies": {
     "@angular/animations": "~7.2.0",
@@ -44,6 +45,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
+    "ts-protoc-gen": "^0.9.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"
   }
