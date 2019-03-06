@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StoryService } from '@/core/services';
-import { Story, Screenshot } from '@/core/proto';
+import { zip } from 'rxjs';
+
+import { Story, Screenshot, StoryList } from '@/core/proto';
+import { FirebaseService } from '@/core/services';
 
 @Component({
   selector: 'app-single-screenshot',
@@ -9,15 +11,48 @@ import { Story, Screenshot } from '@/core/proto';
   styleUrls: ['./single-screenshot.component.scss']
 })
 export class SingleScreenshotComponent implements OnInit {
-  storyid: string;
-  screenshot_filename: string;
+  isLoading: boolean = true;
+  storyId: string;
+  screenshotFilename: string;
   story: Story;
   screenshot: Screenshot;
-  constructor(private activatedRoute: ActivatedRoute, private storyService: StoryService) { }
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private firebaseService: FirebaseService
+  ) { }
+
   ngOnInit() {
-    this.storyid = this.activatedRoute.snapshot.params['sotryId'];
-    this.story = this.storyService.getStory(this.storyid);
-    this.screenshot_filename = this.activatedRoute.snapshot.params['screenshot'];
-    this.screenshot = this.storyService.getScreenshot(this.screenshot_filename);
+    this.storyId = this.activatedRoute.snapshot.params['sotryId'];
+    this.screenshotFilename = this.activatedRoute.snapshot.params['screenshot'];
+
+    zip(
+      this.firebaseService.getStorylistAll(),
+      this.firebaseService.getScreenshotAll()
+    ).subscribe(data => {
+      this.getStory(this.storyId, data[0]);
+      this.getScreenshot(this.screenshotFilename, data[1]);
+      this.isLoading = false;
+    });
+  }
+
+  getStory(storyId: string, storyLists: StoryList[]): void {
+    for (const storyList of storyLists) {
+      for (const story of storyList.getStoryList()) {
+        if (story.getId() === storyId) {
+          this.story = story;
+          return;
+        }
+      }
+    }
+  }
+
+  getScreenshot(screenshotFilename: string, screenshots: Screenshot[]): void {
+    for (const screenshot of screenshots) {
+      if (screenshot.getFilename() === screenshotFilename) {
+        this.screenshot = screenshot;
+        return;
+      }
+    }
   }
 }

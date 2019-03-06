@@ -1,20 +1,20 @@
-<div *ngIf="!screenshot && !story">
+<div *ngIf="isLoading">
   Loading
 </div>
-<div class="story" *ngIf="screenshot && story">
-  <div class="story" *ngFor="let storyItem of story.getItemList()">
-    <div *ngIf="screenshot.getFilename() === storyItem.getScreenshotFilename()">
-      <span class="userimagediv">
-        <img class="userImage" src="/assets/user.png" width="60" height="50" alt="">
-      </span>
-      <span class="head">
-        <span class="author">{{story.getAuthor()}}</span> on <span class="project">{{story.getProject()}}</span>
-        <span class="timestamp">{{storyItem.getTimems() | date:'short'}}</span>
-        <div class="notes"><span>{{storyItem.getOneliner()}}</span></div>
-      </span>
-      <div class="screenshotdiv">
-        <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="480" width="750" />
-      </div>
-    </div>
+<div class="story" *ngIf="!isLoading">
+  <span class="userimagediv">
+    <img class="userImage" src="/assets/user.png" width="60" height="50" alt="">
+  </span>
+  <span class="head">
+    <span class="author">{{ story.getAuthor() }}</span>
+    <span> on </span>
+    <span class="project">{{ story.getProject() }}</span>
+  </span>
+  <div class="screenshotdiv">
+    <img
+       src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}"
+       height="480"
+       width="750" 
+    />
   </div>
 </div>
