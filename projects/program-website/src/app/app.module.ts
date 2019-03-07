@@ -8,7 +8,6 @@ import { AboutComponent } from './about-component/about.component';
 import { ProjectsComponent } from './projects-component/projects.component';
 import { ParticipantsComponent } from './participants-component/participants.component';
 import { ContactUsComponent } from './contact-us-component/contact-us.component';
-import {RouterModule} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
