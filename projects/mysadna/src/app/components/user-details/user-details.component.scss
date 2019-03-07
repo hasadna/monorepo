@@ -20,7 +20,10 @@ $label-width: 250px;
         justify-content: center;
         width: $label-width;
         >.flex {
+          width: $label-width;
+          word-wrap: break-word;
           >img {
+            width: $label-width;
             margin-bottom: 16px;
           }
           >.user-name {
@@ -29,12 +32,13 @@ $label-width: 250px;
             margin-bottom: 9px;
           }
           >.email {
-            font-size: 19px;
+            font-size: 17px;
             color: #565656;
             margin-bottom: 16px;
           }
           >.social-networks {
-            >a {
+            display: flex;
+            >.social-network {
               margin-right: 19px;
             }
           }
@@ -52,7 +56,7 @@ $label-width: 250px;
           color: #565656;
           font-size: 20px;
         }
-        >.info-block {
+        .info-block {
           padding: 16px;
           border: 1px solid #979797;
           margin-bottom: 22px;
@@ -60,13 +64,23 @@ $label-width: 250px;
           >a {
             margin-right: 10px;
           }
+          >.contribution-message {
+            color: #565656;
+          }
+          >.contribution-url {
+            word-wrap: break-word;
+          }
+        }
+        >.contributions {
           >.contribution {
-            >.contribution-message {
-              color: #565656;
-            }
-            >.contribution-url {
-              word-wrap: break-word;
-            }
+            margin-bottom: 0;
+            border-top: none;
+          }
+          >.contribution:first-child {
+            border: 1px solid #979797;
+          }
+          >.contribution:last-child {
+            margin-bottom: 22px;
           }
         }
       }

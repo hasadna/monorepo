@@ -2,91 +2,125 @@ const path = require('path');
 const fs = require('fs-extra');
 const { exec } = require('child_process');
 
-// From '/common' to repo root
-const repoRoot = path.resolve('../');
-// Absolute path to parent of the repo
+// Since the script is located here: '/common'
+const repoRoot = path.resolve(__dirname, '../');
+// Absolute path to parent folder of the repo
 const workspacePath = path.parse(repoRoot).dir;
-const startupOsProtoList = [
-  'tools/reviewer/reviewer.proto'
-];
 
 class Protoc {
   constructor() {
     const argPath = process.argv[2];
     if (!argPath) {
-      console.error('ERROR: Please set relative path to your project');
-      return;
+      this.error('Please set relative path to your project');
     }
-    
+
     this.projectPath = path.join(repoRoot, argPath);
     const projectName = path.parse(argPath).name;
     if (!fs.existsSync(this.projectPath)) {
-      console.error(`ERROR: Project "${projectName}" not found`);
-      return;
-    }
-
-    this.startupOsPath = path.join(workspacePath, 'startup-os');
-    if (!fs.existsSync(this.startupOsPath)) {
-      console.error('ERROR: startup-os not found in workspace directory');
-      return;
+      this.error(`Project "${projectName}" not found`);
     }
 
     this.projectProtoConfigPath = path.join(this.projectPath, 'proto');
     if (!fs.existsSync(this.projectProtoConfigPath + '.json')) {
-      console.error('ERROR: Project does not contain proto.json');
-      return;
+      this.error('Project does not contain proto.json');
     }
 
     this.start();
   }
 
   start() {
-    this.protoImportList = [];
-    this.protoFilesList = [];
+    // List with names of .proto files. It's used in protoc.
+    this.protocFilenameList = [];
+    // List with absolute paths to each copied .proto file. To delete the files after use.
+    this.protoFileList = [];
 
     // Load proto config of the project
     const projectProtoConfig = require(this.projectProtoConfigPath);
-    this.projectProtoPath = path.join(this.projectPath, projectProtoConfig.protoPath);
-    this.projectFunctionsPath = path.join(this.projectProtoPath, 'functions');
+    if (!projectProtoConfig.exportPath) {
+      this.error('Invalid proto.json. exportPath is not set');
+    }
+    this.projectExportPath = path.join(this.projectPath, projectProtoConfig.exportPath);
+    this.projectFunctionsPath = path.join(this.projectExportPath, 'functions');
 
     // Clean proto folder
-    fs.removeSync(this.projectProtoPath);
-    fs.mkdirSync(this.projectProtoPath);
+    fs.removeSync(this.projectExportPath);
+    fs.mkdirSync(this.projectExportPath);
 
     // Copy project's .proto files to proto folder
-    for (const projectProtoFile of projectProtoConfig.projectProtoList) {
-      this.copyPackage(path.join(this.projectPath, projectProtoFile));
+    if (!projectProtoConfig.protoList || projectProtoConfig.protoList.length === 0) {
+      this.error('proto.json does not contain any file');
     }
-    // Copy repo's .proto files to proto folder
-    for (const repoProtoFile of projectProtoConfig.repoProtoList) {
-      this.copyPackage(path.join(repoRoot, repoProtoFile));
-    }
-    // Copy startup-os' .proto files to proto folder
-    for (const startupOsProtoFile of startupOsProtoList) {
-      this.copyPackage(path.join(this.startupOsPath, startupOsProtoFile));
+    for (const protoFile of projectProtoConfig.protoList) {
+      this.copyPackage(path.join(workspacePath, protoFile));
     }
 
     // Create proto functions from the .proto files in the proto folder
-    const protoImport = this.protoImportList.join(' ');
+    const protocImports = this.protocFilenameList.join(' ');
     exec(
       'protoc ' +
-        `--proto_path=${this.projectFunctionsPath} ` +
-        `--js_out=import_style=commonjs,binary:${this.projectFunctionsPath} ` +
-        '--plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts ' +
-        `--ts_out=${this.projectFunctionsPath} ` +
-        protoImport, () => {
-          this.removeProtoFiles();
-        }
+      `--proto_path=${this.projectFunctionsPath} ` +
+      `--js_out=import_style=commonjs,binary:${this.projectFunctionsPath} ` +
+      '--plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts ' +
+      `--ts_out=${this.projectFunctionsPath} ` +
+      protocImports, (error) => {
+        this.removeProtoFiles(error);
+      }
     );
   }
 
   // Copies a package to proto folder
   copyPackage(originProtoPath) {
+    if (!fs.existsSync(originProtoPath)) {
+      this.error(originProtoPath + ' not found');
+    }
     const filename = path.parse(originProtoPath).base;
-    this.protoImportList.push(filename);
     const newPackagePath = path.join(this.projectFunctionsPath, filename);
-    this.protoFilesList.push(newPackagePath);
-    fs.copySync(originProtoPath, newPackagePath);
+
+    if (this.protoFileList.indexOf(newPackagePath) === -1) {
+      // If the file wasn't copied before, then copy it now
+      this.protocFilenameList.push(filename);
+      this.protoFileList.push(newPackagePath);
+      fs.copySync(originProtoPath, newPackagePath);
+      this.importPackages(originProtoPath, newPackagePath);
+    }
+  }
+
+  // Reads a file and copies its imports to proto folder
+  importPackages(protoPath, newPackagePath) {
+    const protoContent = fs.readFileSync(protoPath, 'utf8');
+    let protoLines = protoContent.split('\n');
+    let doesProtoContainImports = false;
+    for (const lineNumber in protoLines) {
+      const line = protoLines[lineNumber];
+      // Get children paths from imports in code_review.proto
+      if (line.startsWith('import')) {
+        // Everything between quotes
+        const regexExpression = /"(.*)"/;
+        const importRelativePath = line.match(regexExpression)[1];
+
+        if (importRelativePath.startsWith('google')) {
+          // protoc is able to work with google imports by itself.
+          // Unfortunately on unix system only.
+          continue;
+        }
+
+        // Since all files are located in a same directory,
+        // replace each relative import path to filename.
+        // Example:
+        // /path/to/my/file.proto -> file.proto
+        doesProtoContainImports = true;
+        const filename = path.parse(importRelativePath).base;
+        protoLines[lineNumber] = `import "${filename}";`;
+
+        const projectName = path.relative(workspacePath, protoPath).split('/')[0];
+        const importPath = path.join(workspacePath, projectName, importRelativePath);
+        this.copyPackage(importPath);
+      }
+    }
+    if (doesProtoContainImports) {
+      // No need to rewrite file, if it doesn't have imports
+      fs.writeFileSync(newPackagePath, protoLines.join('\n'));
+    }
   }
 
   // Removes all *.proto files from the proto folder
@@ -94,7 +128,7 @@ class Protoc {
     if (error) {
       throw error;
     }
-    for (let protoFile of this.protoFilesList) {
+    for (const protoFile of this.protoFileList) {
       fs.removeSync(protoFile);
     }
     this.createIndexFile();
@@ -103,19 +137,22 @@ class Protoc {
   // Creates index file for proto functions
   createIndexFile() {
     let indexTS = '';
-    for(let filepath of this.protoImportList) {
-      const dir = path.parse(filepath).dir;
-      const filename = path.parse(filepath).name + '_pb';
-      const indexpath = path.join(dir, filename);
-      indexTS += "export * from './functions/" + indexpath + "';\n";
+    for (let filename of this.protocFilenameList) {
+      filename = path.parse(filename).name + '_pb';
+      indexTS += "export * from './functions/" + filename + "';\n";
     }
-    fs.writeFileSync(path.join(this.projectProtoPath, 'index.ts'), indexTS);
+    fs.writeFileSync(path.join(this.projectExportPath, 'index.ts'), indexTS);
 
     this.onLoad();
   }
 
+  error(message) {
+    console.error('\x1b[31m%s\x1b[0m' + message, 'ERROR: ');
+    process.exit();
+  }
+
   onLoad() {
-    console.log('Proto functions are successfully created.');
+    console.log('\x1b[32m%s\x1b[0m', 'Proto functions are successfully created');
   }
 }
 const protoc = new Protoc();

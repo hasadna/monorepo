@@ -1,13 +1,31 @@
 .contributor {
+  width: 215px;
   display: flex;
   flex-direction: column;
   >a {
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    >.user-image {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      >.image-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        >img {
+          width: 100%;
+        }
+      }
+    }
     >.user-names {
       padding: 15px;
       text-align: left;
+      word-wrap: break-word;
       >.user-full-name {
         color: rgba(0, 0, 0, 0.87);
         font-size: 18px;

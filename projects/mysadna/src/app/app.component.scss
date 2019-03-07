@@ -30,12 +30,28 @@ $logo-size: 74px;
     padding: 18px;
     >.app-navigation {
       >a {
-        margin: 20px;
-        font-size: 18px;
         font-weight: bold;
         color: #000000;
         text-decoration: none;
       }
+    }
+  }
+}
+
+@import '../styles/media';
+@media only screen and (max-width: $xs) {
+  .app-navigation {
+    >a {
+      font-size: 15px;
+      margin: 7px;
+    }
+  }
+}
+@media only screen and (min-width: $xs + 1) {
+  .app-navigation {
+    >a {
+      margin: 20px;
+      font-size: 18px;
     }
   }
 }

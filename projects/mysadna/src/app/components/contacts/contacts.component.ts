@@ -14,9 +14,9 @@ export class ContactsComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    this.firebaseService.getUserList()
-      .subscribe(userList => {
-        this.users = userList;
+    this.firebaseService.getReviewerConfig()
+      .subscribe(reviewerConfig => {
+        this.users = reviewerConfig.getUserList() ;
       });
   }
 }

@@ -16,7 +16,7 @@ Optional:
 
 Run `npm install` to install node modules  
  
-[Create proto functions](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md)
+Run `npm run protoc` to generate proto functions. [More info](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md).  
 
 ## Running the server locally
 Run `npm start` to start a dev server. Navigate to `http://localhost:4200/`  
@@ -31,7 +31,7 @@ How to use firebase functions:
 https://firebase.google.com/docs/functions/get-started  
 
 ## Updating protos
-You need to [create new proto functions](https://github.com/hasadna/hasadna/tree/master/common/PROTOC.md) after each update of .proto file.
+After every proto update, run `npm run protoc`.
 
 ## Development
 The information might be useful:
