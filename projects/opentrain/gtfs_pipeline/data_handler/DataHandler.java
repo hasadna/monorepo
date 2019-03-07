@@ -60,7 +60,7 @@ class DataHandler {
   }
 
   public static List<Integer> getServiceIds() {
-    List<Protos.Calendar> calendars = getCalendar(absCalendar);
+    List<Protos.Calendar> calendars = getCalendar(calendarAbsPath);
     List<Integer> serviceIds = new ArrayList<>();
     for (Protos.Calendar calendar : calendars) {
       serviceIds.add(calendar.getServiceId());
@@ -117,7 +117,7 @@ class DataHandler {
   }
 
   public static List<Integer> getRouteIds() {
-    return getRoutes(absRoutes).stream().map(Route::getRouteId).collect(Collectors.toList());
+    return getRoutes(routesAbsPath).stream().map(Route::getRouteId).collect(Collectors.toList());
   }
 
   public static List<Route> getRoutes(Path csvPath) {
@@ -163,7 +163,7 @@ class DataHandler {
   }
 
   public static List<Integer> getStopsId() {
-    return getStopTimes(absStopTimes)
+    return getStopTimes(stopTimeAbsPath)
         .stream()
         .map(StopTime::getStopId)
         .collect(Collectors.toList());
@@ -289,7 +289,7 @@ class DataHandler {
   }
 
   public static List<String> getTripsId() {
-    return getTrips(absTripsTxt).stream().map(Trip::getTripId).collect(Collectors.toList());
+    return getTrips(tripsAbsPath).stream().map(Trip::getTripId).collect(Collectors.toList());
   }
 
   public static List<Trip> getTrips(Path csvPath) {
@@ -335,34 +335,34 @@ class DataHandler {
   }
 
   public static List<String> getStopsName() {
-    return getStops(absStops).stream().map(Stop::getStopName).collect(Collectors.toList());
+    return getStops(stopsAbsPath).stream().map(Stop::getStopName).collect(Collectors.toList());
   }
 
   // Paths to the CSVs files
-  static Path absCalendar;
-  static Path absRoutes;
-  static Path absStopTimes;
-  static Path absStops;
-  static Path absTranslations;
-  static Path absTripsTxt;
+  static Path calendarAbsPath;
+  static Path routesAbsPath;
+  static Path stopTimeAbsPath;
+  static Path stopsAbsPath;
+  static Path translationsAbsPath;
+  static Path tripsAbsPath;
 
   public static void main(String[] args) {
 
     {
-      absCalendar = Paths.get(args[0]);
-      absRoutes = Paths.get(args[1]);
-      absStopTimes = Paths.get(args[2]);
-      absStops = Paths.get(args[3]);
-      absTranslations = Paths.get(args[4]);
-      absTripsTxt = Paths.get(args[5]);
+      calendarAbsPath = Paths.get(args[0]);
+      routesAbsPath = Paths.get(args[1]);
+      stopTimeAbsPath = Paths.get(args[2]);
+      stopsAbsPath = Paths.get(args[3]);
+      translationsAbsPath = Paths.get(args[4]);
+      tripsAbsPath = Paths.get(args[5]);
     }
 
-    List<Protos.Calendar> calendarMessages = getCalendar(absCalendar);
-    List<Route> routeMessages = getRoutes(absRoutes);
-    List<StopTime> stopTimeMessages = getStopTimes(absStopTimes);
-    List<Stop> stopMessages = getStops(absStops);
-    List<Translation> traslationMessages = getTranslations(absTranslations);
-    List<Trip> tripMessages = getTrips(absTripsTxt);
+    List<Protos.Calendar> calendarMessages = getCalendar(calendarAbsPath);
+    List<Route> routeMessages = getRoutes(routesAbsPath);
+    List<StopTime> stopTimeMessages = getStopTimes(stopTimeAbsPath);
+    List<Stop> stopMessages = getStops(stopsAbsPath);
+    List<Translation> traslationMessages = getTranslations(translationsAbsPath);
+    List<Trip> tripMessages = getTrips(tripsAbsPath);
     getStopsName();
 
     try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
