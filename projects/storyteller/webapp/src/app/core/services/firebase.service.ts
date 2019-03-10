@@ -37,7 +37,7 @@ export class FirebaseService {
     this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
       if (this.isOnline) {
-        this.loadusers();
+        this.loadUsers();
       }
     });
     this.protobin_users = this.db.collection('/storyteller');
@@ -50,8 +50,10 @@ export class FirebaseService {
     );
   }
 
-  getstorylistAll(): Observable<StoryList[]> {
-    return this.protobin.snapshotChanges().pipe(
+  getstorylistAll(
+    collection: AngularFirestoreCollection<FirebaseElement>
+  ): Observable<StoryList[]> {
+    return collection.snapshotChanges().pipe(
       map(action => action.map(a => {
         const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
@@ -101,11 +103,27 @@ export class FirebaseService {
     return screenshot;
   }
 
-  loadusers(): void {
+  loadUsers(): void {
     this.getUsersAll().subscribe(userData => {
-      console.log(userData.users);
       this.users = userData.users;
     });
+  }
+
+  getFirstUserStories(): Observable<StoryList[]> {
+    let collection: AngularFirestoreCollection<FirebaseElement>;
+    if (this.users && this.users.length > 0) {
+      const firstUser: string = this.users[0];
+      collection = this.db.collection(`/storyteller/data/user/${firstUser}/story`);
+      return this.getstorylistAll(collection);
+    } else {
+      return new Observable(observer => {
+        this.getUsersAll().subscribe(userData => {
+          const firstUser: string = userData.users[0];
+          collection = this.db.collection(`/storyteller/data/user/${firstUser}/story`);
+          this.getstorylistAll(collection).subscribe(storylist => observer.next(storylist));
+        });
+      });
+    }
   }
 
   anonymousLogin(): Promise<any> {

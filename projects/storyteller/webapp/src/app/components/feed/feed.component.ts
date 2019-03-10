@@ -37,9 +37,8 @@ export class FeedComponent {
   }
 
   loadStory(): void {
-    this.firebaseService.getstorylistAll().subscribe(storylist => {
+    this.firebaseService.getFirstUserStories().subscribe(storylist => {
       this.storylist = storylist;
-
     });
   }
 
