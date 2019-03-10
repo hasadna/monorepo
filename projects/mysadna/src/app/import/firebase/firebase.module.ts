@@ -10,17 +10,17 @@ import { config } from './config';
   imports: [
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule
   ],
   declarations: [],
   providers: [
     AngularFireDatabase,
     AngularFireAuth,
-    { provide: FirestoreSettingsToken, useValue: {} },
+    { provide: FirestoreSettingsToken, useValue: {} }
   ],
   exports: [
     AngularFirestoreModule,
-    AngularFireAuthModule,
-  ],
+    AngularFireAuthModule
+  ]
 })
 export class FirebaseModule { }

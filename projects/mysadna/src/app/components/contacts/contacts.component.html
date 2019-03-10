@@ -1,22 +1,9 @@
-<div class="contacts">
-  <h1 class="contacts-header">Contacts</h1>
-  <div class="contacts-container">
-    <ul class="contacts-list">
-      <li *ngFor="let user of users" class="user">
-        <a [routerLink]="'/user-details/' + user.getUserId()">
-          <div class="user-image">
-            <img src="{{user.getUserImg()}}" class="user-image">
-          </div>
-          <div class="user-names">
-              <div class="user-full-name">
-                <h4>{{user.getFirstName()}} {{user.getLastName()}}</h4>
-              </div>
-              <div class="user-name">
-                <p>{{user.getUserName()}}</p>
-              </div>
-            </div>
-        </a>
-      </li>
-    </ul>
-  </div>  
+<div class="contacts media">
+  <div class="contacts-header">Contacts</div>
+  <div class="contributors-list">
+    <app-contributor
+      *ngFor="let user of users"
+      [user]="user"
+    ></app-contributor>
+  </div>
 </div>

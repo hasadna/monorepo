@@ -18,9 +18,9 @@ export class ProjectsComponent implements OnInit {
   }
 
   getAllProjects(): void {
-    this.firebaseService.getProjectList()
-    .subscribe(projectList => {
-      this.projects = projectList;
-    });
+    this.firebaseService.getReviewerConfig()
+      .subscribe(reviewerConfig => {
+        this.projects = reviewerConfig.getProjectList();
+      });
   }
 }
