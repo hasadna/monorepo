@@ -59,12 +59,14 @@ bazel run //tools/reviewer/aa:aa_tool -- init --base_path $BASE_ABS_PATH
 cd ${BASE_ABS_PATH}/head/startup-os
 ./test.sh
 
+# Set up .bashrc:
+cd ..
+echo "source `pwd`/startup-os/tools/reviewer/aa/aa_tool.sh" >> ~/.bashrc
 source ~/.bashrc
-aa
+
 echo "Please sign-in at https://web-login-startupos.firebaseapp.com and then check that ~/.aa_token exists"
 
 # Removing temporary download folder
 if [[ -d "$DOWNLOAD_DIR_NAME" ]]; then
     rm -Rf ${DOWNLOAD_DIR_NAME};
 fi
-
