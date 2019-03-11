@@ -25,10 +25,19 @@ if [[ $(which javac; echo $?) == "1" ]]; then
     echo "JDK is installed"
 fi
 
+mkdir ${DOWNLOAD_DIR_NAME}
+
+# Install Chrome
+if [[ $(which google-chrome; echo $?) == "1" ]]; then
+  echo "Installing Chrome"
+  wget -q -O ${DOWNLOAD_DIR_NAME}/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo dpkg -i ${DOWNLOAD_DIR_NAME}/google-chrome-stable_current_amd64.deb
+  sudo apt-get -f install
+fi
+
 # Install Bazel
 if [[ $(which bazel; echo $?) == "1" ]]; then
     echo "Installing bazel"
-    mkdir ${DOWNLOAD_DIR_NAME}
     wget -O ${DOWNLOAD_DIR_NAME}/bazel.0.21.0.sh https://github.com/bazelbuild/bazel/releases/download/0.21.0/bazel-0.21.0-installer-linux-x86_64.sh
     chmod +x ${DOWNLOAD_DIR_NAME}/bazel.0.21.0.sh
     sudo bash ${DOWNLOAD_DIR_NAME}/bazel.0.21.0.sh --user
