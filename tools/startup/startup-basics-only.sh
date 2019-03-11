@@ -1,6 +1,7 @@
 #!/bin/bash
 
 readonly DOWNLOAD_DIR_NAME="downloads_$(date +%Y%m%d_%H%M%S)"
+readonly DOWNLOAD_DIR_ABS_PATH="$(pwd)/$DOWNLOAD_DIR_NAME"
 readonly BASE_ABS_PATH=${HOME}/base
 
 echo "Checking for curl installing"
@@ -67,6 +68,8 @@ source ~/.bashrc
 echo "Please sign-in at https://web-login-startupos.firebaseapp.com and then check that ~/.aa_token exists"
 
 # Removing temporary download folder
+cd ${DOWNLOAD_DIR_ABS_PATH}
+cd ..
 if [[ -d "$DOWNLOAD_DIR_NAME" ]]; then
     rm -Rf ${DOWNLOAD_DIR_NAME};
 fi
