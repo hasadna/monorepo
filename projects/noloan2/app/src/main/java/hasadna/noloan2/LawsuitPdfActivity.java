@@ -173,6 +173,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   }
 
   private void initDirStructure() {
+    // TODO: Paths.get() require API 26. Find/Create function that suits lower API versions.
     lawsuitMainPath =
         Paths.get(
                 Environment.getExternalStorageDirectory().getPath(),
