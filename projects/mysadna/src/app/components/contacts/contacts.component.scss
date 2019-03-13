@@ -1,49 +1,23 @@
-// portrait phones: 576px
-// landscape phones: 768px
-// tablets: 992px
-// desktops: 1200px
-
 .contacts {
   width: 100%;
-  @media(max-width: 575.98px) {
-    font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  >.contacts-header {
+    color: #4a4a4a;
+    margin-bottom: 37px;
+    font-size: 32px;
+    font-weight: bold;
   }
-}
-
-.contacts-header {
-  text-align: center;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-.contacts-container {
-  >.contacts-list {
-    display: flex;
-    justify-content: flex-start;
-    @media(max-width: 575.98px) {
-      flex-wrap: wrap;
-    }
-    >.user {
-      border: 2px lightgrey solid;
-      border-radius: 0.25em;
-      margin: 10px;
-      >a {
-        text-decoration: none;
-        >.user-names {
-          text-align: left;
-          >.user-full-name {
-            color: black;
-            margin: 1em;
-          }
-          >.user-name {
-            color: gray;
-            margin: 1em;
-          }
-        }
-      }
+  >.contributors-list {
+    $margin: 20px;
+    padding-left: $margin;
+    padding-top: $margin;
+    text-align: start;
+    >app-contributor {
+      margin-right: $margin;
+      margin-bottom: $margin;
+      display: inline-block;
     }
   }
 }

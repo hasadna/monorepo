@@ -34,8 +34,9 @@ public class Storyteller {
   // Number of most recent shared stories to output
   private static final int RECENT_SHARED_STORIES_COUNT = 10;
 
-  private static final String FIRESTORE_SCREENSHOT_COLLECTION = "storyteller/data/user/%s/story";
-  private static final String FIRESTORE_STORIES_COLLECTION = "storyteller/data/user/%s/screenshot";
+  private static final String FIRESTORE_SCREENSHOT_COLLECTION =
+      "storyteller/data/user/%s/screenshot";
+  private static final String FIRESTORE_STORIES_COLLECTION = "storyteller/data/user/%s/story";
 
   // User's email
   private final String author;
