@@ -1,9 +1,7 @@
 syntax = "proto3";
-package com.hasadna.protobin_reader;
+package com.hasadna.storyteller;
 
-option java_package = "com.hasadna.protobin_reader";
-option java_outer_classname = "Protos";
-
+/* Storyteller protos. */
 message Config {
   enum Frequency {
     EVERY_10_MINUTES = 0; // This is the default (=0)
@@ -47,7 +45,7 @@ message FileData {
   }
 
   Type type = 1;
-  int64 timeMs = 2;
+  int64 time_ms = 2;
   string filename = 3;
   oneof oneof_content {
     bytes image_bytes = 4;
@@ -56,18 +54,27 @@ message FileData {
   }
 }
 
-message StoryItem {
-  int64 timeMs = 1;
+message Screenshot {
+  string filename = 1;
   bytes screenshot = 2;
+}
+
+message StoryItem {
+  reserved 2;
+  int64 time_ms = 1;
   string oneliner = 3;
   string note = 4;
+  string screenshot_filename = 5;
+  string id = 6;
 }
 
 message Story {
-  int64 startTimeMs = 1;
-  int64 endTimeMs = 2;
+  int64 start_time_ms = 1;
+  int64 end_time_ms = 2;
   string project = 3;
   repeated StoryItem item = 4;
+  string id = 5;
+  string author = 6;
 }
 
 message StoryList { repeated Story story = 1; }
@@ -78,13 +85,13 @@ message InvoiceItem {
   int64 time_worked_ms = 3;
   // The hourly rate in USD
   double hourly_rate = 4;
-  double dollarAmount = 5;
+  double dollar_amount = 5;
 }
 
 message InvoiceItemList {
   repeated InvoiceItem item = 1;
-  int64 startTimeMs = 2;
-  int64 endTimeMs = 3;
+  int64 start_time_ms = 2;
+  int64 end_time_ms = 3;
   double subtotal = 4;
   // Total is the subtotal after rounding up.
   double total = 5;
@@ -108,3 +115,4 @@ message InvoiceReceiver {
   string street_and_number = 2;
   string city_state_country = 3;
 }
+
