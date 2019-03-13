@@ -363,7 +363,6 @@ class DataHandler {
     List<Stop> stopMessages = getStops(stopsAbsPath);
     List<Translation> traslationMessages = getTranslations(translationsAbsPath);
     List<Trip> tripMessages = getTrips(tripsAbsPath);
-    getStopsName();
 
     try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
 
