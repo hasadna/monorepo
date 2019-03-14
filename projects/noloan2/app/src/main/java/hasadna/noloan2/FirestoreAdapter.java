@@ -15,37 +15,39 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter implements EventListener<QuerySnapshot> {
+public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
+    extends RecyclerView.Adapter implements EventListener<QuerySnapshot> {
   private Query query;
   private ListenerRegistration registration;
-  
+
   private ArrayList<DocumentSnapshot> snapshots = new ArrayList<>();
-  
+
   public FirestoreAdapter(Query query) {
     this.query = query;
   }
-  
+
   public void startListening() {
     if (query != null && registration == null) {
       registration = query.addSnapshotListener(this);
     }
   }
-  
+
   @Override
   public int getItemCount() {
     return snapshots.size();
   }
-  
+
   @Override
-  public void onEvent(@Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
+  public void onEvent(
+      @Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
     if (e != null) {
       Log.w("firestore adapter", e);
       return;
     }
-    
+
     for (DocumentChange change : querySnapshots.getDocumentChanges()) {
       DocumentSnapshot snapshot = change.getDocument();
-      
+
       switch (change.getType()) {
         case ADDED:
           added(change);
@@ -59,12 +61,12 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder> exten
       }
     }
   }
-  
+
   private void added(DocumentChange change) {
     snapshots.add(change.getNewIndex(), change.getDocument());
     notifyItemInserted(change.getNewIndex());
   }
-  
+
   private void modified(DocumentChange change) {
     if (change.getOldIndex() == change.getNewIndex()) {
       snapshots.set(change.getOldIndex(), change.getDocument());
@@ -75,13 +77,14 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder> exten
       notifyItemMoved(change.getOldIndex(), change.getNewIndex());
     }
   }
-  
+
   private void removed(DocumentChange change) {
     snapshots.remove(change.getOldIndex());
     notifyItemRemoved(change.getOldIndex());
   }
-  
+
   public ArrayList<DocumentSnapshot> getSnapshots() {
     return snapshots;
   }
 }
+

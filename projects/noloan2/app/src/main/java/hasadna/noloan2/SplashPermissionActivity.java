@@ -16,28 +16,28 @@ import noloan.R;
 
 // Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
 public class SplashPermissionActivity extends AppCompatActivity {
-  
+
   private static final int PERMISSION_REQUEST_CODE = 123;
-  final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
-  
+  final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
+
   static final long SPLASH_TIME_MS = 1000;
-  
+
   long startTime;
-  
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash_permission);
-    
+
     startTime = System.currentTimeMillis();
-    
+
     if (Build.VERSION.SDK_INT >= 23) {
       checkPermissions();
     } else {
       startNextActivity();
     }
   }
-  
+
   private void checkPermissions() {
     String[] ungrantedPermissions = permissionsStillNeeded();
     if (ungrantedPermissions.length == 0) {
@@ -47,7 +47,7 @@ public class SplashPermissionActivity extends AppCompatActivity {
       requestPermissions(ungrantedPermissions, PERMISSION_REQUEST_CODE);
     }
   }
-  
+
   private String[] permissionsStillNeeded() {
     ArrayList<String> result = new ArrayList<>();
     for (String permission : requiredPermissions) {
@@ -57,21 +57,26 @@ public class SplashPermissionActivity extends AppCompatActivity {
     }
     return result.toArray(new String[result.size()]);
   }
-  
+
   @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == PERMISSION_REQUEST_CODE) {
       checkPermissions();
     }
   }
-  
+
   private void startNextActivity() {
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        startActivity(new Intent(SplashPermissionActivity.this, MainActivity.class));
-        finish();
-      }
-    }, SPLASH_TIME_MS);
+    new Handler()
+        .postDelayed(
+            new Runnable() {
+              @Override
+              public void run() {
+                startActivity(new Intent(SplashPermissionActivity.this, MainActivity.class));
+                finish();
+              }
+            },
+            SPLASH_TIME_MS);
   }
 }
+

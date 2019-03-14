@@ -1,10 +1,8 @@
-<div class="projects">
-  <h1>Projects</h1>
-  <ul>
-    <li *ngFor="let project of projects">
-      <a [routerLink]="'/project-details/' + project.getProjectId()" class="project">
-        {{project.getProjectName()}}
-      </a>
-    </li>
-  </ul>
+<div class="projects media">
+  <div class="title">Projects</div>
+  <div class="project" *ngFor="let project of projects">
+    <a [routerLink]="'/project-details/' + project.getId()">
+      {{project.getDisplayName()}}
+    </a>
+  </div>
 </div>

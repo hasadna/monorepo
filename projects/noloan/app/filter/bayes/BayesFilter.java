@@ -22,8 +22,7 @@ public class BayesFilter {
       positiveProbabilitiesProduct *= wordInfo.getSpamProbability();
       negativeProbabilitiesProduct *= (1.0f - wordInfo.getSpamProbability());
     }
-    double probabilitiesProductsSum =
-        positiveProbabilitiesProduct + negativeProbabilitiesProduct;
+    double probabilitiesProductsSum = positiveProbabilitiesProduct + negativeProbabilitiesProduct;
     return positiveProbabilitiesProduct / probabilitiesProductsSum;
   }
 

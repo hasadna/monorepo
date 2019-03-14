@@ -1,47 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
-import { User, Project, Contribution } from '@/proto';
+import { Project, User, SocialNetwork } from '@/proto';
 import { FirebaseService } from '@/services';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss'],
+  styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
   user: User;
-
   userProjects: Project[];
+  types: string[] = Object.keys(SocialNetwork.Type);
 
   constructor(
     private route: ActivatedRoute,
-    private firebaseService: FirebaseService,
-    private location: Location
+    private firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
-    this.getUser();
+    const userId: string = this.route.snapshot.paramMap.get('userId');
+    this.loadData(userId);
   }
 
-  getUser(): void {
-    const userId: number = +this.route.snapshot.paramMap.get('userId');
-    this.firebaseService.getUserList()
-      .subscribe(userList => {
-        this.user = userList.find(user => user.getUserId() === userId);
-        this.getUserProjects(userId);
+  loadData(userId: string): void {
+    this.firebaseService.getReviewerConfig()
+      .subscribe(reviewerConfig => {
+        const userList: User[] = reviewerConfig.getUserList();
+        const projectList: Project[] = reviewerConfig.getProjectList();
+
+        this.user = userList.find(user => user.getId() === userId);
+        this.userProjects = projectList.filter(
+          project => project.getUserIdList().includes(userId)
+        );
       });
   }
 
-  getUserProjects(userId: number): void {
-    this.firebaseService.getProjectList()
-      .subscribe(projects => {
-        this.userProjects = projects.filter(project => project.getContributorList().includes(userId));
-      });
-  }
-
-  goBack(): void {
-    this.location.back();
+  getSkills(): string {
+    return this.user.getSkillList().join(', ');
   }
 }

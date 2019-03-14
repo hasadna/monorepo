@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<license date="2019-03-02" issuer="iText Group NV" library="3">
+    <licensee expire="2019-04-02">
+        <name>NoLoan Hasadna</name>
+        <email>hasadna.itext@gmail.com</email>
+        <company>Hasadna</company>
+        <version>7.1</version>
+        <key/>
+        <licensetype>trial</licensetype>
+        <comment>Trial License</comment>
+        <signature>bwH5wP6fOPCdcoyaQaToPwNeD827AU85et4qpkgKaMjUF3lVlyI+Fq1PQHFJ1JHtlL8a5yt+ElMdRFIIsOWK9MZbq/3Jc3oAHhU4RS5pDKdioXJ0UvuILC3rlH8ytR3YtT9mbKaH1x95we8E7Gp7b7rUS0wj5R/4N5U8ou585KWVUTNBiVfPzMv5udT6aQ0R1h7CnjTbxJpX63lfWqKcjaxA2gUX5fJXz/kNnrIuHn/CXHKd5AtrwOSyINefe/O4alrmzuQRz0RAwEmwJUBsCDdZWiNhIso70G8OF8rKKv0QfkDx1a0QJYri3mN0nxztM59ANHXA7GBW0cEZlZKGMeSDH+uptCk6+HdhzCwZrRiu4AWnsHm3zRPgieJBl3M9xB/fQYEQLVkjziR7o5geHOOALjBsJ54GaNzukkhe4fo9nFTypczDloVzj3bmrnO73aLKN90f33lc8lQnOIw35LjwxzkxzD2byvOlDfF1dt2eEdAjwTTTJGDagCcPqQRGZCdjnjsDWhnQCGqEfjgIGtR8xwA5XMNjxSR+jYgQp04zOMARjH9nyQ+XC1Xuy2GPDPm9tRL3yjWGwbtvX/HYndBRQ3BjPQpwjdryW9PdQEJYzFUrKe0LYwYqG9ohDDtPIlNjrUAHAobQo4sFvc06bx+Ov7opZ5dVICUD0PVL8kk=</signature>
+    </licensee>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdfSweep" platform="any">
+        <signature>kEDHdEGLdnQmpxkVdzAt0IoDxyImK68fLxzv9XyqpeBcElWMm8kYDL3N6JzfKiW3I65KV1hncCnsj4t8CkiWkJlXuvvXNtvgh/iJv9WvLqroCgNxguLqDMLVqBOGPs+CFGX6HJeofBXoEPoYVfwmeQd+a/Zui6Nx9zAwwdO9R5oGUHiHCBOuSsxU/CoQIW+ua9RN6uo2uPQB5zgamSvuuyblRIn/WTylMS3Ew6/sUVTEBLPh7xWej8DnANj90fj5LvJk33KXuezHpJ5GDgKm+Dvr6An5xfrdbhhkesU2RRkINXPxarWXf1UrvOBclEn3P8/Sf5zdWP+MFo65hf7P/bxjLbK0bQbk3tGV3eaWZQz9IQRlb2kpB814J9yg7+qQdybwTAHJSzLP52AZOhXv18xmAi80EkEvpj9aNbuoEhacxKMtJAEzOWFGBp2TpAFceBekFn516DheCaNV0gqspboFqlEc/1MqDl/VKBVfD6qFSFsgbZ0ba3D9hqk2KMopYCpBFtg7nrOalZ9anVDMEax0TVWZoilnfVmus/aBO+VuQ4r3Slk1oMvvAWuuZm2GuZtowzujI+tm3SWblDK5wK4D9+FSrYgcX7m/3BCaQn8aF497XYnRovxEd5S7BrW1twjfz9yy3MxAtZKANi4n8FADBF3FQ7kAx1cXR+N4yJ0=</signature>
+    </product>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdfInvoice" platform="any">
+        <signature>GDRiRF4fSXPF1YsArJuhu26T0SJzOikiF/Pf/c81D15ZK74JXftVgPfgUQgaOBcLMlWttUaZ2/YzVgjuc4Nhg21IZyNp2678kqERYmWYzBxsiVquTegOOXUyv3z3PA3Cuzcgs8PaTKTVQPi9A4HC8FiIkNymaWYiP6PJxaIhmQ/qIQpXVypHzmMUGr1m6C1HmzBaXoRu8vO8RYNjbNZ5VMcJ6+biE01mtwJxQJbByyAptmZZo/bmnqCmqBHBgWoqrTlG2VAA8SLXevZ4IGR6uX3Ae3x/VgPlo9Cy6KDW1eEf1vOnjPo0gZVWSnxRmZLnfWtV7tJmoAv+SqN9EmGVWpCm3USl1sjGo7GEkW8OHLFYo+Witc5XpvPpPLX6YboLzgoGQTcCgqVGhNGLcEvTzAqzGmMhf8Ejf4X4M+UuiZzcKJpGPYQ2BQL08KVuKEmOpI8LsV9mPz/pwNc1TCmM0iOtwsbaR9ZNyhWnYgfvIFXXx1k17f4h+b4loS9ROwerWwgWS01fXdZzaWjPCopNiNSQwhPf7wW6kHjILuuQxTwfzJQ3XWjVBOGVERFXVpB455bgcyJ8Rd1TCKe/C2S0gIdArV3ZKXbIwIRH9TO53Nxf8ZWbt/4zMKmVS2V0qOvat1N7Pbtt+9f0hcZHnJZMh27ELY2MTNYvplcKC+8/WFY=</signature>
+    </product>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdfCalligraph" platform="any">
+        <signature>f1A11UHizksa96LBuCc8QruUg8ce6NWod7ZVNdleh0LsqSv1+7xZCIcV0iNUXaQgf+NbN4rL4TlkZF3GJNZJcEyUwhVsX9dRZRjKWQDAda8zRvShpGubluaVFZJSS2Bfy+uKL0E7dl2xKPm1mG7rHYc0IuA/4B4asQxpKt/VcrmumrlfyLkqUgucQSNnNWr1nIo4hEfuW2wQDz3OVBjKTm57kz4pviluf1ShiHqYzHZvhPHStmYcXZzYfTqsnbKzVkKKMcRG3c6m6sVpJ71Owgw/pgClXygSmrTs9lcw1QZtzVtBN0aI/WJ4BmOxF7KJaCTefd0P7nCLyl5EEarWUACxScT12vzE4ujkbuwMtlahu8skx8AZKUU0z5MAArsRN0X+8N8S2KTRqyIOrmhNrZqN6NPrBbhoPinnvHu7bSJlPzcUWpMtfbmaARjWwJOanisTYkLfc+3nal5nc/2LwX0gzB+uAUbxWRYgaoydZ/fh+NqcY8aWQVdI4RnVFZLMy2eZ2oT/S0XkqdyBjKJozkS+80bQYyaFsBT6kEFC6+0HRNYdg25/8rN9F6RzI1BMnZfWVKGoDXoFvSDINgDYRt0CCNdVq1aPUm5nsXlz5/W9rGgeulT8zF0u3o2YlACXh8aICJ7I0w004sqyBS4dDmMVK1KA1jZBAtd7KtJcCTg=</signature>
+    </product>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdfHtml" platform="any">
+        <signature>iSn5OvPqw7CqWdm0DzIYnhJG+GQuChRzWvx0mFaPI4OVOdgSxb6lQTkvBnlOBixIZAZZDt4FqmGDEYdtkGJvzINlykkLKuatpDFmAXVNsbGauYbLguck5Mt9KfS30ZkXTAbDgIDPM3D+d5mcQyeqc3blFNLG3vhe8+o1B99P8LqVrypZFl2Ql7praLY+h2AdegGy59Cqqntxo6NmppeHR45d6doncEPgMHADE+jp17p2A8BG7c7G8noneA40ieTXUXccCsHJf2Or/7Xm5bro+2dfkxfLeYISvNozx9Lv6lGduGSu4WueuLuZjwMpFhMuOCxoBbe2VlQjN9wPxgeddsph68yy4hf+bQpiSOLBNjxX2TWe9rL8/zHJCzifYi1EDuEAx9qAui/7CjTHWczPoDoQutlb48SwaQS1Znz61tbA1lBJp6QQuUO4eLuqpvwJOu97XkccaR01Ilbx3+9opx5F/MW6XOX/Aa6Ccd1qqobs6sRHAGFHlXCHRDYtfcpNJOSxurVHs/zEJiqpVOneERFFA1iZOeTKuSKs1way9fX4dSOaE1t1a/GVrdQDtRFXSNIfjskByLGk0dR81im8FcXu96PYkw/zZX2PxnnwiOTfZXYhgnRKdrteb90o1k+yVjEbHc56nSKbnc6D12r6U99C4+1wpqIPHb0GsoCStLU=</signature>
+    </product>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdfXfa" platform="any">
+        <signature>XG9XC0WLE7PNZvWjTKXkgTGyH6wrjX4ed547yXQSYIdqRhkyvcLZAQmqd3M5dxav1a0SstrTgceUCAgX+Nhfs0fFHTSKWV9JhtCzNTSLr+iekqiB2jgYjkiw8pyXGy2eRpCxar4cLmBrQG1ibwtCN3wdVYw/Tr86SK3VbvZorKQ1s7dqE+HpQ0qv83j/IiMtycUCoiMEnIMaFTgKgOEiKnpDKzWLe5uMh4FcHmjLDIN8FblcWtFAiyn81jmLaeY0llvNh2nKSY8c3YHS+shxQQbi3Q15Ntjkiyl/n6M7CNU8a4j+UUHioRYBLnV/A7Kj2Vx3N+dpkhvT9cLURdyR86op13M28FYS4DZbyn4sAoGF39GAedofvEsDeopNuCZ71qMliKA/fL3f+xDa6RaAnEkKEqg4GoqJ+kcvahRTauXwmr0tEuhn5dgazf6DuouKm7M8iztVmkylZzQe7mzhby29AFP1VV0FzsqeFM4ELyI86cBRm0GPaDFu39xz/0G4fd9sZ/Y03BkydcvvhXUvcCTNv1y+K2jdebbNZU4RO1EyJWwxySzTP7c5jxU9wehXg+IdnWcy4Z0P/6sfaTwOEbG5XCFk1ana6869AqUdxqCE4gf3b+MKFNhrkBSyBNYLQqsDajma4e+wFZVBEfIbBXneHCQu8ijsim8gRnTrpZg=</signature>
+    </product>
+    <product deploymenttype="" expire="2019-04-02" licensetype="trial" major="2" name="pdf2Data" platform="any">
+        <signature>DQxyUizacKip/6fax0K2oqR/bQHNawmHhHqn1Q1keFdRXC2AIpNklUW4BEBwcFcUrN8+ULuZZteWBPLYmV422hoT7uiR8Mp2LvBrsyuwoQVMei+efVtuvhPDbNyGdZkKy1KhFpdHAN/Gf4BYG4AS48L6gGVL9qIXCi8tEm6xUJyfU9fZQUjd0YUYqL+JiOuJKR+xpWdTJNBiHrfP1DsN54qDtfd0ds1NKMcsx3/0WNWfRytmxptXmdLs8wEyvF4EkJ0HiIN4qssRjh9RnHT9SD6HnhU6jAWgAsYC+uKBcBapzP1PXNSVi6Mr4HQsY5tX4STwZji9qzGwiqp1ykHbMvONRHWR2rmXGwhEXcip0UfxdwepgOT3OhbZxh/0QGY9dMo1CO5mXAXQlsLJbLa7RGGCfXQ2jNzP6doQ7rw/uN+HZeleEimFz+j5erVfVbvRpI05XoQdBe7oElRf1SHpwnNA5IhgIOCUBCiUfmxX5cU9dWMZnzfNWZ+Du23Xsx87rU8zbK+iZfGcVn4t2iaqflVytFpfD4o3EGclEzIEk2E8l5iKngfSqPMU3i7aJP25TzY7r4C24hlm08rikQEj8GR4YtZwpSOaCYLF3REiOFcXC2YYrKL8jjCAmU35ZkNPj8p99kBkMLorWSC2JFM+eAtST4vUn/h+RrPScTexagg=</signature>
+    </product>
+</license>

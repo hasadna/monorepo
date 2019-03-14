@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
-import { User, Project } from '@/proto';
+import { Project, User } from '@/proto';
 import { FirebaseService } from '@/services';
 
 @Component({
@@ -12,36 +11,28 @@ import { FirebaseService } from '@/services';
 })
 export class ProjectDetailsComponent implements OnInit {
   project: Project;
-
   projectUsers: User[];
 
   constructor(
     private route: ActivatedRoute,
-    private firebaseService: FirebaseService,
-    private location: Location
+    private firebaseService: FirebaseService
   ) { }
 
-  ngOnInit() {
-    this.getProject();
+  ngOnInit(): void {
+    const projectId: string = this.route.snapshot.paramMap.get('projectId');
+    this.loadData(projectId);
   }
 
-  getProject(): void {
-    const projectId: number = +this.route.snapshot.paramMap.get('projectId');
-    this.firebaseService.getProjectList()
-      .subscribe(projectList => {
-        this.project = projectList.find(project => (project.getProjectId() === projectId));
-        this.getProjectUsers(projectId);
-      });
-  }
+  loadData(projectId: string): void {
+   this.firebaseService.getReviewerConfig()
+    .subscribe(reviewerConfig => {
+      const userList: User[] = reviewerConfig.getUserList();
+      const projectList: Project[] = reviewerConfig.getProjectList();
 
-  getProjectUsers(projectId: number): void {
-    this.firebaseService.getUserList()
-      .subscribe(users => {
-        this.projectUsers = users.filter(user => user.getProjectList().includes(projectId));
-      });
-  }
-
-  goBack(): void {
-    this.location.back();
+      this.project = projectList.find(project => (project.getId() === projectId));
+      this.projectUsers = userList.filter(
+        user => user.getProjectIdList().includes(projectId)
+      );
+    });
   }
 }

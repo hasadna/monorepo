@@ -21,8 +21,8 @@ class Task2 {
     TextFormat.merge(protoTxt, builder);
 
     // count all users in parsed proto
-    String stats = String.format("Total number of users read: %d\n",
-        builder.build().getUsersCount());
+    String stats =
+        String.format("Total number of users read: %d\n", builder.build().getUsersCount());
 
     // write out stats for further processing
     Files.write(outfile, stats.getBytes());
