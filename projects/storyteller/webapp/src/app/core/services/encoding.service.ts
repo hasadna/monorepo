@@ -15,3 +15,4 @@ export class EncodingService {
     return uint8Array;
   }
 }
+
