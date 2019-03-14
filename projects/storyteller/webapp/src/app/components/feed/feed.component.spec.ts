@@ -23,3 +23,4 @@ describe('FeedComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

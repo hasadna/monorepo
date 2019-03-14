@@ -11,26 +11,28 @@ import { zip } from 'rxjs';
 export class FeedComponent {
   storylist: StoryList[];
   screenshots: Screenshot[];
+  isLoading = true;
 
   constructor(
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
   ) {
     if (firebaseService.isOnline) {
-     this.setData();
+      this.setData();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
         this.setData();
       });
+    }
   }
-}
-  setData(): void{
+  setData(): void {
     zip(
       this.firebaseService.getStorylistAll(),
       this.firebaseService.getScreenshotAll()
     ).subscribe(data => {
       this.storylist = data[0];
       this.screenshots = data[1];
+      this.isLoading = false;
     });
   }
 }

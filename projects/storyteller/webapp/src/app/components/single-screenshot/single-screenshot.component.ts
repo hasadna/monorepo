@@ -6,3 +6,4 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./single-screenshot.component.scss']
 })
 export class SingleScreenshotComponent { }
+

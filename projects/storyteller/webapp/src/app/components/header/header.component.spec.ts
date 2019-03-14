@@ -23,3 +23,4 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

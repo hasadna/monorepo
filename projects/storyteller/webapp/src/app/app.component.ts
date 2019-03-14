@@ -9,3 +9,4 @@ import { EncodingService, FirebaseService } from '@/core/services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent { }
+

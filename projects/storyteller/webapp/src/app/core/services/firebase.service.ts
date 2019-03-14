@@ -65,3 +65,4 @@ export class FirebaseService {
     return this.angularFireAuth.auth.signInAnonymously();
   }
 }
+

@@ -23,3 +23,4 @@ describe('SingleScreenshotComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
