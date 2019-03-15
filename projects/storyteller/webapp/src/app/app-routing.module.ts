@@ -7,7 +7,10 @@ import { SingleScreenshotComponent } from '@/components/single-screenshot/single
 
 const appRoutes: Routes = [
   { path: 'home', component: FeedComponent },
-  { path: 'single-screenshot/:projectId', component: SingleScreenshotComponent },
+  {
+    path: 'single-screenshot/:storyId/:screenshot/:storyAuthor',
+    component: SingleScreenshotComponent
+  },
   { path: 'info', component: UserInfoComponent },
   { path: '**', redirectTo: '/home' },
 ];
