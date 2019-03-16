@@ -1,4 +1,4 @@
-package projects.data_analysis.task3;
+package projects.data_analysis.linecount;
 
 import com.google.common.collect.ImmutableList;
 
@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-public class Task3 {
+public class LineCount {
     public static void main(String[] args) throws IOException {
             ImmutableList<Path> paths = ImmutableList.of(Paths.get(args[0]), Paths.get(args[1]), Paths.get(args[2]));
             Path outfile = Paths.get(args[3]);
