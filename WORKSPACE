@@ -170,6 +170,7 @@ http_archive(
 #gtfs_data
 http_archive(
     name = "gtfs_data",
-    build_file_content = 'exports_files(["agency.txt", "calendar.txt", "fare_attributes.txt", "fare_rules.txt", "routes.txt", "shapes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+    build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+
 )
