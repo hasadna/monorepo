@@ -6,10 +6,11 @@ import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
 import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
 import com.projects.opentrain.gtfs_pipeline.Protos.Translation;
 import com.projects.opentrain.gtfs_pipeline.Protos.Trip;
-
+import java.nio.file.StandardOpenOption;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.io.FileOutputStream;
+
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -338,6 +341,60 @@ class DataHandler {
     return getStops(stopsAbsPath).stream().map(Stop::getStopName).collect(Collectors.toList());
   }
 
+  public static void saveCalendar(){
+    try (FileOutputStream output = new FileOutputStream(calendarProtoAbsPath)) {
+    for (Protos.Calendar calendar : getCalendar(calendarAbsPath)){
+      calendar.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
+  public static void saveRoutes(){
+    try (FileOutputStream output = new FileOutputStream(routesProtoAbsPath)) {
+    for (Route route : getRoutes(routesAbsPath)){
+      route.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
+  public static void saveStopTime(){
+    try (FileOutputStream output = new FileOutputStream(stopTimeProtoAbsPath)) {
+    for (StopTime stopTime : getStopTimes(stopTimeAbsPath)){
+      stopTime.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
+  public static void saveStops(){
+    try (FileOutputStream output = new FileOutputStream(stopsProtoAbsPath)) {
+    for (Stop stop : getStops(stopsAbsPath)){
+      stop.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
+  public static void saveTranslations(){
+    try (FileOutputStream output = new FileOutputStream(translationsProtoAbsPath)) {
+    for (Translation translation : getTranslations(translationsAbsPath)){
+      translation.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
+  public static void saveTrips(){
+    try (FileOutputStream output = new FileOutputStream(tripsAbsProtoAbsPath)) {
+    for (Trip trip : getTrips(tripsAbsPath)){
+      trip.writeDelimitedTo(output);
+    }} catch (IOException e) {
+      throw new RuntimeException(e);
+    } 
+  }
+
   // Paths to the CSVs files
   static Path calendarAbsPath;
   static Path routesAbsPath;
@@ -345,6 +402,15 @@ class DataHandler {
   static Path stopsAbsPath;
   static Path translationsAbsPath;
   static Path tripsAbsPath;
+
+  // Paths to output files
+  static String calendarProtoAbsPath;
+  static String routesProtoAbsPath;
+  static String stopTimeProtoAbsPath;
+  static String stopsProtoAbsPath;
+  static String translationsProtoAbsPath;
+  static String tripsAbsProtoAbsPath;
+
 
   public static void main(String[] args) {
 
@@ -355,20 +421,27 @@ class DataHandler {
       stopsAbsPath = Paths.get(args[3]);
       translationsAbsPath = Paths.get(args[4]);
       tripsAbsPath = Paths.get(args[5]);
+
+      calendarProtoAbsPath = args[6];
+      routesProtoAbsPath = args[7];
+      stopTimeProtoAbsPath = args[8];
+      stopsProtoAbsPath = args[9];
+      translationsProtoAbsPath = args[10];
+      tripsAbsProtoAbsPath = args[11];
     }
 
-    List<Protos.Calendar> calendarMessages = getCalendar(calendarAbsPath);
-    List<Route> routeMessages = getRoutes(routesAbsPath);
-    List<StopTime> stopTimeMessages = getStopTimes(stopTimeAbsPath);
-    List<Stop> stopMessages = getStops(stopsAbsPath);
-    List<Translation> traslationMessages = getTranslations(translationsAbsPath);
-    List<Trip> tripMessages = getTrips(tripsAbsPath);
+    saveCalendar();
+    saveRoutes();
+    saveStopTime();
+    saveStops();
+    saveTranslations();
+    saveTrips();
 
-    try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
+    //try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
 
-    } catch (Exception e) {
-      throw new RuntimeException();
-    }
+   /// } catch (Exception e) {
+//throw new RuntimeException();
+    //}
   }
 }
 
