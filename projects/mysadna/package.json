@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "protoc": "node ../../common/protoc.js projects/mysadna"
+    "protoc": "workspacerun protoc"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +49,7 @@
     "ts-node": "~7.0.0",
     "ts-protoc-gen": "^0.8.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.6"
+    "typescript": "~3.1.6",
+    "workspacerun": "^1.0.4"
   }
 }

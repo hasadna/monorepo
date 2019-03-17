@@ -6,3 +6,4 @@ export const config = {
   storageBucket: 'startupos-5f279.appspot.com',
   messagingSenderId: '160348327132'
 };
+
