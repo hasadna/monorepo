@@ -10,9 +10,9 @@ import * as firebase from 'firebase/app';
 interface FirebaseElement {
   proto: string;
 }
+
 @Injectable()
 export class FirebaseService {
-
   isOnline: boolean;
   private reviewerConfig: AngularFirestoreCollection<FirebaseElement>;
 
@@ -26,6 +26,7 @@ export class FirebaseService {
     });
     this.reviewerConfig = this.db.collection('reviewer');
   }
+
   getStoryListAll(
     collection: AngularFirestoreCollection<FirebaseElement>
   ): Observable<StoryList[]> {
@@ -40,6 +41,7 @@ export class FirebaseService {
         return StoryList.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
+
   getScreenshotAll(
     collection: AngularFirestoreCollection<FirebaseElement>
   ): Observable<Screenshot[]> {
@@ -54,6 +56,7 @@ export class FirebaseService {
         return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
+
   getUserStories(user: string): Observable<StoryList[]> {
     let collection: AngularFirestoreCollection<FirebaseElement>;
     if (user) {
@@ -61,6 +64,7 @@ export class FirebaseService {
       return this.getStoryListAll(collection);
     }
   }
+
   getUserScreenshot(user: string): Observable<Screenshot[]> {
     let collection: AngularFirestoreCollection<FirebaseElement>;
     if (user) {
@@ -68,6 +72,7 @@ export class FirebaseService {
       return this.getScreenshotAll(collection);
     }
   }
+
   // Converts firebaseElement to binary
   private getBinary(firebaseElement: FirebaseElement): Uint8Array {
     const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
@@ -75,6 +80,7 @@ export class FirebaseService {
     );
     return binary;
   }
+  
   // Getting users from Firebase
   getReviewerConfig(): Observable<ReviewerConfig> {
     return this.reviewerConfig
@@ -91,6 +97,7 @@ export class FirebaseService {
         })
       );
   }
+  
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
   }

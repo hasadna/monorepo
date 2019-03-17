@@ -42,7 +42,6 @@ export class FeedComponent {
   loadusers(): void {
     this.firebaseService.getReviewerConfig().subscribe(userData => {
       this.users = userData.getUserList();
-      console.log(this.users);
       this.getData(this.users);
     });
   }

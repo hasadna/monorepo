@@ -1,5 +1,5 @@
 $font-stack: OpenSans;
-%header {
+.header {
 	font-family: $font-stack;
 	font-size: 18px;
 	font-weight: bold;
@@ -46,7 +46,7 @@ img {
 }
 
 .author {
-	@extend %header;
+	@extend .header;
 	margin-left: 2%;
 }
 
