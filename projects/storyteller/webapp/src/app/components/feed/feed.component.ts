@@ -27,6 +27,7 @@ export class FeedComponent {
       });
     }
   }
+
   setData(user: string): void {
     zip(
       this.firebaseService.getUserStories(user),
@@ -34,16 +35,18 @@ export class FeedComponent {
     ).subscribe(data => {
       this.storylist.push.apply(this.storylist, data[0]);
       this.screenshots.push.apply(this.screenshots, data[1]);
-
       this.isLoading = false;
     });
   }
+  
   loadusers(): void {
     this.firebaseService.getReviewerConfig().subscribe(userData => {
       this.users = userData.getUserList();
+      console.log(this.users);
       this.getData(this.users);
     });
   }
+  
   getData(users: User[]) {
     for (const user of this.users) {
       this.setData(user.getEmail());

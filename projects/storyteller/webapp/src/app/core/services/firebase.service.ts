@@ -10,12 +10,11 @@ import * as firebase from 'firebase/app';
 interface FirebaseElement {
   proto: string;
 }
-
 @Injectable()
 export class FirebaseService {
 
   isOnline: boolean;
-  private protobin_users: AngularFirestoreCollection<FirebaseElement>;
+  private reviewerConfig: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
@@ -25,9 +24,9 @@ export class FirebaseService {
     this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
     });
-    this.protobin_users = this.db.collection('reviewer');
+    this.reviewerConfig = this.db.collection('reviewer');
   }
-  getstorylistAll(
+  getStoryListAll(
     collection: AngularFirestoreCollection<FirebaseElement>
   ): Observable<StoryList[]> {
     return collection.snapshotChanges().pipe(
@@ -59,7 +58,7 @@ export class FirebaseService {
     let collection: AngularFirestoreCollection<FirebaseElement>;
     if (user) {
       collection = this.db.collection(`/storyteller/data/user/${user}/story`);
-      return this.getstorylistAll(collection);
+      return this.getStoryListAll(collection);
     }
   }
   getUserScreenshot(user: string): Observable<Screenshot[]> {
@@ -78,7 +77,7 @@ export class FirebaseService {
   }
   // Getting users from Firebase
   getReviewerConfig(): Observable<ReviewerConfig> {
-    return this.protobin_users
+    return this.reviewerConfig
       .doc('config_binary')
       .snapshotChanges()
       .pipe(

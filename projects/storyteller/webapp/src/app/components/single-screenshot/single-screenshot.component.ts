@@ -37,6 +37,7 @@ export class SingleScreenshotComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
   getStory(storyId: string, storyLists: StoryList[]): void {
     for (const storyList of storyLists) {
       for (const story of storyList.getStoryList()) {
@@ -47,6 +48,7 @@ export class SingleScreenshotComponent implements OnInit {
       }
     }
   }
+  
   getScreenshot(screenshotFilename: string, screenshots: Screenshot[]): void {
     for (const screenshot of screenshots) {
       if (screenshot.getFilename() === screenshotFilename) {
