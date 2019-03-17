@@ -436,12 +436,6 @@ class DataHandler {
     saveStops();
     saveTranslations();
     saveTrips();
-
-    //try (FileOutputStream outPut = new FileOutputStream(args[args.length - 1])) {
-
-   /// } catch (Exception e) {
-//throw new RuntimeException();
-    //}
   }
 }
 
