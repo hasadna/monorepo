@@ -51,12 +51,12 @@ img {
 }
 
 .project {
-	@extend %header;
+	@extend .header;
 	font-style: italic;
 }
 
 .notes {
-	@extend %header;
+	@extend .header;
 	margin-left: 10%;
 	font-weight: normal;
 	padding-bottom: 10px;
