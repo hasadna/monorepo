@@ -62,7 +62,7 @@ class DataHandler {
   }
 
   public static List<Integer> getServiceIds() {
-    List<Protos.Calendar> calendars = getCalendar(calendarAbsPath);
+    List<Protos.Calendar> calendars = getCalendar(calendarsAbsPath);
     List<Integer> serviceIds = new ArrayList<>();
     for (Protos.Calendar calendar : calendars) {
       serviceIds.add(calendar.getServiceId());
@@ -165,7 +165,7 @@ class DataHandler {
   }
 
   public static List<Integer> getStopsId() {
-    return getStopTimes(stopTimeAbsPath)
+    return getStopTimes(stopTimesAbsPath)
         .stream()
         .map(StopTime::getStopId)
         .collect(Collectors.toList());
@@ -340,9 +340,9 @@ class DataHandler {
     return getStops(stopsAbsPath).stream().map(Stop::getStopName).collect(Collectors.toList());
   }
 
-  public static void saveCalendar() {
-    try (FileOutputStream output = new FileOutputStream(calendarProtoAbsPath)) {
-      for (Protos.Calendar calendar : getCalendar(calendarAbsPath)) {
+  public static void saveCalendars() {
+    try (FileOutputStream output = new FileOutputStream(calendarsProtoAbsPath)) {
+      for (Protos.Calendar calendar : getCalendar(calendarsAbsPath)) {
         calendar.writeDelimitedTo(output);
       }
     } catch (IOException e) {
@@ -360,9 +360,9 @@ class DataHandler {
     }
   }
 
-  public static void saveStopTime() {
-    try (FileOutputStream output = new FileOutputStream(stopTimeProtoAbsPath)) {
-      for (StopTime stopTime : getStopTimes(stopTimeAbsPath)) {
+  public static void saveStopTimes() {
+    try (FileOutputStream output = new FileOutputStream(stopTimesProtoAbsPath)) {
+      for (StopTime stopTime : getStopTimes(stopTimesAbsPath)) {
         stopTime.writeDelimitedTo(output);
       }
     } catch (IOException e) {
@@ -391,7 +391,7 @@ class DataHandler {
   }
 
   public static void saveTrips() {
-    try (FileOutputStream output = new FileOutputStream(tripsAbsProtoAbsPath)) {
+    try (FileOutputStream output = new FileOutputStream(tripsProtoAbsPath)) {
       for (Trip trip : getTrips(tripsAbsPath)) {
         trip.writeDelimitedTo(output);
       }
@@ -401,42 +401,42 @@ class DataHandler {
   }
 
   // Paths to the CSVs files
-  static Path calendarAbsPath;
+  static Path calendarsAbsPath;
   static Path routesAbsPath;
-  static Path stopTimeAbsPath;
+  static Path stopTimesAbsPath;
   static Path stopsAbsPath;
   static Path translationsAbsPath;
   static Path tripsAbsPath;
 
   // Paths to output files
-  static String calendarProtoAbsPath;
+  static String calendarsProtoAbsPath;
   static String routesProtoAbsPath;
-  static String stopTimeProtoAbsPath;
+  static String stopTimesProtoAbsPath;
   static String stopsProtoAbsPath;
   static String translationsProtoAbsPath;
-  static String tripsAbsProtoAbsPath;
+  static String tripsProtoAbsPath;
 
   public static void main(String[] args) {
 
     {
-      calendarAbsPath = Paths.get(args[0]);
+      calendarsAbsPath = Paths.get(args[0]);
       routesAbsPath = Paths.get(args[1]);
-      stopTimeAbsPath = Paths.get(args[2]);
+      stopTimesAbsPath = Paths.get(args[2]);
       stopsAbsPath = Paths.get(args[3]);
       translationsAbsPath = Paths.get(args[4]);
       tripsAbsPath = Paths.get(args[5]);
 
-      calendarProtoAbsPath = args[6];
+      calendarsProtoAbsPath = args[6];
       routesProtoAbsPath = args[7];
-      stopTimeProtoAbsPath = args[8];
+      stopTimesProtoAbsPath = args[8];
       stopsProtoAbsPath = args[9];
       translationsProtoAbsPath = args[10];
-      tripsAbsProtoAbsPath = args[11];
+      tripsProtoAbsPath = args[11];
     }
 
-    saveCalendar();
+    saveCalendars();
     saveRoutes();
-    saveStopTime();
+    saveStopTimes();
     saveStops();
     saveTranslations();
     saveTrips();
