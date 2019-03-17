@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.io.FileOutputStream;
 
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -341,58 +340,64 @@ class DataHandler {
     return getStops(stopsAbsPath).stream().map(Stop::getStopName).collect(Collectors.toList());
   }
 
-  public static void saveCalendar(){
+  public static void saveCalendar() {
     try (FileOutputStream output = new FileOutputStream(calendarProtoAbsPath)) {
-    for (Protos.Calendar calendar : getCalendar(calendarAbsPath)){
-      calendar.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (Protos.Calendar calendar : getCalendar(calendarAbsPath)) {
+        calendar.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
-  public static void saveRoutes(){
+  public static void saveRoutes() {
     try (FileOutputStream output = new FileOutputStream(routesProtoAbsPath)) {
-    for (Route route : getRoutes(routesAbsPath)){
-      route.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (Route route : getRoutes(routesAbsPath)) {
+        route.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
-  public static void saveStopTime(){
+  public static void saveStopTime() {
     try (FileOutputStream output = new FileOutputStream(stopTimeProtoAbsPath)) {
-    for (StopTime stopTime : getStopTimes(stopTimeAbsPath)){
-      stopTime.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (StopTime stopTime : getStopTimes(stopTimeAbsPath)) {
+        stopTime.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
-  public static void saveStops(){
+  public static void saveStops() {
     try (FileOutputStream output = new FileOutputStream(stopsProtoAbsPath)) {
-    for (Stop stop : getStops(stopsAbsPath)){
-      stop.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (Stop stop : getStops(stopsAbsPath)) {
+        stop.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
-  public static void saveTranslations(){
+  public static void saveTranslations() {
     try (FileOutputStream output = new FileOutputStream(translationsProtoAbsPath)) {
-    for (Translation translation : getTranslations(translationsAbsPath)){
-      translation.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (Translation translation : getTranslations(translationsAbsPath)) {
+        translation.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
-  public static void saveTrips(){
+  public static void saveTrips() {
     try (FileOutputStream output = new FileOutputStream(tripsAbsProtoAbsPath)) {
-    for (Trip trip : getTrips(tripsAbsPath)){
-      trip.writeDelimitedTo(output);
-    }} catch (IOException e) {
+      for (Trip trip : getTrips(tripsAbsPath)) {
+        trip.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
       throw new RuntimeException(e);
-    } 
+    }
   }
 
   // Paths to the CSVs files
@@ -410,7 +415,6 @@ class DataHandler {
   static String stopsProtoAbsPath;
   static String translationsProtoAbsPath;
   static String tripsAbsProtoAbsPath;
-
 
   public static void main(String[] args) {
 
