@@ -1,18 +1,15 @@
 
+
 # Noloan2
 
 ## Installation
 
-Download and add these 2 jars to `app/lib/`:
-- [IText 7 License Key Library](https://mvnrepository.com/artifact/com.itextpdf/itext-licensekey "IText 7 License Key Library")
-- [pdfCalligraph](https://mvnrepository.com/artifact/com.itextpdf/typography "typography")
+1. Go to `build.gradle` and see the versions for ***typography*** and ***itext-licensekey*** jar files.
+     _implementation files('lib/typography-***2.0.3***.jar')_
+    _implementation files('lib/itext-licensekey-***3.0.4***.jar')_
 
-Change versions on app level `build.gradle` to fit the ones you downloaded:
-```java
- dependencies {
- 	...
-    implementation files('lib/typography-2.0.3.jar')
-    implementation files('lib/itext-licensekey-3.0.4.jar')
-}
-```
+2. Download the matching versions from these links and put them under `lib/`. 
+ [IText 7 License Key Library](https://mvnrepository.com/artifact/com.itextpdf/itext-licensekey "IText 7 License Key Library")
+ [pdfCalligraph (typography)](https://mvnrepository.com/artifact/com.itextpdf/typography "typography")
+
 
