@@ -3,14 +3,7 @@
 readonly DOWNLOAD_DIR_NAME="downloads_$(date +%Y%m%d_%H%M%S)"
 readonly DOWNLOAD_DIR_ABS_PATH="$(pwd)/$DOWNLOAD_DIR_NAME"
 readonly BASE_ABS_PATH=${HOME}/base
-
-sudo apt update
-echo "Checking for git installing"
-if [[ $(which git; echo $?) == "1" ]]; then
-    echo "Installing git"
-    sudo apt install git
-    echo "git is installed"
-fi
+readonly BAZEL_VERSION=0.21.0
 
 echo "Checking for curl installing"
 if [[ $(which curl; echo $?) == "1" ]]; then
@@ -24,6 +17,14 @@ http_code=$(curl -LI httpbin.org/get -o /dev/null -w '%{http_code}\n' -s)
 if [[ "$http_code" != "200" ]]; then
     echo "Please ensure internet connection is available and re-run the script"
     exit 1
+fi
+
+sudo apt update
+echo "Checking for git installing"
+if [[ $(which git; echo $?) == "1" ]]; then
+    echo "Installing git"
+    sudo apt install git
+    echo "git is installed"
 fi
 
 echo "Checking for JDK"
@@ -46,13 +47,13 @@ fi
 
 # Install Bazel
 if [[ $(which bazel; echo $?) == "1" ]]; then
-    readonly BAZEL_VERSION=0.21.0
-    echo "Installing bazel"
+ echo "Installing bazel"
     sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
     wget -O "bazel.${BAZEL_VERSION}.sh" "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh"
     chmod +x "bazel.${BAZEL_VERSION}.sh"
     sudo ./bazel.${BAZEL_VERSION}.sh --user
     export PATH="$PATH:$HOME/bin"
+    echo 'source '${HOME}'/.bazel/bin/bazel-complete.bash' >> ~/.bashrc
     echo "bazel is installed"
 fi
 
@@ -76,11 +77,11 @@ cd ..
 echo "source `pwd`/startup-os/tools/reviewer/aa/aa_tool.sh" >> ~/.bashrc
 source ~/.bashrc
 
-echo "Please sign-in at https://web-login-startupos.firebaseapp.com and then check that ~/.aa_token exists"
-
 # Removing temporary download folder
 cd ${DOWNLOAD_DIR_ABS_PATH}
 cd ..
 if [[ -d "$DOWNLOAD_DIR_NAME" ]]; then
     rm -Rf ${DOWNLOAD_DIR_NAME};
 fi
+
+echo "Please sign-in at https://localhost:7000/login and then check that ~/.aa_token exists"
