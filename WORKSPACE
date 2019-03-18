@@ -1,8 +1,11 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
-
 load("//third_party/maven:workspace.bzl", "maven_dependencies")
+
+RULES_JVM_EXTERNAL_TAG = "1.0"
+
+RULES_JVM_EXTERNAL_SHA = "48e0f1aab74fabba98feb8825459ef08dcc75618d381dff63ec9d4dd9860deaa"
 
 maven_dependencies()
 
@@ -18,9 +21,9 @@ GMAVEN_TAG = "20180513-1"
 
 http_archive(
     name = "gmaven_rules",
-    sha256 = "da44017f6d7bc5148a73cfd9bf8dbb1ee5a1301a596edad9181c5dc7648076ae",
-    strip_prefix = "gmaven_rules-20180513-1",
-    url = "https://github.com/bazelbuild/gmaven_rules/archive/20180513-1.tar.gz",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
 )
 
 load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
@@ -35,12 +38,11 @@ android_sdk_repository(
     build_tools_version = "27.0.3",
 )
 
-
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
+    strip_prefix = "startup-os-30961b3d08b75cb9590b8c45e578680639d955e4",
     urls = ["https://github.com/google/startup-os/archive/30961b3d08b75cb9590b8c45e578680639d955e4.zip"],
-    strip_prefix = "startup-os-30961b3d08b75cb9590b8c45e578680639d955e4"
 )
 # MARK: StartupOS end
 
@@ -50,6 +52,7 @@ http_archive(
     strip_prefix = "rules_docker-0.5.1",
     urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.5.1.tar.gz"],
 )
+
 http_jar(
     name = "bazel_deps",
     sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
@@ -75,29 +78,29 @@ http_file(
     name = "protoc_bin",
     executable = True,
     sha256 = "6003de742ea3fcf703cfec1cd4a3380fd143081a2eb0e559065563496af27807",
-    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip"]
+    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip"],
 )
 
 http_file(
     name = "protoc_bin_osx",
     executable = True,
     sha256 = "0decc6ce5beed07f8c20361ddeb5ac7666f09cf34572cca530e16814093f9c0c",
-    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-osx-x86_64.zip"]
+    urls = ["https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-osx-x86_64.zip"],
 )
 
 bind(
     name = "proto_compiler",
-    actual = "@startup_os//tools:protoc"
+    actual = "@startup_os//tools:protoc",
 )
 
 bind(
     name = "proto_java_toolchain",
-    actual = "@startup_os//tools:java_toolchain"
+    actual = "@startup_os//tools:java_toolchain",
 )
 
 bind(
     name = "grpc_java_plugin",
-    actual = "@startup_os//tools:grpc_java_plugin"
+    actual = "@startup_os//tools:grpc_java_plugin",
 )
 
 http_file(
@@ -125,44 +128,42 @@ http_file(
     name = "clang_format_bin_osx",
     executable = True,
     sha256 = "06986eeed23213c5b6a97440c6a3090eabc62ceaf7fcb72f2b95c4744128dccf",
-    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/clang_format_bin_osx"]
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.0/clang_format_bin_osx"],
 )
 
 http_file(
     name = "shfmt",
     executable = True,
     sha256 = "bdf8e832a903a80806b93a9ad80d8f95a70966fbec3258a565ed5edc2ae5bcdc",
-    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_linux_amd64"]
+    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_linux_amd64"],
 )
 
 http_file(
     name = "shfmt_osx",
     executable = True,
     sha256 = "aaaa7d639acb30853e2f5008f56526c8dd54a366219ebdc5fa7f13a15277dd0b",
-    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_darwin_amd64"]
+    urls = ["https://github.com/mvdan/sh/releases/download/v2.6.2/shfmt_v2.6.2_darwin_amd64"],
 )
 
 # MARK: sample data for analysis pipeline start
 http_archive(
     name = "step1_data",
-    sha256 = "23927505626ebdb8e17f64368ed8b8f47e1bd5baa4b8e6d9c1f25de045589f11",
-    url = "https://github.com/hasadna/hasadna/releases/download/v1/example_input_data_step1.zip",
     build_file_content = 'exports_files(["file1.txt", "file2.txt"])',
-    strip_prefix = 'example_input_data_step1'
+    sha256 = "23927505626ebdb8e17f64368ed8b8f47e1bd5baa4b8e6d9c1f25de045589f11",
+    strip_prefix = "example_input_data_step1",
+    url = "https://github.com/hasadna/hasadna/releases/download/v1/example_input_data_step1.zip",
 )
-
 
 http_file(
     name = "step1_prebuilt_output",
-    urls = ["https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt"]
+    urls = ["https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt"],
 )
-
 
 http_archive(
     name = "step1_prebuilt_zipped_output",
+    build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
     sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
     url = "https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt.zip",
-    build_file_content = 'exports_files(["merged_file1_file2.prototxt"])',
 )
 # MARK: sample data for analysis pipeline end
 
@@ -170,5 +171,6 @@ http_archive(
 http_archive(
     name = "gtfs_data",
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
-    build_file_content = 'exports_files(["agency.txt", "calendar.txt", "fare_attributes.txt", "fare_rules.txt", "routes.txt", "shapes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+    build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+
 )
