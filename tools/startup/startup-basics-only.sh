@@ -3,13 +3,12 @@
 readonly DOWNLOAD_DIR_NAME="downloads_$(date +%Y%m%d_%H%M%S)"
 readonly DOWNLOAD_DIR_ABS_PATH="$(pwd)/$DOWNLOAD_DIR_NAME"
 readonly BASE_ABS_PATH=${HOME}/base
-readonly BAZEL_VERSION=0.21.0
+readonly BAZEL_VERSION=0.23.2
 
 echo "Checking for curl installing"
 if [[ $(which curl; echo $?) == "1" ]]; then
-    echo "Installing curl"
-    sudo apt install curl
-    echo "curl is installed"
+    echo "Please ensure internet connection, install curl (sudo apt-get update && sudo apt-get install curl) and re-run the script"
+    exit 1
 fi
 
 echo "Checking for internet connection"
@@ -84,4 +83,4 @@ if [[ -d "$DOWNLOAD_DIR_NAME" ]]; then
     rm -Rf ${DOWNLOAD_DIR_NAME};
 fi
 
-echo "Please sign-in at https://localhost:7000/login and then check that ~/.aa_token exists"
+echo "Please sign-in at localhost:7000/login and then check that ~/.aa_token exists"
