@@ -1,10 +1,5 @@
-<div *ngIf="!storylist">
-  Loading
+<div class="container">
+  <app-header></app-header>
+  <router-outlet></router-outlet>
 </div>
-<div *ngIf="storylist">
-  <div *ngFor="let storylistChild of storylist">
-    ----
-    <div *ngFor="let story of storylistChild.getStoryList()">
-      {{ story.getProject()}}
-    </div>
-  </div>
+

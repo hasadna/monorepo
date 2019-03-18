@@ -8,27 +8,5 @@ import { EncodingService, FirebaseService } from '@/core/services';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  storylist: StoryList[];
+export class AppComponent { }
 
-
-  constructor(
-    private firebaseService: FirebaseService,
-    private encodingService: EncodingService,
-  ) {
-    if (firebaseService.isOnline) {
-      this.load();
-    } else {
-      this.firebaseService.anonymousLogin().then(() => {
-        this.load();
-      });
-    }
-  }
-
-  load(): void {
-    this.firebaseService.getstorylistAll().subscribe(storylist => {
-      this.storylist = storylist;
-
-    });
-  }
-}
