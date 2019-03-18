@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Injectable, OnInit } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { StoryList, Screenshot } from '@/core/proto';
+import { StoryList, Screenshot, ReviewerConfig } from '@/core/proto';
 import { EncodingService } from './encoding.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+
 interface FirebaseElement {
   proto: string;
 }
@@ -14,8 +14,7 @@ interface FirebaseElement {
 @Injectable()
 export class FirebaseService {
   isOnline: boolean;
-  private stories: AngularFirestoreCollection<FirebaseElement>;
-  private screenshots: AngularFirestoreCollection<FirebaseElement>;
+  private reviewerConfig: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
@@ -25,13 +24,13 @@ export class FirebaseService {
     this.angularFireAuth.authState.subscribe(userData => {
       this.isOnline = !!userData;
     });
-    this.stories =
-      this.db.collection(`/storyteller/data/user/valerii.fedorenko.ua@gmail.com/story`);
-    this.screenshots =
-      this.db.collection('/storyteller/data/user/valerii.fedorenko.ua@gmail.com/screenshot');
+    this.reviewerConfig = this.db.collection('reviewer');
   }
-  getStorylistAll(): Observable<StoryList[]> {
-    return this.stories.snapshotChanges().pipe(
+
+  getStoryListAll(
+    collection: AngularFirestoreCollection<FirebaseElement>
+  ): Observable<StoryList[]> {
+    return collection.snapshotChanges().pipe(
       map(action => action.map(a => {
         const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
@@ -42,8 +41,11 @@ export class FirebaseService {
         return StoryList.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
-  getScreenshotAll(): Observable<Screenshot[]> {
-    return this.screenshots.snapshotChanges().pipe(
+
+  getScreenshotAll(
+    collection: AngularFirestoreCollection<FirebaseElement>
+  ): Observable<Screenshot[]> {
+    return collection.snapshotChanges().pipe(
       map(action => action.map(a => {
         const firebaseElement = a.payload.doc.data() as FirebaseElement;
 
@@ -54,6 +56,23 @@ export class FirebaseService {
         return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
+
+  getUserStories(user: string): Observable<StoryList[]> {
+    let collection: AngularFirestoreCollection<FirebaseElement>;
+    if (user) {
+      collection = this.db.collection(`/storyteller/data/user/${user}/story`);
+      return this.getStoryListAll(collection);
+    }
+  }
+
+  getUserScreenshot(user: string): Observable<Screenshot[]> {
+    let collection: AngularFirestoreCollection<FirebaseElement>;
+    if (user) {
+      collection = this.db.collection(`/storyteller/data/user/${user}/screenshot`);
+      return this.getScreenshotAll(collection);
+    }
+  }
+
   // Converts firebaseElement to binary
   private getBinary(firebaseElement: FirebaseElement): Uint8Array {
     const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
@@ -61,6 +80,24 @@ export class FirebaseService {
     );
     return binary;
   }
+  
+  // Getting users from Firebase
+  getReviewerConfig(): Observable<ReviewerConfig> {
+    return this.reviewerConfig
+      .doc('config_binary')
+      .snapshotChanges()
+      .pipe(
+        map(action => {
+          const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
+          if (firebaseElement === undefined) {
+            // Element not found
+            return;
+          }
+          return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
+        })
+      );
+  }
+  
   anonymousLogin(): Promise<any> {
     return this.angularFireAuth.auth.signInAnonymously();
   }
