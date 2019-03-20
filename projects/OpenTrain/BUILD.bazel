@@ -1,6 +1,5 @@
-
 genrule(
-    name = "open_train_pipeline",
+    name = "open_train",
     srcs = [
         "@gtfs_data//:stops.txt",
         "@gtfs_data//:routes.txt",
