@@ -3,6 +3,10 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 load("//third_party/maven:workspace.bzl", "maven_dependencies")
 
+RULES_JVM_EXTERNAL_TAG = "1.0"
+
+RULES_JVM_EXTERNAL_SHA = "48e0f1aab74fabba98feb8825459ef08dcc75618d381dff63ec9d4dd9860deaa"
+
 maven_dependencies()
 
 http_archive(
@@ -17,9 +21,9 @@ GMAVEN_TAG = "20180513-1"
 
 http_archive(
     name = "gmaven_rules",
-    sha256 = "da44017f6d7bc5148a73cfd9bf8dbb1ee5a1301a596edad9181c5dc7648076ae",
-    strip_prefix = "gmaven_rules-20180513-1",
-    url = "https://github.com/bazelbuild/gmaven_rules/archive/20180513-1.tar.gz",
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
 )
 
 load("@gmaven_rules//:gmaven.bzl", "gmaven_rules")
@@ -166,6 +170,16 @@ http_archive(
 #gtfs_data
 http_archive(
     name = "gtfs_data",
-    build_file_content = 'exports_files(["agency.txt", "calendar.txt", "fare_attributes.txt", "fare_rules.txt", "routes.txt", "shapes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt", "samples.txt"])',
+    build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+)
+
+#csv_data
+http_archive(
+    name = "csv_data",
+    build_file_content = 'exports_files(["samples.csv"])',
+    url = "https://otrain.org/files/dumps-csv/samples.csv.gz",
+    #"https://otrain.org/files/dumps-csv/routes.csv.gz",
+    #"https://otrain.org/files/dumps-csv/stops.csv.gz",
+    #"https://otrain.org/files/dumps-csv/trips.csv.gz",
 )

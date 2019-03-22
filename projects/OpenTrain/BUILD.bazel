@@ -1,12 +1,12 @@
 genrule(
     name = "open_train",
     srcs = [
-        "@gtfs_data//:stops.txt",
-        "@gtfs_data//:routes.txt",
-        "@gtfs_data//:trips.txt",
-        "@gtfs_data//:samples.txt",
+        "@csv_data//:samples.csv",
+        #"@csv_data//:routes.csv",
+        #"@csv_data//:stops.csv",
+        #"@csv_data//:trips.csv",
     ],
     outs = ["output.txt"],
-    cmd = "$(location //projects/OpenTrain/israel_railways_pipeline:israel_railways_pipeline) $(location @gtfs_data//:stops.txt) $(location @gtfs_data//:routes.txt) $(location @gtfs_data//:trips.txt) $(location @gtfs_data//:samples.txt) $@",
+    cmd = "$(location //projects/OpenTrain/israel_railways_pipeline:israel_railways_pipeline) $(location @csv_data//:samples.csv) $@",
     tools = ["//projects/OpenTrain/israel_railways_pipeline"],
 )
