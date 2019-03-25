@@ -1,24 +1,39 @@
 <div *ngIf="isLoading">
   Loading
 </div>
-<div *ngIf="!isLoading">
-  <div *ngFor="let storylistChild of storylist">
-    <div class="container">
-      <div class="list" *ngFor="let story of storylistChild.getStoryList()">
-        <div class="story" *ngFor="let storyItem of story.getItemList()">
-          <span class="userimagediv">
-            <img class="userImage" src="/assets/user.png" width="60" height="50" alt="">
-          </span>
-          <span class="head">
-            <span class="author">{{story.getAuthor()}}</span> on <span class="project">{{story.getProject()}}</span>
-            <span class="timestamp">{{storyItem.getTimeMs() | date:'short'}}</span>
-            <div class="notes"><span>{{storyItem.getOneliner()}}</span></div>
+<div class="feedContainer">
+  <span class="projectsDiv">
+    <div class="allProjects"><span>All Projects</span> </div>
+    <div class="projects" *ngFor="let project of projectList">
+      <span>{{project}}</span>
+    </div>
+  </span>
+  <div class="storyListContainer" *ngFor="let storylistChild of storylist">
+    <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+      <div class="story" *ngFor="let storyItem of story.getItemList()">
+        <div class="storiesContainer">
+          <a [routerLink]="'/info/' + story.getAuthor()">
+            <img class="userImage" src="/assets/user.png">
+          </a>
+          <span class="headline">
+            <span class="author" *ngFor="let user of users">
+              <span *ngIf="user.getEmail() == story.getAuthor()">
+                {{user.getFirstName()}} {{user.getLastName()}}
+              </span>
+            </span>
+            on
+            <span class="project">
+              {{story.getProject()}}
+            </span>
+            <span class="timestamp">{{storyItem.getTimeMs() | date:'medium'}}</span><br><br>
+            <span class="notes">{{storyItem.getOneliner()}}</span>
           </span>
           <div class="screenshotdiv">
             <div *ngFor="let screenshot of screenshots">
               <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
-                <a [routerLink]="'/single-screenshot/' + storyItem.getId()">
-                  <img src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="480" width="750" />
+                <a [routerLink]="'/single-screenshot/' + story.getId() + '/' +
+							  screenshot.getFilename() + '/' + story.getAuthor()">
+                  <img class="screenImage" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" />
                 </a>
               </div>
             </div>
@@ -28,4 +43,3 @@
     </div>
   </div>
 </div>
-

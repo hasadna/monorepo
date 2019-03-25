@@ -1,4 +1,20 @@
-<p>
-  single-screenshot works!
-</p>
-
+<div *ngIf="isLoading">
+  Loading
+</div>
+<div class="storyListContainer">
+  <div class="singlestory" *ngIf="!isLoading">
+    <span class="storiesContainer">
+      <img class="userImage" src="/assets/user.png">
+      <span class="headline">
+        <span class="author">{{user.getFirstName()}} {{user.getLastName()}}</span>
+        <span> on </span>
+        <span class="project">{{ story.getProject() }}</span>
+        <span class="timestamp">{{story.getItemList()[0].getTimeMs() | date:'medium'}}</span><br><br>
+        <span class="notes">{{story.getItemList()[0].getOneliner()}}</span>
+      </span>
+      <div class="screenshotdiv">
+        <img class="screenImage" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" />
+      </div>
+    </span>
+  </div>
+</div>

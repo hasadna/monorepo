@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { StoryList, Story, Screenshot } from '@/core/proto';
+import { Component } from '@angular/core';
+import { StoryList, Story, Screenshot, User } from '@/core/proto';
 import { EncodingService, FirebaseService } from '@/core/services';
 
 import { zip } from 'rxjs';
@@ -9,31 +9,57 @@ import { zip } from 'rxjs';
   styleUrls: ['./feed.component.scss']
 })
 export class FeedComponent {
-  storylist: StoryList[];
-  screenshots: Screenshot[];
+  storylist: StoryList[] = [];
+  screenshots: Screenshot[] = [];
+  users: User[];
   isLoading = true;
+  projectList: string[];
 
   constructor(
     private firebaseService: FirebaseService,
     private encodingService: EncodingService,
   ) {
     if (firebaseService.isOnline) {
-      this.setData();
+      this.loadusers();
+      this.getProjects();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
-        this.setData();
+        this.loadusers();
+        this.getProjects();
       });
     }
   }
-  setData(): void {
+
+  setData(user: string): void {
     zip(
-      this.firebaseService.getStorylistAll(),
-      this.firebaseService.getScreenshotAll()
+      this.firebaseService.getUserStories(user),
+      this.firebaseService.getUserScreenshot(user)
     ).subscribe(data => {
-      this.storylist = data[0];
-      this.screenshots = data[1];
+      this.storylist.push.apply(this.storylist, data[0]);
+      this.screenshots.push.apply(this.screenshots, data[1]);
       this.isLoading = false;
     });
   }
-}
 
+  loadusers(): void {
+    this.firebaseService.getReviewerConfig().subscribe(userData => {
+      this.users = userData.getUserList();
+      this.getData(this.users);
+    });
+  }
+
+  getData(users: User[]) {
+    for (const user of this.users) {
+      this.setData(user.getEmail());
+    }
+  }
+
+  getProjects(): void {
+    this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
+      const projectIdList: string[] = reviewerConfig.getProjectList().map(
+        project => project.getId()
+      );
+      this.projectList = projectIdList;
+    });
+  }
+}

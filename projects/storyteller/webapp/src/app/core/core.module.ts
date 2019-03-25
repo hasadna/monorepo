@@ -12,4 +12,3 @@ import {
   ],
 })
 export class CoreModule { }
-

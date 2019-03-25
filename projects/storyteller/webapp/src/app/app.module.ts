@@ -35,4 +35,3 @@ import { SingleScreenshotComponent } from './components/single-screenshot/single
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

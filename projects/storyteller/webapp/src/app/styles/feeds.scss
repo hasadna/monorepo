@@ -1,0 +1,144 @@
+$font-stack: 'Open Sans',
+sans-serif;
+
+.normal {
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.header {
+  @extend .normal;
+  font-family: $font-stack;
+  font-size: 18px;
+  color: #4e4e4e;
+}
+
+.decorations {
+  font-weight: 600;
+  color: #767676;
+
+  :hover {
+    padding: 8px;
+    border-radius: 21px;
+    border: solid 2px #01d4d1;
+    font-weight: bold;
+    color: #01d4d1;
+  }
+
+  :active {
+    font-size: 22px;
+    border: solid 2px #01d4d1;
+    background-color: #01d4d1;
+    color: #ffffff;
+    font-weight: bold;
+  }
+}
+
+.allProjects {
+  @extend .decorations;
+  padding-bottom: 25px;
+}
+
+.projectsDiv {
+  @extend .header;
+  grid-column: 1 / 2;
+  width: 311px;
+  height: 290px;
+  border-radius: 2px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  background-color: #ffffff;
+  text-align: center;
+  margin: 40px 0px 0px 80px;
+  padding-top: 35px;
+}
+
+.feedContainer {
+  display: grid;
+  grid-auto-columns: none;
+  grid-template-columns: 400px auto;
+  background-color: #e6eff0;
+}
+
+.storyListContainer {
+  padding-left: 40px;
+  grid-column: 2 / 2;
+  background-color: #e6eff0;
+}
+
+.list {
+  padding-top: 20px;
+}
+
+.story {
+  margin-top: 20px;
+  width: 930px;
+  height: 700px;
+  height: 25%;
+  border-radius: 2px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  background-color: #ffffff;
+}
+
+.projects {
+  margin: 10px 0px;
+  @extend .decorations;
+}
+
+.screenImage {
+  width: 760px;
+  height: 480px;
+}
+
+.screenshotdiv {
+  grid-column: 2 / 2;
+  grid-row: 2;
+  text-align: right;
+  padding: 0 37px 27px 0;
+}
+
+.userImage {
+  grid-column: 1 / 2;
+  grid-row: 1;
+  padding-top: 20px;
+  width: 80px;
+  height: 80px;
+  padding-left: 24px;
+}
+
+.author {
+  text-align: start;
+  @extend .header;
+  font-weight: bold;
+}
+
+.storiesContainer {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-auto-columns: none;
+  grid-template-columns: 100px auto;
+}
+
+.project {
+  @extend .header;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.timestamp {
+  @extend .header;
+  padding-left: 38%;
+}
+
+.notes {
+  @extend .header;
+  font-size: 17px;
+}
+
+.headline {
+  padding: 20px 0 0 30px;
+  grid-column: 2 / 2;
+  grid-row: 1;
+}

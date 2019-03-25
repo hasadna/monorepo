@@ -1,5 +1,11 @@
+mat-toolbar {
+  height: 64px;
+  background-color: #fff;
+}
+
 .home {
-  font-family: Satisfy;
+  padding-left: 40px;
+  font-family: Satisfy, cursive;
   font-size: 36px;
   font-weight: normal;
   font-style: normal;
@@ -7,24 +13,20 @@
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
-  color: #4e4e4e;
-}
-
-a:hover, a:active{
   color: black;
 }
 
-.navigation-items{
-  list-style-type: none;
-}
-.userImage{
-  border-radius: 100%;
-}
-.user{
-  padding-left: 80%;
-}
-mat-toolbar{
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+a:hover,
+a:active {
+  color: #4e4e4e;
 }
 
+.userImage {
+  border-radius: 100%;
+  width: 60px;
+  height: 50px;
+}
+
+.user {
+  padding-left: 80%;
+}
