@@ -21,8 +21,8 @@ GMAVEN_TAG = "20180513-1"
 
 http_archive(
     name = "gmaven_rules",
-    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
 )
 
@@ -41,8 +41,8 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    strip_prefix = "startup-os-06fac7a206f6bed824a16ba7001e39a72f3c5e65",
-    urls = ["https://github.com/google/startup-os/archive/06fac7a206f6bed824a16ba7001e39a72f3c5e65.zip"],
+    strip_prefix = "startup-os-30961b3d08b75cb9590b8c45e578680639d955e4",
+    urls = ["https://github.com/google/startup-os/archive/30961b3d08b75cb9590b8c45e578680639d955e4.zip"],
 )
 # MARK: StartupOS end
 
@@ -170,7 +170,6 @@ http_archive(
 #gtfs_data
 http_archive(
     name = "gtfs_data",
-    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
     build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
-
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
 )
