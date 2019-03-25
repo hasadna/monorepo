@@ -1,19 +1,3 @@
-/*
- * Copyright 2018 The StartupOS Authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tools.build_file_generator.third_party_deps;
 
 import com.google.common.collect.ImmutableList;
@@ -66,15 +50,19 @@ public class ThirdPartyDepsAnalyzer {
 
   private ImmutableList<String> getThirdPartyTargets(String repoName) {
     final String rootPackageName = repoName.replace("-", "");
-    final String absBuildFilePath =
-        fileUtils.joinPaths(
-            fileUtils.getCurrentWorkingDirectory(),
-            this.getClass()
-                .getPackage()
-                .getName()
-                .split(rootPackageName + ".")[1]
-                .replace(".", "/"),
-            "BUILD");
+    String packageName = this.getClass().getPackage().getName();
+    final String absBuildFilePath;
+    if (packageName.contains(rootPackageName + ".")) {
+      absBuildFilePath =
+          fileUtils.joinPaths(
+              fileUtils.getCurrentWorkingDirectory(),
+              packageName.split(rootPackageName + ".")[1].replace(".", "/"),
+              "BUILD");
+    } else {
+      absBuildFilePath =
+          fileUtils.joinPaths(
+              fileUtils.getCurrentWorkingDirectory(), packageName.replace(".", "/"), "BUILD");
+    }
     BuildFile buildFile = buildFileParser.getBuildFile(absBuildFilePath);
     if (buildFile.getJavaBinaryCount() == 0) {
       log.atWarning().log("%s file doesn't contain any java_binaries", absBuildFilePath);
