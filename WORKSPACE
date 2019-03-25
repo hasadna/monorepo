@@ -39,10 +39,11 @@ android_sdk_repository(
 )
 
 # MARK: StartupOS start
+# TODO: Set actual commit id once related PR in StartupOs will be merged to master
 http_archive(
     name = "startup_os",
-    strip_prefix = "startup-os-30961b3d08b75cb9590b8c45e578680639d955e4",
-    urls = ["https://github.com/google/startup-os/archive/30961b3d08b75cb9590b8c45e578680639d955e4.zip"],
+    strip_prefix = "startup-os-73e5e4ed7c2b345ffefd89638887e7ff01997089",
+    urls = ["https://github.com/google/startup-os/archive/73e5e4ed7c2b345ffefd89638887e7ff01997089.zip"],
 )
 # MARK: StartupOS end
 
