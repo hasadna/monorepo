@@ -12,7 +12,7 @@ def nChoosek(n, k):
 def find_c_and_a(m):
 	num_of_professions = m.shape[1]
 	num_of_rows = int(nChoosek(num_of_professions, 2))
-	A = np.zeros(shape=(num_of_rows, num_of_professions))
+	A = np.zeros(shape=(num_of_rows, num_of_professions), dtype=np.float32)
 	row = 0
 
 	for i in range(num_of_professions):
@@ -21,30 +21,31 @@ def find_c_and_a(m):
 			A[row][j] = -1
 			row += 1
 
-	c = np.empty(shape = (num_of_rows, 1))
-	#c_matrix = np.empty((num_of_rows, m.shape[0]))
-	c_matrix = np.array([])
+	num_of_rows_in_m = np.size(m,0)
+	c_matrix = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
 	for i in range(m.shape[0]):
-		r = m[i].transpose()
 		c = np.dot(A, m[i].transpose())
-		#c_matrix = np.append(c_matrix, [c], axis=0)
-		c_matrix = np.append(c_matrix, c)
+		c_matrix[i] = c
 
-	new_m = np.array([])
-	errors = np.array([])
-	num_of_element_in_c = c_matrix.shape[0]
-	for i in range(0, num_of_element_in_c, num_of_professions):
-		row_in_m = np.linalg.lstsq(A, c_matrix[i:(i+num_of_professions)], None) # TODO how can i got the error?
-		new_m = np.append(new_m, row_in_m)
-		#errors = np.append(errors, error)
+	new_m = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
+	for i in range(c_matrix.shape[0]):
+		row_in_m = np.linalg.lstsq(A, c_matrix[i], None)[0] # TODO how can i got the error?
+		new_m[i] = row_in_m
 
+	Ax = np.dot(A, new_m.transpose())
+	errors = np.subtract(Ax,c_matrix.transpose())
 
-	return new_m, A
+	return new_m, A, errors
 
-a = np.matrix([-2,-2,4])
-b, aaa = find_c_and_a(a)
-print(b)
-print(aaa)
+a = np.array([[-2,-2,4],[-1,-1,2]])
+M, A, e = find_c_and_a(a)
+print("The A matrix: ")
+print(A)
+print("The M natrix: ")
+print(M)
+print("The Error natrix: ")
+print(e)
+
 
 
 
