@@ -39,7 +39,7 @@ public class HeatMap { //**************each for need to use ParserDelimiterFrom
             FileInputStream StopInput = null;
 
             try {
-                StopInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stops.p"));
+                StopInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stops.p"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -73,7 +73,7 @@ public class HeatMap { //**************each for need to use ParserDelimiterFrom
             FileInputStream StopInput = null;
 
             try {
-                 StopInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stops.p"));
+                 StopInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stops.p"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -147,13 +147,13 @@ public class HeatMap { //**************each for need to use ParserDelimiterFrom
         FileInputStream StopTimeInput2 = null;
         FileInputStream TripsInput = null;
 
-        String StopTimePath = "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stopTime.protobin";
-        String TripsPath = "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/trips.protobin";
+        String StopTimePath = "projects/opentrain/gtfs_pipeline/stopTime.protobin";
+        String TripsPath = "projects/opentrain/gtfs_pipeline/trips.protobin";
 
         try {
-            StopTimeInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stopTime.protobin"));
-            StopTimeInput2 = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stopTime.protobin"));
-            TripsInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/trips.protobin"));
+            StopTimeInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stopTime.protobin"));
+            StopTimeInput2 = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stopTime.protobin"));
+            TripsInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/trips.protobin"));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -348,8 +348,8 @@ public class HeatMap { //**************each for need to use ParserDelimiterFrom
 
         //save file
         try {
-            ImageIO.write(image, "png", new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/imagePng.png"));
-            ImageIO.write(image, "jpeg", new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/image.jpeg"));
+            ImageIO.write(image, "png", new File("projects/opentrain/gtfs_pipeline/heatmap/imagePng.png"));
+            ImageIO.write(image, "jpeg", new File("projects/opentrain/gtfs_pipeline/heatmap/image.jpeg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -367,9 +367,9 @@ public class HeatMap { //**************each for need to use ParserDelimiterFrom
         FileInputStream StopTInput = null;
         FileInputStream tripInput = null;
         try {
-            tripInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/trips.protobin"));
-            StopInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stops.protobin"));
-            StopTInput = new FileInputStream(new File("/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/bazel-genfiles/projects/opentrain/gtfs_pipeline/stopTime.protobin"));
+            tripInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/trips.protobin"));
+            StopInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stops.protobin"));
+            StopTInput = new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stopTime.protobin"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
