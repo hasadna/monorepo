@@ -9,13 +9,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
 
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
   private final String SPAM_DOCUMENT_PATH = "noloan/smss";
   
   // < - 22 > - 31 for removing and changing with the user name
-  private final String USER_SUGGEST_COLLECTION = "noloan/user_data/user/<username>/spam_suggestions";
+  private final String USER_SUGGEST_COLLECTION = "noloan/user_data/user/<username>/spam_suggestion";
   
   private FirebaseFirestore client;
   
@@ -23,7 +23,6 @@ public class FirestoreClient {
     client = FirebaseFirestore.getInstance();
   }
   
-  // Write the message to the Firestore
   public void writeMessage(SmsMessage message) {
     FirestoreElement element = encodeMessage(message);
     

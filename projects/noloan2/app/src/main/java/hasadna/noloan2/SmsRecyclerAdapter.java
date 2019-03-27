@@ -10,14 +10,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
+public class SmsRecyclerAdapter extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
   
   List<SmsMessage> messages;
   
-  public RecyclerAdapter(List<SmsMessage> messages) {
+  public SmsRecyclerAdapter(List<SmsMessage> messages) {
     if (messages.size() == 0) {
       this.messages = new ArrayList<>();
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();

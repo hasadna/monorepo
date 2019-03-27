@@ -23,10 +23,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan2.protobuf.SMSProto.SpamList;
+import hasadna.noloan2.protobuf.SmsProto.SpamList;
 import noloan.R;
 
-// permission request Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
+// Permission request Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
 public class SplashScreenActivity extends AppCompatActivity {
   
   static final long SPLASH_TIME_MS = 1000;

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     
     // Filling the recycler
     RecyclerView recycler = findViewById(R.id.recycler_view);
-    RecyclerAdapter adapter = new RecyclerAdapter(messages);
+    SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(messages);
     recycler.setAdapter(adapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
   }
@@ -97,14 +97,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
     
     if (cursor.moveToFirst()) {
-      for (int i = 0; i < cursor.getColumnCount(); i++, cursor.moveToNext()) {
+      do {
         SmsMessage sms = SmsMessage.newBuilder()
           .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
           .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
           .build();
         smsList.add(sms);
       }
+      while (cursor.moveToNext());
     }
+    
     cursor.close();
     return smsList;
   }

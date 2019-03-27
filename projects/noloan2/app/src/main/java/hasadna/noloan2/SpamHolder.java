@@ -2,7 +2,7 @@ package hasadna.noloan2;
 
 import java.util.List;
 
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 
 // Simple singleton to hold the spam list
 public class SpamHolder {
