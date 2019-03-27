@@ -1,12 +1,56 @@
-<h1>User</h1>
-<div class="card">
-  <img src="assets/user.png" alt="John" style="width:100%">
-  <h1>John Doe</h1>
-  <p class="title">CEO & Founder, Example</p>
-  <p>Harvard University</p>
-  <a href="#"><i class="fa fa-dribbble"></i></a>
-  <a href="#"><i class="fa fa-twitter"></i></a>
-  <a href="#"><i class="fa fa-linkedin"></i></a>
-  <a href="#"><i class="fa fa-facebook"></i></a>
-  <p><button>Contact</button></p>
+<div *ngIf="isLoading">
+  Loading
+</div>
+<div class="userinfo" *ngIf="!isLoading">
+  <div class="leftContainer">
+    <div class="card">
+      <img class="cardImage" src="assets/user.png">
+      <div class="title">{{user.getFirstName()}} {{user.getLastName()}}</div>
+      <p class="email">{{user.getEmail()}}</p>
+      <div class="links">
+        <a href="https://github.com/"><i class="fa fa-github"></i></a>
+        <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+        <a href="https://linkedin.com/"><i class="fa fa-linkedin"></i></a>
+        <a href="https://facebook.com/"><i class="fa fa-facebook"></i></a>
+      </div>
+    </div>
+    <div class="projectsDiv">
+      <div class="allProjects"><span>All Projects</span> </div>
+      <div class="projects" *ngFor="let project of projectList">
+        <span>{{project}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="storyListContainer" *ngFor="let storylistChild of storylist">
+    <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+      <div class="story" *ngFor="let storyItem of story.getItemList()">
+        <div class="storiesContainer">
+          <a [routerLink]="'/info/' + story.getAuthor()">
+            <img class="userImage" src="/assets/user.png">
+          </a>
+          <span class="headline">
+            <span class="author">
+              <span>{{user.getFirstName()}} {{user.getLastName()}}</span>
+            </span>
+            on
+            <span class="project">
+              {{story.getProject()}}
+            </span>
+            <span class="timestamp">{{storyItem.getTimeMs() | date:'medium'}}</span><br>
+            <span class="notes">{{storyItem.getOneliner()}}</span>
+          </span>
+          <div class="screenshotdiv">
+            <div *ngFor="let screenshot of screenshots">
+              <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
+                <a [routerLink]="'/single-screenshot/' + story.getId() + '/' +
+                  screenshot.getFilename() + '/' + story.getAuthor()">
+                  <img class="screenImage" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

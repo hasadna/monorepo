@@ -1,10 +1,21 @@
 @import 'styles/feeds.scss';
 
-.singleFeed {
-	padding-left: 10%;
+.storyListContainer {
+  padding: 20px;
 }
 
-.single {
-	width: 900px;
-	height: 800px;
+.singlestory {
+  background-color: #fff;
+  width: 1500px;
+  height: 920px;
+}
+
+.screenImage {
+  padding-left: 20px;
+  width: auto;
+  height: auto;
+}
+
+.timestamp {
+  padding-left: 63%;
 }

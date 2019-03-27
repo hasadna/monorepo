@@ -14,16 +14,18 @@ export class FeedComponent {
   screenshots: Screenshot[] = [];
   users: User[];
   isLoading = true;
+  projectList: string[];
 
   constructor(
     private firebaseService: FirebaseService,
   ) {
     if (firebaseService.isOnline) {
       this.loadusers();
-
+      this.getProjects();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
         this.loadusers();
+        this.getProjects();
       });
     }
   }
@@ -57,5 +59,14 @@ export class FeedComponent {
     const filename: string = screenshot.getFilename();
     const author: string = story.getAuthor();
     return `/single-screenshot/${id}/${filename}/${author}`;
+  }
+
+  getProjects(): void {
+    this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
+      const projectIdList: string[] = reviewerConfig.getProjectList().map(
+        project => project.getId(),
+      );
+      this.projectList = projectIdList;
+    });
   }
 }
