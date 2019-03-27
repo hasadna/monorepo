@@ -9,7 +9,7 @@ import { zip } from 'rxjs';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss']
+  styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent implements OnInit {
   userEmail: string;
@@ -44,7 +44,7 @@ export class UserInfoComponent implements OnInit {
   getData(author: string): void {
     zip(
       this.firebaseService.getUserStories(author),
-      this.firebaseService.getUserScreenshot(author)
+      this.firebaseService.getUserScreenshot(author),
     ).subscribe(data => {
       this.storylist = data[0];
       this.screenshots = data[1];

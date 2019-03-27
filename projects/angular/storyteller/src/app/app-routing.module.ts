@@ -8,7 +8,7 @@ const appRoutes: Routes = [
   { path: 'home', component: FeedComponent },
   {
     path: 'single-screenshot/:storyId/:screenshot/:storyAuthor',
-    component: SingleScreenshotComponent
+    component: SingleScreenshotComponent,
   },
   { path: 'info/:storyAuthor', component: UserInfoComponent },
   { path: '**', redirectTo: '/home' },
