@@ -13,6 +13,24 @@ import javax.inject.Singleton;
  */
 public class StorytellerTool {
 
+
+  public String downloadFrom(String bucketName, String fileName) throws IOException {
+    String[] parts = fileName.split("[.]");
+    String name = parts[0];
+    String extension = ".tmp";
+    if (parts.length > 1) {
+      extension = "." + parts[parts.length - 1];
+    }
+    File tempFile = File.createTempFile(name, extension);
+    storage.get(BlobId.of(bucketName, fileName)).downloadTo(Paths.get(tempFile.getAbsolutePath()));
+    return tempFile.getAbsolutePath();
+  }
+  public void loadFile(File file)
+  {
+    
+
+  }
+
   // private static final FluentLogger log = FluentLogger.forEnclosingClass();
   // private static final String HELP = "help";
   // private static final String LIST = "list";
@@ -30,6 +48,7 @@ public class StorytellerTool {
 
   public static void main(String[] args) throws Exception {
     System.out.println("Hello World");
+    
     // String[] leftoverArgs =
     //     Flags.parse(args, StorytellerTool.class.getPackage(), AuthService.class.getPackage());
     Storyteller storyteller =
