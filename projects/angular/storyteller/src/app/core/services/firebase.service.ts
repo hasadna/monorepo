@@ -1,10 +1,10 @@
-import { ReviewerConfig, Screenshot, StoryList } from '@/core/proto';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ReviewerConfig, Screenshot, StoryList } from '@/core/proto';
 import { EncodingService } from 'common/services';
 
 interface FirebaseElement {
