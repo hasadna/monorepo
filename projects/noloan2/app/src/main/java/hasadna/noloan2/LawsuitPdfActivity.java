@@ -1,16 +1,22 @@
 package hasadna.noloan2;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.itextpdf.licensekey.LicenseKey;
@@ -20,9 +26,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -44,126 +51,148 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   // Formats
   private static final String TIME_ZONE = "Asia/Jerusalem";
   private static final SimpleDateFormat DATE_TIME_FORMATTER =
-      new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
+          new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
 
-  // TODO: Remove these once client-side form is done.
-  private boolean sentHaser = true;
-  private boolean sentMoreThanFiveLawsuits = false; // The past year
-  private Date receivedSpamDate = new Date();
-
-  // region Lawsuit form fields
-  // General
-  private String spamType = "הודעה אלקטרונית";
-  private String claimAmount = "סכום תביעה";
+  // Lawsuit optional fields
   private String moreThanFiveLawsuits = "הגיש";
   private String lessThanFiveLawsuits = "לא הגיש/ו";
-  private String claimCaseHaser = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+  private String claimCaseHaser =
+          "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת מהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק ";
   private String claimCaseSubscription =
-      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+          "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
 
-  // User
-  private String userPrivateName = "שם פרטי";
-  private String userLastName = "שם משפחה";
-  private String userID = "ת ז משתמש";
-  private String userAddress = "כתובת משתמש";
-  private String userPhone = "טלפון משתמש";
-  private String userFax = "פקס משתמש";
-
-  // First spam company's details
-  private String companyName = "שם החברה";
-  private String companyId = "מספר ח.פ";
-  private String companyAddress = "כתובת החברה";
-  private String companyPhone = "טלפון החברה";
-  private String companyFax = "פקס חברה";
-
-  // Second spam company's details
-  private String company2Name = "שם החברה 2";
-  private String company2Id = "מספר ח.פ 2";
-  private String company2Address = "כתובת החברה 2";
-  private String company2Phone = "טלפון החברה 2";
-  private String company2Fax = "פקס חברה 2";
-  // endregion
-
+  EditText receivedDate;
+  DatePickerDialog datePickerDialog;
+  Calendar calendar;
   Button createPdfButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lawsuit_pdf);
-    createPdfButton = (Button) findViewById(R.id.button_createPDF);
-
     initDirStructure();
     setTimeZones();
 
+    createPdfButton = findViewById(R.id.button_createPDF);
+    receivedDate = findViewById(R.id.editText_spamDate);
+
     createPdfButton.setOnClickListener(v -> checkPermissionsThenCreatePdf());
+    receivedDate.setOnClickListener(v -> displayDatePicker());
   }
 
-  private void createPdf() {
-    // TODO: Success reading license file only from "res/raw". Perhaps should be read from different
-    // dir
-    // Activate iText license
+  // Save file to device, then ask in AlertDialog if to share
+  private void createAndSharePdf() {
     LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
-    try {
-      HtmlConverter.convertToPdf(
-          fillTemplate(),
-          new FileOutputStream(Paths.get(lawsuitOutputPath, getPdfFilename()).toString()));
-      Toast.makeText(LawsuitPdfActivity.this, "Lawsuit created!", Toast.LENGTH_LONG).show();
+    String path = Paths.get(lawsuitOutputPath, getPdfFilename()).toString();
 
-      // Read template / write output
+    try {
+      HtmlConverter.convertToPdf(fillTemplate(), new FileOutputStream(path));
+      sharePdf(path);
+      // Exceptions: read template / write output
     } catch (IOException e) {
       Log.w(TAG, "Read template / Write file: " + e.getMessage());
       e.printStackTrace();
       Toast.makeText(LawsuitPdfActivity.this, "Failed to create lawsuit.", Toast.LENGTH_LONG)
-          .show();
+              .show();
     }
   }
 
+  private void sharePdf(String path) {
+    new AlertDialog.Builder(this, R.style.AlertDialog)
+            .setTitle("כתב תביעה נוצר")
+            .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
+            .setPositiveButton(
+                    "כן",
+                    (dialog, which) -> {
+                      Uri uri =
+                              FileProvider.getUriForFile(
+                                      getApplicationContext(), getPackageName()+ ".fileprovider", new File(path));
+                      Intent shareIntent = new Intent();
+                      shareIntent.setAction(Intent.ACTION_SEND);
+                      shareIntent.setType("application/pdf");
+                      shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                      startActivity(Intent.createChooser(shareIntent, "Share via"));
+                    })
+            .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
+            .create()
+            .show();
+  }
+
   private String fillTemplate() throws IOException {
+    // TODO:
     String lawsuit = null;
     try {
       InputStream inputStream = getAssets().open("template.xhtml");
       byte[] buffer = new byte[inputStream.available()];
       inputStream.read(buffer);
       inputStream.close();
-      lawsuit = new String(buffer, StandardCharsets.UTF_8);
+      lawsuit = new String(buffer, Charset.forName("UTF-8"));
     } catch (IOException e) {
       throw new IOException("Read template error.");
     }
 
     // General form fields
     lawsuit =
-        lawsuit.replace("&lt;claimCase&gt;", sentHaser ? claimCaseHaser : claimCaseSubscription);
-    lawsuit = lawsuit.replace("&lt;claimAmount&gt;", claimAmount);
-    lawsuit = lawsuit.replace("&lt;spamType&gt;", spamType);
+            lawsuit.replace(
+                    "&lt;claimCase&gt;",
+                    ((CheckBox) findViewById(R.id.checkBox_sentHaser)).isChecked()
+                            ? claimCaseHaser
+                            : claimCaseSubscription);
     lawsuit =
-        lawsuit.replace(
-            "&lt;moreThanFiveLawsuits&gt; ",
-            sentMoreThanFiveLawsuits ? moreThanFiveLawsuits : lessThanFiveLawsuits);
+            lawsuit.replace(
+                    "&lt;claimAmount&gt;",
+                    ((EditText) findViewById(R.id.claimAmount)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;moreThanFiveLawsuits&gt;",
+                    ((CheckBox) findViewById(R.id.checkbox_fiveLawsuits)).isChecked()
+                            ? moreThanFiveLawsuits
+                            : lessThanFiveLawsuits);
     lawsuit = lawsuit.replace("&lt;undefined&gt;", "");
-    lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", DATE_FORMATTER.format(receivedSpamDate));
+    lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", receivedDate.getText().toString());
     lawsuit = lawsuit.replace("&lt;currentDate&gt;", DATE_FORMATTER.format(new Date()));
 
     // User fields
-    lawsuit = lawsuit.replace("&lt;userFullName&gt;", userPrivateName + " " + userLastName);
-    lawsuit = lawsuit.replace("&lt;userId&gt;", userID);
-    lawsuit = lawsuit.replace("&lt;userAddress&gt;", userAddress);
-    lawsuit = lawsuit.replace("&lt;userPhone&gt;", userPhone);
-    lawsuit = lawsuit.replace("&lt;userFax&gt;", userFax);
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;userFullName&gt;",
+                    ((EditText) findViewById(R.id.userPrivateName)).getText().toString()
+                            + " "
+                            + ((EditText) findViewById(R.id.userLastName)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;userId&gt;", ((EditText) findViewById(R.id.userID)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;userAddress&gt;",
+                    ((EditText) findViewById(R.id.userAddress)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;userPhone&gt;", ((EditText) findViewById(R.id.userPhone)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;userFax&gt;", ((EditText) findViewById(R.id.userFax)).getText().toString());
 
-    // First spam company
-    lawsuit = lawsuit.replace("&lt;companyName&gt;", companyName);
-    lawsuit = lawsuit.replace("&lt;companyId&gt;", companyId);
-    lawsuit = lawsuit.replace("&lt;companyAddress&gt;", companyAddress);
-    lawsuit = lawsuit.replace("&lt;companyPhone&gt;", companyPhone);
-    lawsuit = lawsuit.replace("&lt;companyFax&gt;", companyFax);
-
-    // Second spam company
-    lawsuit = lawsuit.replace("&lt;company2Name&gt;", company2Name);
-    lawsuit = lawsuit.replace("&lt;company2Id&gt;", company2Id);
-    lawsuit = lawsuit.replace("&lt;company2Address&gt;", company2Address);
-    lawsuit = lawsuit.replace("&lt;company2Phone&gt;", company2Phone);
-    lawsuit = lawsuit.replace("&lt;company2Fax&gt;", company2Fax);
+    // Spam company
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;companyName&gt;",
+                    ((EditText) findViewById(R.id.companyName)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;companyId&gt;", ((EditText) findViewById(R.id.companyId)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;companyAddress&gt;",
+                    ((EditText) findViewById(R.id.companyAddress)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;companyPhone&gt;",
+                    ((EditText) findViewById(R.id.companyPhone)).getText().toString());
+    lawsuit =
+            lawsuit.replace(
+                    "&lt;companyFax&gt;", ((EditText) findViewById(R.id.companyFax)).getText().toString());
 
     return lawsuit;
   }
@@ -175,11 +204,11 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   private void initDirStructure() {
     // TODO: Paths.get() require API 26. Find/Create function that suits lower API versions.
     lawsuitMainPath =
-        Paths.get(
-                Environment.getExternalStorageDirectory().getPath(),
-                getString(R.string.app_name),
-                LAWSUIT_MAIN_DIR_NAME)
-            .toString();
+            Paths.get(
+                    Environment.getExternalStorageDirectory().getPath(),
+                    getString(R.string.app_name),
+                    LAWSUIT_MAIN_DIR_NAME)
+                    .toString();
     makeDir(lawsuitMainPath);
 
     // Output
@@ -189,7 +218,9 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
   private void makeDir(String path) {
     File directory = new File(path);
-    if (directory.exists() && directory.isDirectory()) directory.mkdirs();
+    if (!directory.exists()) {
+      directory.mkdirs();
+    }
   }
 
   private void setTimeZones() {
@@ -203,63 +234,79 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
       // Permission granted
       if ((checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-          == PackageManager.PERMISSION_GRANTED)) {
-        createPdf();
+              == PackageManager.PERMISSION_GRANTED)) {
+        createAndSharePdf();
       }
       // If user denied permission before, show explanation dialog before requesting
       else {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-            this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
           new AlertDialog.Builder(this)
-              .setTitle("Permission needed")
-              .setMessage("File access permission is needed for creating lawsuit PDF.")
-              .setPositiveButton(
-                  "ok",
-                  (dialog, which) ->
-                      ActivityCompat.requestPermissions(
-                          LawsuitPdfActivity.this,
-                          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                          STORAGE_PERMISSION_CODE))
-              .setNegativeButton(
-                  "cancel",
-                  (dialog, which) -> {
-                    Toast.makeText(
-                            LawsuitPdfActivity.this,
-                            "Permission is needed to create PDF.",
-                            Toast.LENGTH_LONG)
-                        .show();
-                    dialog.dismiss();
-                  })
-              .create()
-              .show();
+                  .setTitle("Permission needed")
+                  .setMessage("File access permission is needed for creating lawsuit PDF.")
+                  .setPositiveButton(
+                          "ok",
+                          (dialog, which) ->
+                                  ActivityCompat.requestPermissions(
+                                          LawsuitPdfActivity.this,
+                                          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                          STORAGE_PERMISSION_CODE))
+                  .setNegativeButton(
+                          "cancel",
+                          (dialog, which) -> {
+                            Toast.makeText(
+                                    LawsuitPdfActivity.this,
+                                    "Permission is needed to create PDF.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                            dialog.dismiss();
+                          })
+                  .create()
+                  .show();
 
         } else {
           ActivityCompat.requestPermissions(
-              this,
-              new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-              STORAGE_PERMISSION_CODE);
+                  this,
+                  new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                  STORAGE_PERMISSION_CODE);
         }
       }
       // Devices running SDK <= 22, permissions granted on installation
     } else {
-      createPdf();
+      createAndSharePdf();
     }
   }
 
-  // Call createPdf() if permission granted
+  private void displayDatePicker() {
+    calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
+
+    datePickerDialog =
+            new /**/ DatePickerDialog(
+                    LawsuitPdfActivity.this,
+                    (datePicker, currentYear, currentMonth, currentDay) ->
+                            receivedDate.setText(day + "/" + (month + 1) + "/" + year),
+                    year,
+                    month,
+                    day);
+    datePickerDialog.show();
+  }
+
+  // Call createAndSharePdf() if permission granted
   @Override
   public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == STORAGE_PERMISSION_CODE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        createPdf();
+        createAndSharePdf();
       } else {
         Toast.makeText(
                 LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
-            .show();
+                .show();
       }
     }
   }
 }
-
