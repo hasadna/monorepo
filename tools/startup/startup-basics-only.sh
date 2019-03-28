@@ -84,4 +84,4 @@ if [[ -d "$DOWNLOAD_DIR_NAME" ]]; then
     rm -Rf ${DOWNLOAD_DIR_NAME};
 fi
 
-echo "Please sign-in at localhost:7000/login and then check that ~/.aa_token exists"
+echo "Please sign-in at http://localhost:7000/login and then check that ~/.aa_token exists"
