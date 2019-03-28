@@ -51,8 +51,8 @@ if [[ $(which bazel; echo $?) == "1" ]]; then
     wget -O "bazel.${BAZEL_VERSION}.sh" "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh"
     chmod +x "bazel.${BAZEL_VERSION}.sh"
     sudo ./bazel.${BAZEL_VERSION}.sh --user
-    echo 'PATH="'${PATH}':'${HOME}'/bin"' >> ~/.bashrc
     export PATH="$PATH:$HOME/bin"
+    echo 'PATH="'${PATH}':'${HOME}'/bin"' >> ~/.bashrc
     echo 'source '${HOME}'/.bazel/bin/bazel-complete.bash' >> ~/.bashrc
     echo "bazel is installed"
 fi
