@@ -29,7 +29,15 @@ jobs:
           <<: *post_checkout
       - restore_cache:
           key: "v3-bazel_cache"
-      - run: sudo apt update && sudo apt -y install yapf3 clang-format python3-pkg-resources libstdc++6
+      # Fixes Debian upstream repos: https://discuss.circleci.com/t/failed-to-fetch-jessie-updates/29246
+      - run: |
+          sudo rm /etc/apt/sources.list
+          echo "deb http://archive.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list
+          echo "deb-src http://archive.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list
+          echo "Acquire::Check-Valid-Until false;" | sudo tee -a /etc/apt/apt.conf.d/10-nocheckvalid
+          echo 'Package: *\nPin: origin "archive.debian.org"\nPin-Priority: 500' | sudo tee -a /etc/apt/preferences.d/10-archive-pin
+          sudo apt-get update
+      - run: sudo apt -y install yapf3 clang-format python3-pkg-resources libstdc++6
       - run: sudo ln -s /usr/bin/yapf3 /usr/bin/yapf
       - run: './tools/checkstyle/check-for-missing-targets.sh'
       - run: './fix-formatting.sh'
@@ -46,7 +54,15 @@ jobs:
       - restore_cache:
           key: "v3-bazel_cache"
 
-      - run: sudo apt update && sudo apt -y install libstdc++6
+      # Fixes Debian upstream repos: https://discuss.circleci.com/t/failed-to-fetch-jessie-updates/29246
+      - run: |
+          sudo rm /etc/apt/sources.list
+          echo "deb http://archive.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list
+          echo "deb-src http://archive.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list
+          echo "Acquire::Check-Valid-Until false;" | sudo tee -a /etc/apt/apt.conf.d/10-nocheckvalid
+          echo 'Package: *\nPin: origin "archive.debian.org"\nPin-Priority: 500' | sudo tee -a /etc/apt/preferences.d/10-archive-pin
+          sudo apt-get update
+      - run: sudo apt -y install libstdc++6
       - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
       - run: bazel info release
       - run: npm install
