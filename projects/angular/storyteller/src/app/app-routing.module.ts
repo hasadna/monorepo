@@ -13,6 +13,7 @@ const appRoutes: Routes = [
   { path: 'info/:storyAuthor', component: UserInfoComponent },
   { path: '**', redirectTo: '/home' },
 ];
+
 @NgModule({
   declarations: [],
   imports: [
