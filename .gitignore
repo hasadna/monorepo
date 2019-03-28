@@ -12,7 +12,7 @@
 bin/
 gen/
 out/
-package-lock.json
+/package-lock.json
 
 # Gradle files
 .gradle/
@@ -52,5 +52,5 @@ freeline_project_description.json
 # Bazel
 bazel-*
 
-
 .project
+
