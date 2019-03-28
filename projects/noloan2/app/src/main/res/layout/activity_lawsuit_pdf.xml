@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:id="@+id/userFields"
                 android:layout_width="match_parent"
@@ -55,7 +54,6 @@
                     android:hint="@string/form_hint_lastName"
                     android:inputType="textPersonName" />
 
-
                 <EditText
                     android:id="@+id/userID"
                     android:layout_width="match_parent"
@@ -72,7 +70,6 @@
                     android:hint="@string/form_hint_address"
                     android:inputType="textPersonName" />
 
-
                 <EditText
                     android:id="@+id/userPhone"
                     android:layout_width="match_parent"
@@ -81,7 +78,6 @@
                     android:gravity="right"
                     android:hint="@string/form_hint_phoneNumber"
                     android:inputType="phone" />
-
 
                 <EditText
                     android:id="@+id/userFax"
@@ -93,7 +89,6 @@
                     android:inputType="phone" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/companyFields"
@@ -172,7 +167,6 @@
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="8dp" />
 
-
                 <EditText
                     android:id="@+id/editText_spamDate"
                     android:layout_width="match_parent"
@@ -181,17 +175,15 @@
                     android:focusable="false"
                     android:hint="@string/form_hint_spamDate"
                     android:inputType="date" />
-
-
+                
                 <EditText
                     android:id="@+id/claimAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:gravity="right"
-                    android:inputType="number|textCapWords"
                     android:hint="@string/form_hint_claimAmount"
-                    />
+                    android:inputType="number|textCapWords" />
 
                 <CheckBox
                     android:id="@+id/checkBox_sentHaser"
@@ -213,9 +205,9 @@
                 android:id="@+id/button_createPDF"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/form_button_create_text"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:text="@string/form_button_create_text"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="652dp" />
 
