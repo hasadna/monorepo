@@ -48,6 +48,7 @@ http_archive(
 
 # StartupOS dependencies start
 load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+# TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
 maven_dependencies_startup_os()
 
 http_archive(
