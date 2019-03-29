@@ -177,9 +177,7 @@ http_archive(
 #csv_data
 http_archive(
     name = "csv_data",
-    build_file_content = 'exports_files(["samples.csv"])',
-    url = "https://otrain.org/files/dumps-csv/samples.csv.gz",
-    #"https://otrain.org/files/dumps-csv/routes.csv.gz",
-    #"https://otrain.org/files/dumps-csv/stops.csv.gz",
-    #"https://otrain.org/files/dumps-csv/trips.csv.gz",
+    #build_file_content = 'exports_files(["routes.csv", "trips.csv", "samples.csv" , "stops.csv"])',
+    build_file_content = 'exports_files(["routes.csv"])',
+    url = "https://drive.google.com/file/d/1GIJ0rt0HXKDurqXeMpxE5FEjeTBO5tD0/view?usp=sharing",
 )
