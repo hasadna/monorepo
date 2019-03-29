@@ -1,0 +1,36 @@
+<div *ngIf="isLoading">
+	Loading
+</div>
+<div *ngFor="let storylistChild of storylist">
+	<div class="container">
+		<div class="list" *ngFor="let story of storylistChild.getStoryList()">
+			<div class="story" *ngFor="let storyItem of story.getItemList()">
+				<span class="userimagediv">
+					<img class="userImage" src="/assets/user.png" width="60" height="50">
+				</span>
+				<span class="head">
+					<span class="author">
+						{{story.getAuthor()}}
+					</span> on <span class="project">
+						{{story.getProject()}}
+					</span>
+					<span class="timestamp">{{storyItem.getTimeMs() | date:'short'}}</span>
+					<div class="notes"><span>{{storyItem.getOneliner()}}</span></div>
+				</span>
+				<div class="screenshotdiv">
+					<div *ngFor="let screenshot of screenshots">
+						<div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
+							<a [routerLink]="getRouterLink(story, screenshot)">
+								<img
+									src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}"
+									height="480"
+									width="750"
+								/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
