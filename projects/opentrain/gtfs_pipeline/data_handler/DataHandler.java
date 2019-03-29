@@ -57,7 +57,7 @@ class DataHandler {
     int startDate = Integer.parseInt(record.get("start_date"));
     int endDate = Integer.parseInt(record.get("end_date"));
     //int currentDate = Integer.parseInt(dateFormat.format(new Date()));
-    int currentDate = 20190217;
+    static final int FILTER_DATE = 20190217;
     boolean isRecordDayTrueOnDayOfToday = Integer.parseInt(record.get(getDayOfToday())) == 1;
     return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
   }
