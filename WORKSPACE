@@ -177,7 +177,6 @@ http_archive(
 #csv_data
 http_archive(
     name = "csv_data",
-    #build_file_content = 'exports_files(["routes.csv", "trips.csv", "samples.csv" , "stops.csv"])',
-    build_file_content = 'exports_files(["routes.csv"])',
-    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/routes.zip?alt=media&token=246ad5d0-c7a0-4150-876f-c4f317a5bed7",
+    build_file_content = 'exports_files(["routes.csv" , "samples.csv" , "stops.csv" , "trips.csv"])',
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/data_csv.zip?alt=media&token=2a262967-7cdd-4934-afbc-8fa31a74baf2",
 )
