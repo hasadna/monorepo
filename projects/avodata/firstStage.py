@@ -1,18 +1,26 @@
 import numpy as np
 import math
 
+
 def factorial(n):
 	return int(math.gamma(n + 1))
 
 
-def nChoosek(n, k):
+def n_choose_k(n, k):
 	return factorial(n) / (factorial(k) * factorial(n - k))
 
 
 def find_c_and_a(m):
+	# A function that receives a matrix m with size k*n, such that k is a characteristics of
+	# professions and n is the number of professions that are compared.
+	# The function founds using the List Square algorithm, the vector c with size k*1, and a
+	# matrix A, to solve the equation Ax = c.
+	# The output is a matrix with size k*n which is estimated, the matrix A with size
+	# (num_of_professions Choose 2) * (professions) and the error matrix with size k*n
+	# (which is calculated by Ax - c = error)
 	num_of_professions = m.shape[1]
-	num_of_rows = int(nChoosek(num_of_professions, 2))
-	A = np.zeros(shape=(num_of_rows, num_of_professions))
+	num_of_rows = int(n_choose_k(num_of_professions, 2))
+	A = np.zeros(shape=(num_of_rows, num_of_professions), dtype=np.float32)
 	row = 0
 
 	for i in range(num_of_professions):
@@ -21,43 +29,27 @@ def find_c_and_a(m):
 			A[row][j] = -1
 			row += 1
 
-	c = np.empty(shape = (num_of_rows, 1))
-	#c_matrix = np.empty((num_of_rows, m.shape[0]))
-	c_matrix = np.array([])
+	num_of_rows_in_m = np.size(m, 0)
+	c_matrix = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
 	for i in range(m.shape[0]):
-		r = m[i].transpose()
 		c = np.dot(A, m[i].transpose())
-		#c_matrix = np.append(c_matrix, [c], axis=0)
-		c_matrix = np.append(c_matrix, c)
+		c_matrix[i] = c
 
-	new_m = np.array([])
-	errors = np.array([])
-	num_of_element_in_c = c_matrix.shape[0]
-	for i in range(0, num_of_element_in_c, num_of_professions):
-		row_in_m = np.linalg.lstsq(A, c_matrix[i:(i+num_of_professions)], None) # TODO how can i got the error?
-		new_m = np.append(new_m, row_in_m)
-		#errors = np.append(errors, error)
+	new_m = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
+	for i in range(c_matrix.shape[0]):
+		row_in_m = np.linalg.lstsq(A, c_matrix[i], None)[0]
+		new_m[i] = row_in_m
 
+	Ax = np.dot(A, new_m.transpose())
+	errors = np.subtract(Ax, c_matrix.transpose())
 
-	return new_m, A
+	return new_m, A, errors
 
-a = np.matrix([-2,-2,4])
-b, aaa = find_c_and_a(a)
-print(b)
-print(aaa)
-print("ll")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+a = np.array([[-2, -2, 4], [-1, -1, 2]])
+M_matrix, A_matrix, E_matrix = find_c_and_a(a)
+print("The A matrix: ")
+print(A_matrix)
+print("The M matrix: ")
+print(M_matrix)
+print("The Error matrix: ")
+print(E_matrix)
