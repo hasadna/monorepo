@@ -1,16 +1,5 @@
 @import 'styles/feeds.scss';
 
-.title {
-  @extend .header;
-  font-weight: bold;
-}
-
-.cardImage {
-  padding-top: 20px;
-  width: 120px;
-  height: 120px;
-}
-
 .leftContainer {
   grid-column: 1 / 2;
 }
@@ -23,15 +12,26 @@
   height: 400px;
   margin: 40px 0 0 80px;
   text-align: center;
-}
 
-.email {
-  @extend .header;
-  padding: 50px 15px 0;
-}
+  >.cardImage {
+    padding-top: 20px;
+    width: 120px;
+    height: 120px;
+  }
 
-.links {
-  padding-top: 25px;
+  >.email {
+    @extend .header;
+    padding: 50px 15px 0;
+  }
+
+  >.links {
+    padding-top: 25px;
+  }
+
+  >.title {
+    @extend .header;
+    font-weight: bold;
+  }
 }
 
 .userinfo {
