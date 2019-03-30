@@ -37,11 +37,6 @@ sans-serif;
   }
 }
 
-.allProjects {
-  @extend .decorations;
-  padding-bottom: 25px;
-}
-
 .projectsDiv {
   @extend .header;
   grid-column: 1 / 2;
@@ -53,6 +48,16 @@ sans-serif;
   text-align: center;
   margin: 40px 0px 0px 80px;
   padding-top: 35px;
+
+  >.allProjects {
+    @extend .decorations;
+    padding-bottom: 25px;
+  }
+
+  >.projects {
+    margin: 10px 0px;
+    @extend .decorations;
+  }
 }
 
 .feedContainer {
@@ -66,30 +71,57 @@ sans-serif;
   padding-left: 40px;
   grid-column: 2 / 2;
   background-color: #e6eff0;
+
+  >.list {
+    padding-top: 20px;
+
+    >.story {
+      margin-top: 20px;
+      width: 930px;
+      height: 700px;
+      height: 25%;
+      border-radius: 2px;
+      box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+      background-color: #ffffff;
+
+      >.storiesContainer {
+        display: grid;
+        grid-auto-rows: auto;
+        grid-auto-columns: none;
+        grid-template-columns: 100px auto;
+      }
+    }
+  }
 }
 
-.list {
-  padding-top: 20px;
-}
+.headline {
+  padding: 20px 0 0 30px;
+  grid-column: 2 / 2;
+  grid-row: 1;
 
-.story {
-  margin-top: 20px;
-  width: 930px;
-  height: 700px;
-  height: 25%;
-  border-radius: 2px;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
-  background-color: #ffffff;
-}
+  >.head {
+    >.author {
+      text-align: start;
+      @extend .header;
+      font-weight: bold;
+    }
 
-.projects {
-  margin: 10px 0px;
-  @extend .decorations;
-}
+    >.project {
+      @extend .header;
+      font-style: italic;
+      font-weight: bold;
+    }
 
-.screenImage {
-  width: 760px;
-  height: 480px;
+    >.timestamp {
+      @extend .header;
+      padding-left: 38%;
+    }
+  }
+
+  >.notes {
+    @extend .header;
+    font-size: 17px;
+  }
 }
 
 .screenshotdiv {
@@ -99,6 +131,11 @@ sans-serif;
   padding: 0 37px 27px 0;
 }
 
+.screenImage {
+  width: 760px;
+  height: 480px;
+}
+
 .userImage {
   grid-column: 1 / 2;
   grid-row: 1;
@@ -106,39 +143,4 @@ sans-serif;
   width: 80px;
   height: 80px;
   padding-left: 24px;
-}
-
-.author {
-  text-align: start;
-  @extend .header;
-  font-weight: bold;
-}
-
-.storiesContainer {
-  display: grid;
-  grid-auto-rows: auto;
-  grid-auto-columns: none;
-  grid-template-columns: 100px auto;
-}
-
-.project {
-  @extend .header;
-  font-style: italic;
-  font-weight: bold;
-}
-
-.timestamp {
-  @extend .header;
-  padding-left: 38%;
-}
-
-.notes {
-  @extend .header;
-  font-size: 17px;
-}
-
-.headline {
-  padding: 20px 0 0 30px;
-  grid-column: 2 / 2;
-  grid-row: 1;
 }

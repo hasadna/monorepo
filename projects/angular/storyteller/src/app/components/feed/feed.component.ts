@@ -20,11 +20,11 @@ export class FeedComponent {
     private firebaseService: FirebaseService,
   ) {
     if (firebaseService.isOnline) {
-      this.loadusers();
+      this.loadUsers();
       this.getProjects();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
-        this.loadusers();
+        this.loadUsers();
         this.getProjects();
       });
     }
@@ -41,7 +41,7 @@ export class FeedComponent {
     });
   }
 
-  loadusers(): void {
+  loadUsers(): void {
     this.firebaseService.getReviewerConfig().subscribe(userData => {
       this.users = userData.getUserList();
       this.getData(this.users);

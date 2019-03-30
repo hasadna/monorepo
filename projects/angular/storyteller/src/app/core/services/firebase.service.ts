@@ -1,4 +1,5 @@
-import { ReviewerConfig, Screenshot, StoryList } from '@/core/proto';
+import {  Screenshot, StoryList } from '@/core/proto';
+import { ReviewerConfig } from '@/core/proto';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
