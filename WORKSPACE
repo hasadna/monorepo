@@ -47,6 +47,10 @@ http_archive(
 # MARK: StartupOS end
 
 # StartupOS dependencies start
+load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+# TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
+maven_dependencies_startup_os()
+
 http_archive(
     name = "io_bazel_rules_docker",
     strip_prefix = "rules_docker-0.5.1",
