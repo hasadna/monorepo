@@ -78,20 +78,20 @@ class DataHandler {
     List<Protos.Calendar> calendars = new ArrayList<>();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "service_id",
-                  "sunday",
-                  "monday",
-                  "tuesday",
-                  "wednesday",
-                  "thursday",
-                  "friday",
-                  "saturday",
-                  "start_date",
-                  "end_date"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withHeader(
+                              "service_id",
+                              "sunday",
+                              "monday",
+                              "tuesday",
+                              "wednesday",
+                              "thursday",
+                              "friday",
+                              "saturday",
+                              "start_date",
+                              "end_date"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -102,18 +102,18 @@ class DataHandler {
           Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
 
           calendars.add(
-              calendar
-                  .setServiceId(Integer.parseInt(record.get("service_id")))
-                  .setSunday(Boolean.parseBoolean(record.get("sunday")))
-                  .setMonday(Boolean.parseBoolean(record.get("monday")))
-                  .setTuesday(Boolean.parseBoolean(record.get("tuesday")))
-                  .setWednesday(Boolean.parseBoolean(record.get("wednesday")))
-                  .setThursday(Boolean.parseBoolean(record.get("thursday")))
-                  .setFriday(Boolean.parseBoolean(record.get("friday")))
-                  .setSaturday(Boolean.parseBoolean(record.get("saturday")))
-                  .setStartDate(Integer.parseInt(record.get("start_date")))
-                  .setEndDate(Integer.parseInt(record.get("end_date")))
-                  .build());
+                  calendar
+                          .setServiceId(Integer.parseInt(record.get("service_id")))
+                          .setSunday(Boolean.parseBoolean(record.get("sunday")))
+                          .setMonday(Boolean.parseBoolean(record.get("monday")))
+                          .setTuesday(Boolean.parseBoolean(record.get("tuesday")))
+                          .setWednesday(Boolean.parseBoolean(record.get("wednesday")))
+                          .setThursday(Boolean.parseBoolean(record.get("thursday")))
+                          .setFriday(Boolean.parseBoolean(record.get("friday")))
+                          .setSaturday(Boolean.parseBoolean(record.get("saturday")))
+                          .setStartDate(Integer.parseInt(record.get("start_date")))
+                          .setEndDate(Integer.parseInt(record.get("end_date")))
+                          .build());
         }
       }
       return calendars;
@@ -130,17 +130,17 @@ class DataHandler {
     List<Route> routes = new ArrayList<>();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "route_id",
-                  "agency_id",
-                  "route_short_name",
-                  "route_long_name",
-                  "route_desc",
-                  "route_type",
-                  "route_color"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withHeader(
+                              "route_id",
+                              "agency_id",
+                              "route_short_name",
+                              "route_long_name",
+                              "route_desc",
+                              "route_type",
+                              "route_color"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -152,15 +152,15 @@ class DataHandler {
         }
         Route.Builder route = Route.newBuilder();
         routes.add(
-            route
-                .setRouteId(Integer.parseInt(record.get("route_id")))
-                .setAgencyId(Integer.parseInt(record.get("agency_id")))
-                .setRouteShortName(record.get("route_short_name"))
-                .setRouteLongName(record.get("route_long_name"))
-                .setRouteDesc(record.get("route_desc"))
-                .setRouteType(Integer.parseInt(record.get("route_type")))
-                .setRouteColor(record.get("route_color"))
-                .build());
+                route
+                        .setRouteId(Integer.parseInt(record.get("route_id")))
+                        .setAgencyId(Integer.parseInt(record.get("agency_id")))
+                        .setRouteShortName(record.get("route_short_name"))
+                        .setRouteLongName(record.get("route_long_name"))
+                        .setRouteDesc(record.get("route_desc"))
+                        .setRouteType(Integer.parseInt(record.get("route_type")))
+                        .setRouteColor(record.get("route_color"))
+                        .build());
       }
       return routes;
     } catch (IOException e) {
@@ -170,9 +170,9 @@ class DataHandler {
 
   public static List<Integer> getStopsId() {
     return getStopTimes(stopTimesAbsPath)
-        .stream()
-        .map(StopTime::getStopId)
-        .collect(Collectors.toList());
+            .stream()
+            .map(StopTime::getStopId)
+            .collect(Collectors.toList());
   }
 
   public static List<StopTime> getStopTimes(Path csvPath) {
@@ -180,18 +180,18 @@ class DataHandler {
     List<StopTime> stopsTime = new ArrayList<>();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "trip_id",
-                  "arrival_time",
-                  "departure_time",
-                  "stop_id",
-                  "stop_sequence",
-                  "pickup_type",
-                  "drop_off_type",
-                  "shape_dist_traveled"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withHeader(
+                              "trip_id",
+                              "arrival_time",
+                              "departure_time",
+                              "stop_id",
+                              "stop_sequence",
+                              "pickup_type",
+                              "drop_off_type",
+                              "shape_dist_traveled"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -203,16 +203,16 @@ class DataHandler {
         }
         StopTime.Builder stopTime = StopTime.newBuilder();
         stopsTime.add(
-            stopTime
-                .setTripId(record.get("trip_id"))
-                .setArrivalTime(record.get("arrival_time"))
-                .setDepartureTime(record.get("departure_time"))
-                .setStopId(Integer.parseInt(record.get("stop_id")))
-                .setStopSequence(record.get("stop_sequence"))
-                .setPickupType(record.get("pickup_type"))
-                .setDropOffType(record.get("drop_off_type"))
-                .setShapeDistTraveled(record.get("shape_dist_traveled"))
-                .build());
+                stopTime
+                        .setTripId(record.get("trip_id"))
+                        .setArrivalTime(record.get("arrival_time"))
+                        .setDepartureTime(record.get("departure_time"))
+                        .setStopId(Integer.parseInt(record.get("stop_id")))
+                        .setStopSequence(record.get("stop_sequence"))
+                        .setPickupType(record.get("pickup_type"))
+                        .setDropOffType(record.get("drop_off_type"))
+                        .setShapeDistTraveled(record.get("shape_dist_traveled"))
+                        .build());
       }
       return stopsTime;
     } catch (IOException e) {
@@ -225,19 +225,19 @@ class DataHandler {
     List<Stop> stops = new ArrayList<>();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "stop_id",
-                  "stop_code",
-                  "stop_name",
-                  "stop_desc",
-                  "stop_lat",
-                  "stop_lon",
-                  "location_type",
-                  "parent_station",
-                  "zone_id"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withHeader(
+                              "stop_id",
+                              "stop_code",
+                              "stop_name",
+                              "stop_desc",
+                              "stop_lat",
+                              "stop_lon",
+                              "location_type",
+                              "parent_station",
+                              "zone_id"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -249,16 +249,16 @@ class DataHandler {
         }
         Stop.Builder stop = Stop.newBuilder();
         stops.add(
-            stop.setStopId(Integer.parseInt(record.get("stop_id")))
-                .setStopCode(Integer.parseInt(record.get("stop_code")))
-                .setStopName(record.get("stop_name"))
-                .setStopDesc(record.get("stop_desc"))
-                .setStopLat(Double.parseDouble(record.get("stop_lat")))
-                .setStopLon(Double.parseDouble(record.get("stop_lon")))
-                .setLocationType(Integer.parseInt(record.get("location_type")))
-                .setParentStation(record.get("parent_station"))
-                .setZoneId(Integer.parseInt(record.get("zone_id")))
-                .build());
+                stop.setStopId(Integer.parseInt(record.get("stop_id")))
+                        .setStopCode(Integer.parseInt(record.get("stop_code")))
+                        .setStopName(record.get("stop_name"))
+                        .setStopDesc(record.get("stop_desc"))
+                        .setStopLat(Double.parseDouble(record.get("stop_lat")))
+                        .setStopLon(Double.parseDouble(record.get("stop_lon")))
+                        .setLocationType(Integer.parseInt(record.get("location_type")))
+                        .setParentStation(record.get("parent_station"))
+                        .setZoneId(Integer.parseInt(record.get("zone_id")))
+                        .build());
       }
       return stops;
     } catch (IOException e) {
@@ -270,10 +270,10 @@ class DataHandler {
     List<Translation> translations = new ArrayList<>();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withQuote(null).withHeader("trans_id", "lang", "translation"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withQuote(null).withHeader("trans_id", "lang", "translation"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -282,11 +282,11 @@ class DataHandler {
         }
         Translation.Builder translation = Translation.newBuilder();
         translations.add(
-            translation
-                .setTransId(record.get("trans_id"))
-                .setLang(record.get("lang"))
-                .setTranslation(record.get("translation"))
-                .build());
+                translation
+                        .setTransId(record.get("trans_id"))
+                        .setLang(record.get("lang"))
+                        .setTranslation(record.get("translation"))
+                        .build());
       }
       return translations;
     } catch (IOException e) {
@@ -304,16 +304,16 @@ class DataHandler {
     List<Integer> serviceIds = getServiceIds();
     try {
       CSVParser parser =
-          CSVParser.parse(
-              csvPath,
-              StandardCharsets.UTF_8,
-              CSVFormat.DEFAULT.withHeader(
-                  "route_id",
-                  "service_id",
-                  "trip_id",
-                  "trip_headsign",
-                  "direction_id",
-                  "shape_id"));
+              CSVParser.parse(
+                      csvPath,
+                      StandardCharsets.UTF_8,
+                      CSVFormat.DEFAULT.withHeader(
+                              "route_id",
+                              "service_id",
+                              "trip_id",
+                              "trip_headsign",
+                              "direction_id",
+                              "shape_id"));
       boolean isHeader = true;
       for (CSVRecord record : parser) {
         if (isHeader) {
@@ -321,18 +321,18 @@ class DataHandler {
           continue;
         }
         if (!routesId.contains(Integer.parseInt(record.get("route_id")))
-            || !serviceIds.contains(Integer.parseInt(record.get("service_id")))) {
+                || !serviceIds.contains(Integer.parseInt(record.get("service_id")))) {
           continue;
         }
         Trip.Builder trip = Trip.newBuilder();
         trips.add(
-            trip.setRouteId(Integer.parseInt(record.get("route_id")))
-                .setServiceId(Integer.parseInt(record.get("service_id")))
-                .setTripId(record.get("trip_id"))
-                .setTripHeadsign(record.get("trip_headsign"))
-                .setDirectionId(Integer.parseInt(record.get("direction_id")))
-                .setShapeId(record.get("shape_id"))
-                .build());
+                trip.setRouteId(Integer.parseInt(record.get("route_id")))
+                        .setServiceId(Integer.parseInt(record.get("service_id")))
+                        .setTripId(record.get("trip_id"))
+                        .setTripHeadsign(record.get("trip_headsign"))
+                        .setDirectionId(Integer.parseInt(record.get("direction_id")))
+                        .setShapeId(record.get("shape_id"))
+                        .build());
       }
       return trips;
     } catch (IOException e) {
