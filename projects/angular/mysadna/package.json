@@ -1,0 +1,16 @@
+{
+  "name": "mysadna",
+  "scripts": {
+    "start": "ng serve mysadna",
+    "build": "ng build mysadna",
+    "test": "ng test mysadna",
+    "lint": "ng lint mysadna",
+    "fix": "ng lint mysadna --fix",
+    "deploy": "firebase deploy --only hosting",
+    "protoc": "workspacerun protoc"
+  },
+  "devDependencies": {
+    "ts-protoc-gen": "^0.9.0",
+    "workspacerun": "^1.0.5"
+  }
+}

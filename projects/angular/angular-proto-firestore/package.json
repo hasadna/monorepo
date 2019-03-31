@@ -1,0 +1,16 @@
+{
+  "name": "protobin-reader",
+  "scripts": {
+    "start": "ng serve angular-proto-firestore",
+    "build": "ng build angular-proto-firestore",
+    "test": "ng test angular-proto-firestore",
+    "lint": "ng lint angular-proto-firestore",
+    "fix": "ng lint angular-proto-firestore --fix",
+    "deploy": "firebase deploy --only hosting",
+    "protoc": "workspacerun protoc"
+  },
+  "devDependencies": {
+    "ts-protoc-gen": "^0.9.0",
+    "workspacerun": "^1.0.5"
+  }
+}
