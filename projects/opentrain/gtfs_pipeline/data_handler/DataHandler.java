@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 class DataHandler {
 
+  static final int FILTER_DATE = 20190217;
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
 
   private static String getDayOfToday() {
@@ -56,9 +57,10 @@ class DataHandler {
     DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     int startDate = Integer.parseInt(record.get("start_date"));
     int endDate = Integer.parseInt(record.get("end_date"));
-    int currentDate = Integer.parseInt(dateFormat.format(new Date()));
+
+    // int currentDate = Integer.parseInt(dateFormat.format(new Date()));
     boolean isRecordDayTrueOnDayOfToday = Integer.parseInt(record.get(getDayOfToday())) == 1;
-    return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
+    return (startDate <= FILTER_DATE && FILTER_DATE <= endDate && isRecordDayTrueOnDayOfToday);
   }
 
   public static List<Integer> getServiceIds() {
