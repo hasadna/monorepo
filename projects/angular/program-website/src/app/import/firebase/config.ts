@@ -4,6 +4,5 @@ export const config = {
   databaseURL: 'https://startupos-5f279.firebaseio.com',
   projectId: 'startupos-5f279',
   storageBucket: 'startupos-5f279.appspot.com',
-  messagingSenderId: '160348327132'
+  messagingSenderId: '160348327132',
 };
-
