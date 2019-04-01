@@ -1,0 +1,6 @@
+{
+  "exportPath": "src/app/core/proto",
+  "protoList": [
+    "hasadna/projects/angular/angular-proto-firestore/data.proto"
+  ]
+}

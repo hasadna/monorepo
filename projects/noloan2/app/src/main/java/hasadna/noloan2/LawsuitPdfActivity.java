@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,8 +19,8 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,14 +35,10 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
   // filenames
   private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
-  private static final String LAWSUIT_TEMPLATE_DIR_NAME = "templates";
   private static final String LAWSUIT_OUTPUT_DIR_NAME = "pdf";
-  private static final String LAWSUIT_TEMPLATE_FILE_NAME = "templates.xhtml";
 
   // absPaths
   private String lawsuitMainPath = "";
-  private String lawsuitTemplateDirPath = "";
-  private String lawsuitTemplateFilePath = "";
   private String lawsuitOutputPath = "";
 
   // Formats
@@ -101,7 +96,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     initDirStructure();
     setTimeZones();
 
-    createPdfButton.setOnClickListener((View v) -> checkPermissionsThenCreatePdf());
+    createPdfButton.setOnClickListener(v -> checkPermissionsThenCreatePdf());
   }
 
   private void createPdf() {
@@ -119,17 +114,21 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     } catch (IOException e) {
       Log.w(TAG, "Read template / Write file: " + e.getMessage());
       e.printStackTrace();
+      Toast.makeText(LawsuitPdfActivity.this, "Failed to create lawsuit.", Toast.LENGTH_LONG)
+          .show();
     }
   }
 
   private String fillTemplate() throws IOException {
     String lawsuit = null;
     try {
-      lawsuit =
-          new String(
-              Files.readAllBytes(Paths.get(lawsuitTemplateFilePath)), StandardCharsets.UTF_8);
+      InputStream inputStream = getAssets().open("template.xhtml");
+      byte[] buffer = new byte[inputStream.available()];
+      inputStream.read(buffer);
+      inputStream.close();
+      lawsuit = new String(buffer, StandardCharsets.UTF_8);
     } catch (IOException e) {
-      throw new IOException("Read template error.\nabsPath: " + lawsuitTemplateFilePath);
+      throw new IOException("Read template error.");
     }
 
     // General form fields
@@ -174,6 +173,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   }
 
   private void initDirStructure() {
+    // TODO: Paths.get() require API 26. Find/Create function that suits lower API versions.
     lawsuitMainPath =
         Paths.get(
                 Environment.getExternalStorageDirectory().getPath(),
@@ -181,16 +181,6 @@ public class LawsuitPdfActivity extends AppCompatActivity {
                 LAWSUIT_MAIN_DIR_NAME)
             .toString();
     makeDir(lawsuitMainPath);
-
-    lawsuitTemplateDirPath = Paths.get(lawsuitMainPath, LAWSUIT_TEMPLATE_DIR_NAME).toString();
-    makeDir(lawsuitTemplateDirPath);
-
-    try {
-      lawsuitTemplateFilePath =
-          Paths.get(lawsuitTemplateDirPath, LAWSUIT_TEMPLATE_FILE_NAME).toString();
-    } catch (Exception e) {
-      Toast.makeText(this, "No template file found for the lawsuit.", Toast.LENGTH_LONG).show();
-    }
 
     // Output
     lawsuitOutputPath = Paths.get(lawsuitMainPath, LAWSUIT_OUTPUT_DIR_NAME).toString();
