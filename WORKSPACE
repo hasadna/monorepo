@@ -21,8 +21,8 @@ GMAVEN_TAG = "20180513-1"
 
 http_archive(
     name = "gmaven_rules",
-    sha256 = RULES_JVM_EXTERNAL_SHA,
     strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
 )
 
@@ -47,8 +47,12 @@ http_archive(
 # MARK: StartupOS end
 
 # StartupOS dependencies start
+<<<<<<< HEAD
 load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os = "maven_dependencies")
 
+=======
+load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+>>>>>>> e1ecac4b537fb58248b1fc7ee7f48a1fdbba328f
 # TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
 maven_dependencies_startup_os()
 
@@ -176,8 +180,9 @@ http_archive(
 #gtfs_data
 http_archive(
     name = "gtfs_data",
-    build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+    build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+
 )
 
 #csv_data
