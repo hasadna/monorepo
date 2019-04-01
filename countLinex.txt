@@ -1,4 +1,0 @@
-4811 routes.csv
-5684524 samples.csv
-70 stops.csv
-447098 trips.csv
