@@ -47,12 +47,7 @@ http_archive(
 # MARK: StartupOS end
 
 # StartupOS dependencies start
-<<<<<<< HEAD
 load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os = "maven_dependencies")
-
-=======
-load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
->>>>>>> e1ecac4b537fb58248b1fc7ee7f48a1fdbba328f
 # TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
 maven_dependencies_startup_os()
 
@@ -174,7 +169,6 @@ http_archive(
     sha256 = "08e5549daf5067079409fc31d8d1f3c5686a15c9da664f37464f2d7e3ba7c83b",
     url = "https://github.com/hasadna/hasadna/releases/download/v1/merged_file1_file2.prototxt.zip",
 )
-
 # MARK: sample data for analysis pipeline end
 
 #gtfs_data
