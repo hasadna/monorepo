@@ -33,11 +33,3 @@ genrule(
     outs = ["all_users_prebuilt_archive.count"],
     tools = ["//projects/data_analysis/task2:task2"],
 )
-
-genrule(
-    name = "count_lines",
-    srcs = ["@gtfs_data//:stops.txt", "@gtfs_data//:routes.txt", "@gtfs_data//:trips.txt" ],
-    cmd = "$(location //projects/data_analysis/linecount:linecount) $(location @gtfs_data//:stops.txt) $(location @gtfs_data//:routes.txt) $(location @gtfs_data//:trips.txt) $@",
-    outs = ["lines.txt"],
-    tools = ["//projects/data_analysis/linecount:linecount"],
-)
