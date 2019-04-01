@@ -54,13 +54,6 @@ export class FeedComponent {
     }
   }
 
-  getRouterLink(story: Story, screenshot: Screenshot): string {
-    const id: string = story.getId();
-    const filename: string = screenshot.getFilename();
-    const author: string = story.getAuthor();
-    return `/single-screenshot/${id}/${filename}/${author}`;
-  }
-
   getProjects(): void {
     this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
       const projectIdList: string[] = reviewerConfig.getProjectList().map(

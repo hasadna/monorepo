@@ -6,10 +6,8 @@ import { Component, Input } from '@angular/core';
   templateUrl: './story-headline.component.html',
   styleUrls: ['./story-headline.component.scss'],
 })
-export class StoryHeadlineComponent  {
-
+export class StoryHeadlineComponent {
   @Input() user: User;
   @Input() story: Story;
   @Input() storyItem: StoryItem;
-
 }

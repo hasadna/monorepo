@@ -95,11 +95,12 @@ sans-serif;
 }
 
 .headline {
-  padding: 20px 0 0 30px;
   grid-column: 2 / 2;
   grid-row: 1;
 
   >.head {
+    padding: 20px 0 0 30px;
+
     >.author {
       text-align: start;
       @extend .header;
@@ -121,8 +122,10 @@ sans-serif;
   >.notes {
     @extend .header;
     font-size: 17px;
+    padding-left: 30px;
   }
 }
+
 
 .screenshotdiv {
   grid-column: 2 / 2;

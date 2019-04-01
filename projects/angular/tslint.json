@@ -111,6 +111,5 @@
     "no-consecutive-blank-lines": true,
     "no-unnecessary-qualifier": true,
     "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
-    "deprecation": true
   }
 }

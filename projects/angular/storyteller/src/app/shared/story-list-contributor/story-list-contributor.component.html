@@ -1,0 +1,35 @@
+<div class="storyListContainer" *ngFor="let storylistChild of storyList">
+  <div class="list" *ngFor="let story of storylistChild.getStoryList()">
+    <div class="story" *ngFor="let storyItem of story.getItemList()">
+      <div class="storiesContainer">
+        <a [routerLink]="'/info/' + story.getAuthor()">
+          <img class="userImage" src="/assets/user.png">
+        </a>
+        <span *ngIf="users">
+          <span *ngFor="let userFromList of users" class="headline">
+            <span *ngIf="userFromList.getEmail() == story.getAuthor()">
+              <app-story-headline [user]="userFromList" [story]="story" [storyItem]="storyItem"></app-story-headline>
+            </span>
+          </span>
+        </span>
+        <span *ngIf="user">
+          <span class="headline">
+            <span *ngIf="user.getEmail() == story.getAuthor()">
+              <app-story-headline [user]="user" [story]="story" [storyItem]="storyItem"></app-story-headline>
+            </span>
+          </span>
+        </span>
+        <div class="screenshotdiv">
+          <div *ngFor="let screenshot of screenshots">
+            <div *ngIf="storyItem.getScreenshotFilename() === screenshot.getFilename()">
+              <a [routerLink]="getRouterLink(story, screenshot)">
+                <img class="screenImage" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" height="480"
+                  width="750" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
