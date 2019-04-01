@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { ProfilePagesRoutingModule } from './profile-pages-routing.module';
 import { ProfilePagesComponent } from './profile-pages.component';
-import { ComponentList } from './profile-pages-components';
-import { SharedList } from './profile-pages-shared';
-import { CommonModule } from 'common/module';
-import { FirebaseService } from '@/core/services';
+import { ComponentList } from './components';
+import { SharedList } from './shared';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,7 @@ import { FirebaseService } from '@/core/services';
     ProfilePagesRoutingModule,
     CommonModule,
   ],
-  providers: [FirebaseService],
+  providers: [],
   bootstrap: [ProfilePagesComponent],
 })
 export class ProfilePagesModule { }

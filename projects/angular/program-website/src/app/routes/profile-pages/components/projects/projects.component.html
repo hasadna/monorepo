@@ -1,7 +1,7 @@
 <div class="projects media">
   <div class="title">Projects</div>
   <div class="project" *ngFor="let project of projects">
-    <a [routerLink]="'/project-details/' + project.getId()">
+    <a [routerLink]="['/profile-pages', 'project-details', project.getId()]">
       {{project.getDisplayName()}}
     </a>
   </div>

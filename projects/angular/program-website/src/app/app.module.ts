@@ -6,6 +6,7 @@ import { CoreModule } from './core/core.module';
 import { FirebaseModule } from './import/firebase/firebase.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from '@/routes';
+import { CommonModule } from 'common/module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HomeComponent } from '@/routes';
     CoreModule,
     FirebaseModule,
     AppRoutingModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
