@@ -7,6 +7,6 @@ genrule(
         "@csv_data//:trips.csv",
     ],
     outs = ["output.txt"],
-    cmd = "$(location //projects/OpenTrain/israel_railways_pipeline:israel_railways_pipeline) $(location @csv_data//:routes.csv) $(location @csv_data//:samples.csv) $(location @csv_data//:stops.csv) $(location @csv_data//:trips.csv) $@",
-    tools = ["//projects/OpenTrain/israel_railways_pipeline"],
+    cmd = "$(location //projects/OpenTrain/israel_railways_pipeline/data_handler:israel_railways_pipeline) $(location @csv_data//:routes.csv) $(location @csv_data//:samples.csv) $(location @csv_data//:stops.csv) $(location @csv_data//:trips.csv) $@",
+    tools = ["//projects/OpenTrain/israel_railways_pipeline/data_handler:israel_railways_pipeline"],
 )
