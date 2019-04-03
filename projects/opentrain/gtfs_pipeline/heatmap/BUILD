@@ -9,7 +9,6 @@ java_binary(
         "@startup_os//common/flags",
         "//third_party/maven/com/google/flogger:flogger_system_backend",
     ],
-
     main_class = "projects.opentrain.gtfs_pipeline.heatmap.HeatMap",
     data = [
         "//projects/opentrain/gtfs_pipeline:data_analysis_part1",
