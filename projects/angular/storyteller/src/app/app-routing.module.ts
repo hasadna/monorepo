@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     path: 'single-screenshot/:storyId/:screenshot/:storyAuthor',
     component: SingleScreenshotComponent,
   },
-  { path: 'info', component: UserInfoComponent },
+  { path: 'info/:storyAuthor', component: UserInfoComponent },
   { path: '**', redirectTo: '/home' },
 ];
 

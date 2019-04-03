@@ -14,6 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { FirebaseModule } from './import/firebase/firebase.module';
+import { StoryHeadlineComponent } from './shared/story-headline/story-headline.component';
+import { StoryListContributorComponent } from './shared/story-list-contributor/story-list-contributor.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { FirebaseModule } from './import/firebase/firebase.module';
     UserInfoComponent,
     FeedComponent,
     SingleScreenshotComponent,
+    StoryHeadlineComponent,
+    StoryListContributorComponent,
   ],
   imports: [
     BrowserModule,

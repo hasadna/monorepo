@@ -1,39 +1,58 @@
-h1 {
-  text-align: center;
+@import 'styles/feeds.scss';
+
+.leftContainer {
+  grid-column: 1 / 2;
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 300px;
-  margin: auto;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  width: 310px;
+  height: 400px;
+  margin: 40px 0 0 80px;
   text-align: center;
+
+  >.cardImage {
+    padding-top: 20px;
+    width: 120px;
+    height: 120px;
+  }
+
+  >.email {
+    @extend .header;
+    padding: 50px 15px 0;
+  }
+
+  >.links {
+    padding-top: 25px;
+  }
+
+  >.title {
+    @extend .header;
+    font-weight: bold;
+  }
 }
 
-.title {
-  color: grey;
-  font-size: 18px;
+.userinfo {
+  background-color: #e6eff0;
+  display: grid;
+  grid-auto-columns: none;
+  grid-template-columns: 400px auto;
 }
 
-button {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: white;
-  background-color: #000;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  font-size: 18px;
+.storyListContainer {
+  grid-column: 2 / 2;
+  padding: 0px;
+  margin-left: 40px;
 }
 
 a {
   text-decoration: none;
   font-size: 22px;
   color: black;
-}
 
-button:hover,
-a:hover {
-  opacity: 0.7;
+  :hover {
+    opacity: 0.7;
+  }
 }
