@@ -10,7 +10,8 @@ import java.nio.file.Paths;
 public class CountLines {
   public static void main(String[] args) throws IOException {
     ImmutableList<Path> paths =
-        ImmutableList.of(Paths.get(args[0]), Paths.get(args[1]), Paths.get(args[2]), Paths.get(args[3]));
+        ImmutableList.of(
+            Paths.get(args[0]), Paths.get(args[1]), Paths.get(args[2]), Paths.get(args[3]));
     Path outfile = Paths.get(args[4]);
     StringBuilder result = new StringBuilder();
     for (Path path : paths) {
