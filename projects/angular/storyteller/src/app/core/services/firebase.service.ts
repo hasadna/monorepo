@@ -4,8 +4,10 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ReviewerConfig, Screenshot, StoryList } from '@/core/proto';
 import { EncodingService } from 'common/services';
+
+import { Screenshot, StoryList } from '@/core/proto';
+import { ReviewerConfig } from '@/core/proto';
 
 interface FirebaseElement {
   proto: string;

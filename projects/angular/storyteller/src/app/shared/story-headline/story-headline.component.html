@@ -1,0 +1,11 @@
+<span class="headline">
+  <div class="head">
+    <span class="author">
+      <span>{{user.getFirstName()}} {{user.getLastName()}}</span>
+    </span>
+    on
+    <span class="project">{{story.getProject()}}</span>
+    <span class="timestamp">{{storyItem.getTimeMs() | date:'medium'}}</span>
+  </div>
+  <span class="notes">{{storyItem.getOneliner()}}</span>
+</span>

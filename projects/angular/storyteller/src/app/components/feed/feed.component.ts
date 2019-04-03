@@ -14,16 +14,18 @@ export class FeedComponent {
   screenshots: Screenshot[] = [];
   users: User[];
   isLoading = true;
+  projectList: string[];
 
   constructor(
     private firebaseService: FirebaseService,
   ) {
     if (firebaseService.isOnline) {
-      this.loadusers();
-
+      this.loadUsers();
+      this.getProjects();
     } else {
       this.firebaseService.anonymousLogin().then(() => {
-        this.loadusers();
+        this.loadUsers();
+        this.getProjects();
       });
     }
   }
@@ -39,7 +41,7 @@ export class FeedComponent {
     });
   }
 
-  loadusers(): void {
+  loadUsers(): void {
     this.firebaseService.getReviewerConfig().subscribe(userData => {
       this.users = userData.getUserList();
       this.getData(this.users);
@@ -52,10 +54,12 @@ export class FeedComponent {
     }
   }
 
-  getRouterLink(story: Story, screenshot: Screenshot): string {
-    const id: string = story.getId();
-    const filename: string = screenshot.getFilename();
-    const author: string = story.getAuthor();
-    return `/single-screenshot/${id}/${filename}/${author}`;
+  getProjects(): void {
+    this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
+      const projectIdList: string[] = reviewerConfig.getProjectList().map(
+        project => project.getId(),
+      );
+      this.projectList = projectIdList;
+    });
   }
 }

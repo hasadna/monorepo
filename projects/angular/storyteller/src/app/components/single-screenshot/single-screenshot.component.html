@@ -1,19 +1,21 @@
 <div *ngIf="isLoading">
   Loading
 </div>
-<div class="singleFeed">
-  <div class="story" *ngIf="!isLoading">
-    <span class="userimagediv">
-      <img class="userImage" src="/assets/user.png" width="60" height="50" alt="">
-    </span>
-    <span class="head">
-      <span class="author">{{ story.getAuthor() }}</span>
-      <span> on </span>
-      <span class="project">{{ story.getProject() }}</span>
-      <span class="timestamp">{{story.getItemList()[0].getTimeMs() | date:'short'}}</span>
-    </span>
-    <div class="screenshotdiv">
-      <img class="single" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" />
+<div class="storyListContainer">
+  <div class="list" *ngIf="!isLoading">
+    <div class="story">
+      <span class="storiesContainer">
+        <a [routerLink]="'/info/' + story.getAuthor()">
+          <img class="userImage" src="/assets/user.png">
+        </a>
+        <span class="headline">
+          <app-story-headline [user]="user" [story]="story" [storyItem]="story.getItemList()[0]">
+          </app-story-headline>
+        </span>
+        <div class="screenshotdiv">
+          <img class="screenImage" src="data:image/png;base64,{{screenshot.getScreenshot_asB64()}}" />
+        </div>
+      </span>
     </div>
   </div>
 </div>
