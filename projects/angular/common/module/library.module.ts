@@ -9,4 +9,4 @@ import {
     EncodingService,
   ],
 })
-export class CommonModule { }
+export class LibraryModule { }
