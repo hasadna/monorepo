@@ -12,8 +12,10 @@ import { EasyStory } from '@/shared';
   styleUrls: ['./single-item.component.scss'],
 })
 export class SingleItemComponent {
-  isLoading = true;
+  isLoading: boolean = true;
+  isCrashError: boolean = false;
   storyId: string;
+  itemId: string;
   easyStory: EasyStory;
 
   constructor(
@@ -24,6 +26,7 @@ export class SingleItemComponent {
   ) {
     const email: string = this.activatedRoute.snapshot.params['email'];
     this.storyId = this.activatedRoute.snapshot.params['storyId'];
+    this.itemId = this.activatedRoute.snapshot.params['itemId'];
     this.loadReviewerConfig(email);
   }
 
@@ -35,12 +38,15 @@ export class SingleItemComponent {
       const stories: Story[] = this.storyService.getStories(data[0]);
       const story: Story = this.getStory(stories);
       const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
-      this.easyStory = this.storyService.createEasyStory(
-        screenshots,
-        story,
-        user,
-      );
-      this.isLoading = false;
+      if (!this.isCrashError) {
+        const easyStories: EasyStory[] = this.storyService.createEasyStoryItemList(
+          screenshots,
+          story,
+          user,
+        );
+        this.easyStory = this.getEasyStory(easyStories);
+        this.isLoading = false;
+      }
     });
   }
 
@@ -52,14 +58,35 @@ export class SingleItemComponent {
       }
     }
 
-    console.error('Story not found');
-    this.router.navigate(['/home']);
+    this.crash('Invalid story id');
+  }
+
+  // Searches an easyStory by itemId
+  getEasyStory(easyStories: EasyStory[]): EasyStory {
+    for (const easyStory of easyStories) {
+      if (easyStory.itemId === this.itemId) {
+        return easyStory;
+      }
+    }
+
+    this.crash('Invalid item id');
   }
 
   loadReviewerConfig(email: string): void {
     this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
       const user: User = this.storyService.getUser(email, reviewerConfig);
+      if (!user) {
+        this.crash('Invalid user');
+        return;
+      }
       this.loadStories(user);
     });
+  }
+
+  crash(message: string): void {
+    // TODO: add an "error showing" interface
+    console.error(message);
+    this.isCrashError = true;
+    this.router.navigate(['/home']);
   }
 }

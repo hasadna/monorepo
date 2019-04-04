@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Screenshot, StoryList, Story, ReviewerConfig, User } from '@/core/proto';
+import { Screenshot, StoryList, Story, ReviewerConfig, User, StoryItem } from '@/core/proto';
 import { EasyStory } from '@/shared';
 
 @Injectable()
@@ -8,7 +8,10 @@ export class StoryService {
   // Converts list of lists to single list
   getStories(storyLists: StoryList[]): Story[] {
     // TODO: find out why we need StoryList.
-    // It's list of lists. Why not just single list?
+    // It's list of lists. Why we can't have just single list?
+
+    // Moreover each story contains list of story items.
+    // So it's list of lists of lists... It's a madness!
 
     const stories: Story[] = [];
     for (const storyList of storyLists) {
@@ -37,35 +40,44 @@ export class StoryService {
   createEasyStories(screenshots: Screenshot[], stories: Story[], user: User): EasyStory[] {
     const easyStories: EasyStory[] = [];
     for (const story of stories) {
-      easyStories.push(this.createEasyStory(screenshots, story, user));
+      easyStories.push(...this.createEasyStoryItemList(screenshots, story, user));
     }
     return easyStories;
   }
 
-  // Converts Story and Screenshot[] to EasyStory
-  createEasyStory(screenshots: Screenshot[], story: Story, user: User): EasyStory {
-    const easyStory: EasyStory = {
-      id: story.getId(),
+  // Converts Story and Screenshot[] to EasyStory[]
+  createEasyStoryItemList(screenshots: Screenshot[], story: Story, user: User): EasyStory[] {
+    const easyStoryBuilder: EasyStory = {
+      storyId: story.getId(),
+      itemId: '',
       username: user.getFirstName() + ' ' + user.getLastName(),
       email: user.getEmail(),
       project: story.getProject(),
-      timestamp: story.getEndTimeMs(),
-      snapshots: [],
+      timestamp: 0,
+      oneliner: '',
+      note: '',
+      screenshot: '',
     };
 
+    const easyStories: EasyStory[] = [];
     story.getItemList().forEach(storyItem => {
-      for (const screenshot of screenshots) {
-        if (screenshot.getFilename() === storyItem.getScreenshotFilename()) {
-          easyStory.snapshots.push({
-            oneliner: storyItem.getOneliner(),
-            note: storyItem.getNote(),
-            screenshot: screenshot.getScreenshot_asB64(),
-          });
-        }
-      }
+      const easyStory: EasyStory = Object.assign({}, easyStoryBuilder);
+      easyStory.itemId = storyItem.getId();
+      easyStory.timestamp = storyItem.getTimeMs();
+      easyStory.oneliner = storyItem.getOneliner();
+      easyStory.note = storyItem.getNote();
+      easyStory.screenshot = this.getScreenshot(screenshots, storyItem);
+      easyStories.push(easyStory);
     });
+    return easyStories;
+  }
 
-    return easyStory;
+  getScreenshot(screenshots: Screenshot[], storyItem: StoryItem): string {
+    for (const screenshot of screenshots) {
+      if (screenshot.getFilename() === storyItem.getScreenshotFilename()) {
+        return screenshot.getScreenshot_asB64();
+      }
+    }
   }
 
   getProjectIdList(reviewerConfig: ReviewerConfig): string[] {

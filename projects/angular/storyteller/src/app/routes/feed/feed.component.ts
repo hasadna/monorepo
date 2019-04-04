@@ -11,7 +11,7 @@ import { EasyStory } from '@/shared';
   styleUrls: ['./feed.component.scss'],
 })
 export class FeedComponent {
-  isLoading = true;
+  isLoading: boolean = true;
   projectIdList: string[];
   easyStories: EasyStory[];
 

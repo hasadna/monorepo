@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { zip } from 'rxjs';
 
 import { Screenshot, User, Story } from '@/core/proto';
@@ -12,13 +12,14 @@ import { EasyStory } from '@/shared';
   styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent {
-  isLoading = true;
+  isLoading: boolean = true;
   projectIdList: string[];
   easyStories: EasyStory[];
   user: User;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private firebaseService: FirebaseService,
     private storyService: StoryService,
   ) {
@@ -43,6 +44,11 @@ export class UserInfoComponent {
     this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
       // Get user and project id list
       this.user = this.storyService.getUser(email, reviewerConfig);
+      if (!this.user) {
+        console.error('User not found');
+        this.router.navigate(['/home']);
+        return;
+      }
       this.projectIdList = this.storyService.getProjectIdList(reviewerConfig);
 
       this.loadStories();

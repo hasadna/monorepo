@@ -40,22 +40,20 @@
         color: #767676;
       }
     }
-    >.items {
-      $placeholder: 17px;
-      >.oneliner {
-        margin-top: $placeholder;
-        font-size: 17px;
-      }
-      >.note {
-        margin-top: $placeholder;
-        font-size: 16px;
-      }
-      >.screenshot {
-        margin-top: $placeholder;
-        img {
-          width: 100%;
-          cursor: pointer;
-        }
+    $placeholder: 17px;
+    >.oneliner {
+      margin-top: $placeholder;
+      font-size: 17px;
+    }
+    >.note {
+      margin-top: $placeholder;
+      font-size: 16px;
+    }
+    >.screenshot {
+      margin-top: $placeholder;
+      img {
+        width: 100%;
+        cursor: pointer;
       }
     }
   }

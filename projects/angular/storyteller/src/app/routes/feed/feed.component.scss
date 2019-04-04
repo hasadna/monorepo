@@ -1,10 +1,5 @@
-.feed-page {
-  display: flex;
-  display: 100%;
-  justify-content: center;
-  padding: 20px;
+.page-container {
   >.align-container {
-    display: flex;
     >.feed {
       app-story {
         display: block;

@@ -19,7 +19,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'home', component: FeedComponent },
       { path: 'info/:email', component: UserInfoComponent },
-      { path: 'single-item/:email/:storyId', component: SingleItemComponent },
+      { path: 'single-item/:email/:storyId/:itemId', component: SingleItemComponent },
     ],
   },
   { path: '**', redirectTo: 'login' },

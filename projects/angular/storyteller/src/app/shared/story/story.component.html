@@ -12,29 +12,27 @@
         <span class="project">{{ easyStory.project }}</span>
       </div>
       <div class="time">
-        <a [routerLink]="['/single-item', easyStory.email, easyStory.id]">
+        <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
           {{ easyStory.timestamp | date:'hh:mm, MMM d, y' }}
         </a>
       </div>
     </div>
-    <div class="items" *ngFor="let snapshot of easyStory.snapshots">
-      <div class="oneliner">
-        <a [routerLink]="['/single-item', easyStory.email, easyStory.id]">
-          {{ snapshot.oneliner }}
-        </a>
-      </div>
-      <div class="note">
-        <a [routerLink]="['/single-item', easyStory.email, easyStory.id]">
-          {{ snapshot.note }}
-        </a>
-      </div>
-      <div class="screenshot">
-        <img 
-          class="screenImage"
-          [src]="'data:image/png;base64,' + snapshot.screenshot"
-          (click)="openScreenshot(snapshot.screenshot)"
-        />
-      </div>
+    <div class="oneliner">
+      <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+        {{ easyStory.oneliner }}
+      </a>
+    </div>
+    <div class="note">
+      <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+        {{ easyStory.note }}
+      </a>
+    </div>
+    <div class="screenshot" *ngIf="easyStory.screenshot">
+      <img 
+        class="screenImage"
+        [src]="'data:image/png;base64,' + easyStory.screenshot"
+        (click)="openScreenshot(easyStory.screenshot)"
+      />
     </div>
   </div>
 </div>
