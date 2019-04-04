@@ -72,7 +72,7 @@
     "no-unnecessary-initializer": true,
     "no-unnecessary-callback-wrapper": true,
     "number-literal-format": true,
-    "ordered-imports": [true],
+    "object-literal-key-quotes": [true, "as-needed"],
     "prefer-method-signature": true,
     "type-literal-delimiter": true,
     "variable-name": [
@@ -111,5 +111,6 @@
     "no-consecutive-blank-lines": true,
     "no-unnecessary-qualifier": true,
     "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+    "deprecation": true
   }
 }

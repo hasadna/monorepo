@@ -1,0 +1,15 @@
+.feed-page {
+  display: flex;
+  display: 100%;
+  justify-content: center;
+  padding: 20px;
+  >.align-container {
+    display: flex;
+    >.feed {
+      app-story {
+        display: block;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

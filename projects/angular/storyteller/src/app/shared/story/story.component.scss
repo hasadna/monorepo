@@ -1,0 +1,66 @@
+.story {
+  $padding: 20px;
+  display: flex;
+  width: 930px;
+  padding: 20px 35px 20px 20px;
+  >.user {
+    display: flex;
+    justify-content: center;
+    padding-right: $padding;
+    >a {
+      $size: 80px;
+      width: $size;
+      height: $size;
+      >img {
+        width: $size;
+        height: $size;
+      }
+    }
+  }
+  >.content {
+    width: 830px;
+    >.header {
+      display: flex;
+      >.info {
+        font-size: 18px;
+        >.author {
+          font-weight: bold;
+        }
+        >.project {
+          font-weight: bold;
+          font-style: italic;
+        }
+      }
+      >.time {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        font-size: 16px;
+        font-weight: 600;
+        color: #767676;
+      }
+    }
+    >.items {
+      $placeholder: 17px;
+      >.oneliner {
+        margin-top: $placeholder;
+        font-size: 17px;
+      }
+      >.note {
+        margin-top: $placeholder;
+        font-size: 16px;
+      }
+      >.screenshot {
+        margin-top: $placeholder;
+        img {
+          width: 100%;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  a {
+    text-decoration: none;
+    color:inherit;
+  }
+}

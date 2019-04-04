@@ -2,16 +2,27 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeedComponent, SingleScreenshotComponent, UserInfoComponent } from '@/components';
+import {
+  FeedComponent,
+  UserInfoComponent,
+  LoginComponent,
+  SingleItemComponent,
+} from '@/routes';
+import { AuthGuard } from '@/core/services';
 
 const appRoutes: Routes = [
-  { path: 'home', component: FeedComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
   {
-    path: 'single-screenshot/:storyId/:screenshot/:storyAuthor',
-    component: SingleScreenshotComponent,
+    path: '',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'home', component: FeedComponent },
+      { path: 'info/:email', component: UserInfoComponent },
+      { path: 'single-item/:email/:storyId', component: SingleItemComponent },
+    ],
   },
-  { path: 'info/:storyAuthor', component: UserInfoComponent },
-  { path: '**', redirectTo: '/home' },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
