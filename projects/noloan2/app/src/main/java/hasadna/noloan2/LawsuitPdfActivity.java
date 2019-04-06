@@ -40,14 +40,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   // TODO: Add logs.
   private static final String TAG = "LawsuitPdfActivity";
   private final int STORAGE_PERMISSION_CODE = 1;
-
-  // filenames
-  private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
-  private static final String LAWSUIT_OUTPUT_DIR_NAME = "pdf";
-
-  // absPaths
-  private String lawsuitMainPath = "";
-  private String lawsuitOutputPath = "";
+  private boolean permissionGranted = false;
 
   // Formats
   private static final String TIME_ZONE = "Asia/Jerusalem";
@@ -72,54 +65,52 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lawsuit_pdf);
-    initDirStructure();
-    setTimeZones();
 
     createPdfButton = findViewById(R.id.button_createPDF);
     receivedDate = findViewById(R.id.editText_spamDate);
 
-    createPdfButton.setOnClickListener(v -> checkPermissionsThenCreatePdf());
+    setTimeZones();
+    createPdfButton.setOnClickListener(
+        v -> {
+          checkPermissions();
+          if (permissionGranted) {
+            sharePdf(createPdf());
+          }
+        });
     receivedDate.setOnClickListener(v -> displayDatePicker());
   }
 
-  // Save file to device, then ask in AlertDialog if to share
-  private void createAndSharePdf() {
-    LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
-    String path = Paths.get(lawsuitOutputPath, getPdfFilename()).toString();
+  // Used for date fields in the lawsuit
+  private void setTimeZones() {
+    DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+    DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+  }
+
+  // Save PDF to device. Return absFilename of the file
+  private String createPdf() {
+    // Save to external storage: app_name/output_folder/current-date.pdf
+    String absFilename =
+        Paths.get(
+                Environment.getExternalStorageDirectory().getPath(),
+                getString(R.string.app_name),
+                getString(R.string.output_folder_name),
+                (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
+            .toString();
 
     try {
-      HtmlConverter.convertToPdf(fillTemplate(), new FileOutputStream(path));
-      sharePdf(path);
+      LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
+      HtmlConverter.convertToPdf(fillTemplate(), new FileOutputStream(absFilename));
       // Exceptions: read template / write output
-    } catch (IOException e) {
+    } catch (Exception e) {
       Log.w(TAG, "Read template / Write file: " + e.getMessage());
       e.printStackTrace();
       Toast.makeText(LawsuitPdfActivity.this, "Failed to create lawsuit.", Toast.LENGTH_LONG)
           .show();
     }
+    return absFilename;
   }
 
-  private void sharePdf(String path) {
-    new AlertDialog.Builder(this, R.style.AlertDialog)
-        .setTitle("כתב תביעה נוצר")
-        .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
-        .setPositiveButton(
-            "כן",
-            (dialog, which) -> {
-              Uri uri =
-                  FileProvider.getUriForFile(
-                      getApplicationContext(), getPackageName() + ".fileprovider", new File(path));
-              Intent shareIntent = new Intent();
-              shareIntent.setAction(Intent.ACTION_SEND);
-              shareIntent.setType("application/pdf");
-              shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-              startActivity(Intent.createChooser(shareIntent, "Share via"));
-            })
-        .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
-        .create()
-        .show();
-  }
-
+  // Return an HTML format lawsuit
   private String fillTemplate() throws IOException {
     // TODO:
     String lawsuit = null;
@@ -198,45 +189,62 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     return lawsuit;
   }
 
-  private String getPdfFilename() {
-    return DATE_TIME_FORMATTER.format(new Date()) + ".pdf";
-  }
-
-  private void initDirStructure() {
-    // TODO: Paths.get() require API 26. Find/Create function that suits lower API versions.
-    lawsuitMainPath =
-        Paths.get(
-                Environment.getExternalStorageDirectory().getPath(),
-                getString(R.string.app_name),
-                LAWSUIT_MAIN_DIR_NAME)
-            .toString();
-    makeDir(lawsuitMainPath);
-
-    // Output
-    lawsuitOutputPath = Paths.get(lawsuitMainPath, LAWSUIT_OUTPUT_DIR_NAME).toString();
-    makeDir(lawsuitOutputPath);
-  }
-
-  private void makeDir(String path) {
-    File directory = new File(path);
-    if (!directory.exists()) {
-      directory.mkdirs();
+  // Pops a dialog asking user if to share pdf
+  private void sharePdf(String absFilename) {
+    if (new File(absFilename).exists()) {
+      new AlertDialog.Builder(this, R.style.AlertDialog)
+          .setTitle("כתב תביעה נוצר")
+          .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
+          .setPositiveButton(
+              "כן",
+              (dialog, which) -> {
+                Uri uri =
+                    FileProvider.getUriForFile(
+                        getApplicationContext(),
+                        getPackageName() + ".fileprovider",
+                        new File(absFilename));
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.setType("application/pdf");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+              })
+          .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
+          .create()
+          .show();
     }
+    Log.w(TAG, "Could not share pdf, file doesn't exists.\nabsFilename: " + absFilename);
   }
 
-  private void setTimeZones() {
-    DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
-    DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+  // Pops a calendar dialog when clicking on date fields
+  private void displayDatePicker() {
+    calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
+
+    datePickerDialog =
+        new /**/ DatePickerDialog(
+            LawsuitPdfActivity.this,
+            (datePicker, currentYear, currentMonth, currentDay) ->
+                receivedDate.setText(day + "/" + (month + 1) + "/" + year),
+            year,
+            month,
+            day);
+    datePickerDialog.show();
   }
 
-  private void checkPermissionsThenCreatePdf() {
+  // TODO: Move checkPermissions(), onRequestPermissionsResult(), createOutputDir() to
+  // SplashPermission activity
+  private void checkPermissions() {
     // Ask runtime permissions for devices running SDK > 22
     if (Build.VERSION.SDK_INT >= 23) {
 
       // Permission granted
       if ((checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
           == PackageManager.PERMISSION_GRANTED)) {
-        createAndSharePdf();
+        permissionGranted = true;
+        createOutputDir();
       }
       // If user denied permission before, show explanation dialog before requesting
       else {
@@ -275,39 +283,37 @@ public class LawsuitPdfActivity extends AppCompatActivity {
       }
       // Devices running SDK <= 22, permissions granted on installation
     } else {
-      createAndSharePdf();
+      permissionGranted = true;
+      createOutputDir();
     }
   }
 
-  private void displayDatePicker() {
-    calendar = Calendar.getInstance();
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int month = calendar.get(Calendar.MONTH);
-    int year = calendar.get(Calendar.YEAR);
-
-    datePickerDialog =
-        new /**/ DatePickerDialog(
-            LawsuitPdfActivity.this,
-            (datePicker, currentYear, currentMonth, currentDay) ->
-                receivedDate.setText(day + "/" + (month + 1) + "/" + year),
-            year,
-            month,
-            day);
-    datePickerDialog.show();
-  }
-
-  // Call createAndSharePdf() if permission granted
   @Override
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == STORAGE_PERMISSION_CODE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        createAndSharePdf();
+        permissionGranted = true;
+        createOutputDir();
       } else {
         Toast.makeText(
                 LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
+    }
+  }
+
+  // Create folder in external storage for saved PDFs
+  private void createOutputDir() {
+    File directory =
+        new File(
+            Paths.get(
+                    Environment.getExternalStorageDirectory().getPath(),
+                    getString(R.string.app_name),
+                    getString(R.string.output_folder_name))
+                .toString());
+    if (!directory.exists()) {
+      directory.mkdirs();
     }
   }
 }

@@ -175,7 +175,7 @@
                     android:focusable="false"
                     android:hint="@string/form_hint_spamDate"
                     android:inputType="date" />
-                
+
                 <EditText
                     android:id="@+id/claimAmount"
                     android:layout_width="match_parent"
