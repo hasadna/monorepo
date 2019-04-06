@@ -180,9 +180,9 @@ http_archive(
 
 )
 
-#csv_data
+#israel_railways_data
 http_archive(
-    name = "csv_data",
+    name = "israel_railways_data",
     build_file_content = 'exports_files(["routes.csv" , "samples.csv" , "stops.csv" , "trips.csv"])',
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/data_csv.zip?alt=media&token=2a262967-7cdd-4934-afbc-8fa31a74baf2",
 )
