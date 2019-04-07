@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { zip } from 'rxjs';
 
 import { Screenshot, User, Story } from '@/core/proto';
-import { FirebaseService, StoryService } from '@/core/services';
+import { FirebaseService, NotificationService, StoryService } from '@/core/services';
 import { EasyStory } from '@/shared';
 
 @Component({
@@ -23,6 +23,7 @@ export class SingleItemComponent {
     private router: Router,
     private firebaseService: FirebaseService,
     private storyService: StoryService,
+    private notificationService: NotificationService,
   ) {
     const email: string = this.activatedRoute.snapshot.params['email'];
     this.storyId = this.activatedRoute.snapshot.params['storyId'];
@@ -84,8 +85,7 @@ export class SingleItemComponent {
   }
 
   crash(message: string): void {
-    // TODO: add an "error showing" interface
-    console.error(message);
+    this.notificationService.error(message);
     this.isCrashError = true;
     this.router.navigate(['/home']);
   }

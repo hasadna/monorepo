@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { zip } from 'rxjs';
 
 import { Screenshot, User, Story } from '@/core/proto';
-import { FirebaseService, StoryService } from '@/core/services';
+import { FirebaseService, NotificationService, StoryService } from '@/core/services';
 import { EasyStory } from '@/shared';
 
 @Component({
@@ -13,18 +13,22 @@ import { EasyStory } from '@/shared';
 })
 export class UserInfoComponent {
   isLoading: boolean = true;
+  isCrashError: boolean = false;
   projectIdList: string[];
   easyStories: EasyStory[];
   user: User;
+  email: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private firebaseService: FirebaseService,
     private storyService: StoryService,
+    private notificationService: NotificationService,
+
   ) {
-    const email: string = this.activatedRoute.snapshot.params['email'];
-    this.loadReviewerConfig(email);
+    this.email = this.activatedRoute.snapshot.params['email'];
+    this.loadReviewerConfig(this.email);
   }
 
   loadStories(): void {
@@ -45,7 +49,7 @@ export class UserInfoComponent {
       // Get user and project id list
       this.user = this.storyService.getUser(email, reviewerConfig);
       if (!this.user) {
-        console.error('User not found');
+        this.crash('User not found');
         this.router.navigate(['/home']);
         return;
       }
@@ -57,6 +61,18 @@ export class UserInfoComponent {
 
   // Filters stories by project id
   loadProjectStories(projectId: string): void {
-    // TODO: implement this
+    if (projectId !== 'all') {
+      this.easyStories = this.easyStories.filter(story => {
+        return story.project === projectId;
+      });
+    } else {
+      this.loadReviewerConfig(this.email);
+    }
+  }
+
+  crash(message: string): void {
+    this.notificationService.error(message);
+    this.isCrashError = true;
+    this.router.navigate(['/home']);
   }
 }

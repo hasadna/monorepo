@@ -65,6 +65,12 @@ export class FeedComponent {
 
   // Filters stories by project id
   loadProjectStories(projectId: string): void {
-    // TODO: implement this
+    if (projectId !== 'all') {
+      this.easyStories = this.easyStories.filter(story => {
+        return story.project === projectId;
+      });
+    } else {
+      this.loadReviewerConfig();
+    }
   }
 }
