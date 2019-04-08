@@ -18,7 +18,7 @@ export class FirebaseService {
     private db: AngularFirestore,
     private encodingService: EncodingService,
   ) {
-      this.dataSource = this.db.collection('reviewer');
+    this.dataSource = this.db.collection('reviewer');
   }
 
   getReviewerConfig(): Observable<ReviewerConfig> {
@@ -27,12 +27,12 @@ export class FirebaseService {
       .snapshotChanges()
       .pipe(
         map(action => {
-        const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
-        if (firebaseElement === undefined) {
-          // Element not found
-          return;
-        }
-        return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
+          const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
+          if (firebaseElement === undefined) {
+            // Element not found
+            return;
+          }
+          return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
         }),
       );
   }

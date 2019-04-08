@@ -10,7 +10,7 @@
           <div class="social-networks">
             <div class="social-network" *ngFor="let socialNetwork of user.getSocialNetworkList()">
               <a [href]="socialNetwork.getUrl()">
-                <img [src]="'./assets/images/' + types[socialNetwork.getType()] + '.svg'">
+                <img [src]="'assets/images/' + types[socialNetwork.getType()] + '.svg'">
               </a>
             </div>
           </div>
