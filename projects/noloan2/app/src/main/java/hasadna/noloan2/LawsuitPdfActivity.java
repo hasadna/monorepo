@@ -4,6 +4,9 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,9 +22,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.itextpdf.licensekey.LicenseKey;
-import com.itextpdf.html2pdf.HtmlConverter;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import noloan.R;
-
 
 public class LawsuitPdfActivity extends AppCompatActivity {
   // TODO: Add logs.
@@ -52,9 +51,9 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   private String moreThanFiveLawsuits = "הגיש";
   private String lessThanFiveLawsuits = "לא הגיש/ו";
   private String claimCaseHaser =
-      "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת מהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק ";
+      "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת\nמהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק";
   private String claimCaseSubscription =
-      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש  \nלקבלת דבר/י הפרסומת";
 
   EditText receivedDate;
   DatePickerDialog datePickerDialog;
@@ -88,7 +87,47 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
   // Save PDF to device. Return absFilename of the file
   private String createPdf() {
-    // Save to external storage: app_name/output_folder/current-date.pdf
+
+    // Read and fill template
+    String template = null;
+    try {
+      template = fillTemplate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    PdfDocument document = new PdfDocument();
+
+    // Create 2 pages for the PDF (Size A4)
+    PdfDocument.PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+    PdfDocument.PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
+    PdfDocument.Page firstPage = document.startPage(firstPageInfo);
+    PdfDocument.Page secondPage = null;
+    Canvas canvas = firstPage.getCanvas();
+    Paint paint = new Paint();
+    int rowCounter = 0;
+
+    int xPainter = 0;
+    int yPainter = 0;
+
+    // Draw lines to PDF
+    for (String line : template.split("\n")) {
+      // Switch to 2nd page on row 56
+      if (rowCounter == 56) {
+        document.finishPage(firstPage);
+        secondPage = document.startPage(secondPageInfo);
+        canvas = secondPage.getCanvas();
+        yPainter = 0;
+      }
+      // Draw text as RTL, 20 is for right padding
+      xPainter = (firstPageInfo.getPageWidth() - (int) paint.measureText(line)) - 20;
+      canvas.drawText(line, xPainter, yPainter, paint);
+      yPainter += paint.descent() - paint.ascent();
+      rowCounter++;
+    }
+    document.finishPage(secondPage);
+
+    // Save file to external storage
     String absFilename =
         Paths.get(
                 Environment.getExternalStorageDirectory().getPath(),
@@ -96,26 +135,24 @@ public class LawsuitPdfActivity extends AppCompatActivity {
                 getString(R.string.output_folder_name),
                 (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
             .toString();
-
     try {
-      LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
-      HtmlConverter.convertToPdf(fillTemplate(), new FileOutputStream(absFilename));
-      // Exceptions: read template / write output
-    } catch (Exception e) {
-      Log.w(TAG, "Read template / Write file: " + e.getMessage());
+      document.writeTo(new FileOutputStream(new File(absFilename)));
+      Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
+    } catch (IOException e) {
       e.printStackTrace();
-      Toast.makeText(LawsuitPdfActivity.this, "Failed to create lawsuit.", Toast.LENGTH_LONG)
-          .show();
+      Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
     }
+
+    document.close();
     return absFilename;
   }
 
-  // Return an HTML format lawsuit
+  // Return template filled with user and spam company's details
   private String fillTemplate() throws IOException {
     // TODO:
     String lawsuit = null;
     try {
-      InputStream inputStream = getAssets().open("template.xhtml");
+      InputStream inputStream = getAssets().open("template.txt");
       byte[] buffer = new byte[inputStream.available()];
       inputStream.read(buffer);
       inputStream.close();
@@ -127,64 +164,58 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     // General form fields
     lawsuit =
         lawsuit.replace(
-            "&lt;claimCase&gt;",
+            "<claimCase>",
             ((CheckBox) findViewById(R.id.checkBox_sentHaser)).isChecked()
                 ? claimCaseHaser
                 : claimCaseSubscription);
     lawsuit =
         lawsuit.replace(
-            "&lt;claimAmount&gt;",
-            ((EditText) findViewById(R.id.claimAmount)).getText().toString());
+            "<claimAmount>", ((EditText) findViewById(R.id.claimAmount)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;moreThanFiveLawsuits&gt;",
+            "<moreThanFiveLawsuits>",
             ((CheckBox) findViewById(R.id.checkbox_fiveLawsuits)).isChecked()
                 ? moreThanFiveLawsuits
                 : lessThanFiveLawsuits);
-    lawsuit = lawsuit.replace("&lt;undefined&gt;", "");
-    lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", receivedDate.getText().toString());
-    lawsuit = lawsuit.replace("&lt;currentDate&gt;", DATE_FORMATTER.format(new Date()));
+    lawsuit = lawsuit.replace("<undefined>", "");
+    lawsuit = lawsuit.replace("<receivedSpamDate>", receivedDate.getText().toString());
+    lawsuit = lawsuit.replace("<currentDate>", DATE_FORMATTER.format(new Date()));
 
     // User fields
     lawsuit =
         lawsuit.replace(
-            "&lt;userFullName&gt;",
+            "<userFullName>",
             ((EditText) findViewById(R.id.userPrivateName)).getText().toString()
                 + " "
                 + ((EditText) findViewById(R.id.userLastName)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "&lt;userId&gt;", ((EditText) findViewById(R.id.userID)).getText().toString());
+        lawsuit.replace("<userId>", ((EditText) findViewById(R.id.userID)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;userAddress&gt;",
-            ((EditText) findViewById(R.id.userAddress)).getText().toString());
+            "<userAddress>", ((EditText) findViewById(R.id.userAddress)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;userPhone&gt;", ((EditText) findViewById(R.id.userPhone)).getText().toString());
+            "<userPhone>", ((EditText) findViewById(R.id.userPhone)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "&lt;userFax&gt;", ((EditText) findViewById(R.id.userFax)).getText().toString());
+        lawsuit.replace("<userFax>", ((EditText) findViewById(R.id.userFax)).getText().toString());
 
     // Spam company
     lawsuit =
         lawsuit.replace(
-            "&lt;companyName&gt;",
-            ((EditText) findViewById(R.id.companyName)).getText().toString());
+            "<companyName>", ((EditText) findViewById(R.id.companyName)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;companyId&gt;", ((EditText) findViewById(R.id.companyId)).getText().toString());
+            "<companyId>", ((EditText) findViewById(R.id.companyId)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;companyAddress&gt;",
+            "<companyAddress>",
             ((EditText) findViewById(R.id.companyAddress)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;companyPhone&gt;",
-            ((EditText) findViewById(R.id.companyPhone)).getText().toString());
+            "<companyPhone>", ((EditText) findViewById(R.id.companyPhone)).getText().toString());
     lawsuit =
         lawsuit.replace(
-            "&lt;companyFax&gt;", ((EditText) findViewById(R.id.companyFax)).getText().toString());
+            "<companyFax>", ((EditText) findViewById(R.id.companyFax)).getText().toString());
 
     return lawsuit;
   }
