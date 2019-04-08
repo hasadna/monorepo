@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Book } from '@/core/proto';
 import { EncodingService } from 'common/services';
+import { ReviewerConfig } from '@/core/proto';
 
 interface FirebaseElement {
   proto: string;
@@ -12,38 +12,36 @@ interface FirebaseElement {
 
 @Injectable()
 export class FirebaseService {
-  private protobin: AngularFirestoreCollection<FirebaseElement>;
+  private dataSource: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
     private encodingService: EncodingService,
   ) {
-    this.protobin = this.db.collection('protobin');
+      this.dataSource = this.db.collection('reviewer');
   }
 
-  getBook(): Observable<Book> {
-    return this.protobin
-      .doc('book')
+  getReviewerConfig(): Observable<ReviewerConfig> {
+    return this.dataSource
+      .doc('config_binary')
       .snapshotChanges()
       .pipe(
         map(action => {
-          const firebaseElement = action.payload.data() as FirebaseElement;
-          if (firebaseElement === undefined) {
-            // Element not found
-            return;
-          }
-          return this.convertFirebaseElementToBook(firebaseElement);
+        const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
+        if (firebaseElement === undefined) {
+          // Element not found
+          return;
+        }
+        return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
         }),
       );
   }
 
-  private convertFirebaseElementToBook(firebaseElement: FirebaseElement): Book {
-    // Convert firebaseElement to binary
-    const binary: Uint8Array = this.encodingService
-      .decodeBase64StringToUint8Array(firebaseElement.proto);
-    // Convert binary to book
-    const book: Book = Book.deserializeBinary(binary);
-
-    return book;
+  // Converts firebaseElement to binary
+  private getBinary(firebaseElement: FirebaseElement): Uint8Array {
+    const binary: Uint8Array = this.encodingService.decodeBase64StringToUint8Array(
+      firebaseElement.proto,
+    );
+    return binary;
   }
 }
