@@ -15,6 +15,7 @@ import { HomeComponent } from '@/routes';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     CoreModule,
     FirebaseModule,
     LibraryModule,
