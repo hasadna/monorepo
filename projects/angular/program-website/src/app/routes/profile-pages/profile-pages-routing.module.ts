@@ -18,8 +18,8 @@ const routes: Routes = [
       { path: 'projects', component: ProjectsComponent },
       { path: 'project-details/:projectId', component: ProjectDetailsComponent },
       { path: '**', component: ProjectsComponent },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({

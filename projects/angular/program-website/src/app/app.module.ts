@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { LibraryModule } from 'common/module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { FirebaseModule } from './import/firebase/firebase.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from '@/routes';
-import { CommonModule } from 'common/module';
 
 @NgModule({
   declarations: [
@@ -17,8 +17,7 @@ import { CommonModule } from 'common/module';
     BrowserModule,
     CoreModule,
     FirebaseModule,
-    AppRoutingModule,
-    CommonModule,
+    LibraryModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

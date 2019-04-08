@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ReviewerConfig, Screenshot, StoryList } from '@/core/proto';
+import { Screenshot, StoryList, ReviewerConfig } from '@/core/proto';
 import { EncodingService } from 'common/services';
 
 interface FirebaseElement {
@@ -13,63 +12,48 @@ interface FirebaseElement {
 
 @Injectable()
 export class FirebaseService {
-  isOnline: boolean;
   private reviewerConfig: AngularFirestoreCollection<FirebaseElement>;
 
   constructor(
     private db: AngularFirestore,
     private encodingService: EncodingService,
-    private angularFireAuth: AngularFireAuth,
   ) {
-    this.angularFireAuth.authState.subscribe(userData => {
-      this.isOnline = !!userData;
-    });
     this.reviewerConfig = this.db.collection('reviewer');
   }
 
-  getStoryListAll(
+  getStoryLists(
     collection: AngularFirestoreCollection<FirebaseElement>,
   ): Observable<StoryList[]> {
     return collection.snapshotChanges().pipe(
       map(action => action.map(a => {
         const firebaseElement = a.payload.doc.data() as FirebaseElement;
-
-        if (firebaseElement === undefined) {
-          // Element not found
-          return;
-        }
         return StoryList.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
 
-  getScreenshotAll(
+  getScreenshots(
     collection: AngularFirestoreCollection<FirebaseElement>,
   ): Observable<Screenshot[]> {
     return collection.snapshotChanges().pipe(
       map(action => action.map(a => {
         const firebaseElement = a.payload.doc.data() as FirebaseElement;
-
-        if (firebaseElement === undefined) {
-          // Element not found
-          return;
-        }
         return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
       })));
   }
 
-  getUserStories(user: string): Observable<StoryList[]> {
+  getUserStories(userEmail: string): Observable<StoryList[]> {
     let collection: AngularFirestoreCollection<FirebaseElement>;
-    if (user) {
-      collection = this.db.collection(`/storyteller/data/user/${user}/story`);
-      return this.getStoryListAll(collection);
+    if (userEmail) {
+      collection = this.db.collection(`/storyteller/data/user/${userEmail}/story`);
+      return this.getStoryLists(collection);
     }
   }
 
-  getUserScreenshot(user: string): Observable<Screenshot[]> {
+  getUserScreenshot(userEmail: string): Observable<Screenshot[]> {
     let collection: AngularFirestoreCollection<FirebaseElement>;
-    if (user) {
-      collection = this.db.collection(`/storyteller/data/user/${user}/screenshot`);
-      return this.getScreenshotAll(collection);
+    if (userEmail) {
+      collection = this.db.collection(`/storyteller/data/user/${userEmail}/screenshot`);
+      return this.getScreenshots(collection);
     }
   }
 
@@ -81,7 +65,7 @@ export class FirebaseService {
     return binary;
   }
 
-  // Getting users from Firebase
+  // Gets users from Firebase
   getReviewerConfig(): Observable<ReviewerConfig> {
     return this.reviewerConfig
       .doc('config_binary')
@@ -89,16 +73,8 @@ export class FirebaseService {
       .pipe(
         map(action => {
           const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
-          if (firebaseElement === undefined) {
-            // Element not found
-            return;
-          }
           return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
         }),
       );
-  }
-
-  anonymousLogin(): Promise<any> {
-    return this.angularFireAuth.auth.signInAnonymously();
   }
 }

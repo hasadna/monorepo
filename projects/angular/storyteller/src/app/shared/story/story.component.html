@@ -1,0 +1,38 @@
+<div class="story card">
+  <div class="user">
+    <a [routerLink]="['/info', easyStory.email]">
+      <img src="/assets/default-avatar.png">
+    </a>
+  </div>
+  <div class="content">
+    <div class="header">
+      <div class="info">
+        <span class="author">{{ easyStory.username }}</span>
+        on
+        <span class="project">{{ easyStory.project }}</span>
+      </div>
+      <div class="time">
+        <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+          {{ easyStory.timestamp | date:'hh:mm, MMM d, y' }}
+        </a>
+      </div>
+    </div>
+    <div class="oneliner">
+      <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+        {{ easyStory.oneliner }}
+      </a>
+    </div>
+    <div class="note">
+      <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+        {{ easyStory.note }}
+      </a>
+    </div>
+    <div class="screenshot" *ngIf="easyStory.screenshot">
+      <img 
+        class="screenImage"
+        [src]="'data:image/png;base64,' + easyStory.screenshot"
+        (click)="openScreenshot(easyStory.screenshot)"
+      />
+    </div>
+  </div>
+</div>
