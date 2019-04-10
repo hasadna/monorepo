@@ -41,8 +41,8 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    strip_prefix = "startup-os-3844404af12f4b2c765e8eca2ba6d18806d4182a",
-    urls = ["https://github.com/google/startup-os/archive/3844404af12f4b2c765e8eca2ba6d18806d4182a.zip"],
+    strip_prefix = "startup-os-324c4138e057c7619d2701926e6e7fc4f0b76183",
+    urls = ["https://github.com/google/startup-os/archive/324c4138e057c7619d2701926e6e7fc4f0b76183.zip"],
 )
 # MARK: StartupOS end
 
