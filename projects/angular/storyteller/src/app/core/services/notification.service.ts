@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 export enum NotifierStatus {
-  success = 'cr-snack-success',
-  info = 'cr-snack-info',
-  warning = 'cr-snack-warning',
-  error = 'cr-snack-error',
+  success = 'st-snack-success',
+  info = 'st-snack-info',
+  warning = 'st-snack-warning',
+  error = 'st-snack-error',
 }
 
 @Injectable()
@@ -13,7 +13,7 @@ export class NotificationService {
   private duration: number;
 
   constructor(private snackbar: MatSnackBar) {
-    this.duration = 2000;
+    this.duration = 3000;
   }
 
   snack(
@@ -55,5 +55,4 @@ export class NotificationService {
   error(message: string, action: string = '', duration: number = null): void {
     this.snack(message, action, duration, NotifierStatus.error);
   }
-
 }

@@ -13,9 +13,9 @@ import { EasyStory } from '@/shared';
 })
 export class UserInfoComponent {
   isLoading: boolean = true;
-  isCrashError: boolean = false;
   projectIdList: string[];
   easyStories: EasyStory[];
+  filteredEasyStories: EasyStory[];
   user: User;
   email: string;
 
@@ -25,7 +25,6 @@ export class UserInfoComponent {
     private firebaseService: FirebaseService,
     private storyService: StoryService,
     private notificationService: NotificationService,
-
   ) {
     this.email = this.activatedRoute.snapshot.params['email'];
     this.loadReviewerConfig(this.email);
@@ -40,6 +39,7 @@ export class UserInfoComponent {
       const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
       this.easyStories = this.storyService.createEasyStories(screenshots, stories, this.user);
       this.storyService.sortStoriesByTime(this.easyStories);
+      this.filteredEasyStories = this.easyStories.slice();
       this.isLoading = false;
     });
   }
@@ -50,7 +50,6 @@ export class UserInfoComponent {
       this.user = this.storyService.getUser(email, reviewerConfig);
       if (!this.user) {
         this.crash('User not found');
-        this.router.navigate(['/home']);
         return;
       }
       this.projectIdList = this.storyService.getProjectIdList(reviewerConfig);
@@ -61,18 +60,13 @@ export class UserInfoComponent {
 
   // Filters stories by project id
   loadProjectStories(projectId: string): void {
-    if (projectId !== 'all') {
-      this.easyStories = this.easyStories.filter(story => {
-        return story.project === projectId;
-      });
-    } else {
-      this.loadReviewerConfig(this.email);
-    }
+    this.filteredEasyStories = (projectId !== 'all') ?
+      this.storyService.getFilteredStories(projectId, this.easyStories)
+      : this.easyStories.slice();
   }
 
   crash(message: string): void {
     this.notificationService.error(message);
-    this.isCrashError = true;
     this.router.navigate(['/home']);
   }
 }

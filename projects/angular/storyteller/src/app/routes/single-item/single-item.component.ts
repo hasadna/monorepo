@@ -58,7 +58,6 @@ export class SingleItemComponent {
         return story;
       }
     }
-
     this.crash('Invalid story id');
   }
 
@@ -69,7 +68,6 @@ export class SingleItemComponent {
         return easyStory;
       }
     }
-
     this.crash('Invalid item id');
   }
 
