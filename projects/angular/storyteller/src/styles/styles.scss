@@ -4,6 +4,8 @@
 
 html,
 body {
+  width: 100vw;
+  overflow-x: hidden;
   margin: 0;
   font-family: $font-stack;
   background-color: #e6eff0;

@@ -16,6 +16,7 @@ export class UserInfoComponent {
   isCrashError: boolean = false;
   projectIdList: string[];
   easyStories: EasyStory[];
+  filteredEasyStories: EasyStory[];
   user: User;
   email: string;
 
@@ -40,6 +41,7 @@ export class UserInfoComponent {
       const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
       this.easyStories = this.storyService.createEasyStories(screenshots, stories, this.user);
       this.storyService.sortStoriesByTime(this.easyStories);
+      this.filteredEasyStories = this.easyStories.slice();
       this.isLoading = false;
     });
   }
@@ -62,11 +64,9 @@ export class UserInfoComponent {
   // Filters stories by project id
   loadProjectStories(projectId: string): void {
     if (projectId !== 'all') {
-      this.easyStories = this.easyStories.filter(story => {
-        return story.project === projectId;
-      });
+      this.filteredEasyStories = this.storyService.getFilteredStories(this.easyStories, projectId);
     } else {
-      this.loadReviewerConfig(this.email);
+      this.filteredEasyStories = this.easyStories.slice();
     }
   }
 

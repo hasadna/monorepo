@@ -14,6 +14,7 @@ export class FeedComponent {
   isLoading: boolean = true;
   projectIdList: string[];
   easyStories: EasyStory[];
+  filteredEasyStories: EasyStory[];
 
   constructor(
     private firebaseService: FirebaseService,
@@ -33,6 +34,7 @@ export class FeedComponent {
         this.easyStories.push(...easyStories);
       }
       this.storyService.sortStoriesByTime(this.easyStories);
+      this.filteredEasyStories = this.easyStories.slice();
       this.isLoading = false;
     });
   }
@@ -66,11 +68,9 @@ export class FeedComponent {
   // Filters stories by project id
   loadProjectStories(projectId: string): void {
     if (projectId !== 'all') {
-      this.easyStories = this.easyStories.filter(story => {
-        return story.project === projectId;
-      });
+      this.filteredEasyStories = this.storyService.getFilteredStories(this.easyStories, projectId);
     } else {
-      this.loadReviewerConfig();
+      this.filteredEasyStories = this.easyStories.slice();
     }
   }
 }

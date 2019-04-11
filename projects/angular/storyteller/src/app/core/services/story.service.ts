@@ -100,4 +100,10 @@ export class StoryService {
       return Math.sign(b.timestamp - a.timestamp);
     });
   }
+
+  getFilteredStories(easyStories: EasyStory[], projectId: string): EasyStory[] {
+    return easyStories.filter(story => {
+      return story.project === projectId;
+    });
+  }
 }
