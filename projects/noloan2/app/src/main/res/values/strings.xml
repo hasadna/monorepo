@@ -3,7 +3,7 @@
     <string name="output_folder_name">lawsuits</string>
     <string name="form_hint_privateName">שם פרטי</string>
     <string name="form_hint_lastName">שם משפחה</string>
-    <string name="form_hint_userID" textDirection="rtl" >ת\"ז</string>
+    <string name="form_hint_userID" >ת\"ז</string>
     <string name="form_hint_address">כתובת</string>
     <string name="form_hint_phoneNumber">מספר טלפון</string>
     <string name="form_hint_faxNumber">מספר פקס</string>

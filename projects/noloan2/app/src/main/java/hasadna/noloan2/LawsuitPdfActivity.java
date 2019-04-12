@@ -21,7 +21,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.graphics.pdf.PdfDocument.PageInfo;
+import android.graphics.pdf.PdfDocument.Page;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -92,17 +93,17 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     String template = null;
     try {
       template = fillTemplate();
-    } catch (Exception e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
 
     PdfDocument document = new PdfDocument();
 
     // Create 2 pages for the PDF (Size A4)
-    PdfDocument.PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
-    PdfDocument.PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
-    PdfDocument.Page firstPage = document.startPage(firstPageInfo);
-    PdfDocument.Page secondPage = null;
+    PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+    PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
+    Page firstPage = document.startPage(firstPageInfo);
+    Page secondPage = null;
     Canvas canvas = firstPage.getCanvas();
     Paint paint = new Paint();
     int rowCounter = 0;
@@ -147,9 +148,9 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     return absFilename;
   }
 
-  // Return template filled with user and spam company's details
+  // Fill the template with the user's and the company's details
   private String fillTemplate() throws IOException {
-    // TODO:
+
     String lawsuit = null;
     try {
       InputStream inputStream = getAssets().open("template.txt");
@@ -162,6 +163,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     }
 
     // General form fields
+
     lawsuit =
         lawsuit.replace(
             "<claimCase>",
@@ -220,7 +222,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     return lawsuit;
   }
 
-  // Pops a dialog asking user if to share pdf
+  // Pops a dialog asking the user to share the pdf
   private void sharePdf(String absFilename) {
     if (new File(absFilename).exists()) {
       new AlertDialog.Builder(this, R.style.AlertDialog)
@@ -265,8 +267,6 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     datePickerDialog.show();
   }
 
-  // TODO: Move checkPermissions(), onRequestPermissionsResult(), createOutputDir() to
-  // SplashPermission activity
   private void checkPermissions() {
     // Ask runtime permissions for devices running SDK > 22
     if (Build.VERSION.SDK_INT >= 23) {
