@@ -1,0 +1,21 @@
+load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
+
+checkstyle_test(
+    name = "israel_railways_pipeline-checkstyle",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+    target = ":israel_railways_pipeline",
+)
+
+java_binary(
+    name = "israel_railways_pipeline",
+    srcs = ["CountLines.java"],
+    main_class = "projects.OpenTrain.israel_railways_pipeline.data_handler.CountLines",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//projects/opentrain/gtfs_pipeline/common:common_java_proto",
+        "//third_party/maven/com/google/guava",
+        "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/org/apache/commons:commons_csv",
+    ],
+)
