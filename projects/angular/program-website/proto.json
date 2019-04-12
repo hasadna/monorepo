@@ -1,6 +1,6 @@
 {
   "exportPath": "src/app/core/proto",
   "protoList": [
-    "hasadna/projects/angular/program-website/data.proto"
+    "startup-os/tools/reviewer/reviewer.proto"
   ]
 }
