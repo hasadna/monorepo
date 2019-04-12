@@ -45,6 +45,13 @@ export class StoryService {
     return easyStories;
   }
 
+  // Filters stories by project id
+  getFilteredStories(projectId: string, easyStories: EasyStory[]): EasyStory[] {
+    return easyStories.filter(story => {
+      return story.project === projectId;
+    });
+  }
+
   // Converts Story and Screenshot[] to EasyStory[]
   createEasyStoryItemList(screenshots: Screenshot[], story: Story, user: User): EasyStory[] {
     const easyStoryBuilder: EasyStory = {
