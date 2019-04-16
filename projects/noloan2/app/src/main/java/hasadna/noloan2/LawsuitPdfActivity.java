@@ -1,28 +1,36 @@
 package hasadna.noloan2;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import com.itextpdf.licensekey.LicenseKey;
-import com.itextpdf.html2pdf.HtmlConverter;
-
+import android.graphics.pdf.PdfDocument.PageInfo;
+import android.graphics.pdf.PdfDocument.Page;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -32,14 +40,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   // TODO: Add logs.
   private static final String TAG = "LawsuitPdfActivity";
   private final int STORAGE_PERMISSION_CODE = 1;
-
-  // filenames
-  private static final String LAWSUIT_MAIN_DIR_NAME = "lawsuits";
-  private static final String LAWSUIT_OUTPUT_DIR_NAME = "pdf";
-
-  // absPaths
-  private String lawsuitMainPath = "";
-  private String lawsuitOutputPath = "";
+  private boolean permissionGranted = false;
 
   // Formats
   private static final String TIME_ZONE = "Asia/Jerusalem";
@@ -47,164 +48,234 @@ public class LawsuitPdfActivity extends AppCompatActivity {
       new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
 
-  // TODO: Remove these once client-side form is done.
-  private boolean sentHaser = true;
-  private boolean sentMoreThanFiveLawsuits = false; // The past year
-  private Date receivedSpamDate = new Date();
-
-  // region Lawsuit form fields
-  // General
-  private String spamType = "הודעה אלקטרונית";
-  private String claimAmount = "סכום תביעה";
+  // Lawsuit optional fields
   private String moreThanFiveLawsuits = "הגיש";
   private String lessThanFiveLawsuits = "לא הגיש/ו";
-  private String claimCaseHaser = "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+  private String claimCaseHaser =
+      "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת\nמהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק";
   private String claimCaseSubscription =
-      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש לקבלת דבר/י הפרסומת";
+      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש  \nלקבלת דבר/י הפרסומת";
 
-  // User
-  private String userPrivateName = "שם פרטי";
-  private String userLastName = "שם משפחה";
-  private String userID = "ת ז משתמש";
-  private String userAddress = "כתובת משתמש";
-  private String userPhone = "טלפון משתמש";
-  private String userFax = "פקס משתמש";
-
-  // First spam company's details
-  private String companyName = "שם החברה";
-  private String companyId = "מספר ח.פ";
-  private String companyAddress = "כתובת החברה";
-  private String companyPhone = "טלפון החברה";
-  private String companyFax = "פקס חברה";
-
-  // Second spam company's details
-  private String company2Name = "שם החברה 2";
-  private String company2Id = "מספר ח.פ 2";
-  private String company2Address = "כתובת החברה 2";
-  private String company2Phone = "טלפון החברה 2";
-  private String company2Fax = "פקס חברה 2";
-  // endregion
-
+  EditText receivedDate;
+  DatePickerDialog datePickerDialog;
+  Calendar calendar;
   Button createPdfButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lawsuit_pdf);
-    createPdfButton = (Button) findViewById(R.id.button_createPDF);
 
-    initDirStructure();
+    createPdfButton = findViewById(R.id.button_createPDF);
+    receivedDate = findViewById(R.id.editText_spamDate);
+
     setTimeZones();
-
-    createPdfButton.setOnClickListener(v -> checkPermissionsThenCreatePdf());
+    createPdfButton.setOnClickListener(
+        v -> {
+          checkPermissions();
+          if (permissionGranted) {
+            sharePdf(createPdf());
+          }
+        });
+    receivedDate.setOnClickListener(v -> displayDatePicker());
   }
 
-  private void createPdf() {
-    // TODO: Success reading license file only from "res/raw". Perhaps should be read from different
-    // dir
-    // Activate iText license
-    LicenseKey.loadLicenseFile(getResources().openRawResource(R.raw.itextkey));
-    try {
-      HtmlConverter.convertToPdf(
-          fillTemplate(),
-          new FileOutputStream(Paths.get(lawsuitOutputPath, getPdfFilename()).toString()));
-      Toast.makeText(LawsuitPdfActivity.this, "Lawsuit created!", Toast.LENGTH_LONG).show();
-
-      // Read template / write output
-    } catch (IOException e) {
-      Log.w(TAG, "Read template / Write file: " + e.getMessage());
-      e.printStackTrace();
-      Toast.makeText(LawsuitPdfActivity.this, "Failed to create lawsuit.", Toast.LENGTH_LONG)
-          .show();
-    }
-  }
-
-  private String fillTemplate() throws IOException {
-    String lawsuit = null;
-    try {
-      InputStream inputStream = getAssets().open("template.xhtml");
-      byte[] buffer = new byte[inputStream.available()];
-      inputStream.read(buffer);
-      inputStream.close();
-      lawsuit = new String(buffer, StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new IOException("Read template error.");
-    }
-
-    // General form fields
-    lawsuit =
-        lawsuit.replace("&lt;claimCase&gt;", sentHaser ? claimCaseHaser : claimCaseSubscription);
-    lawsuit = lawsuit.replace("&lt;claimAmount&gt;", claimAmount);
-    lawsuit = lawsuit.replace("&lt;spamType&gt;", spamType);
-    lawsuit =
-        lawsuit.replace(
-            "&lt;moreThanFiveLawsuits&gt; ",
-            sentMoreThanFiveLawsuits ? moreThanFiveLawsuits : lessThanFiveLawsuits);
-    lawsuit = lawsuit.replace("&lt;undefined&gt;", "");
-    lawsuit = lawsuit.replace("&lt;receivedSpamDate&gt;", DATE_FORMATTER.format(receivedSpamDate));
-    lawsuit = lawsuit.replace("&lt;currentDate&gt;", DATE_FORMATTER.format(new Date()));
-
-    // User fields
-    lawsuit = lawsuit.replace("&lt;userFullName&gt;", userPrivateName + " " + userLastName);
-    lawsuit = lawsuit.replace("&lt;userId&gt;", userID);
-    lawsuit = lawsuit.replace("&lt;userAddress&gt;", userAddress);
-    lawsuit = lawsuit.replace("&lt;userPhone&gt;", userPhone);
-    lawsuit = lawsuit.replace("&lt;userFax&gt;", userFax);
-
-    // First spam company
-    lawsuit = lawsuit.replace("&lt;companyName&gt;", companyName);
-    lawsuit = lawsuit.replace("&lt;companyId&gt;", companyId);
-    lawsuit = lawsuit.replace("&lt;companyAddress&gt;", companyAddress);
-    lawsuit = lawsuit.replace("&lt;companyPhone&gt;", companyPhone);
-    lawsuit = lawsuit.replace("&lt;companyFax&gt;", companyFax);
-
-    // Second spam company
-    lawsuit = lawsuit.replace("&lt;company2Name&gt;", company2Name);
-    lawsuit = lawsuit.replace("&lt;company2Id&gt;", company2Id);
-    lawsuit = lawsuit.replace("&lt;company2Address&gt;", company2Address);
-    lawsuit = lawsuit.replace("&lt;company2Phone&gt;", company2Phone);
-    lawsuit = lawsuit.replace("&lt;company2Fax&gt;", company2Fax);
-
-    return lawsuit;
-  }
-
-  private String getPdfFilename() {
-    return DATE_TIME_FORMATTER.format(new Date()) + ".pdf";
-  }
-
-  private void initDirStructure() {
-    // TODO: Paths.get() require API 26. Find/Create function that suits lower API versions.
-    lawsuitMainPath =
-        Paths.get(
-                Environment.getExternalStorageDirectory().getPath(),
-                getString(R.string.app_name),
-                LAWSUIT_MAIN_DIR_NAME)
-            .toString();
-    makeDir(lawsuitMainPath);
-
-    // Output
-    lawsuitOutputPath = Paths.get(lawsuitMainPath, LAWSUIT_OUTPUT_DIR_NAME).toString();
-    makeDir(lawsuitOutputPath);
-  }
-
-  private void makeDir(String path) {
-    File directory = new File(path);
-    if (directory.exists() && directory.isDirectory()) directory.mkdirs();
-  }
-
+  // Used for date fields in the lawsuit
   private void setTimeZones() {
     DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
     DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
   }
 
-  private void checkPermissionsThenCreatePdf() {
+  // Save PDF to device. Return absFilename of the file
+  private String createPdf() {
+
+    // Read and fill template
+    String template = null;
+    try {
+      template = fillTemplate();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    PdfDocument document = new PdfDocument();
+
+    // Create 2 pages for the PDF (Size A4)
+    PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+    PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
+    Page firstPage = document.startPage(firstPageInfo);
+    Page secondPage = null;
+    Canvas canvas = firstPage.getCanvas();
+    Paint paint = new Paint();
+    int rowCounter = 0;
+
+    int xPainter = 0;
+    int yPainter = 0;
+
+    // Draw lines to PDF
+    for (String line : template.split("\n")) {
+      // Switch to 2nd page on row 56
+      if (rowCounter == 56) {
+        document.finishPage(firstPage);
+        secondPage = document.startPage(secondPageInfo);
+        canvas = secondPage.getCanvas();
+        yPainter = 0;
+      }
+      // Draw text as RTL, 20 is for right padding
+      xPainter = (firstPageInfo.getPageWidth() - (int) paint.measureText(line)) - 20;
+      canvas.drawText(line, xPainter, yPainter, paint);
+      yPainter += paint.descent() - paint.ascent();
+      rowCounter++;
+    }
+    document.finishPage(secondPage);
+
+    // Save file to external storage
+    String absFilename =
+        Paths.get(
+                Environment.getExternalStorageDirectory().getPath(),
+                getString(R.string.app_name),
+                getString(R.string.output_folder_name),
+                (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
+            .toString();
+    try {
+      document.writeTo(new FileOutputStream(new File(absFilename)));
+      Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+      Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    document.close();
+    return absFilename;
+  }
+
+  // Fill the template with the user's and the company's details
+  private String fillTemplate() throws IOException {
+
+    String lawsuit = null;
+    try {
+      InputStream inputStream = getAssets().open("template.txt");
+      byte[] buffer = new byte[inputStream.available()];
+      inputStream.read(buffer);
+      inputStream.close();
+      lawsuit = new String(buffer, Charset.forName("UTF-8"));
+    } catch (IOException e) {
+      throw new IOException("Read template error.");
+    }
+
+    // General form fields
+
+    lawsuit =
+        lawsuit.replace(
+            "<claimCase>",
+            ((CheckBox) findViewById(R.id.checkBox_sentHaser)).isChecked()
+                ? claimCaseHaser
+                : claimCaseSubscription);
+    lawsuit =
+        lawsuit.replace(
+            "<claimAmount>", ((EditText) findViewById(R.id.claimAmount)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<moreThanFiveLawsuits>",
+            ((CheckBox) findViewById(R.id.checkbox_fiveLawsuits)).isChecked()
+                ? moreThanFiveLawsuits
+                : lessThanFiveLawsuits);
+    lawsuit = lawsuit.replace("<undefined>", "");
+    lawsuit = lawsuit.replace("<receivedSpamDate>", receivedDate.getText().toString());
+    lawsuit = lawsuit.replace("<currentDate>", DATE_FORMATTER.format(new Date()));
+
+    // User fields
+    lawsuit =
+        lawsuit.replace(
+            "<userFullName>",
+            ((EditText) findViewById(R.id.userPrivateName)).getText().toString()
+                + " "
+                + ((EditText) findViewById(R.id.userLastName)).getText().toString());
+    lawsuit =
+        lawsuit.replace("<userId>", ((EditText) findViewById(R.id.userID)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<userAddress>", ((EditText) findViewById(R.id.userAddress)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<userPhone>", ((EditText) findViewById(R.id.userPhone)).getText().toString());
+    lawsuit =
+        lawsuit.replace("<userFax>", ((EditText) findViewById(R.id.userFax)).getText().toString());
+
+    // Spam company
+    lawsuit =
+        lawsuit.replace(
+            "<companyName>", ((EditText) findViewById(R.id.companyName)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<companyId>", ((EditText) findViewById(R.id.companyId)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<companyAddress>",
+            ((EditText) findViewById(R.id.companyAddress)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<companyPhone>", ((EditText) findViewById(R.id.companyPhone)).getText().toString());
+    lawsuit =
+        lawsuit.replace(
+            "<companyFax>", ((EditText) findViewById(R.id.companyFax)).getText().toString());
+
+    return lawsuit;
+  }
+
+  // Pops a dialog asking the user to share the pdf
+  private void sharePdf(String absFilename) {
+    if (new File(absFilename).exists()) {
+      new AlertDialog.Builder(this, R.style.AlertDialog)
+          .setTitle("כתב תביעה נוצר")
+          .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
+          .setPositiveButton(
+              "כן",
+              (dialog, which) -> {
+                Uri uri =
+                    FileProvider.getUriForFile(
+                        getApplicationContext(),
+                        getPackageName() + ".fileprovider",
+                        new File(absFilename));
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.setType("application/pdf");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+              })
+          .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
+          .create()
+          .show();
+    }
+    Log.w(TAG, "Could not share pdf, file doesn't exists.\nabsFilename: " + absFilename);
+  }
+
+  // Pops a calendar dialog when clicking on date fields
+  private void displayDatePicker() {
+    calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
+
+    datePickerDialog =
+        new /**/ DatePickerDialog(
+            LawsuitPdfActivity.this,
+            (datePicker, currentYear, currentMonth, currentDay) ->
+                receivedDate.setText(day + "/" + (month + 1) + "/" + year),
+            year,
+            month,
+            day);
+    datePickerDialog.show();
+  }
+
+  private void checkPermissions() {
     // Ask runtime permissions for devices running SDK > 22
     if (Build.VERSION.SDK_INT >= 23) {
 
       // Permission granted
       if ((checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
           == PackageManager.PERMISSION_GRANTED)) {
-        createPdf();
+        permissionGranted = true;
+        createOutputDir();
       }
       // If user denied permission before, show explanation dialog before requesting
       else {
@@ -243,22 +314,37 @@ public class LawsuitPdfActivity extends AppCompatActivity {
       }
       // Devices running SDK <= 22, permissions granted on installation
     } else {
-      createPdf();
+      permissionGranted = true;
+      createOutputDir();
     }
   }
 
-  // Call createPdf() if permission granted
   @Override
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == STORAGE_PERMISSION_CODE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        createPdf();
+        permissionGranted = true;
+        createOutputDir();
       } else {
         Toast.makeText(
                 LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
+    }
+  }
+
+  // Create folder in external storage for saved PDFs
+  private void createOutputDir() {
+    File directory =
+        new File(
+            Paths.get(
+                    Environment.getExternalStorageDirectory().getPath(),
+                    getString(R.string.app_name),
+                    getString(R.string.output_folder_name))
+                .toString());
+    if (!directory.exists()) {
+      directory.mkdirs();
     }
   }
 }
