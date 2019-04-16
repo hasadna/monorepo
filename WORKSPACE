@@ -41,12 +41,16 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    strip_prefix = "startup-os-3844404af12f4b2c765e8eca2ba6d18806d4182a",
-    urls = ["https://github.com/google/startup-os/archive/3844404af12f4b2c765e8eca2ba6d18806d4182a.zip"],
+    strip_prefix = "startup-os-324c4138e057c7619d2701926e6e7fc4f0b76183",
+    urls = ["https://github.com/google/startup-os/archive/324c4138e057c7619d2701926e6e7fc4f0b76183.zip"],
 )
 # MARK: StartupOS end
 
 # StartupOS dependencies start
+load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+# TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
+maven_dependencies_startup_os()
+
 http_archive(
     name = "io_bazel_rules_docker",
     strip_prefix = "rules_docker-0.5.1",
