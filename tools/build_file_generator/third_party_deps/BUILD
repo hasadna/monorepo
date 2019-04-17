@@ -3,26 +3,6 @@ package(default_visibility = ["//visibility:public"])
 load("//third_party:java_grpc_library.bzl", "java_grpc_library")
 load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
-java_library(
-    name = "third_party_deps_analyzer",
-    srcs = ["ThirdPartyDepsAnalyzer.java"],
-    deps = [
-        "//third_party/maven/com/google/flogger",
-        "//third_party/maven/com/google/guava",
-        "//third_party/maven/javax/inject:javax_inject",
-        "@startup_os//common",
-        "@startup_os//common:dagger_with_annotation_processor",
-        "@startup_os//tools/build_file_generator:build_file_generator_java_proto",
-        "@startup_os//tools/build_file_generator:build_file_parser",
-    ],
-)
-
-checkstyle_test(
-    name = "third_party_deps_analyzer-checkstyle",
-    config = "//tools/checkstyle:config.xml",
-    target = ":third_party_deps_analyzer",
-)
-
 # '%THIRD_PARTY_DEPS_START%' and '%THIRD_PARTY_DEPS_END%' are markers for 'third_party_deps_updater.sh' script
 # and ThirdPartyDepsAnalyzer class.
 # Don't delete it while 'third_party_deps_updater.sh' script and ThirdPartyDepsAnalyzer class are used.
