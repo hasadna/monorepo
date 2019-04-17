@@ -83,9 +83,10 @@ java_binary(
     srcs = ["ThirdPartyDepsTool.java"],
     main_class = "tools.build_file_generator.third_party_deps.ThirdPartyDepsTool",
     deps = THIRD_PARTY_DEPS_GROUP + [
-        ":third_party_deps_analyzer",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
+        "@startup_os//common/flags",
+        "@startup_os//tools/build_file_generator/third_party_deps:third_party_deps_analyzer",
     ],
 )
 
