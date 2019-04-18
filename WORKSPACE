@@ -47,7 +47,8 @@ http_archive(
 # MARK: StartupOS end
 
 # StartupOS dependencies start
-load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os = "maven_dependencies")
+
 # TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
 maven_dependencies_startup_os()
 
@@ -176,4 +177,11 @@ http_archive(
     name = "gtfs_data",
     build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
     url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+)
+
+#israel_railways_data
+http_archive(
+    name = "israel_railways_data",
+    build_file_content = 'exports_files(["routes.csv" , "samples.csv" , "stops.csv" , "trips.csv"])',
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/data_csv.zip?alt=media&token=2a262967-7cdd-4934-afbc-8fa31a74baf2",
 )
