@@ -1,4 +1,4 @@
-package projects.opentrain.israel_railways_pipeline.data_handler;
+package projects.opentrain.israel_railways_pipeline;
 
 import com.google.common.collect.ImmutableList;
 

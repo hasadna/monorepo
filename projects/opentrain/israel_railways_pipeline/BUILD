@@ -1,3 +1,4 @@
+package projects.opentrain.israel_railways_pipeline;
 load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 checkstyle_test(
@@ -10,7 +11,7 @@ checkstyle_test(
 java_binary(
     name = "israel_railways_pipeline",
     srcs = ["CountLines.java"],
-    main_class = "projects.OpenTrain.israel_railways_pipeline.data_handler.CountLines",
+    main_class = "projects.opentrain.israel_railways_pipeline.CountLines",
     visibility = ["//visibility:public"],
     deps = [
         "//projects/opentrain/gtfs_pipeline/common:common_java_proto",
@@ -29,6 +30,6 @@ genrule(
         "@israel_railways_data//:trips.csv",
     ],
     outs = ["output.txt"],
-    cmd = "$(location //projects/OpenTrain/israel_railways_pipeline/data_handler:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location @israel_railways_data//:samples.csv) $(location @israel_railways_data//:stops.csv) $(location @israel_railways_data//:trips.csv) $@",
-    tools = ["//projects/OpenTrain/israel_railways_pipeline/data_handler:israel_railways_pipeline"],
+    cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location @israel_railways_data//:samples.csv) $(location @israel_railways_data//:stops.csv) $(location @israel_railways_data//:trips.csv) $@",
+    tools = ["//projects/opentrain/israel_railways_pipeline:israel_railways_pipeline"],
 )
