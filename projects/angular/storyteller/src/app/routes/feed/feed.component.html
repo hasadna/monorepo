@@ -1,0 +1,17 @@
+<div class="page-container">
+  <mat-spinner [diameter]="70" *ngIf="isLoading"></mat-spinner>
+  <div class="align-container" *ngIf="!isLoading">
+    <div class="project-menu">
+      <project-select
+        [projectIdList]="projectIdList"
+        (selectEmitter)="loadProjectStories($event)"
+      ></project-select>
+    </div>
+    <div class="feed">
+      <app-story
+        *ngFor="let easyStory of filteredEasyStories"
+        [easyStory]="easyStory"
+      ></app-story>
+    </div>
+  </div>
+</div>
