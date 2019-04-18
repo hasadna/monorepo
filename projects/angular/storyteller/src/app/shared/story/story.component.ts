@@ -7,6 +7,7 @@ export interface EasyStory {
   storyId: string;
   itemId: string;
   username: string;
+  userImage: string;
   email: string;
   project: string;
   timestamp: number;

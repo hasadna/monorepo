@@ -3,7 +3,7 @@
   <div class="align-container" *ngIf="!isLoading">
     <div class="project-menu">
       <div class="card menu-card">
-        <img src="/assets/default-avatar.png">
+        <img [src]="user.getImageUrl()">
         <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
         <div class="hr"></div>
         <div class="email">{{user.getEmail()}}</div>

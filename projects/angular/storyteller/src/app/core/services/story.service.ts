@@ -58,6 +58,7 @@ export class StoryService {
       storyId: story.getId(),
       itemId: '',
       username: user.getFirstName() + ' ' + user.getLastName(),
+      userImage: user.getImageUrl(),
       email: user.getEmail(),
       project: story.getProject(),
       timestamp: 0,

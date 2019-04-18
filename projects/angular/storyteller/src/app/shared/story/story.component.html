@@ -1,7 +1,7 @@
 <div class="story card">
   <div class="user">
     <a [routerLink]="['/info', easyStory.email]">
-      <img src="/assets/default-avatar.png">
+      <img [src]="easyStory.userImage">
     </a>
   </div>
   <div class="content">

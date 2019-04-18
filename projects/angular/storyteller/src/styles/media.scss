@@ -1,0 +1,52 @@
+$xs: 500px;
+$sm: 770px;
+$md: 970px;
+$lg: 1170px;
+
+
+// Small screens
+@media only screen and (max-width: $sm) {
+
+  // Parent media container
+  .page-container {
+    app-story {
+      >.story {
+        width: 400px;
+        display: flex;
+
+        >.content {
+          >.note {
+            margin-top: 0px;
+          }
+        }
+      }
+    }
+
+    padding: 0px;
+    margin: 0px;
+
+    >.align-container {
+      width: 400px;
+      flex-flow: column wrap;
+
+      >.project-menu {
+        margin: 0 0 20px 40px;
+      }
+
+      >.feed {
+        app-story {
+          >.story {
+            width: 400px;
+            display: flex;
+
+            >.content {
+              >.note {
+                margin-top: 0px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
