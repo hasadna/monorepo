@@ -1,6 +1,6 @@
 httpArchiveDeps {
   name: "startup_os"
-  commit_id: "d654bd34b2b3e113cf61524dbe28f3115b419318"
+  commit_id: "db025f0bf4b1adaedb7d55eb2e32099f757a327c"
   http_archive_dep {
     java_class: "com.google.startupos.common.CommandLine.java"
     target: "//common:common"
@@ -58,6 +58,10 @@ httpArchiveDeps {
     target: "//common:base64_tool"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.common.Protos"
+    target: "//common:text_difference_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.common.firestore.FirestoreProtoClient.java"
     target: "//common/firestore:firestore"
   }
@@ -106,6 +110,10 @@ httpArchiveDeps {
     target: "//common/flags:flags"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.common.flags.Proto"
+    target: "//common/flags:flags_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.common.flags.tests.FlagDescTestClass.java"
     target: "//common/flags/tests:flag_desc_test_class"
   }
@@ -122,12 +130,20 @@ httpArchiveDeps {
     target: "//common/repo:repo"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.common.repo.Protos"
+    target: "//common/repo:repo_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.common.repo.tests.TestTool.java"
     target: "//common/repo/tests:test_tool"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.tests.TextDifferencerTool.java"
     target: "//common/tests:text_differencer_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.tests.Protos"
+    target: "//common/tests:file_utils_test_java_proto"
   }
   http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example1.App.java"
@@ -318,6 +334,10 @@ httpArchiveDeps {
     target: "//examples/proto_vs_json:proto_vs_json_tool"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.examples.proto_vs_json.Protos"
+    target: "//examples/proto_vs_json:data_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.BuildFileGenerator.java"
     target: "//tools/build_file_generator:build_file_generator"
   }
@@ -340,6 +360,10 @@ httpArchiveDeps {
   http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.BuildFileGeneratorTool.java"
     target: "//tools/build_file_generator:build_file_generator_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.Protos"
+    target: "//tools/build_file_generator:build_file_generator_java_proto"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.http_archive_deps.HttpArchiveDepsGenerator.java"
@@ -366,12 +390,24 @@ httpArchiveDeps {
     target: "//tools/deps:workspace_patcher"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.deps.Protos"
+    target: "//tools/deps:dependencies_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.formatter.FormatterTool.java"
     target: "//tools/formatter:formatter"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.ReviewerConstants.java"
     target: "//tools/reviewer:reviewer_constants"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.ReviewerProtos"
+    target: "//tools/reviewer:reviewer_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.RegistryProtos"
+    target: "//tools/reviewer:reviewer_registry_java_proto"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.AaModule.java"
@@ -384,6 +420,10 @@ httpArchiveDeps {
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.AaTool.java"
     target: "//tools/reviewer/aa:aa_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.Protos"
+    target: "//tools/reviewer/aa:config_java_proto"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.AaCommand.java"
@@ -474,6 +514,14 @@ httpArchiveDeps {
     target: "//tools/reviewer/job/sync:github_sync_tool"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubPullRequestProtos"
+    target: "//tools/reviewer/job/sync:full_github_pr_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubProtos"
+    target: "//tools/reviewer/job/sync:github_api_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.job.tasks.CiTask.java"
     target: "//tools/reviewer/job/tasks:ci_task"
   }
@@ -522,6 +570,14 @@ httpArchiveDeps {
     target: "//tools/reviewer/local_server/service:code_review_service"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.AuthProtos"
+    target: "//tools/reviewer/local_server/service:auth_service_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.Protos"
+    target: "//tools/reviewer/local_server/service:code_review_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.local_server.service.tests.TestTool.java"
     target: "//tools/reviewer/local_server/service/tests:test_tool"
   }
@@ -530,11 +586,19 @@ httpArchiveDeps {
     target: "//tools/reviewer/remote_server:remote_server"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.remote_server.Protos"
+    target: "//tools/reviewer/remote_server:messages_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.rules_updater.RulesUpdater.java"
     target: "//tools/reviewer/rules_updater:rules_updater"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tutorials.proto_rename.PersonTool.java"
     target: "//tutorials/proto_rename:person_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tutorials.proto_rename.Protos"
+    target: "//tutorials/proto_rename:person_java_proto"
   }
 }
