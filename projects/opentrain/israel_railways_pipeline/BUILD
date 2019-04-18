@@ -1,4 +1,5 @@
-package projects.opentrain.israel_railways_pipeline;
+package
+projects.opentrain.israel_railways_pipeline;
 load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 checkstyle_test(
