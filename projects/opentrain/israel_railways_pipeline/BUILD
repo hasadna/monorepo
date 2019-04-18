@@ -1,5 +1,3 @@
-package
-projects.opentrain.israel_railways_pipeline;
 load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
 checkstyle_test(
@@ -32,5 +30,5 @@ genrule(
     ],
     outs = ["output.txt"],
     cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location @israel_railways_data//:samples.csv) $(location @israel_railways_data//:stops.csv) $(location @israel_railways_data//:trips.csv) $@",
-    tools = ["//projects/opentrain/israel_railways_pipeline:israel_railways_pipeline"],
+    tools = ["//projects/opentrain/israel_railways_pipeline"],
 )
