@@ -1,25 +1,24 @@
+<nav>
+  <div class="logo">OSMP</div>
+  <div class="menu">
+    <a [routerLink]="'profile-pages/'">PROJECTS</a>
+    <a href="https://www.hasadna.org.il/participants/">PARTICIPANTS</a>
+    <a href="https://www.hasadna.org.il/">ABOUT</a>
+    <a href="https://www.hasadna.org.il/contact/">CONTACT US</a>
+  </div>
+</nav>
 <div class="program-website-container">
-  <div class="top-section">
-    <div class="image-1-container">
-      <img src="assets/images/image-1.svg" class="image-1">
+  <div class="section section-header">
+    <div class="responsive">
+      <img src="assets/images/image-1.svg">
     </div>
-    <div class="navigation-bar">
-      <nav class="navigation">
-        <a [routerLink]="'profile-pages/'">PROJECTS</a>
-        <a href="https://www.hasadna.org.il/participants/">PARTICIPANTS</a>
-        <a href="https://www.hasadna.org.il/">ABOUT</a>
-        <a href="https://www.hasadna.org.il/contact/">CONTACT US</a>
-      </nav>
-    </div>
-    <div class="osmp-container">
-      <p class="osmp-title">
-        Open Source Mentorship Program
-      </p>
-      <p class="osmp-text">
+    <div class="content">
+      <div class="osmp-title">Open Source Mentorship Program</div>
+      <div class="osmp-text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Venenatis a condimentum vitae sapien pellentesque habitant morbi tristique senectus.
-      </p>
+      </div>
       <div class="get-started-button">
         <a class="get-started-link" href="https://www.hasadna.org.il/get-started/">
           GET STARTED
@@ -27,21 +26,21 @@
       </div>
     </div>
   </div>
-  <div class="about-section">
-    <div class="about-container">
-      <p class="about-title">
+  <div class="section section-about">
+    <div class="content">
+      <div class="about-title">
         About Us
-      </p>
-      <p class="about-text">
+      </div>
+      <div class="about-text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
         eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Venenatis a condimentum vitae sapien pellentesque habitant
         morbi tristique senectus.
-      </p>
+      </div>
       <div class="about-squares">
-        <div class="about-square"><img src=""></div>
-        <div class="about-square"><img src=""></div>
-        <div class="about-square"><img src=""></div>
+        <div class="about-square"></div>
+        <div class="about-square"></div>
+        <div class="about-square"></div>
       </div>
       <div class="read-more-button">
         <a class="read-more-link" href="https://www.hasadna.org.il/">
@@ -49,107 +48,87 @@
         </a>
       </div>
     </div>
-    <div class="image-2-container">
-      <img src="assets/images/image-2.svg" class="image-2">
+    <div class="responsive">
+      <img src="assets/images/image-2.svg">
     </div>
   </div>
-  <div class="projects-section">
-    <p class="projects-title">
-      Our Projects
-    </p>
-    <p class="project-text">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua. Venenatis a condimentum vitae sapien
-      pellentesque habitant morbi tristique senectus.
-    </p>
-    <div class="projects-links">
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/loremipsumdolorsitamet/">
-          Lorem ipsum dolor sit amet
-        </a>
+  <div class="section section-projects">
+    <div class="content">
+      <div class="projects-title">
+        Our Projects
       </div>
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/consecteturadipiscingelit/">
-          consectetur adipiscing elit
-        </a>
+      <div class="project-text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Venenatis a condimentum vitae sapien
+        pellentesque habitant morbi tristique senectus.
       </div>
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/venenatisacondimentumvitae/">
-          Venenatis a condimentum vitae
-        </a>
-      </div>
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/pellentesquehabitantmorbitristique/">
-          pellentesque habitant morbi tristique
-        </a>
-      </div>
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/consecteturadipiscing/">
-          consectetur adipiscing
-        </a>
-      </div>
-      <div class="project-link">
-        <a href="https://www.hasadna.org.il/utlaboreetdoloremagna/">
-          ut labore et dolore magna
-        </a>
-      </div>
-    </div>
-    <div class="read-more-button">
-      <a class="read-more-link" href="https://www.hasadna.org.il/projects/">
-        READ MORE
-      </a>
-    </div>
-  </div>
-  <div class="final-section">
-    <div class="participants-container">
-      <p class="participants-title">
-        Participants
-      </p>
-      <p class="participants-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Venenatis a
-        condimentum vitae sapien pellentesque habitant morbi tristique
-        senectus.
-      </p>
+      <table class="projects-links">
+        <tr>
+          <td>Lorem ipsum dolor sit amet</td>
+          <td>consectetur adipiscing elit</td>
+          <td>Venenatis a condimentum vitae</td>
+        </tr>
+        <tr>
+          <td>pellentesque habitant morbi tristique</td>
+          <td>consectetur adipiscing</td>
+          <td>ut labore et dolore magna</td>
+        </tr>
+      </table>
       <div class="read-more-button">
         <a class="read-more-link" href="https://www.hasadna.org.il/projects/">
           READ MORE
         </a>
       </div>
     </div>
-    <div class="image-3-container">
-      <img src="assets/images/image-3.svg" class="image-3">
-      <div class="contact-section">
-        <p class="contact-title">
-          Contact Us
-        </p>
-        <div class="contact-paragraphs">
-          <p class="contact-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor <a href="https://www.hasadna.org.il/contact/">HERE</a>.
-          </p>
-          <p class="contact-text">
-            Venenatis a condimentum vitae sapien pellentesque habitant
-            morbi tristique senectus <a href="https://www.hasadna.org.il/contact/">HERE</a>.
-          </p>
+  </div>
+  <div class="section section-participants">
+    <div class="responsive"></div>
+    <div class="content">
+      <div class="participants-title">
+        Participants
+      </div>
+      <div class="participants-text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Venenatis a
+        condimentum vitae sapien pellentesque habitant morbi tristique
+        senectus.
+      </div>
+      <div class="read-more-button">
+        <a class="read-more-link" href="https://www.hasadna.org.il/projects/">
+          READ MORE
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="section section-contact-us">
+    <div class="responsive"></div>
+    <div class="content">
+      <div class="contact-title">
+        Contact Us
+      </div>
+      <div class="card card-info">
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor <a href="https://www.hasadna.org.il/contact/">HERE</a>.
         </div>
-        <div class="contact-information">
-          <p class="contact-information-text">
-            Venenatis a condimentum vitae at:
-          </p>
-          <div class="contact-email">
-            <a href="ouremail22@gmail.com">
-              ouremail22@gmail.com
-            </a>
-          </div>
-          <div class="contact-phone">
-            <p>
-              012-3456789
-            </p>
-          </div>
+        <div>
+          Venenatis a condimentum vitae sapien pellentesque habitant
+          morbi tristique senectus <a href="https://www.hasadna.org.il/contact/">HERE</a>.
         </div>
       </div>
-      <img src="assets/images/image-4.svg" class="image-4">
+      <div class="card card-contacts">
+        <div class="contact-information-text">
+          Venenatis a condimentum vitae at:
+        </div>
+        <div class="contact-email">ouremail22@gmail.com</div>
+        <div class="contact-phone">012-3456789</div>
+      </div>
     </div>
+  </div>
+  <div class="footer-picture-1">
+    <img src="assets/images/image-3.svg">
+  </div>
+  <div class="footer-picture-2">
+    <img src="assets/images/image-4.svg">
   </div>
 </div>
