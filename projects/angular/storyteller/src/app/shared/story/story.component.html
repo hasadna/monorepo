@@ -7,7 +7,11 @@
   <div class="content">
     <div class="header">
       <div class="info">
-        <span class="author">{{ easyStory.username }}</span>
+        <span class="author">
+          <a [routerLink]="['/info', easyStory.email]">
+            {{ easyStory.username }}
+          </a>
+        </span>
         on
         <span class="project">{{ easyStory.project }}</span>
       </div>
@@ -28,11 +32,9 @@
       </a>
     </div>
     <div class="screenshot" *ngIf="easyStory.screenshot">
-      <img 
-        class="screenImage"
+      <img class="screenImage" 
         [src]="'data:image/png;base64,' + easyStory.screenshot"
-        (click)="openScreenshot(easyStory.screenshot)"
-      />
+        (click)="openScreenshot(easyStory.screenshot)" />
     </div>
   </div>
 </div>

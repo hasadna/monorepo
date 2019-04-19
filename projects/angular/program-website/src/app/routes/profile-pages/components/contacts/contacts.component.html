@@ -1,0 +1,9 @@
+<div class="contacts media">
+  <div class="contacts-header">Contacts</div>
+  <div class="contributors-list">
+    <profile-pages-contributor
+      *ngFor="let user of users"
+      [user]="user"
+    ></profile-pages-contributor>
+  </div>
+</div>

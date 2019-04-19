@@ -1,0 +1,89 @@
+$label-width: 250px;
+
+.user-details {
+  display: flex;
+  justify-content: center;
+  >.media {
+    >.user-header {
+      display: flex;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 50px;
+      color: #4a4a4a;
+    }
+    >.user-container {
+      display: flex;
+      $space: 75px;
+      >.user-label {
+        display: flex;
+        justify-content: center;
+        width: $label-width;
+        >.flex {
+          width: $label-width;
+          word-wrap: break-word;
+          >img {
+            width: $label-width;
+            margin-bottom: 16px;
+          }
+          >.user-name {
+            font-size: 24px;
+            color: #565656;
+            margin-bottom: 9px;
+          }
+          >.email {
+            font-size: 17px;
+            color: #565656;
+            margin-bottom: 16px;
+          }
+          >.social-networks {
+            display: flex;
+            >.social-network {
+              margin-right: 19px;
+            }
+          }
+        }
+      }
+      >.media-large-block {
+        width: $space;
+      }
+      >.media-small-block {
+        height: 23px;
+      }
+      >.user-info {
+        width: calc(100% - #{$label-width} - #{$space});
+        >.title {
+          color: #565656;
+          font-size: 20px;
+        }
+        .info-block {
+          padding: 16px;
+          border: 1px solid #979797;
+          margin-bottom: 22px;
+          font-size: 20px;
+          >a {
+            margin-right: 10px;
+          }
+          >.contribution-message {
+            color: #565656;
+          }
+          >.contribution-url {
+            word-wrap: break-word;
+          }
+        }
+        >.contributions {
+          >.contribution {
+            margin-bottom: 0;
+            border-top: none;
+          }
+          >.contribution:first-child {
+            border: 1px solid #979797;
+          }
+          >.contribution:last-child {
+            margin-bottom: 22px;
+          }
+        }
+      }
+    }
+  }
+}
