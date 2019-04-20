@@ -26,12 +26,13 @@ import java.util.concurrent.Executors;
 import hasadna.noloan2.protobuf.SmsProto.SpamList;
 import noloan.R;
 
-// Permission request Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
+// Permission request Based on
+// http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
 public class SplashScreenActivity extends AppCompatActivity {
 
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
-  final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
+  final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
 
   Handler handler;
 
@@ -69,7 +70,8 @@ public class SplashScreenActivity extends AppCompatActivity {
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == PERMISSION_REQUEST_CODE) {
       if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         permissionTask.setResult(true);
@@ -84,26 +86,32 @@ public class SplashScreenActivity extends AppCompatActivity {
     FirestoreClient client = new FirestoreClient();
     Executor executor = Executors.newSingleThreadExecutor();
     Task<DocumentSnapshot> task = client.getSpamTask();
-    task.addOnCompleteListener(executor, task1 -> {
-      if (task1.isSuccessful()) {
-        DocumentSnapshot snapshot = task1.getResult();
-        try {
-          SpamList spam = (SpamList) client.decodeMessage(snapshot.getString("proto"), SpamList.newBuilder());
-          SpamHolder.getInstance().setSpam(spam.getSmsList());
-        } catch (InvalidProtocolBufferException e) {
-          Log.e("SplashScreen", "Decoding spam failed");
-        }
-      }
-    });
+    task.addOnCompleteListener(
+        executor,
+        task1 -> {
+          if (task1.isSuccessful()) {
+            DocumentSnapshot snapshot = task1.getResult();
+            try {
+              SpamList spam =
+                  (SpamList)
+                      client.decodeMessage(snapshot.getString("proto"), SpamList.newBuilder());
+              SpamHolder.getInstance().setSpam(spam.getSmsList());
+            } catch (InvalidProtocolBufferException e) {
+              Log.e("SplashScreen", "Decoding spam failed");
+            }
+          }
+        });
     return task;
   }
 
   // Start the main Activity
   private void startNextActivity() {
-    handler.postDelayed(() -> {
-      startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-      finish();
-    }, SPLASH_TIME_MS);
+    handler.postDelayed(
+        () -> {
+          startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+          finish();
+        },
+        SPLASH_TIME_MS);
   }
 
   // Main Task to get the permissions and the spam
@@ -121,7 +129,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         e.printStackTrace();
       }
       if (!permissions.getResult()) {
-        handler.post(() -> Toast.makeText(getApplicationContext(), "This App require SMS reading To work", Toast.LENGTH_SHORT).show());
+        handler.post(
+            () ->
+                Toast.makeText(
+                        getApplicationContext(),
+                        "This App require SMS reading To work",
+                        Toast.LENGTH_SHORT)
+                    .show());
         finishAndRemoveTask();
       } else {
         startNextActivity();
@@ -130,3 +144,4 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
   }
 }
+

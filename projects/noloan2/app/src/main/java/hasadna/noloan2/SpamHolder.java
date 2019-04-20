@@ -24,3 +24,4 @@ public class SpamHolder {
     this.spam = spam;
   }
 }
+

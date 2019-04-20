@@ -36,7 +36,6 @@ public class FirestoreClient {
     return documentReference.get();
   }
 
-
   // Encode user proto to base64 for storing in Firestore
   private FirestoreElement encodeMessage(SmsMessage message) {
     byte[] protoBytes = message.toByteArray();
@@ -44,12 +43,10 @@ public class FirestoreClient {
     return new FirestoreElement(base64BinaryString);
   }
 
-
   public MessageLite decodeMessage(String message, MessageLite.Builder builder)
-          throws InvalidProtocolBufferException {
+      throws InvalidProtocolBufferException {
     byte[] messageBytes = Base64.decode(message, Base64.DEFAULT);
     return builder.build().getParserForType().parseFrom(messageBytes);
-
   }
 }
 
