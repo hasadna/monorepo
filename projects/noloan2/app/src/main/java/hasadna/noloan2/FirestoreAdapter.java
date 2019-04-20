@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter implements EventListener<QuerySnapshot> {
+    extends RecyclerView.Adapter implements EventListener<QuerySnapshot> {
   private Query query;
   private ListenerRegistration registration;
 
@@ -39,7 +39,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
 
   @Override
   public void onEvent(
-          @Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
+      @Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException e) {
     if (e != null) {
       Log.w("firestore adapter", e);
       return;

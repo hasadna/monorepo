@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
 import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+    implements NavigationView.OnNavigationItemSelectedListener {
   private static final String TAG = "MainActivity";
 
   private DrawerLayout drawerLayout;
@@ -49,12 +50,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // drawerLayout
     drawerLayout = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle =
-            new ActionBarDrawerToggle(
-                    this,
-                    drawerLayout,
-                    toolbar,
-                    R.string.navigation_drawer_open,
-                    R.string.navigation_drawer_close);
+        new ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close);
     drawerLayout.addDrawerListener(toggle);
     toggle.syncState();
 
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Create a list of the intersection between the two lists, messages and spam
     // Based on https://www.baeldung.com/java-lists-intersection
-    List<SmsMessage> results = messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
+    List<SmsMessage> results =
+        messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
 
     // Filling the recycler
     RecyclerView recycler = findViewById(R.id.recycler_view);
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     recycler.setLayoutManager(new LinearLayoutManager(this));
   }
 
-  //Reads SMS. If no permissions are granted, exit app.
+  // Reads SMS. If no permissions are granted, exit app.
   private ArrayList<SmsMessage> readSmsFromDevice() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
@@ -94,17 +96,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   // Get a list of all SMS messages in the inbox.
   private ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
-    Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+    Cursor cursor =
+        getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
 
     if (cursor.moveToFirst()) {
       do {
-        SmsMessage sms = SmsMessage.newBuilder()
+        SmsMessage sms =
+            SmsMessage.newBuilder()
                 .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
                 .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
                 .build();
         smsList.add(sms);
-      }
-      while (cursor.moveToNext());
+      } while (cursor.moveToNext());
     }
 
     cursor.close();

@@ -13,7 +13,8 @@ import java.util.List;
 import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class SmsRecyclerAdapter extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
+public class SmsRecyclerAdapter
+    extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
 
   List<SmsMessage> messages;
 
@@ -25,7 +26,6 @@ public class SmsRecyclerAdapter extends RecyclerView.Adapter<SmsRecyclerAdapter.
     } else {
       this.messages = messages;
     }
-
   }
 
   @NonNull
@@ -45,7 +45,6 @@ public class SmsRecyclerAdapter extends RecyclerView.Adapter<SmsRecyclerAdapter.
     return messages.size();
   }
 
-
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     TextView from, content;
 
@@ -61,3 +60,4 @@ public class SmsRecyclerAdapter extends RecyclerView.Adapter<SmsRecyclerAdapter.
     }
   }
 }
+
