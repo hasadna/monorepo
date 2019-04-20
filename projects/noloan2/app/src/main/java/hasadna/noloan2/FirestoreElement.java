@@ -16,5 +16,7 @@ public class FirestoreElement {
   
   public void setProto(String proto) {
     this.proto = proto;
+
   }
 }
+

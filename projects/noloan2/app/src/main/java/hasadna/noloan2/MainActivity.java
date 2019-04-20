@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     return getSmsList();
   }
-  
+
   // Get a list of all SMS messages in the inbox.
   private ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
@@ -127,3 +127,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AboutActivity.startActivity(this);
   }
 }
+

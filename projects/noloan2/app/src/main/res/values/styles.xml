@@ -30,6 +30,12 @@
 
     <style name="SummaryContent" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">sans-serif-medium</item>
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+
+    <style name="LawsuitFormTitle" >
+        <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorTextGrey3</item>
     </style>

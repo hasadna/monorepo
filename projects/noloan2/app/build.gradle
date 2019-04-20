@@ -6,7 +6,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "hasadna.noloan2"
-        minSdkVersion 28
+        // Paths.get() require API 26 (There's a TO-DO to fix that)
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -21,8 +22,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -67,4 +68,10 @@ dependencies {
     //protobuf
     implementation 'com.google.protobuf:protobuf-lite:3.0.1'
 
+    // iText7
+    implementation 'com.itextpdf:itextpdf:5.5.13'
+    implementation 'com.itextpdf:html2pdf:2.1.1'
+    implementation files('lib/typography-2.0.3.jar')
+    implementation files('lib/itext-licensekey-3.0.4.jar')
 }
+

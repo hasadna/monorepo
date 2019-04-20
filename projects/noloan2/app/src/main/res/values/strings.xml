@@ -15,4 +15,22 @@
     <string name="list_item_date">ב: %1$s</string>
     <string name="about_information">האפליקציה מוצאת הודעות ספאם.</string>
 
+    <string name="output_folder_name">lawsuits</string>
+    <string name="form_hint_privateName">שם פרטי</string>
+    <string name="form_hint_lastName">שם משפחה</string>
+    <string name="form_hint_userID" >ת\"ז</string>
+    <string name="form_hint_address">כתובת</string>
+    <string name="form_hint_phoneNumber">מספר טלפון</string>
+    <string name="form_hint_faxNumber">מספר פקס</string>
+    <string name="form_hint_companyName">שם החברה</string>
+    <string name="form_hint_companyId">מספר ח\"פ</string>
+    <string name="form_hint_fiveLawsuits">מעל 5 תביעות בשנה האחרונות</string>
+    <string name="form_hint_claimAmount">סכום תביעה</string>
+    <string name="form_hint_sentHaser">נשלח הסר</string>
+    <string name="form_hint_spamDate">תאריך קבלת הודעה</string>
+    <string name="form_hint_email">דואל</string>
+    <string name="title_userDetails">פרטיים אישיים</string>
+    <string name="title_companyDetails">פרטי החברה</string>
+    <string name="title_claimDetails">פרטי התביעה</string>
+    <string name="form_button_create_text">צור/י כתב תביעה</string>
 </resources>

@@ -35,9 +35,9 @@ java_library(
         "//third_party/maven/org/slf4j:slf4j_simple",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
-        "@startup_os//common/flags",
         "@startup_os//common/firestore",
-        "@startup_os//tools/reviewer/local_server/service:auth_service",        
+        "@startup_os//common/flags",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
 )
 
@@ -87,9 +87,9 @@ java_binary(
         "//third_party/maven/com/google/flogger:flogger_system_backend",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
         "//third_party/maven/javax/inject:javax_inject",
         "//third_party/maven/org/slf4j:slf4j_simple",
-        "//third_party/maven/io/netty:netty_tcnative_boringssl_static",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/flags",

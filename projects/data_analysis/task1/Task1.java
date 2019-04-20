@@ -25,10 +25,12 @@ class Task1 {
 
     // combine them into proto messages one-by-one and add to allUsersBuilder
     IntStream.range(0, firstNames.size())
-        .mapToObj(i -> User.newBuilder()
-            .setFirstName(firstNames.get(i))
-            .setLastName(lastNames.get(i))
-            .build())
+        .mapToObj(
+            i ->
+                User.newBuilder()
+                    .setFirstName(firstNames.get(i))
+                    .setLastName(lastNames.get(i))
+                    .build())
         .forEach(allUsersBuilder::addUsers);
 
     // write to output file as prototxt for further processing

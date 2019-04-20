@@ -1,0 +1,7 @@
+<mat-spinner [diameter]="70" *ngIf="isLoading"></mat-spinner>
+<img
+  [src]="'data:image/png;base64,' + screenshot"
+  [width]="width"
+  [height]="height"
+  *ngIf="!isLoading"
+/>
