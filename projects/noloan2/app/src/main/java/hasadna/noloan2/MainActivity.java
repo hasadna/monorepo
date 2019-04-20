@@ -5,54 +5,81 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class MainActivity extends AppCompatActivity {
-  
-  TextView text;
-  
-  ArrayList<SmsMessage> spamList;
-  
+public class MainActivity extends AppCompatActivity
+    implements NavigationView.OnNavigationItemSelectedListener {
+  private static final String TAG = "MainActivity";
+
+  private DrawerLayout drawerLayout;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    
-    text = findViewById(R.id.TV_text);
-    
-    spamList = new ArrayList<>();
-    ArrayList<SmsMessage> messages = readSmsFromDevice();
-    
-    // For testing, adding the first message read to the list of spam.
-    spamList.add(SmsMessage.newBuilder().setSender(messages.get(0).getSender()).setBody(messages.get(0).getBody()).build());
-    
-    int count = 0;
-    for (SmsMessage message : messages) {
-      for (SmsMessage spam : spamList) {
-        if (comparingMessages(message, spam)) {
-          count++;
-          break;
-        }
-      }
-    }
-    
-    text.setText(count + "");
+    setContentView(R.layout.main_activity);
+
+    // Toolbar
+    AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
+    Toolbar toolbar = toolbarContent.findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    TextView toolbarTitle = toolbarContent.findViewById(R.id.toolbar_title);
+    toolbarTitle.setText(toolbar.getTitle());
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setDisplayShowTitleEnabled(false);
+
+    // drawerLayout
+    drawerLayout = findViewById(R.id.drawer_layout);
+    ActionBarDrawerToggle toggle =
+        new ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close);
+    drawerLayout.addDrawerListener(toggle);
+    toggle.syncState();
+
+    // Navigation
+    NavigationView navigationView = findViewById(R.id.nav_view);
+    navigationView.setNavigationItemSelectedListener(this);
+
+    // Reading Sms and spams
+    List<SmsMessage> messages = readSmsFromDevice();
+    List<SmsMessage> spam = SpamHolder.getInstance().getSpam();
+
+    // Create a list of the intersection between the two lists, messages and spam
+    // Based on https://www.baeldung.com/java-lists-intersection
+    List<SmsMessage> results =
+        messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
+
+    // Filling the recycler
+    RecyclerView recycler = findViewById(R.id.recycler_view);
+    SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(messages);
+    recycler.setAdapter(adapter);
+    recycler.setLayoutManager(new LinearLayoutManager(this));
   }
-  
-  // Basic comparing of two SMS massages
-  private boolean comparingMessages(SmsMessage m1, SmsMessage m2) {
-    return m1.equals(m2);
-  }
-  
-  //Reads SMS. If no permissions are granted, exit app.
+
+  // Reads SMS. If no permissions are granted, exit app.
   private ArrayList<SmsMessage> readSmsFromDevice() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
@@ -65,24 +92,42 @@ public class MainActivity extends AppCompatActivity {
     }
     return getSmsList();
   }
-  
+
   // Get a list of all SMS messages in the inbox.
   private ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
-    Cursor cursor = getContentResolver().query(Uri.parse("content://sms/"), null, null, null, null);
-    
+    Cursor cursor =
+        getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+
     if (cursor.moveToFirst()) {
-      for (int i = 0; i < cursor.getColumnCount(); i++, cursor.moveToNext()) {
-        SmsMessage sms = SmsMessage.newBuilder()
-          .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
-          .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
-          .build();
+      do {
+        SmsMessage sms =
+            SmsMessage.newBuilder()
+                .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
+                .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
+                .build();
         smsList.add(sms);
-      }
-    } else {
-      // There are no SMS in the inbox
+      } while (cursor.moveToNext());
     }
+
     cursor.close();
     return smsList;
   }
+
+  // Handle navigation view item clicks here.
+  @Override
+  public boolean onNavigationItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    if (id == R.id.nav_about) {
+      openAbout();
+    }
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
+  }
+
+  private void openAbout() {
+    AboutActivity.startActivity(this);
+  }
 }
+

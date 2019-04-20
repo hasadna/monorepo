@@ -1,0 +1,18 @@
+<div class="project-details media" *ngIf="project">
+  <div class="project-name">{{project.getDisplayName()}}</div>
+  <div class="project-description">{{project.getDescription()}}</div>
+  <div class="project-link">
+    <a  [href]="project.getProjectUrl()" target="blank">
+      {{project.getProjectUrl()}}
+    </a>
+  </div>
+  <div class="contributors">
+    <div class="title">Contributors:</div>
+    <div class="contributors-list">
+      <app-contributor
+        *ngFor="let user of projectUsers"
+        [user]="user"
+      ></app-contributor>
+    </div>
+  </div>
+</div>

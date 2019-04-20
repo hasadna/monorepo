@@ -1,0 +1,6 @@
+{
+  "exportPath": "src/app/proto",
+  "protoList": [
+    "startup-os/tools/reviewer/reviewer.proto"
+  ]
+}

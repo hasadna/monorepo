@@ -1,73 +1,75 @@
-# Based on config from github.com/alexeagle/angular-bazel-example
-version: 2
-
-# We use a docker image as the basis for our build, so that all the toolchains we use
-# are already installed and the build can start running right away. It also guarantees
-# the environment is portable and reproducible on your local machine.
-var_1: &docker_image angular/ngcontainer:0.8.0
-
-# Each job will inherit these defaults
-anchor_1: &job_defaults
-  working_directory: ~/ng
-  docker:
-    - image: *docker_image
-
-# After checkout, rebase on top of master, because we want to test the proposed merge of a
-# onto the target branch, not just test what's on the user's fork.
-# Similar to travis behavior, but not quite the same.
-# See https://discuss.circleci.com/t/1662
-anchor_2: &post_checkout
-  post: git pull --ff-only origin "refs/pull/${CI_PULL_REQUEST//*pull\//}/merge"
-
-
-# These jobs will run in parallel, and report separate statuses to GitHub PRs
-jobs:
-  lint:
-    <<: *job_defaults
+version: 2.1
+commands:
+  install-bazel:
     steps:
-      - checkout:
-          <<: *post_checkout
-      - restore_cache:
-          key: "v3-bazel_cache"
-      - run: sudo apt update && sudo apt -y install yapf3 clang-format python3-pkg-resources libstdc++6
-      - run: sudo ln -s /usr/bin/yapf3 /usr/bin/yapf
-      - run: './tools/checkstyle/check-for-missing-targets.sh'
-      - run: './fix-formatting.sh'
-
-  build:
-    <<: *job_defaults
+      - run:
+          name: Install bazel
+          command: |
+            curl -OL https://github.com/bazelbuild/bazel/releases/download/0.24.0/bazel-0.24.0-installer-linux-x86_64.sh
+            chmod +x bazel-0.24.0-installer-linux-x86_64.sh
+            sudo ./bazel-0.24.0-installer-linux-x86_64.sh
+            rm ./bazel-0.24.0-installer-linux-x86_64.sh
+            bazel info release
+  install-deps:
     steps:
-      - checkout:
-          <<: *post_checkout
-
-      - restore_cache:
-          key: "android_sdk"
-
-      - restore_cache:
-          key: "v3-bazel_cache"
-
-      - run: sudo apt update && sudo apt -y install libstdc++6
-      - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
-      - run: bazel info release
-      - run: npm install
-      - run: bash tools/get_android_sdk.sh
       - run:
-          command: ./compile.sh build
-          environment:
-            ANDROID_HOME: /home/circleci/android_sdk/
-      - run:
-          command: ./compile.sh test
-          environment:
-            ANDROID_HOME: /home/circleci/android_sdk/
-
+          name: Install extra dependencies (yapf3)
+          command: |
+            pip install yapf
+  restore-caches:
+    steps:
+      - restore_cache:
+          keys:
+            - "android_sdk"
+      - restore_cache:
+          keys:
+            - "v4-bazel_cache"
+  save-caches:
+    steps:
       - save_cache:
           key: "android_sdk"
           paths:
             - "/home/circleci/android_sdk"
-          key: "v3-bazel_cache"
+
+      - save_cache:
+          key: "v4-bazel_cache"
           paths:
             - "/home/circleci/.cache/bazel/"
+jobs:
+  lint:
+    working_directory: ~/code/
+    machine:
+      enabled: true
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - install-bazel
+      - install-deps
+      - run: './tools/checkstyle/check-for-missing-targets.sh'
+      - run: './fix-formatting.sh'
 
+  build:
+    working_directory: ~/code/
+    machine:
+      enabled: true
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - install-bazel
+      - install-deps
+      - restore-caches
+      - run: './tools/get_android_sdk.sh'
+      - run:
+          name: "Hasadna: building"
+          command: ./compile.sh build
+          environment:
+            ANDROID_HOME: /home/circleci/android_sdk/
+      - run:
+          name: "Hasadna: testing"
+          command: ./compile.sh test
+          environment:
+            ANDROID_HOME: /home/circleci/android_sdk/
+      - save-caches
 
 workflows:
   version: 2

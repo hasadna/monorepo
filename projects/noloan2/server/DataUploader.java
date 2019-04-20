@@ -39,8 +39,7 @@ public class DataUploader {
         FirestoreProtoClient client = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
         SpamList spam = (SpamList) fileUtils.readPrototxt("Spam.prototxt", SpamList.newBuilder());
         List<SmsMessage> SMSList = spam.getSms();
-
-      client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);*/
+        client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);*/
     }
 
     @Singleton
@@ -54,3 +53,4 @@ public class DataUploader {
         DaggerDataUploader_ToolComponent.create().getTool().run();
     }
 }
+

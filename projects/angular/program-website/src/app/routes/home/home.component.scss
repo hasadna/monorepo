@@ -1,0 +1,300 @@
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  padding: 13px 73px;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  >.logo {
+    flex: 1;
+    color: white;
+    font-size: 40px;
+    font-weight: 800;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  >.menu {
+    >a {
+      margin: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #9c9dab;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+  }
+}
+.program-website-container {
+  width: 100%;
+  position: relative;
+  >.section {
+    display: flex;
+    min-height: 300px;
+    position: relative;
+    z-index: 1;
+  }
+
+  // Sections styling
+  >.section-header {
+    >.content {
+      padding: 248px 77px 100px 100px;
+      >.osmp-title {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: 0.3px; 
+        color: #373a55;
+        max-width: 429px;
+        margin-bottom: 20px;
+      }
+      >.osmp-text {
+        font-size: 18px;
+        line-height: 1.89;
+        letter-spacing: 0.8px;
+        color: #5a5c6d;
+        margin-bottom: 30px;
+      }
+      >.get-started-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 200px;
+        height: 50px;
+        cursor: pointer;
+        border-radius: 33px;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+        background-color: #f58b6c;
+        text-align: center;
+        >.get-started-link {
+          font-size: 20px;
+          font-weight: 800;
+          color: #ffffff;
+          text-decoration: none;
+        }
+      }
+    }
+    >.responsive {
+      width: 100%;
+      position: relative;
+      img {
+        position: absolute;
+        width: 100%;
+        left: -2px;
+      }
+    }
+  }
+  >.section-about {
+    >.content {
+      padding: 155px 20px 230px 155px;
+      >.about-title {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+        color: #373a55;
+        margin-bottom: 22px;
+      }
+      >.about-text {
+        font-size: 18px;
+        line-height: 1.89;
+        letter-spacing: 0.8px;
+        color: #5a5c6d;
+        margin-bottom: 40px;
+        max-width: 581px;
+      }
+      >.about-squares {
+        display: flex;
+        margin-bottom: 70px;
+        >.about-square {
+          width: 200px;
+          height: 160px;
+          border-radius: 2px;
+          box-shadow: 6px 11px 45px 30px rgba(0, 0, 0, 0.08);
+          border: solid 1px #e3e3e3;
+          background-color: #ffffff;
+          margin-right: 45px;
+        }
+      }
+    }
+    >.responsive {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  >.section-projects >.content {
+    padding-bottom: 277px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >.projects-title {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #373a55;
+      margin-bottom: 22px;
+    }
+    >.project-text {
+      max-width: 780px;
+      font-size: 18px;
+      text-align: center;
+      line-height: 1.89;
+      letter-spacing: 0.8px;
+      color: #5a5c6d;
+      margin-bottom: 25px;
+    }
+    >.projects-links {
+      margin-bottom: 30px;
+      td {
+        font-size: 18px;
+        line-height: 1.89;
+        letter-spacing: 0.8px;
+        color: #5a5c6d;
+        padding: 5px 40px;
+      }
+    }
+  }
+  >.section-participants >.content {
+    padding: 26px 0 362px 0;
+    >.participants-title {
+      text-align: left;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #373a55;
+      margin-bottom: 22px;
+    }
+    >.participants-text {
+      font-size: 18px;
+      line-height: 1.89;
+      letter-spacing: 0.8px;
+      color: #5a5c6d;
+      margin-bottom: 40px;
+      max-width: 670px;
+    }
+  }
+  >.section-contact-us >.content {
+    padding-bottom: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >.contact-title {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      margin-bottom: 59px;
+    }
+    >.card {
+      border-radius: 4px;
+      box-shadow: 6px 11px 45px 30px rgba(0, 0, 0, 0.08);
+      border: solid 1px #e3e3e3;
+      background-color: white;
+      padding: 20px;
+      font-family: Open Sans;
+      font-size: 18px;
+      line-height: 1.89;
+      letter-spacing: 0.8px;
+      color: #5a5c6d;
+    }
+    >.card-info {
+      width: 661px;
+      margin-bottom: 40px;
+      >div:first-child {
+        margin-bottom: 10px;
+      }
+    }
+    >.card-contacts {
+      width: 404px;
+      >.contact-email {
+        color: #173db8;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      >.contact-phone {
+        color: #5a5c6d;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Sections proportions
+  >.section-header {
+    >.content {
+      width: 50%;
+    }
+    >.responsive {
+      width: 50%;
+    }
+  }
+  >.section-about {
+    >.content {
+      width: 70%;
+    }
+    >.responsive {
+      width: 30%;
+    }
+  }
+  >.section-projects {
+    >.content {
+      width: 100%;
+    }
+  }
+  >.section-participants,
+  >.section-contact-us {
+    >.content {
+      width: 60%;
+    }
+    >.responsive {
+      width: 40%;
+    }
+  }
+  
+  // Component global styles
+  .read-more-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 50px;
+    border-radius: 33px;
+    border: solid 2px #de4e34;
+    background-color: #ffffff;
+    cursor: pointer;
+    box-sizing: border-box;
+    >.read-more-link {
+      font-size: 20px;
+      font-weight: 800;
+      color: #de4e34;
+      text-decoration: none;
+    }
+  }
+  img {
+    display: block;
+  }
+
+  // Footer pictures
+  .footer-picture-1 {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    >img {
+      width: 100%;
+    }
+  }
+  .footer-picture-2 {
+    position: absolute;
+    bottom: 45px;
+    right: 20px;
+    z-index: 2;
+    >img {
+      width: 148px;
+      height: 148px;
+    }
+  }
+}

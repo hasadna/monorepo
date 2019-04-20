@@ -1,0 +1,36 @@
+.card {
+  padding: 40px 25px;
+  >.all {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  >.project-id-list {
+    margin-top: 30px;
+    >.select-button {
+      font-size: 18px;
+      font-weight: 600;
+      color: #767676;
+      &:hover {
+        color: #01d4d1;
+      }
+    }
+  }
+  .select-button {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 5px;
+    padding: 8px 15px;
+    border-radius: 21px;
+    user-select: none;
+    &:hover {
+      border: solid 2px #01d4d1;
+      color: #01d4d1;
+      padding: 6px 13px;
+    }
+  }
+  .selected {
+    color: white !important;
+    cursor: default;
+    background: #01d4d1;
+  }
+}
