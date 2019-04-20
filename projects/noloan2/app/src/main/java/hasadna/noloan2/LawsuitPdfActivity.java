@@ -163,7 +163,6 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     }
 
     // General form fields
-
     lawsuit =
         lawsuit.replace(
             "<claimCase>",
