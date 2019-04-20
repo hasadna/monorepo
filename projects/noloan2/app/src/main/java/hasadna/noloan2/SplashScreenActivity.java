@@ -28,27 +28,27 @@ import noloan.R;
 
 // Permission request Based on http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
 public class SplashScreenActivity extends AppCompatActivity {
-  
+
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
   final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
-  
+
   Handler handler;
-  
+
   TaskCompletionSource<Boolean> permissionTask;
-  
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash_permission);
-    
+
     handler = new Handler(Looper.getMainLooper());
-    
+
     permissionTask = new TaskCompletionSource<>();
     SplashTask task = new SplashTask();
     task.execute();
   }
-  
+
   private void checkPermissions() {
     String[] ungrantedPermissions = permissionsStillNeeded();
     if (ungrantedPermissions.length == 0) {
@@ -57,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       requestPermissions(ungrantedPermissions, PERMISSION_REQUEST_CODE);
     }
   }
-  
+
   private String[] permissionsStillNeeded() {
     ArrayList<String> result = new ArrayList<>();
     for (String permission : requiredPermissions) {
@@ -67,7 +67,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
     return result.toArray(new String[result.size()]);
   }
-  
+
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -78,7 +78,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       }
     }
   }
-  
+
   // Get the spam from the Firestore
   private Task<DocumentSnapshot> getSpam() {
     FirestoreClient client = new FirestoreClient();
@@ -97,7 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     });
     return task;
   }
-  
+
   // Start the main Activity
   private void startNextActivity() {
     handler.postDelayed(() -> {
@@ -105,7 +105,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       finish();
     }, SPLASH_TIME_MS);
   }
-  
+
   // Main Task to get the permissions and the spam
   private class SplashTask extends AsyncTask {
     @Override
@@ -114,7 +114,7 @@ public class SplashScreenActivity extends AppCompatActivity {
       Task<DocumentSnapshot> spam = getSpam();
       Task<Boolean> permissions = permissionTask.getTask();
       try {
-        
+
         Tasks.await(permissions);
         Tasks.await(spam);
       } catch (ExecutionException | InterruptedException e) {
