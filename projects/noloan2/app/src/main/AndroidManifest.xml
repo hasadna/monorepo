@@ -25,6 +25,8 @@
         <activity
             android:name="hasadna.noloan2.LawsuitPdfActivity"
             android:exported="true"
+            android:parentActivityName="hasadna.noloan2.MainActivity"
+
             ></activity>
         <activity
             android:name="hasadna.noloan2.MainActivity"

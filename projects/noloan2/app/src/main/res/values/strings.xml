@@ -6,7 +6,7 @@
 
     <string name="title_about">אודות</string>
     <string name="title_summary">סיכום סטטוס</string>
-    <string name="content_summary">סה״כ &lt;b&gt; %1$s &lt;/b&gt;  הודעות חשודות</string>
+    <string name="content_summary">סה\"כ %1$d הודעות חשודות</string>
     <string name="content_summary_empty">אין הודעות חשודות</string>
     <!--<string name="text_lawsuit">להנחיות לתביעה לחצו &lt;a href="http://www.google.com/"&gt;כאן&lt;/a&gt;</string>-->
     <string name="text_lawsuit">להנחיות לתביעה לחצו </string>
@@ -33,4 +33,5 @@
     <string name="title_companyDetails">פרטי החברה</string>
     <string name="title_claimDetails">פרטי התביעה</string>
     <string name="form_button_create_text">צור/י כתב תביעה</string>
+    <string name="list_item_button_text">יצירת כתב תביעה</string>
 </resources>

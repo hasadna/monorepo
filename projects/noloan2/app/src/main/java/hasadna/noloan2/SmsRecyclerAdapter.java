@@ -1,10 +1,12 @@
 package hasadna.noloan2;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,6 +40,15 @@ public class SmsRecyclerAdapter
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
     recyclerViewHolder.bind(messages.get(i));
+    // Click on a spam message, from there (with message's details) move to the lawsuitPdfActivity
+    // TODO: See which more fields in the lawsuit form can be understood from the SMS / other DATA.
+    recyclerViewHolder.buttonSmsToLawsuit.setOnClickListener(
+        view -> {
+          Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitPdfActivity.class);
+          intentToLawsuitForm.putExtra(
+              "receivedAt", messages.get(recyclerViewHolder.getAdapterPosition()).getReceivedAt());
+          view.getContext().startActivity(intentToLawsuitForm);
+        });
   }
 
   @Override
@@ -46,17 +57,22 @@ public class SmsRecyclerAdapter
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-    TextView from, content;
+
+    TextView from, content, receivedAt;
+    Button buttonSmsToLawsuit;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
       from = itemView.findViewById(R.id.received_from);
       content = itemView.findViewById(R.id.content);
+      receivedAt = itemView.findViewById(R.id.receivedAt);
+      buttonSmsToLawsuit = itemView.findViewById(R.id.button_smsToLawsuit);
     }
 
     public void bind(SmsMessage sms) {
       from.setText(sms.getSender());
       content.setText(sms.getBody());
+      receivedAt.setText(sms.getReceivedAt());
     }
   }
 }

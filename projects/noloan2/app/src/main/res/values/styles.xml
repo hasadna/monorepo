@@ -30,6 +30,7 @@
 
     <style name="SummaryContent" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
     <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:layoutDirection">rtl</item>
     </style>
