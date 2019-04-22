@@ -36,9 +36,9 @@ import java.util.TimeZone;
 
 import noloan.R;
 
-public class LawsuitFormActivity extends AppCompatActivity {
+public class LawsuitActivity extends AppCompatActivity {
   // TODO: Add logs.
-  private static final String TAG = "LawsuitFormActivity";
+  private static final String TAG = "LawsuitActivity";
   private final int STORAGE_PERMISSION_CODE = 1;
   private boolean permissionGranted = false;
 
@@ -258,7 +258,7 @@ public class LawsuitFormActivity extends AppCompatActivity {
 
     datePickerDialog =
         new /**/ DatePickerDialog(
-            LawsuitFormActivity.this,
+            LawsuitActivity.this,
             (datePicker, currentYear, currentMonth, currentDay) ->
                 receivedDate.setText(day + "/" + (month + 1) + "/" + year),
             year,
@@ -289,14 +289,14 @@ public class LawsuitFormActivity extends AppCompatActivity {
                   "ok",
                   (dialog, which) ->
                       ActivityCompat.requestPermissions(
-                          LawsuitFormActivity.this,
+                          LawsuitActivity.this,
                           new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
                           STORAGE_PERMISSION_CODE))
               .setNegativeButton(
                   "cancel",
                   (dialog, which) -> {
                     Toast.makeText(
-                            LawsuitFormActivity.this,
+                            LawsuitActivity.this,
                             "Permission is needed to create PDF.",
                             Toast.LENGTH_LONG)
                         .show();
@@ -328,7 +328,7 @@ public class LawsuitFormActivity extends AppCompatActivity {
         createOutputDir();
       } else {
         Toast.makeText(
-                LawsuitFormActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
+                LawsuitActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
     }

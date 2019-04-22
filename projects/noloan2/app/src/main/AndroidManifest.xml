@@ -23,7 +23,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
         <activity
-            android:name="hasadna.noloan2.LawsuitFormActivity"
+            android:name="hasadna.noloan2.LawsuitActivity"
             android:exported="true"
             android:parentActivityName="hasadna.noloan2.MainActivity"
 
