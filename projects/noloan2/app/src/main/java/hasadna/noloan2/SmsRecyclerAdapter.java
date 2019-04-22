@@ -69,7 +69,7 @@ public class SmsRecyclerAdapter
       // DATA.
       buttonSmsToLawsuit.setOnClickListener(
           view -> {
-            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitPdfActivity.class);
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitFormActivity.class);
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             view.getContext().startActivity(intentToLawsuitForm);
           });

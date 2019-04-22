@@ -6,7 +6,6 @@ public class FirestoreElement {
   private String proto;
 
   public FirestoreElement(String proto) {
-
     this.proto = proto;
   }
 
