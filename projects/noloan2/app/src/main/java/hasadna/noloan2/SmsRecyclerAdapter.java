@@ -40,15 +40,6 @@ public class SmsRecyclerAdapter
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
     recyclerViewHolder.bind(messages.get(i));
-    // Click on a spam message, from there (with message's details) move to the lawsuitPdfActivity
-    // TODO: See which more fields in the lawsuit form can be understood from the SMS / other DATA.
-    recyclerViewHolder.buttonSmsToLawsuit.setOnClickListener(
-        view -> {
-          Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitPdfActivity.class);
-          intentToLawsuitForm.putExtra(
-              "receivedAt", messages.get(recyclerViewHolder.getAdapterPosition()).getReceivedAt());
-          view.getContext().startActivity(intentToLawsuitForm);
-        });
   }
 
   @Override
@@ -73,6 +64,15 @@ public class SmsRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
+      // Click on a spam message, from there (with message's details) move to the lawsuitPdfActivity
+      // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
+      // DATA.
+      buttonSmsToLawsuit.setOnClickListener(
+          view -> {
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitPdfActivity.class);
+            intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
+            view.getContext().startActivity(intentToLawsuitForm);
+          });
     }
   }
 }
