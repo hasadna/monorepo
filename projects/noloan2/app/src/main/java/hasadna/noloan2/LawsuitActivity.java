@@ -11,13 +11,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,9 +36,9 @@ import java.util.TimeZone;
 
 import noloan.R;
 
-public class LawsuitPdfActivity extends AppCompatActivity {
+public class LawsuitActivity extends AppCompatActivity {
   // TODO: Add logs.
-  private static final String TAG = "LawsuitPdfActivity";
+  private static final String TAG = "LawsuitActivity";
   private final int STORAGE_PERMISSION_CODE = 1;
   private boolean permissionGranted = false;
 
@@ -65,7 +63,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_lawsuit_pdf);
+    setContentView(R.layout.activity_lawsuit);
 
     createPdfButton = findViewById(R.id.button_createPDF);
     receivedDate = findViewById(R.id.editText_spamDate);
@@ -260,7 +258,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
     datePickerDialog =
         new /**/ DatePickerDialog(
-            LawsuitPdfActivity.this,
+            LawsuitActivity.this,
             (datePicker, currentYear, currentMonth, currentDay) ->
                 receivedDate.setText(day + "/" + (month + 1) + "/" + year),
             year,
@@ -291,14 +289,14 @@ public class LawsuitPdfActivity extends AppCompatActivity {
                   "ok",
                   (dialog, which) ->
                       ActivityCompat.requestPermissions(
-                          LawsuitPdfActivity.this,
+                          LawsuitActivity.this,
                           new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
                           STORAGE_PERMISSION_CODE))
               .setNegativeButton(
                   "cancel",
                   (dialog, which) -> {
                     Toast.makeText(
-                            LawsuitPdfActivity.this,
+                            LawsuitActivity.this,
                             "Permission is needed to create PDF.",
                             Toast.LENGTH_LONG)
                         .show();
@@ -330,7 +328,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
         createOutputDir();
       } else {
         Toast.makeText(
-                LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
+                LawsuitActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
     }
