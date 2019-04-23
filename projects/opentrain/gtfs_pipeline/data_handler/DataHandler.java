@@ -1,27 +1,27 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import projects.opentrain.gtfs_pipeline.common.Protos;
 import projects.opentrain.gtfs_pipeline.common.Protos.Route;
 import projects.opentrain.gtfs_pipeline.common.Protos.Stop;
 import projects.opentrain.gtfs_pipeline.common.Protos.StopTime;
 import projects.opentrain.gtfs_pipeline.common.Protos.Translation;
 import projects.opentrain.gtfs_pipeline.common.Protos.Trip;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.List;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import java.util.stream.Collectors;
 
 class DataHandler {
 

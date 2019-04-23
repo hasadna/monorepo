@@ -1,8 +1,6 @@
 package projects.data_analysis.task1;
 
 import com.google.protobuf.TextFormat;
-import projects.data_analysis.common.Protos.User;
-import projects.data_analysis.common.Protos.Users;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.IntStream;
+import projects.data_analysis.common.Protos.User;
+import projects.data_analysis.common.Protos.Users;
 
 class Task1 {
   public static void main(String[] args) throws IOException {
