@@ -51,9 +51,9 @@ public class LawsuitActivity extends AppCompatActivity {
   private String moreThanFiveLawsuits = "הגיש";
   private String lessThanFiveLawsuits = "לא הגיש/ו";
   private String claimCaseHaser =
-      "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת\nמהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק";
+          "לאחר שהתובע חזר בו מהסכמתו לקבלת דבר/י פרסומת\nמהנתבע/ים, על-ידי משלוח הודעת סירוב כהגדרתה בחוק";
   private String claimCaseSubscription =
-      "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש  \nלקבלת דבר/י הפרסומת";
+          "למרות שח\"מ לא נתן את הסכמתו המפורשת מראש  \nלקבלת דבר/י הפרסומת";
 
   EditText receivedDate;
   DatePickerDialog datePickerDialog;
@@ -70,12 +70,12 @@ public class LawsuitActivity extends AppCompatActivity {
 
     setTimeZones();
     createPdfButton.setOnClickListener(
-        v -> {
-          checkPermissions();
-          if (permissionGranted) {
-            sharePdf(createPdf());
-          }
-        });
+            v -> {
+              checkPermissions();
+              if (permissionGranted) {
+                sharePdf(createPdf());
+              }
+            });
 
     receivedDate.setText(getIntent().getExtras().getString("receivedAt"));
     receivedDate.setOnClickListener(v -> displayDatePicker());
@@ -90,7 +90,6 @@ public class LawsuitActivity extends AppCompatActivity {
   // Save PDF to device. Return absFilename of the file
   private String createPdf() {
 
-    // Read and fill template
     String template = null;
     try {
       template = fillTemplate();
@@ -98,13 +97,21 @@ public class LawsuitActivity extends AppCompatActivity {
       e.printStackTrace();
     }
 
+    // Add SMS to "נספחים" page
+    template += String.format(getString(R.string.list_item_from),getIntent().getExtras().getString("from")) + "\n";
+    template += String.format(getString(R.string.list_item_date),getIntent().getExtras().getString("receivedAt"))+ "\n";
+    template += String.format(getString(R.string.list_item_body),getIntent().getExtras().getString("body")) + "\n";
+
     PdfDocument document = new PdfDocument();
 
-    // Create 2 pages for the PDF (Size A4)
+    // Create 3 pages for the PDF (Size A4)
     PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
     PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
+    PageInfo thirdPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 3).create();
+
     Page firstPage = document.startPage(firstPageInfo);
     Page secondPage = null;
+    Page thirdPage = null;
     Canvas canvas = firstPage.getCanvas();
     Paint paint = new Paint();
     int rowCounter = 0;
@@ -112,7 +119,7 @@ public class LawsuitActivity extends AppCompatActivity {
     int xPainter = 0;
     int yPainter = 0;
 
-    // Draw lines to PDF
+    // Draw lawsuit to PDF
     for (String line : template.split("\n")) {
       // Switch to 2nd page on row 56
       if (rowCounter == 56) {
@@ -121,22 +128,29 @@ public class LawsuitActivity extends AppCompatActivity {
         canvas = secondPage.getCanvas();
         yPainter = 0;
       }
+      // Switch to 3rd attachments page
+      if (rowCounter == 76){
+        document.finishPage(secondPage);
+        thirdPage = document.startPage(thirdPageInfo);
+        canvas = thirdPage.getCanvas();
+        yPainter = 0;
+      }
       // Draw text as RTL, 20 is for right padding
       xPainter = (firstPageInfo.getPageWidth() - (int) paint.measureText(line)) - 20;
       canvas.drawText(line, xPainter, yPainter, paint);
       yPainter += paint.descent() - paint.ascent();
       rowCounter++;
     }
-    document.finishPage(secondPage);
+    document.finishPage(thirdPage);
 
     // Save file to external storage
     String absFilename =
-        Paths.get(
-                Environment.getExternalStorageDirectory().getPath(),
-                getString(R.string.app_name),
-                getString(R.string.output_folder_name),
-                (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
-            .toString();
+            Paths.get(
+                    Environment.getExternalStorageDirectory().getPath(),
+                    getString(R.string.app_name),
+                    getString(R.string.output_folder_name),
+                    (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
+                    .toString();
     try {
       document.writeTo(new FileOutputStream(new File(absFilename)));
       Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
@@ -165,59 +179,59 @@ public class LawsuitActivity extends AppCompatActivity {
 
     // General form fields
     lawsuit =
-        lawsuit.replace(
-            "<claimCase>",
-            ((CheckBox) findViewById(R.id.checkBox_sentHaser)).isChecked()
-                ? claimCaseHaser
-                : claimCaseSubscription);
+            lawsuit.replace(
+                    "<claimCase>",
+                    ((CheckBox) findViewById(R.id.checkBox_sentHaser)).isChecked()
+                            ? claimCaseHaser
+                            : claimCaseSubscription);
     lawsuit =
-        lawsuit.replace(
-            "<claimAmount>", ((EditText) findViewById(R.id.claimAmount)).getText().toString());
+            lawsuit.replace(
+                    "<claimAmount>", ((EditText) findViewById(R.id.claimAmount)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<moreThanFiveLawsuits>",
-            ((CheckBox) findViewById(R.id.checkbox_fiveLawsuits)).isChecked()
-                ? moreThanFiveLawsuits
-                : lessThanFiveLawsuits);
+            lawsuit.replace(
+                    "<moreThanFiveLawsuits>",
+                    ((CheckBox) findViewById(R.id.checkbox_fiveLawsuits)).isChecked()
+                            ? moreThanFiveLawsuits
+                            : lessThanFiveLawsuits);
     lawsuit = lawsuit.replace("<undefined>", "");
     lawsuit = lawsuit.replace("<receivedSpamDate>", receivedDate.getText().toString());
     lawsuit = lawsuit.replace("<currentDate>", DATE_FORMATTER.format(new Date()));
 
     // User fields
     lawsuit =
-        lawsuit.replace(
-            "<userFullName>",
-            ((EditText) findViewById(R.id.userPrivateName)).getText().toString()
-                + " "
-                + ((EditText) findViewById(R.id.userLastName)).getText().toString());
+            lawsuit.replace(
+                    "<userFullName>",
+                    ((EditText) findViewById(R.id.userPrivateName)).getText().toString()
+                            + " "
+                            + ((EditText) findViewById(R.id.userLastName)).getText().toString());
     lawsuit =
-        lawsuit.replace("<userId>", ((EditText) findViewById(R.id.userID)).getText().toString());
+            lawsuit.replace("<userId>", ((EditText) findViewById(R.id.userID)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<userAddress>", ((EditText) findViewById(R.id.userAddress)).getText().toString());
+            lawsuit.replace(
+                    "<userAddress>", ((EditText) findViewById(R.id.userAddress)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<userPhone>", ((EditText) findViewById(R.id.userPhone)).getText().toString());
+            lawsuit.replace(
+                    "<userPhone>", ((EditText) findViewById(R.id.userPhone)).getText().toString());
     lawsuit =
-        lawsuit.replace("<userFax>", ((EditText) findViewById(R.id.userFax)).getText().toString());
+            lawsuit.replace("<userFax>", ((EditText) findViewById(R.id.userFax)).getText().toString());
 
     // Spam company
     lawsuit =
-        lawsuit.replace(
-            "<companyName>", ((EditText) findViewById(R.id.companyName)).getText().toString());
+            lawsuit.replace(
+                    "<companyName>", ((EditText) findViewById(R.id.companyName)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<companyId>", ((EditText) findViewById(R.id.companyId)).getText().toString());
+            lawsuit.replace(
+                    "<companyId>", ((EditText) findViewById(R.id.companyId)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<companyAddress>",
-            ((EditText) findViewById(R.id.companyAddress)).getText().toString());
+            lawsuit.replace(
+                    "<companyAddress>",
+                    ((EditText) findViewById(R.id.companyAddress)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<companyPhone>", ((EditText) findViewById(R.id.companyPhone)).getText().toString());
+            lawsuit.replace(
+                    "<companyPhone>", ((EditText) findViewById(R.id.companyPhone)).getText().toString());
     lawsuit =
-        lawsuit.replace(
-            "<companyFax>", ((EditText) findViewById(R.id.companyFax)).getText().toString());
+            lawsuit.replace(
+                    "<companyFax>", ((EditText) findViewById(R.id.companyFax)).getText().toString());
 
     return lawsuit;
   }
@@ -226,25 +240,25 @@ public class LawsuitActivity extends AppCompatActivity {
   private void sharePdf(String absFilename) {
     if (new File(absFilename).exists()) {
       new AlertDialog.Builder(this, R.style.AlertDialog)
-          .setTitle("כתב תביעה נוצר")
-          .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
-          .setPositiveButton(
-              "כן",
-              (dialog, which) -> {
-                Uri uri =
-                    FileProvider.getUriForFile(
-                        getApplicationContext(),
-                        getPackageName() + ".fileprovider",
-                        new File(absFilename));
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.setType("application/pdf");
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
-              })
-          .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
-          .create()
-          .show();
+              .setTitle("כתב תביעה נוצר")
+              .setMessage("כתב התביעה נוצר ונשמר במכשירך.\n האם תרצה/י לשתף?")
+              .setPositiveButton(
+                      "כן",
+                      (dialog, which) -> {
+                        Uri uri =
+                                FileProvider.getUriForFile(
+                                        getApplicationContext(),
+                                        getPackageName() + ".fileprovider",
+                                        new File(absFilename));
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.setType("application/pdf");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(shareIntent, "Share via"));
+                      })
+              .setNegativeButton("לא", (dialog, which) -> dialog.dismiss())
+              .create()
+              .show();
     }
     Log.w(TAG, "Could not share pdf, file doesn't exists.\nabsFilename: " + absFilename);
   }
@@ -257,13 +271,13 @@ public class LawsuitActivity extends AppCompatActivity {
     int year = calendar.get(Calendar.YEAR);
 
     datePickerDialog =
-        new /**/ DatePickerDialog(
-            LawsuitActivity.this,
-            (datePicker, currentYear, currentMonth, currentDay) ->
-                receivedDate.setText(day + "/" + (month + 1) + "/" + year),
-            year,
-            month,
-            day);
+            new /**/ DatePickerDialog(
+                    LawsuitActivity.this,
+                    (datePicker, currentYear, currentMonth, currentDay) ->
+                            receivedDate.setText(day + "/" + (month + 1) + "/" + year),
+                    year,
+                    month,
+                    day);
     datePickerDialog.show();
   }
 
@@ -273,43 +287,43 @@ public class LawsuitActivity extends AppCompatActivity {
 
       // Permission granted
       if ((checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-          == PackageManager.PERMISSION_GRANTED)) {
+              == PackageManager.PERMISSION_GRANTED)) {
         permissionGranted = true;
         createOutputDir();
       }
       // If user denied permission before, show explanation dialog before requesting
       else {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-            this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
           new AlertDialog.Builder(this)
-              .setTitle("Permission needed")
-              .setMessage("File access permission is needed for creating lawsuit PDF.")
-              .setPositiveButton(
-                  "ok",
-                  (dialog, which) ->
-                      ActivityCompat.requestPermissions(
-                          LawsuitActivity.this,
-                          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                          STORAGE_PERMISSION_CODE))
-              .setNegativeButton(
-                  "cancel",
-                  (dialog, which) -> {
-                    Toast.makeText(
-                            LawsuitActivity.this,
-                            "Permission is needed to create PDF.",
-                            Toast.LENGTH_LONG)
-                        .show();
-                    dialog.dismiss();
-                  })
-              .create()
-              .show();
+                  .setTitle("Permission needed")
+                  .setMessage("File access permission is needed for creating lawsuit PDF.")
+                  .setPositiveButton(
+                          "ok",
+                          (dialog, which) ->
+                                  ActivityCompat.requestPermissions(
+                                          LawsuitActivity.this,
+                                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                          STORAGE_PERMISSION_CODE))
+                  .setNegativeButton(
+                          "cancel",
+                          (dialog, which) -> {
+                            Toast.makeText(
+                                    LawsuitActivity.this,
+                                    "Permission is needed to create PDF.",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                            dialog.dismiss();
+                          })
+                  .create()
+                  .show();
 
         } else {
           ActivityCompat.requestPermissions(
-              this,
-              new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-              STORAGE_PERMISSION_CODE);
+                  this,
+                  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                  STORAGE_PERMISSION_CODE);
         }
       }
       // Devices running SDK <= 22, permissions granted on installation
@@ -321,7 +335,7 @@ public class LawsuitActivity extends AppCompatActivity {
 
   @Override
   public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == STORAGE_PERMISSION_CODE) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         permissionGranted = true;
@@ -329,7 +343,7 @@ public class LawsuitActivity extends AppCompatActivity {
       } else {
         Toast.makeText(
                 LawsuitActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
-            .show();
+                .show();
       }
     }
   }
@@ -337,15 +351,14 @@ public class LawsuitActivity extends AppCompatActivity {
   // Create folder in external storage for saved PDFs
   private void createOutputDir() {
     File directory =
-        new File(
-            Paths.get(
-                    Environment.getExternalStorageDirectory().getPath(),
-                    getString(R.string.app_name),
-                    getString(R.string.output_folder_name))
-                .toString());
+            new File(
+                    Paths.get(
+                            Environment.getExternalStorageDirectory().getPath(),
+                            getString(R.string.app_name),
+                            getString(R.string.output_folder_name))
+                            .toString());
     if (!directory.exists()) {
       directory.mkdirs();
     }
   }
 }
-

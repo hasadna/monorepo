@@ -206,9 +206,9 @@
                 style="@style/DefaultButton"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:layout_gravity="center"
+                android:layout_gravity="left"
                 android:layout_margin="10dp"
-                android:text="@string/form_button_create_text"
+                android:text="@string/form_button_text_next"
 
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="652dp" />
