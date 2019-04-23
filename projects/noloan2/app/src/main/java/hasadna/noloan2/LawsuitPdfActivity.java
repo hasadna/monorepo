@@ -11,11 +11,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -43,10 +45,9 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   private boolean permissionGranted = false;
 
   // Formats
-  private static final String TIME_ZONE = "Asia/Jerusalem";
-  private static final SimpleDateFormat DATE_TIME_FORMATTER =
-      new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
+  static final String TIME_ZONE = "Asia/Jerusalem";
+  static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
+  static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
 
   // Lawsuit optional fields
   private String moreThanFiveLawsuits = "הגיש";
@@ -77,6 +78,8 @@ public class LawsuitPdfActivity extends AppCompatActivity {
             sharePdf(createPdf());
           }
         });
+
+    receivedDate.setText(getIntent().getExtras().getString("receivedAt"));
     receivedDate.setOnClickListener(v -> displayDatePicker());
   }
 

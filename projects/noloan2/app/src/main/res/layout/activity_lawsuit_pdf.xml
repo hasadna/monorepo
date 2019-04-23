@@ -203,11 +203,13 @@
 
             <Button
                 android:id="@+id/button_createPDF"
+                style="@style/DefaultButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text="@string/form_button_create_text"
+
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="652dp" />
 
