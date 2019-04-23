@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package com.projects.opentrain.gtfs_pipeline;
+package projects.opentrain.gtfs_pipeline.common;
 
-option java_package = "com.projects.opentrain.gtfs_pipeline";
+option java_package = "projects.opentrain.gtfs_pipeline.common";
 option java_outer_classname = "Protos";
 
 message Calendar {
