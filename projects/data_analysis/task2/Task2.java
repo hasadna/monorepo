@@ -1,6 +1,6 @@
-package com.example.tasks;
+package projects.data_analysis.task2;
 
-import com.example.tasks.Protos.Users;
+import projects.data_analysis.common.Protos.Users;
 import com.google.protobuf.TextFormat;
 
 import java.io.IOException;
