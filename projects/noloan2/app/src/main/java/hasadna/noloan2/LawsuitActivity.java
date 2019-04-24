@@ -36,17 +36,16 @@ import java.util.TimeZone;
 
 import noloan.R;
 
-public class LawsuitPdfActivity extends AppCompatActivity {
+public class LawsuitActivity extends AppCompatActivity {
   // TODO: Add logs.
-  private static final String TAG = "LawsuitPdfActivity";
+  private static final String TAG = "LawsuitActivity";
   private final int STORAGE_PERMISSION_CODE = 1;
   private boolean permissionGranted = false;
 
   // Formats
-  private static final String TIME_ZONE = "Asia/Jerusalem";
-  private static final SimpleDateFormat DATE_TIME_FORMATTER =
-      new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
+  static final String TIME_ZONE = "Asia/Jerusalem";
+  static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd-M-yyyy hh-mm-ss");
+  static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-M-yyyy");
 
   // Lawsuit optional fields
   private String moreThanFiveLawsuits = "הגיש";
@@ -64,7 +63,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_lawsuit_pdf);
+    setContentView(R.layout.activity_lawsuit);
 
     createPdfButton = findViewById(R.id.button_createPDF);
     receivedDate = findViewById(R.id.editText_spamDate);
@@ -77,6 +76,8 @@ public class LawsuitPdfActivity extends AppCompatActivity {
             sharePdf(createPdf());
           }
         });
+
+    receivedDate.setText(getIntent().getExtras().getString("receivedAt"));
     receivedDate.setOnClickListener(v -> displayDatePicker());
   }
 
@@ -163,7 +164,6 @@ public class LawsuitPdfActivity extends AppCompatActivity {
     }
 
     // General form fields
-
     lawsuit =
         lawsuit.replace(
             "<claimCase>",
@@ -258,7 +258,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
 
     datePickerDialog =
         new /**/ DatePickerDialog(
-            LawsuitPdfActivity.this,
+            LawsuitActivity.this,
             (datePicker, currentYear, currentMonth, currentDay) ->
                 receivedDate.setText(day + "/" + (month + 1) + "/" + year),
             year,
@@ -289,14 +289,14 @@ public class LawsuitPdfActivity extends AppCompatActivity {
                   "ok",
                   (dialog, which) ->
                       ActivityCompat.requestPermissions(
-                          LawsuitPdfActivity.this,
+                          LawsuitActivity.this,
                           new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
                           STORAGE_PERMISSION_CODE))
               .setNegativeButton(
                   "cancel",
                   (dialog, which) -> {
                     Toast.makeText(
-                            LawsuitPdfActivity.this,
+                            LawsuitActivity.this,
                             "Permission is needed to create PDF.",
                             Toast.LENGTH_LONG)
                         .show();
@@ -328,7 +328,7 @@ public class LawsuitPdfActivity extends AppCompatActivity {
         createOutputDir();
       } else {
         Toast.makeText(
-                LawsuitPdfActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
+                LawsuitActivity.this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
             .show();
       }
     }
