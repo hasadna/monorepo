@@ -1,45 +1,45 @@
 httpArchiveDeps {
   name: "startup_os"
-  commit_id: "9086003e371d1962c24bffdbb9865469ffe58d57"
+  commit_id: "87ba1ec33bc45fea4af0a1ab33e704ef58e688a2"
   http_archive_dep {
     java_class: "com.google.startupos.common.CommandLine.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.CommonComponent.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.CommonModule.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.FileUtils.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.HttpUtils.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.Lists.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.MessageDifferencer.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.StringBuilder.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.Strings.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.Time.java"
-    target: "//common:common"
+    target: "//common"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.Lists.java"
@@ -63,23 +63,23 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.FirestoreProtoClient.java"
-    target: "//common/firestore:firestore"
+    target: "//common/firestore"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.MessageWithId.java"
-    target: "//common/firestore:firestore"
+    target: "//common/firestore"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.ProtoChange.java"
-    target: "//common/firestore:firestore"
+    target: "//common/firestore"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.ProtoEventListener.java"
-    target: "//common/firestore:firestore"
+    target: "//common/firestore"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.ProtoQuerySnapshot.java"
-    target: "//common/firestore:firestore"
+    target: "//common/firestore"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.firestore.tests.FirestoreClientTool.java"
@@ -87,27 +87,27 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.ClassScanner.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.Flag.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.FlagDesc.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.Flags.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.GflagsParser.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.UsagePrinter.java"
-    target: "//common/flags:flags"
+    target: "//common/flags"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.flags.Proto"
@@ -123,11 +123,11 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.repo.GitRepo.java"
-    target: "//common/repo:repo"
+    target: "//common/repo"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.repo.Repo.java"
-    target: "//common/repo:repo"
+    target: "//common/repo"
   }
   http_archive_dep {
     java_class: "com.google.startupos.common.repo.Protos"
@@ -339,7 +339,7 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.BuildFileGenerator.java"
-    target: "//tools/build_file_generator:build_file_generator"
+    target: "//tools/build_file_generator"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.BuildFileGeneratorUtils.java"
@@ -399,7 +399,7 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.formatter.FormatterTool.java"
-    target: "//tools/formatter:formatter"
+    target: "//tools/formatter"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.ReviewerConstants.java"
@@ -431,63 +431,63 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.AaCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.AddRepoCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.DiffCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.FixCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.InitCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.KillServerCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.PatchCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.ReviewCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.SnapshotCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.SubmitCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.SyncCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.WorkspaceCommand.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FixCommandCheck.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FormattingCheck.java"
-    target: "//tools/reviewer/aa/commands:commands"
+    target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.job.ReviewerJob.java"
-    target: "//tools/reviewer/job:job"
+    target: "//tools/reviewer/job"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.job.sync.DiffConverter.java"
@@ -571,7 +571,7 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.local_server.LocalServer.java"
-    target: "//tools/reviewer/local_server:local_server"
+    target: "//tools/reviewer/local_server"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.local_server.service.AuthService.java"
@@ -595,7 +595,7 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.remote_server.RemoteServer.java"
-    target: "//tools/reviewer/remote_server:remote_server"
+    target: "//tools/reviewer/remote_server"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.remote_server.Protos"
@@ -603,7 +603,7 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.rules_updater.RulesUpdater.java"
-    target: "//tools/reviewer/rules_updater:rules_updater"
+    target: "//tools/reviewer/rules_updater"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tutorials.proto_rename.PersonTool.java"
