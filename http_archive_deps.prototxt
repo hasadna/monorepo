@@ -1,6 +1,6 @@
 httpArchiveDeps {
   name: "startup_os"
-  commit_id: "db025f0bf4b1adaedb7d55eb2e32099f757a327c"
+  commit_id: "9086003e371d1962c24bffdbb9865469ffe58d57"
   http_archive_dep {
     java_class: "com.google.startupos.common.CommandLine.java"
     target: "//common:common"
@@ -342,6 +342,10 @@ httpArchiveDeps {
     target: "//tools/build_file_generator:build_file_generator"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileGeneratorUtils.java"
+    target: "//tools/build_file_generator:build_file_generator_utils"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.build_file_generator.BuildFileParser.java"
     target: "//tools/build_file_generator:build_file_parser"
   }
@@ -471,6 +475,14 @@ httpArchiveDeps {
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.WorkspaceCommand.java"
+    target: "//tools/reviewer/aa/commands:commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FixCommandCheck.java"
+    target: "//tools/reviewer/aa/commands:commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FormattingCheck.java"
     target: "//tools/reviewer/aa/commands:commands"
   }
   http_archive_dep {
