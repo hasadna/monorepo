@@ -63,6 +63,14 @@ http_jar(
     sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
     urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.01/bazel_deps.jar"],
 )
+
+http_archive(
+    name = "tsfmt",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.03/tsfmt.zip"],
+    sha256 = "b07799e1c6a2c8cd5a2e258833a80a9234b346968588ea53f7298eba76f610fc",
+    build_file_content = "exports_files(['cli-linux', 'cli-macos'])"
+)
+
 # StartupOS dependencies end
 
 http_file(
