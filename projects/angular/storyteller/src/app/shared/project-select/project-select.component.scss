@@ -1,15 +1,19 @@
 .card {
   padding: 40px 25px;
+  color: #767676;
   >.all {
     font-size: 22px;
     font-weight: bold;
+    padding: 6px 22px;
+    &:hover {
+      padding: 4px 20px;
+    }
   }
   >.project-id-list {
     margin-top: 30px;
-    >.select-button {
+    .select-button {
       font-size: 18px;
       font-weight: 600;
-      color: #767676;
       &:hover {
         color: #01d4d1;
       }
@@ -19,13 +23,17 @@
     display: inline-block;
     cursor: pointer;
     margin-top: 5px;
-    padding: 8px 15px;
     border-radius: 21px;
     user-select: none;
     &:hover {
       border: solid 2px #01d4d1;
       color: #01d4d1;
-      padding: 6px 13px;
+    }
+  }
+  .sub-select {
+    padding: 9px 13px;
+    &:hover {
+      padding: 7px 11px;
     }
   }
   .selected {

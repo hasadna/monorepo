@@ -7,6 +7,7 @@ import {
   StoryService,
   ScreenService,
   NotificationService,
+  LoadingService,
 } from './services';
 
 @NgModule({
@@ -17,6 +18,7 @@ import {
     StoryService,
     ScreenService,
     NotificationService,
+    LoadingService,
   ],
 })
 export class CoreModule { }
