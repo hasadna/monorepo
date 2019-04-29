@@ -3,11 +3,12 @@
 @import "./global-styles";
 @import './notification';
 
-html,
-body {
-  width: 100vw;
+html {
   overflow-x: hidden;
-  margin: 0;
-  font-family: $font-stack;
-  background-color: #e6eff0;
+  overflow-y: scroll;
+  body {
+    margin: 0;
+    font-family: $font-stack;
+    background-color: #e6eff0;
+  }
 }

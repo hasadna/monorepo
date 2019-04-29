@@ -1,6 +1,7 @@
 package hasadna.noloan2;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,10 +18,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +83,9 @@ public class MainActivity extends AppCompatActivity
     SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(messages);
     recycler.setAdapter(adapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
+    TextView statusTitle = findViewById(R.id.status_lawsuit);
+    statusTitle.setText(
+        (String.format(getResources().getString(R.string.content_summary), spam.size())));
   }
 
   // Reads SMS. If no permissions are granted, exit app.
@@ -105,6 +114,9 @@ public class MainActivity extends AppCompatActivity
             SmsMessage.newBuilder()
                 .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
                 .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
+                .setReceivedAt(
+                    new SimpleDateFormat("dd/M/yyyy")
+                        .format(new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")))))
                 .build();
         smsList.add(sms);
       } while (cursor.moveToNext());

@@ -26,7 +26,6 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forRoot(appRoutes),

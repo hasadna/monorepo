@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ProjectSelectComponent {
   selectedProjectId: string = 'all';
-  @Input() projectIdList: string;
+  @Input() projectIdList: string[];
   @Output() selectEmitter = new EventEmitter<string>();
 
   select(projectId: string): void {

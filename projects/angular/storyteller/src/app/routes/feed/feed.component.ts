@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable, zip } from 'rxjs';
 
 import { Screenshot, User, Story } from '@/core/proto';
-import { FirebaseService, StoryService } from '@/core/services';
+import { FirebaseService, StoryService, LoadingService } from '@/core/services';
 import { EasyStory } from '@/shared';
 
 @Component({
@@ -11,7 +11,6 @@ import { EasyStory } from '@/shared';
   styleUrls: ['./feed.component.scss'],
 })
 export class FeedComponent {
-  isLoading: boolean = true;
   projectIdList: string[];
   easyStories: EasyStory[];
   filteredEasyStories: EasyStory[];
@@ -19,7 +18,9 @@ export class FeedComponent {
   constructor(
     private firebaseService: FirebaseService,
     private storyService: StoryService,
+    public loadingService: LoadingService,
   ) {
+    this.loadingService.isLoading = true;
     this.loadReviewerConfig();
   }
 
@@ -35,7 +36,7 @@ export class FeedComponent {
       }
       this.storyService.sortStoriesByTime(this.easyStories);
       this.filteredEasyStories = this.easyStories.slice();
-      this.isLoading = false;
+      this.loadingService.isLoading = false;
     });
   }
 
