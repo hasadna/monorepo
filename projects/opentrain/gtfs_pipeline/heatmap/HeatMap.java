@@ -31,8 +31,12 @@ public class HeatMap {
 
   @FlagDesc(
       name = "image_path",
-      description = "Image path to create heatmap image.needs to contain .../<FileName>.png")
+      description = "Image path to map image.needs to contain .../<FileName>.png")
   public static Flag<String> imagePath = Flag.create("");
+  @FlagDesc(
+          name = "heat_map_path",
+          description = "Image destination path to create heatmap image.needs to contain .../<FileName>.png")
+  public static Flag<String> heatMapPath = Flag.create("");
 
   public HeatMap(int stopId, String time) throws IOException { // Time = HH:MM:ss
 
@@ -269,7 +273,7 @@ public class HeatMap {
               image,
               "png",
               new File(
-                  "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/heatmap.png"));
+                      heatMapPath.get()));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -513,7 +517,7 @@ public class HeatMap {
                        image,
                        "png",
                        new File(
-                               "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/newR.png"));
+                               heatMapPath.get()));
      } catch (IOException e) {
        e.printStackTrace();
      }
@@ -735,12 +739,19 @@ public class HeatMap {
     // Save file
     boolean createImage = false;
     try {
-      createImage =
+     /* createImage =
           ImageIO.write(
               image,
               "png",
               new File(
-                  "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/newDraw.png"));
+                  heatMapPath.get()));
+      */
+      createImage =
+              ImageIO.write(
+                      image,
+                      "png",
+                      new File(
+                              heatMapPath.get()));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -833,7 +844,7 @@ public class HeatMap {
                       image,
                       "png",
                       new File(
-                              "/home/rami/Desktop/googleCR/bazel-0.23.2-dist/hasadna/projects/opentrain/gtfs_pipeline/heatmap/newFuncMap.png"));
+                              heatMapPath.get()));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -848,7 +859,6 @@ public class HeatMap {
     //      Heatmap matrix size to max mapsize
     //      Boarders of israel,do not paint sea area
     //      Improve x,y pixel method by using more data
-    //      Add new flag for output file
     //      Change i,j in StopsAround to x,y
     //      Fix latitude longitude names
 
