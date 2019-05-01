@@ -378,14 +378,13 @@ public class HeatMap {
                 + (1070.268543 * latitude)
                 + 38611.28426);
     /*#2(int)(23100 + (-653.6)*longitude + (-58.28)*latitude);*/
-    /*#1
-    (int)
-            ((67.87903886 * (Math.pow(longitude, 2)))
-                    + (-59.89376472 * longitude * latitude)
-                    + (11.68179254 * (Math.pow(latitude, 2)))
-                    + (-2895.823625 * longitude)
-                    + (1070.268543 * latitude)
-                    + 38611.28426);*/
+    /*#1(int)
+    ((67.87903886 * (Math.pow(longitude, 2)))
+            + (-59.89376472 * longitude * latitude)
+            + (11.68179254 * (Math.pow(latitude, 2)))
+            + (-2895.823625 * longitude)
+            + (1070.268543 * latitude)
+            + 38611.28426);*/
 
     return // yPixel;
     yPixel + 53;
@@ -739,13 +738,6 @@ public class HeatMap {
     // Save file
     boolean createImage = false;
     try {
-      /* createImage =
-          ImageIO.write(
-              image,
-              "png",
-              new File(
-                  heatMapPath.get()));
-      */
       createImage = ImageIO.write(image, "png", new File(heatMapPath.get()));
 
     } catch (IOException e) {
