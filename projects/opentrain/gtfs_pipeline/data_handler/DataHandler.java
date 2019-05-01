@@ -58,8 +58,9 @@ class DataHandler {
     int startDate = Integer.parseInt(record.get("start_date"));
     int endDate = Integer.parseInt(record.get("end_date"));
 
-    // int currentDate = Integer.parseInt(dateFormat.format(new Date())); //Use if you want To read
-    // all the data.
+    // Uncomment to read today's data:
+    // int currentDate = Integer.parseInt(dateFormat.format(new Date()));
+    // return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
     boolean isRecordDayTrueOnDayOfToday = Integer.parseInt(record.get(getDayOfToday())) == 1;
     return (startDate <= FILTER_DATE && FILTER_DATE <= endDate && isRecordDayTrueOnDayOfToday);
   }
