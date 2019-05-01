@@ -9,7 +9,10 @@ import com.google.startupos.common.flags.Flag;
 import com.google.startupos.common.flags.FlagDesc;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Font;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,11 +34,13 @@ public class HeatMap {
 
   @FlagDesc(
       name = "image_path",
-      description = "Image path to map image.needs to contain .../<FileName>.png")
+      description = "Image path to map image,needs to contain .../<FileName>.png")
   public static Flag<String> imagePath = Flag.create("");
+
   @FlagDesc(
-          name = "heat_map_path",
-          description = "Image destination path to create heatmap image.needs to contain .../<FileName>.png")
+      name = "heat_map_path",
+      description =
+          "Image destination path to create heatmap image,needs to contain .../<FileName>.png")
   public static Flag<String> heatMapPath = Flag.create("");
 
   public HeatMap(int stopId, String time) throws IOException { // Time = HH:MM:ss
@@ -268,12 +273,7 @@ public class HeatMap {
     // Save file
     boolean createImage = false;
     try {
-      createImage =
-          ImageIO.write(
-              image,
-              "png",
-              new File(
-                      heatMapPath.get()));
+      createImage = ImageIO.write(image, "png", new File(heatMapPath.get()));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -739,19 +739,14 @@ public class HeatMap {
     // Save file
     boolean createImage = false;
     try {
-     /* createImage =
+      /* createImage =
           ImageIO.write(
               image,
               "png",
               new File(
                   heatMapPath.get()));
       */
-      createImage =
-              ImageIO.write(
-                      image,
-                      "png",
-                      new File(
-                              heatMapPath.get()));
+      createImage = ImageIO.write(image, "png", new File(heatMapPath.get()));
 
     } catch (IOException e) {
       e.printStackTrace();
