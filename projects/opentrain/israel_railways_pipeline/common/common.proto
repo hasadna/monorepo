@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+message routes {
+   int32 id = 1;
+   repeated int32 stop_ids = 2;
+}
+
+
+message samples {
+   int32 id=1;
+   repeated int32 gtfs_stop_id=2;
+   bool is_source=3;
+   repeated bool is_dest=4;
+   string actual_arrival=5;
+   repeated string exp_arrival=6;
+   repeated string actual_departure=7;
+   repeated string exp_departure=8;
+   repeated string delay_arrival=9;
+   repeated string delay_departure=10;
+   repeated int32 index=11;
+   repeated string  filename=12;
+   repeated int32 line_number=13;
+   repeated bool valid=14;
+   repeated string invalid_reason=15;
+   repeated int32 stop_id=16;
+   repeated int32 trip_id=17;
+   repeated string sheet_idx=18;
+   repeated string  actual_departure_fixed=19;
+   repeated string actual_arrival_fixed=20;
+   repeated string ignored_error=21;
+
+}
+
+message stops {
+   int32 id = 1;
+   string gtfs_stop_id=2;
+   string english =3;
+   string hebrews =4;
+   string lat=5;
+   string lon=6;
+}
+
+
+message trips {
+   int32 id = 1;
+   repeated int32 train_num=2;
+   bool valid=3;
+   string invalid_reason=4;
+   repeated string x_week_day_local=5;
+   repeated string x_hour_local=6;
+   repeated int32 route_id=7;
+   repeated string x_avg_delay_arrival=8;
+   repeated string x_cache_version=9;
+   repeated  string x_max2_delay_arrival=10;
+   repeated string x_max_delay_arrival=11;
+   repeated string x_before_last_delay_arrival=12;
+   repeated string x_last_delay_arrival=13;
+}

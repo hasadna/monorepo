@@ -28,7 +28,12 @@ genrule(
         "@israel_railways_data//:stops.csv",
         "@israel_railways_data//:trips.csv",
     ],
-    outs = ["output.txt"],
-    cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location @israel_railways_data//:samples.csv) $(location @israel_railways_data//:stops.csv) $(location @israel_railways_data//:trips.csv) $@",
+    outs = [
+        "routes.protobin",
+        "samples.protobin",
+        "stops.protobin",
+        "trips.protobin",
+    ],
+    cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location @israel_railways_data//:samples.csv) $(location @israel_railways_data//:stops.csv) $(location @israel_railways_data//:trips.csv)  $(location routes.protobin) $(location samples.protobin) $(location stops.protobin) $(location trips.protobin)$@",
     tools = ["//projects/opentrain/israel_railways_pipeline"],
 )
