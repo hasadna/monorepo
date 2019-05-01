@@ -1,0 +1,16 @@
+<div class="card menu-card">
+  <div
+    class="select-button all"
+    (click)="select('all')"
+    [ngClass]="{ selected: selectedProjectId === 'all' }"
+  >All Projects</div>
+  <div class="project-id-list">
+    <div *ngFor="let projectId of projectIdList">
+      <div
+        class="select-button sub-select"
+        (click)="select(projectId)"
+        [ngClass]="{ selected: selectedProjectId === projectId }"
+      >{{ projectId }}</div>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,14 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./variables";
+@import "./global-styles";
+@import './notification';
 
-html,
-body {
-  width: 85%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  margin: 0 0 10% 15%;
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  body {
+    margin: 0;
+    font-family: $font-stack;
+    background-color: #e6eff0;
+  }
 }

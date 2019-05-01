@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { CommonModule } from 'common/module';
+import { LibraryModule } from 'common/module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentList } from './components';
@@ -19,7 +19,7 @@ import { SharedList } from './shared';
     BrowserModule,
     AppRoutingModule,
     FirebaseModule,
-    CommonModule,
+    LibraryModule,
   ],
   providers: [...ServiceList],
   bootstrap: [AppComponent],

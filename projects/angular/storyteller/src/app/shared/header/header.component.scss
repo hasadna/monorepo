@@ -1,0 +1,14 @@
+@import 'styles/variables';
+
+mat-toolbar {
+  height: 64px;
+  background-color: #fff;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.35);
+  .home {
+    padding-left: 40px;
+    font-family: $satisfy;
+    font-size: 36px;
+    text-decoration: none;
+    color: black;
+  }
+}
