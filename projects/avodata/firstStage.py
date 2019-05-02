@@ -1,11 +1,13 @@
-import numpy as np
 import math
+import numpy as np
+import pandas as pd
+
 
 # A program that receives a score matrix (c_matrix) for characteristics that characterize certain subjects.
 # And produces a matrix M with size k*n (such that k is a characteristics of
 # professions and n is the number of professions that are compared),
-# that shows the ratio of the properties between the different professions
-# The program using the List Square algorithm, the vector c with size k*1, and a
+# that shows the relative value of the properties between the different professions
+# The program using the List Squares algorithm, the vector c with size k*1, and a
 # matrix A with size (num_of_professions Choose 2) * (professions), to solve the equation Ax = c.
 # The error matrix with size k*n is calculated by Ax - c = error.
 
@@ -37,6 +39,11 @@ def generate_synthetic_c(m, i, a):
 
 def solve(A, c):
     return np.linalg.lstsq(A, c, None)[0]
+
+
+def create_c_matrix_from_csv(file_name):
+    data = pd.read_csv(file_name)
+    return np.array(data)
 
 
 def build_m(num_of_professions, c_matrix, num_of_characteristics):
@@ -72,8 +79,11 @@ def run_check(m):
 
 # The professions are - driver, lawyer, programmer
 # The characteristics are - social status, working with people, analytical thinking
-c_matrix = [[-3, -3, -2],
-            [-1, 2, 3],
-            [-3, -3, -2]]
+# c_matrix = [[-3, -3, -2],
+#             [-1, 2, 3],
+#             [-3, -3, -2]]
+
+c_matrix = create_c_matrix_from_csv('check.csv')
+print(c_matrix)
 m = build_m(3, c_matrix, 3)
 print(m)
