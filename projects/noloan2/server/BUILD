@@ -6,7 +6,7 @@ java_binary(
     data = ["spam.prototxt"],
     main_class = "hasadna.projects.noloan2.server.DataUploader",
     deps = [
-        "//projects/noloan2/app/src/main/proto:SMS_proto",
+        "//projects/noloan2/app/src/main/proto:SMS_java_proto",
         "//third_party/maven/com/google/flogger:flogger_system_backend",
         "//third_party/maven/javax/inject:javax_inject",
         "@startup_os//common",

@@ -3,10 +3,10 @@ package hasadna.projects.noloan2.server;
 import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.flags.Flags;
-import com.google.startupos.tools.localserver.service.AuthService;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import dagger.Component;
-import hasadna.noloan2.protobuf.SMSProto.SpamList;
-import hasadna.noloan2.protobuf.SMSProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SpamList;
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,11 +47,11 @@ public class DataUploader {
 
     fileUtils.writePrototxt(spam, "spam.Prototxt");
 
-    /* authService.refreshToken();
+    authService.refreshToken();
     FirestoreProtoClient client = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
     SpamList spam = (SpamList) fileUtils.readPrototxt("Spam.prototxt", SpamList.newBuilder());
     List<SmsMessage> SMSList = spam.getSms();
-    client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);*/
+    client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);
   }
 
   @Singleton
