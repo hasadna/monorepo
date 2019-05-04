@@ -460,6 +460,7 @@ public class HeatMap {
     // TODO:
     //      Boarders of israel,do not paint sea area
     //      Improve x,y pixel method by using more data
+    //      Fix latitude longitude names
 
     Flags.parseCurrentPackage(args);
     StopTime stopTime;
