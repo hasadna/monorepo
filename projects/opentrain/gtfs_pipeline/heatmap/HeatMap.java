@@ -458,7 +458,6 @@ public class HeatMap {
 
   public static void main(String[] args) throws IOException {
     // TODO:
-    //      Heatmap matrix size to max mapsize
     //      Boarders of israel,do not paint sea area
     //      Improve x,y pixel method by using more data
     //      Fix latitude longitude names
