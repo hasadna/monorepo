@@ -7,7 +7,7 @@ import pandas as pd
 # And produces a matrix M with size k*n (such that k is a characteristics of
 # professions and n is the number of professions that are compared),
 # that shows the relative value of the properties between the different professions
-# The program using the List Squares algorithm, the vector c with size k*1, and a
+# The program using the Least Squares algorithm, the vector c with size k*1, and a
 # matrix A with size (num_of_professions Choose 2) * (professions), to solve the equation Ax = c.
 # The error matrix with size k*n is calculated by Ax - c = error.
 
@@ -42,6 +42,11 @@ def solve(A, c):
 
 
 def create_c_matrix_from_csv(file_name):
+    # The structure of the csv file is as follows -
+    # Each row represents a criterion for comparison (up and down),
+    # and each column represents two subjects for comparison (Determined by matrix structure A)
+    # In each slot, the score that led to a comparison between the two subjects that were compared
+    # (according to the column) appears according to the criterion in the row
     data = pd.read_csv(file_name)
     return np.array(data)
 
@@ -77,8 +82,10 @@ def run_check(m):
     return new_m, errors
 
 
+# This is an example of running the algorithm.
 # The professions are - driver, lawyer, programmer
 # The characteristics are - social status, working with people, analytical thinking
+# The extracted matrix from the csv file is -
 # c_matrix = [[-3, -3, -2],
 #             [-1, 2, 3],
 #             [-3, -3, -2]]
