@@ -18,6 +18,19 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
 
+
+
+
+/**
+ * To build:
+ * bazel build //ls-alg/main:ls-alg_tool
+ * To run:
+ * bazel-bin/ls-alg/main/ls-alg_tool
+*/
+
+
+
+
 public class Main {
 
 	
@@ -90,7 +103,7 @@ public class Main {
 		 String myPath = currentRelativePath.toAbsolutePath().toString();
 		 
 		try {
-			scanner = new Scanner(new File(myPath + "/src" + "/check.csv"));
+			scanner = new Scanner(new File(myPath +"/ls-alg/check.csv"));
 			scanner.useDelimiter(",");
 			//build one string of all the matrix
 			while(scanner.hasNext()) {
