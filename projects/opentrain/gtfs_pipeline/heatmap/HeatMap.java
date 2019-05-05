@@ -204,7 +204,7 @@ public class HeatMap {
   }
 
   // Draw only the heat map colors
-  public void drawMap(String imagePath) {
+  public void drawHeatMap(String imagePath) {
     // color1 to color2
     Color color1 = new Color(255, 208, 235);
     Color color2 = new Color(126, 0, 67);
@@ -377,7 +377,7 @@ public class HeatMap {
     return false;
   }
 
-  public void drawMapNew(String imagePath) {
+  public void drawHeatMapOnMap(String imagePath) {
     // color1 to color2
     Color color1 = new Color(255, 208, 235);
     Color color2 = new Color(126, 0, 67);
@@ -479,17 +479,17 @@ public class HeatMap {
         if (trip.getTripId().equals(stopTime.getTripId())
             && Integer.parseInt(stopTime.getStopSequence()) == 1) {
 
-          HeatMap heatmap = new HeatMap(stopTime.getStopId(), stopTime.getDepartureTime());
+          HeatMap heatMap = new HeatMap(stopTime.getStopId(), stopTime.getDepartureTime());
 
           // ---HeatMap color test---
 
-          // heatmap.arrivalTimeToLocation();
-          // heatmap.drawMap(imagePath.get());
+          // heatMap.arrivalTimeToLocation();
+          // heatMap.drawHeatMap(imagePath.get());
 
           // ---HeatMap on map test---
 
-          heatmap.arrivalTimeToLocationForMap();
-          heatmap.drawMapNew(imagePath.get());
+          heatMap.arrivalTimeToLocationForMap();
+          heatMap.drawHeatMapOnMap(imagePath.get());
           break;
         }
         stopTime = StopTime.parseDelimitedFrom(stopTimeInputStream);
