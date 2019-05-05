@@ -23,123 +23,121 @@ import org.apache.commons.math3.util.CombinatoricsUtils;
  */
 
 public class AvodataSolverTool {
-    // Path to csv file
-    static final String CSV_PATH = "/projects/avodata/check.csv";
+  // Path to csv file
+  static final String CSV_PATH = "/projects/avodata/check.csv";
 
-    public static double factorial(int n) {
-        return CombinatoricsUtils.factorialDouble(n);
+  public static double factorial(int n) {
+    return CombinatoricsUtils.factorialDouble(n);
+  }
+
+  public static double nChooseK(int n, int k) {
+    return CombinatoricsUtils.binomialCoefficientDouble(n, k);
+  }
+
+  public static RealMatrix generateSyntheticA(int numOfProfessions) {
+    int numOfraws = (int) nChooseK(numOfProfessions, 2);
+    RealMatrix matrix = new Array2DRowRealMatrix(numOfraws, numOfProfessions);
+
+    int row = 0;
+    for (int i = 0; i < numOfProfessions; i++)
+      for (int j = i + 1; j < numOfProfessions; j++) {
+        matrix.addToEntry(row, i, 1);
+        matrix.addToEntry(row, j, -1);
+        row++;
+      }
+    return matrix;
+  }
+
+  public static RealMatrix generateSyntethicC(RealMatrix m, int i, RealMatrix a) {
+    RealMatrix c = a.multiply(m.getRowMatrix(i).transpose());
+    return c;
+  }
+
+  public static RealVector solve(RealMatrix a, RealVector c) {
+    SingularValueDecomposition s = new SingularValueDecomposition(a);
+    DecompositionSolver d = s.getSolver();
+    return d.solve(c);
+  }
+
+  public static RealMatrix buildCheck(
+      int numOfProfessions, RealMatrix cMatrix, int numOfCharacteristics) {
+    RealMatrix a = new Array2DRowRealMatrix();
+    a = MatrixUtils.createRealMatrix(generateSyntheticA(numOfProfessions).getData());
+    RealMatrix m = new Array2DRowRealMatrix(numOfCharacteristics, numOfProfessions);
+
+    for (int i = 0; i < numOfCharacteristics; i++) {
+
+      RealVector c = cMatrix.getRowVector(i);
+      RealVector rowInM = solve(a, c);
+      Abs absoluteValue = new Abs();
+      double min = absoluteValue.value(rowInM.getMinValue());
+      rowInM.mapAddToSelf(min);
+      double max = absoluteValue.value(rowInM.getMaxValue());
+      rowInM.mapDivideToSelf(max);
+      m.setRowVector(i, rowInM);
     }
 
-    public static double nChooseK(int n, int k) {
-        return CombinatoricsUtils.binomialCoefficientDouble(n, k);
-    }
+    return m;
+  }
 
-    public static RealMatrix generateSyntheticA(int numOfProfessions) {
+  // We read the matrix from csv file.
+  // We ignore the alphabet chars and build the matrix without them.
+  public static RealMatrix readMatrixAndCreate() {
+    Scanner scanner;
+    StringBuilder b = new StringBuilder();
+    RealMatrix rMatrix = new Array2DRowRealMatrix(3, 3);
+    Path currentRelativePath = Paths.get("");
+    String myPath = currentRelativePath.toAbsolutePath().toString();
 
-        int numOfraws = (int) nChooseK(numOfProfessions, 2);
-        RealMatrix matrix = new Array2DRowRealMatrix(numOfraws, numOfProfessions);
+    try {
+      scanner = new Scanner(new File(myPath + CSV_PATH));
+      scanner.useDelimiter(",");
+      // Build one string of all the matrix
+      while (scanner.hasNext()) {
+        b.append(scanner.next() + " ");
+      }
+      // Build string array,every string is a vector of the matrix
+      String[] s = b.toString().split("\r\n");
+      int row = 0;
+      for (String string : s) {
 
-        int row = 0;
-        for (int i = 0; i < numOfProfessions; i++)
-            for (int j = i + 1; j < numOfProfessions; j++) {
-                matrix.addToEntry(row, i, 1);
-                matrix.addToEntry(row, j, -1);
-                row++;
-            }
-        return matrix;
-    }
+        String[] vectorToSet = string.split(" ");
+        // Ignorance of alphabet chars vector
+        if (vectorToSet[1].charAt(0) >= 'a' && vectorToSet[1].charAt(0) <= 'z') {
+          continue;
+        } else {
 
-    public static RealMatrix generateSyntethicC(RealMatrix m, int i, RealMatrix a) {
-        RealMatrix c = a.multiply(m.getRowMatrix(i).transpose());
-        return c;
-    }
-
-    public static RealVector solve(RealMatrix a, RealVector c) {
-
-        SingularValueDecomposition s = new SingularValueDecomposition(a);
-        DecompositionSolver d = s.getSolver();
-        return d.solve(c);
-    }
-
-    public static RealMatrix buildCheck(int numOfProfessions, RealMatrix cMatrix, int numOfCharacteristics) {
-        RealMatrix a = new Array2DRowRealMatrix();
-        a = MatrixUtils.createRealMatrix(generateSyntheticA(numOfProfessions).getData());
-        RealMatrix m = new Array2DRowRealMatrix(numOfCharacteristics, numOfProfessions);
-
-        for (int i = 0; i < numOfCharacteristics; i++) {
-
-            RealVector c = cMatrix.getRowVector(i);
-            RealVector rowInM = solve(a, c);
-            Abs absoluteValue = new Abs();
-            double min = absoluteValue.value(rowInM.getMinValue());
-            rowInM.mapAddToSelf(min);
-            double max = absoluteValue.value(rowInM.getMaxValue());
-            rowInM.mapDivideToSelf(max);
-            m.setRowVector(i, rowInM);
+          double[] data = new double[vectorToSet.length];
+          int i = 0;
+          for (String val : vectorToSet) {
+            data[i] = (Double.parseDouble(val));
+            i++;
+          }
+          RealVector v = MatrixUtils.createRealVector(data);
+          rMatrix.setRowVector(row, v);
         }
+        row++;
+      }
 
-        return m;
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
+    // The final matrix after build
+    return rMatrix;
+  }
 
-    // We read the matrix from csv file.
-    // We ignore the alphabet chars and build the matrix without them.
-    public static RealMatrix readMatrixAndCreate() {
+  public static void main(String[] args) {
+    // Read matrix from file and build
+    RealMatrix r = readMatrixAndCreate();
 
-        Scanner scanner;
-        StringBuilder b = new StringBuilder();
-        RealMatrix rMatrix = new Array2DRowRealMatrix(3, 3);
-        Path currentRelativePath = Paths.get("");
-        String myPath = currentRelativePath.toAbsolutePath().toString();
+    double[][] check = buildCheck(r.getColumnDimension(), r, r.getRowDimension()).getData();
 
-        try {
-            scanner = new Scanner(new File(myPath + CSV_PATH));
-            scanner.useDelimiter(",");
-            // Build one string of all the matrix
-            while (scanner.hasNext()) {
-                b.append(scanner.next() + " ");
-            }
-            // Build string array,every string is a vector of the matrix
-            String[] s = b.toString().split("\r\n");
-            int row = 0;
-            for (String string : s) {
-
-                String[] vectorToSet = string.split(" ");
-                // Ignorance of alphabet chars vector
-                if (vectorToSet[1].charAt(0) >= 'a' && vectorToSet[1].charAt(0) <= 'z') {
-                    continue;
-                } else {
-
-                    double[] data = new double[vectorToSet.length];
-                    int i = 0;
-                    for (String val : vectorToSet) {
-                        data[i] = (Double.parseDouble(val));
-                        i++;
-                    }
-                    RealVector v = MatrixUtils.createRealVector(data);
-                    rMatrix.setRowVector(row, v);
-                }
-                row++;
-            }
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        // The final matrix after build
-        return rMatrix;
+    System.out.println("Matrix M:");
+    System.out.println("---------");
+    for (int i = 0; i < check.length; i++) {
+      System.out.println(Arrays.toString(check[i]));
     }
-
-    public static void main(String[] args) {
-
-        // Read matrix from file and build
-        RealMatrix r = readMatrixAndCreate();
-
-        double[][] check = buildCheck(r.getColumnDimension(), r, r.getRowDimension()).getData();
-
-        System.out.println("Matrix M:");
-        System.out.println("---------");
-        for (int i = 0; i < check.length; i++) {
-            System.out.println(Arrays.toString(check[i]));
-        }
-    }
+  }
 }
+
