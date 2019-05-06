@@ -21,8 +21,8 @@ GMAVEN_TAG = "20180513-1"
 
 http_archive(
     name = "gmaven_rules",
-    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
 )
 
@@ -41,13 +41,14 @@ android_sdk_repository(
 # MARK: StartupOS start
 http_archive(
     name = "startup_os",
-    strip_prefix = "startup-os-324c4138e057c7619d2701926e6e7fc4f0b76183",
-    urls = ["https://github.com/google/startup-os/archive/324c4138e057c7619d2701926e6e7fc4f0b76183.zip"],
+    strip_prefix = "startup-os-4327635590ac424512055d17afc5cebdaa268463",
+    urls = ["https://github.com/google/startup-os/archive/4327635590ac424512055d17afc5cebdaa268463.zip"],
 )
 # MARK: StartupOS end
 
 # StartupOS dependencies start
-load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os="maven_dependencies")
+load("@startup_os//third_party/maven:package-lock.bzl", maven_dependencies_startup_os = "maven_dependencies")
+
 # TODO: does the order of `maven_dependencies()` and `maven_dependencies_startup_os()` in `WORKSPACE` dictate which version we will use?
 maven_dependencies_startup_os()
 
@@ -62,6 +63,14 @@ http_jar(
     sha256 = "98b05c2826f2248f70e7356dc6c78bc52395904bb932fbb409a5abf5416e4292",
     urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.01/bazel_deps.jar"],
 )
+
+http_archive(
+    name = "tsfmt",
+    urls = ["https://github.com/oferb/startupos-binaries/releases/download/0.1.03/tsfmt.zip"],
+    sha256 = "b07799e1c6a2c8cd5a2e258833a80a9234b346968588ea53f7298eba76f610fc",
+    build_file_content = "exports_files(['cli-linux', 'cli-macos'])"
+)
+
 # StartupOS dependencies end
 
 http_file(
@@ -174,7 +183,13 @@ http_archive(
 #gtfs_data
 http_archive(
     name = "gtfs_data",
-    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
     build_file_content = 'exports_files(["calendar.txt", "routes.txt", "stop_times.txt", "stops.txt", "translations.txt", "trips.txt"])',
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/israel-public-transportation.zip?alt=media&token=a9bc43a5-36a6-4126-9e19-2e42f9ff663c",
+)
 
+#israel_railways_data
+http_archive(
+    name = "israel_railways_data",
+    build_file_content = 'exports_files(["routes.csv" , "samples.csv" , "stops.csv" , "trips.csv"])',
+    url = "https://firebasestorage.googleapis.com/v0/b/startupos-5f279.appspot.com/o/data_csv.zip?alt=media&token=2a262967-7cdd-4934-afbc-8fa31a74baf2",
 )

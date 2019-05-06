@@ -13,12 +13,8 @@ body {
   }
 
   .page-container {
-    display: flex;
     display: 100%;
-    justify-content: center;
-    padding: 20px;
-    >.align-container {
-      display: flex;
-    }
+    padding: 20px 80px;
+    display: flex;
   }
 }

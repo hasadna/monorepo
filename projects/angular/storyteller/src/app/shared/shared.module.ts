@@ -9,12 +9,14 @@ import { StoryComponent } from './story';
 import { ProjectSelectComponent } from './project-select';
 import { HeaderComponent } from './header';
 import { ScreenshotDialogComponent } from './screenshot-dialog';
+import { LoadingComponent } from './loading';
 
 const ExportDeclarations = [
   StoryComponent,
   ProjectSelectComponent,
   HeaderComponent,
   ScreenshotDialogComponent,
+  LoadingComponent,
 ];
 const ExportModules = [
   FormsModule,
