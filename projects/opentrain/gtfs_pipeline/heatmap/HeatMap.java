@@ -25,32 +25,43 @@ public class HeatMap {
   private List<StopsAround> stopsAroundList = new ArrayList<>();
 
   private double[][] heatMap;
+  private Stop startStop;
   private List<Stop> stopsList = new ArrayList<>();
   private List<StopTime> stopTimeList = new ArrayList<>();
   private List<Trip> tripsList = new ArrayList<>();
-  private static final String tripsPath = "projects/opentrain/gtfs_pipeline/trips.protobin";
-  private static final String stopsPath = "projects/opentrain/gtfs_pipeline/stops.protobin";
-  private static final String stopTimePath = "projects/opentrain/gtfs_pipeline/stopTime.protobin";
+  private static final String TRIPS_PATH = "projects/opentrain/gtfs_pipeline/trips.protobin";
+  private static final String STOPS_PATH = "projects/opentrain/gtfs_pipeline/stops.protobin";
+  private static final String STOP_TIME_PATH = "projects/opentrain/gtfs_pipeline/stopTime.protobin";
 
   @FlagDesc(
       name = "image_path",
-      description = "Image path to map image,needs to contain .../<FileName>.png")
+      description = "Image path to map image. Needs to contain .../<FileName>.png")
   public static Flag<String> imagePath = Flag.create("");
 
   @FlagDesc(
       name = "heat_map_path",
       description =
-          "Image destination path to create heatmap image,needs to contain .../<FileName>.png")
+          "Image destination path to create heatmap image. Needs to contain .../<FileName>.png")
   public static Flag<String> heatMapPath = Flag.create("");
 
-  public HeatMap(int stopId, String time) throws IOException { // Time = HH:MM:ss
+  public HeatMap() throws IOException {
     loadDataFromFiles();
+  }
 
+  public void createHeatMap(int stopId, String time) throws IOException {
+    /** time has format HH:MM:ss */
+
+    for (Stop stop : stopsList) {
+      if (stop.getStopId() == stopId) {
+        startStop = stop;
+      }
+      }
     // From all the stops
     for (StopTime stopTime : stopTimeList) {
       // Pick the stop that we want, that starts at some trip, at the given time
       if (stopTime.getStopId() == stopId
           && Integer.parseInt(stopTime.getStopSequence()) == 1
+          /** StopSequence = 1 this stop is the first one on the trip */
           && stopTime.getDepartureTime().equals(time)) {
 
         // From all the trips
@@ -83,9 +94,9 @@ public class HeatMap {
   }
 
   private void loadDataFromFiles() throws IOException {
-    try (FileInputStream tripsInputStream = new FileInputStream(new File(tripsPath));
-        FileInputStream stopTimeInputStream = new FileInputStream(new File(stopTimePath));
-        FileInputStream stopInputStream = new FileInputStream(new File(stopsPath))) {
+    try (FileInputStream tripsInputStream = new FileInputStream(new File(TRIPS_PATH));
+        FileInputStream stopTimeInputStream = new FileInputStream(new File(STOP_TIME_PATH));
+        FileInputStream stopInputStream = new FileInputStream(new File(STOPS_PATH))) {
 
       while (true) {
         Stop tmpStop = Stop.parseDelimitedFrom(stopInputStream);
@@ -319,8 +330,14 @@ public class HeatMap {
 
   private void arrivalTimeToLocationForMap() {
     heatMap = new double[770][918];
-    int x;
-    int y;
+
+    // Start stop x,y
+    int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
+    int x = getXpixel(startStop.getStopLat(), startStop.getStopLon());
+    int startStopX = x;
+    int startStopY = y;
+    heatMap[x][y] = 0;
+
     for (StopsAround stopAround : stopsAroundList) {
 
       // Arrival time of each stop from the chosen stop by location
@@ -338,11 +355,20 @@ public class HeatMap {
 
         if (heatMap[i][j] == 0) // not a stop
         {
-          StopsAround firstStop = stopsAroundList.get(0);
-          double ac = Math.abs(0 - firstStop.j); // y distance
-          double cb = Math.abs(0 - firstStop.i); // x distance
+          //Distance from start stop
+          double ac = Math.abs(i - startStopY); // y distance
+          double cb = Math.abs(j - startStopX); // x distance
           double distance = Math.hypot(ac, cb) * 60;
-          double stopTimeArrival = firstStop.arrivalTime;
+          double stopTimeArrival = distance;
+
+          if((i == startStopX || j == startStopY))
+          {
+            StopsAround firstStop = stopsAroundList.get(0);
+             ac = Math.abs(i - firstStop.j); // y distance
+             cb = Math.abs(j - firstStop.i); // x distance
+             distance = Math.hypot(ac, cb) * 60;
+             stopTimeArrival = firstStop.arrivalTime;
+          }
 
           // Find nearest stop
           for (StopsAround stopAround : stopsAroundList) {
@@ -355,10 +381,11 @@ public class HeatMap {
             }
           }
 
-          heatMap[i][j] = ((distance) + stopTimeArrival);
+          heatMap[i][j] = (distance + stopTimeArrival);
         }
-        if (heatMap[i][j] == 0) {
+        if (heatMap[i][j] == 0 && (j!= startStopX && i!= startStopY)) {
           System.out.println("Check heatMap assignment");
+          System.out.println("i= "+ i+"j="+j);
         }
       }
     }
@@ -415,19 +442,27 @@ public class HeatMap {
     for (int i = 0; i < heatMap.length; i++) {
       for (int j = 0; j < heatMap[0].length; j++) {
         if (heatMap[i][j] == 0) {
-          System.out.println("ERROR:" + "\n" + "heatmap matrix value should not be 0");
+          int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
+          int x = getXpixel(startStop.getStopLat(), startStop.getStopLon());
+          int startStopX = x;
+          int startStopY = y;
+          if(j != x && i != y) //Not the start stop
+          {
+            System.out.println("ERROR:" + "\n" + "heatmap matrix value should not be 0");
+          }
         }
+        else {
+          float value = (float) (heatMap[i][j] - minData) / (float) (maxData - minData);
 
-        float value = (float) (heatMap[i][j] - minData) / (float) (maxData - minData);
+          int r = (int) (((float) color2.getRed() - color1.getRed()) * value + color1.getRed());
+          int g = (int) (((float) color2.getGreen() - color1.getGreen()) * value + color1.getGreen());
+          int b = (int) (((float) color2.getBlue() - color1.getBlue()) * value + color1.getBlue());
 
-        int r = (int) (((float) color2.getRed() - color1.getRed()) * value + color1.getRed());
-        int g = (int) (((float) color2.getGreen() - color1.getGreen()) * value + color1.getGreen());
-        int b = (int) (((float) color2.getBlue() - color1.getBlue()) * value + color1.getBlue());
-
-        Color color = new Color(r, g, b, 80);
-        graphics2D.setPaint(color);
-        if (inBorders(i, j)) {
-          graphics2D.fillRect(i, j, 2, 2);
+          Color color = new Color(r, g, b, 80);
+          graphics2D.setPaint(color);
+          if (inBorders(i, j)) {
+            graphics2D.fillRect(i, j, 2, 2);
+          }
         }
       }
     }
@@ -438,6 +473,16 @@ public class HeatMap {
       int y = getYpixel(stopAround.stop.getStopLat(), stopAround.stop.getStopLon());
 
       graphics2D.drawString("X", x, y);
+    }
+    for (Stop stop : stopsList) {
+      if (stop.getStopId() == startStop.getStopId()) {
+        graphics2D.setPaint(Color.black);
+        graphics2D.setFont(new Font("TimesRoman", Font.BOLD, 10));
+        int x = getXpixel(stop.getStopLat(), stop.getStopLon());
+        int y = getYpixel(stop.getStopLat(), stop.getStopLon());
+
+        graphics2D.drawString("S", x, y);
+      }
     }
 
     // TODO:Each stop to its place by adding/decreasing to x,y
@@ -458,28 +503,31 @@ public class HeatMap {
 
   public static void main(String[] args) throws IOException {
     // TODO:
-    //      Boarders of israel,do not paint sea area
+    //      Boarders of israel, do not paint sea area
     //      Improve x,y pixel method by using more data
 
     Flags.parseCurrentPackage(args);
-    StopTime stopTime;
-    Trip trip;
 
-    try (FileInputStream tripInputStream =
-            new FileInputStream(new File("projects/opentrain/gtfs_pipeline/trips.protobin"));
-        FileInputStream stopTimeInputStream =
-            new FileInputStream(new File("projects/opentrain/gtfs_pipeline/stopTime.protobin"))) {
+    // Take the first trip in file, for testing:
 
-      // Test some trip stops heatMap
-      trip = Trip.parseDelimitedFrom(tripInputStream);
-      stopTime = StopTime.parseDelimitedFrom(stopTimeInputStream);
-      if (trip == null) System.out.println("Error: trips file is empty");
-      if (stopTime == null) System.out.println("Error: stopTime file is empty");
-      while (stopTime != null) {
+    HeatMap heatMap = new HeatMap();
+    Trip tripTest = heatMap.tripsList.get(0);
+    StopTime stopTimeTest = heatMap.stopTimeList.get(0);
+    if (tripTest == null) {
+      System.out.println("Error: trips list is empty");
+      System.exit(1);
+    }
+    if (stopTimeTest == null) {
+      System.out.println("Error: stopTime list is empty");
+      System.exit(1);
+    }
+    Boolean createHeatMap = false;
+    for (Trip trip : heatMap.tripsList) {
+      for (StopTime stopTime : heatMap.stopTimeList) {
         if (trip.getTripId().equals(stopTime.getTripId())
             && Integer.parseInt(stopTime.getStopSequence()) == 1) {
-
-          HeatMap heatMap = new HeatMap(stopTime.getStopId(), stopTime.getDepartureTime());
+          /** StopSequence = 1, this stop is the first one on the trip */
+          heatMap.createHeatMap(stopTime.getStopId(), stopTime.getDepartureTime());
 
           // ---HeatMap color test---
 
@@ -490,9 +538,12 @@ public class HeatMap {
 
           heatMap.arrivalTimeToLocationForMap();
           heatMap.drawHeatMapOnMap(imagePath.get());
+          createHeatMap = true;
           break;
         }
-        stopTime = StopTime.parseDelimitedFrom(stopTimeInputStream);
+      }
+      if(createHeatMap){
+        break;
       }
     }
   }
