@@ -3,7 +3,7 @@ syntax = "proto3";
 package com.projects.opentrain.israel_railways_pipeline;
 
 option java_package = "com.projects.opentrain.israel_railways_pipeline";
-option java_outer_classname = "Protos";
+option java_outer_classname = "Proto";
 
 message Routes {
    int32 id = 1;
@@ -23,7 +23,7 @@ message Samples {
    string delay_arrival=9;
    string delay_departure=10;
    int32 index=11;
-   string  filename=12;
+   string filename=12;
    int32 line_number=13;
    bool valid=14;
    string invalid_reason=15;
@@ -33,7 +33,6 @@ message Samples {
    string  actual_departure_fixed=19;
    string actual_arrival_fixed=20;
    string ignored_error=21;
-
 }
 
 message Stops {
