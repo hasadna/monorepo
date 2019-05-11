@@ -5,11 +5,12 @@
     [ngClass]="{ selected: selectedProjectId === 'all' }"
   >All Projects</div>
   <div class="project-id-list">
-    <div
-      class="select-button"
-      *ngFor="let projectId of projectIdList"
-      (click)="select(projectId)"
-      [ngClass]="{ selected: selectedProjectId === projectId }"
-    >{{ projectId }}</div>
+    <div *ngFor="let projectId of projectIdList">
+      <div
+        class="select-button sub-select"
+        (click)="select(projectId)"
+        [ngClass]="{ selected: selectedProjectId === projectId }"
+      >{{ projectId }}</div>
+    </div>
   </div>
 </div>

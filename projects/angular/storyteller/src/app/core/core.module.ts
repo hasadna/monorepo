@@ -6,6 +6,8 @@ import {
   AuthGuard,
   StoryService,
   ScreenService,
+  NotificationService,
+  LoadingService,
 } from './services';
 
 @NgModule({
@@ -15,6 +17,8 @@ import {
     AuthGuard,
     StoryService,
     ScreenService,
+    NotificationService,
+    LoadingService,
   ],
 })
 export class CoreModule { }
