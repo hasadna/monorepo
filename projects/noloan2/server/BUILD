@@ -14,6 +14,7 @@ java_binary(
         "@startup_os//common/firestore",
         "@startup_os//common/flags",
         "@startup_os//tools/reviewer/local_server/service:auth_service",
+        "//third_party/maven/com/google/http_client:google_http_client_jackson"
     ],
 )
 
