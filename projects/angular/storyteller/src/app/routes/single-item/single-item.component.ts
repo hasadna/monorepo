@@ -3,16 +3,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { zip } from 'rxjs';
 
 import { Screenshot, User, Story } from '@/core/proto';
-import { FirebaseService, NotificationService, StoryService } from '@/core/services';
+import {
+  FirebaseService,
+  NotificationService,
+  StoryService,
+  LoadingService,
+} from '@/core/services';
 import { EasyStory } from '@/shared';
 
 @Component({
   selector: 'single-item',
   templateUrl: './single-item.component.html',
-  styleUrls: ['./single-item.component.scss'],
 })
 export class SingleItemComponent {
-  isLoading: boolean = true;
   isCrashError: boolean = false;
   storyId: string;
   itemId: string;
@@ -24,7 +27,9 @@ export class SingleItemComponent {
     private firebaseService: FirebaseService,
     private storyService: StoryService,
     private notificationService: NotificationService,
+    public loadingService: LoadingService,
   ) {
+    this.loadingService.isLoading = true;
     const email: string = this.activatedRoute.snapshot.params['email'];
     this.storyId = this.activatedRoute.snapshot.params['storyId'];
     this.itemId = this.activatedRoute.snapshot.params['itemId'];
@@ -46,7 +51,7 @@ export class SingleItemComponent {
           user,
         );
         this.easyStory = this.getEasyStory(easyStories);
-        this.isLoading = false;
+        this.loadingService.isLoading = false;
       }
     });
   }
