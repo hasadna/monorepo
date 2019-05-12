@@ -10,7 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import com.projects.opentrain.israel_railways_pipeline.Proto;
+import com.projects.opentrain.israel_railways_pipeline.Proto.Routes;
+
 public class CountLines {
 
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";

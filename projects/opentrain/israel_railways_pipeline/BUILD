@@ -13,7 +13,7 @@ java_binary(
     main_class = "projects.opentrain.israel_railways_pipeline.CountLines",
     visibility = ["//visibility:public"],
     deps = [
-        "//projects/opentrain/gtfs_pipeline/common:common_java_proto",
+        "//projects/opentrain/israel_railways_pipeline/common:common_java_proto",
         "//third_party/maven/com/google/guava",
         "//third_party/maven/com/google/protobuf:protobuf_java",
         "//third_party/maven/org/apache/commons:commons_csv",
