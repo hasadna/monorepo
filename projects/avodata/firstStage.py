@@ -2,7 +2,6 @@ import math
 import numpy as np
 import pandas as pd
 
-
 # A program that receives a score matrix (c_matrix) for characteristics that characterize certain subjects.
 # And produces a matrix M with size k*n (such that k is a characteristics of
 # professions and n is the number of professions that are compared),
@@ -53,7 +52,8 @@ def create_c_matrix_from_csv(file_name):
 
 def build_m(num_of_professions, c_matrix, num_of_characteristics):
     A = generate_synthetic_a(num_of_professions)
-    m = np.zeros((num_of_characteristics, num_of_professions), dtype=np.float32)
+    m = np.zeros(
+        (num_of_characteristics, num_of_professions), dtype=np.float32)
     for i in range(num_of_characteristics):
         c = c_matrix[i]
         row_in_m = solve(A, c)
@@ -70,7 +70,8 @@ def run_check(m):
 
     num_of_rows_in_m = m.shape[0]
     new_m = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
-    c_matrix = np.zeros((num_of_rows_in_m, num_of_professions), dtype=np.float32)
+    c_matrix = np.zeros(
+        (num_of_rows_in_m, num_of_professions), dtype=np.float32)
     for i in range(num_of_rows_in_m):
         c = generate_synthetic_c(m, i, A)
         c_matrix[i] = c
