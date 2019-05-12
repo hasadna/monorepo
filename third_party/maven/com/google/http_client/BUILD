@@ -68,7 +68,7 @@ java_library(
         ":google_http_client"
     ],
     visibility = [
-        "//third_party/maven:__subpackages__"
+        "//visibility:public"
     ]
 )
 
