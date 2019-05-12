@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 
+import java.util.List;
+
 @Singleton
 public class DataUploader {
 
@@ -28,26 +30,16 @@ public class DataUploader {
   }
 
   void run() throws IOException {
-    SmsMessage sms1 =
-        SmsMessage.newBuilder()
-            .setSender("mobile")
-            .setBody("הaaaaaaaaaaaaaaaaaaaaaaaaaaaaaהלוואה הכי מהירה שיש עד 20 אלף שח אצלך ביד, החזר רק בצקים 023750707")
-            .build();
-    SmsMessage sms2 =
-        SmsMessage.newBuilder()
-            .setSender("mobile")
-            .setBody("בהמשך לפנייתך להלוואה נא לחץ על הקישור למילוי הפרטים לזרז הטיפול בפנייתך")
-            .build();
-    SmsMessage sms3 =
-        SmsMessage.newBuilder()
-            .setSender("Yeah-Atid")
-            .setBody(
-                "ח\"כ מיקי לוי מגיע לחיפה לדבר איתכם על כל מה שבוער במדינה. יום א' (4/3) בשעה 19:30 בפאב \"סטלה\", רחוב הירקון 1 פינת מוריה, חיפה. להרשמה ופרטים נוספים: https://goo.gl/tzTVPc  להסרה: https://goo.gl/QjbrTs023750707")
-            .build();
-    SpamList spam = SpamList.newBuilder().addSms(sms1).addSms(sms2).addSms(sms3).build();
-
     authService.refreshToken();
-    FirestoreProtoClient client = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
+
+    FirestoreProtoClient client =
+        new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
+
+    SpamList spam =
+        (SpamList)
+            fileUtils.readPrototxt("projects/noloan2/server/spam.prototxt", SpamList.newBuilder());
+    List<SmsMessage> SMSList = spam.getSmsList();
+
     client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);
   }
 
