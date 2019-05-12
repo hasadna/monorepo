@@ -20,7 +20,8 @@ bazel run @startup_os//tools/formatter -- \
 # * working tree contains unstaged changes
 # When ran locally it silently fixes everything.
 if [[ ! -z "$CIRCLECI" && ! -z $(git status -s) ]]; then
-	echo "$RED[!] Source files are not formatted$RESET";
+	echo "$RED[!] Source files are not formatted:$RESET";
+	git status
 	echo "Please run ''./fix-formatting.sh'' to fix it"
 	exit 1
 fi
