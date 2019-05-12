@@ -4,6 +4,7 @@ import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
 import com.google.startupos.common.flags.Flags;
 import com.google.startupos.tools.reviewer.local_server.service.AuthService;
+import com.google.startupos.common.firestore.FirestoreProtoClient;
 import dagger.Component;
 import hasadna.noloan2.protobuf.SmsProto.SpamList;
 import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
@@ -30,7 +31,7 @@ public class DataUploader {
     SmsMessage sms1 =
         SmsMessage.newBuilder()
             .setSender("mobile")
-            .setBody("ההלוואה הכי מהירה שיש עד 20 אלף שח אצלך ביד, החזר רק בצקים 023750707")
+            .setBody("הaaaaaaaaaaaaaaaaaaaaaaaaaaaaaהלוואה הכי מהירה שיש עד 20 אלף שח אצלך ביד, החזר רק בצקים 023750707")
             .build();
     SmsMessage sms2 =
         SmsMessage.newBuilder()
@@ -45,12 +46,8 @@ public class DataUploader {
             .build();
     SpamList spam = SpamList.newBuilder().addSms(sms1).addSms(sms2).addSms(sms3).build();
 
-    fileUtils.writePrototxt(spam, "spam.Prototxt");
-
     authService.refreshToken();
     FirestoreProtoClient client = new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
-    SpamList spam = (SpamList) fileUtils.readPrototxt("Spam.prototxt", SpamList.newBuilder());
-    List<SmsMessage> SMSList = spam.getSms();
     client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);
   }
 
@@ -61,7 +58,7 @@ public class DataUploader {
   }
 
   public static void main(String[] args) throws IOException {
-    Flags.parseCurrentPackage(args);
+    Flags.parse(args, AuthService.class.getPackage());
     DaggerDataUploader_ToolComponent.create().getTool().run();
   }
 }

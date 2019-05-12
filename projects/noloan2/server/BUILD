@@ -11,6 +11,7 @@ java_binary(
         "//third_party/maven/javax/inject:javax_inject",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
+        "@startup_os//common/firestore",
         "@startup_os//common/flags",
         "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
