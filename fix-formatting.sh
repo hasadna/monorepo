@@ -11,7 +11,7 @@ npm install &>/dev/null
 
 bazel run @startup_os//tools/formatter -- \
 	--path $(pwd) \
-	--java --python --proto --cpp --build \
+	--java --proto --cpp --build \
 	--ignore_directories $(find $(pwd) -name node_modules -type d | paste -s -d , -) \
 	&>/dev/null
 
