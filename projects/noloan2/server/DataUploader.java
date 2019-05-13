@@ -2,27 +2,46 @@ package hasadna.projects.noloan2.server;
 
 import com.google.startupos.common.CommonModule;
 import com.google.startupos.common.FileUtils;
-import com.google.startupos.common.flags.Flag;
-import com.google.startupos.common.flags.FlagDesc;
+import com.google.startupos.common.firestore.FirestoreProtoClient;
 import com.google.startupos.common.flags.Flags;
+import com.google.startupos.tools.reviewer.local_server.service.AuthService;
 import dagger.Component;
+
+import hasadna.noloan2.protobuf.SmsProto.SmsMessage;
+import hasadna.noloan2.protobuf.SmsProto.SpamList;
+
 import java.io.IOException;
-import java.util.Base64;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class DataUploader {
 
+  private static final String SPAM_DOCUMENT_PATH = "noloan/smss";
+
   private FileUtils fileUtils;
+  private AuthService authService;
 
   @Inject
-  DataUploader(FileUtils fileUtils) {
+  DataUploader(FileUtils fileUtils, AuthService authService) {
     this.fileUtils = fileUtils;
+    this.authService = authService;
   }
 
   void run() throws IOException {
-    // TODO Implement
+    authService.refreshToken();
+
+    FirestoreProtoClient client =
+        new FirestoreProtoClient(authService.getProjectId(), authService.getToken());
+
+    SpamList spam =
+        (SpamList)
+            fileUtils.readPrototxt("projects/noloan2/server/spam.prototxt", SpamList.newBuilder());
+
+    client.setProtoDocument(SPAM_DOCUMENT_PATH, spam);
   }
 
   @Singleton
@@ -32,7 +51,7 @@ public class DataUploader {
   }
 
   public static void main(String[] args) throws IOException {
-    Flags.parseCurrentPackage(args);
+    Flags.parse(args, AuthService.class.getPackage());
     DaggerDataUploader_ToolComponent.create().getTool().run();
   }
 }
