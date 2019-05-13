@@ -1,12 +1,11 @@
 .story {
-  $padding: 20px;
   display: flex;
-  width: 930px;
-  padding: 20px 35px 20px 20px;
+  padding: 20px 35px 20px 25px;
+  color: #4e4e4e;
   >.user {
     display: flex;
     justify-content: center;
-    padding-right: $padding;
+    padding-right: 25px;
     >a {
       $size: 80px;
       width: $size;
@@ -18,7 +17,7 @@
     }
   }
   >.content {
-    width: 830px;
+    flex: 1;
     >.header {
       display: flex;
       >.info {

@@ -7,7 +7,6 @@ import { ScreenService } from '@/core/services';
 @Component({
   selector: 'screenshot-dialog',
   templateUrl: './screenshot-dialog.component.html',
-  styleUrls: ['./screenshot-dialog.component.scss'],
 })
 export class ScreenshotDialogComponent implements OnDestroy {
   isLoading: boolean = true;

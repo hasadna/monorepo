@@ -90,7 +90,6 @@ public class LawsuitActivity extends AppCompatActivity {
   // Save PDF to device. Return absFilename of the file
   private String createPdf() {
 
-    // Read and fill template
     String template = null;
     try {
       template = fillTemplate();
@@ -98,13 +97,28 @@ public class LawsuitActivity extends AppCompatActivity {
       e.printStackTrace();
     }
 
+    // Add SMS to attachments page
+    template +=
+        String.format(getString(R.string.list_item_from), getIntent().getExtras().getString("from"))
+            + "\n";
+    template +=
+        String.format(
+                getString(R.string.list_item_date), getIntent().getExtras().getString("receivedAt"))
+            + "\n";
+    template +=
+        String.format(getString(R.string.list_item_body), getIntent().getExtras().getString("body"))
+            + "\n";
+
     PdfDocument document = new PdfDocument();
 
-    // Create 2 pages for the PDF (Size A4)
+    // Create 3 pages for the PDF (Size A4)
     PageInfo firstPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
     PageInfo secondPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 2).create();
+    PageInfo thirdPageInfo = new PdfDocument.PageInfo.Builder(595, 842, 3).create();
+
     Page firstPage = document.startPage(firstPageInfo);
     Page secondPage = null;
+    Page thirdPage = null;
     Canvas canvas = firstPage.getCanvas();
     Paint paint = new Paint();
     int rowCounter = 0;
@@ -112,7 +126,7 @@ public class LawsuitActivity extends AppCompatActivity {
     int xPainter = 0;
     int yPainter = 0;
 
-    // Draw lines to PDF
+    // Draw lawsuit to PDF
     for (String line : template.split("\n")) {
       // Switch to 2nd page on row 56
       if (rowCounter == 56) {
@@ -121,13 +135,20 @@ public class LawsuitActivity extends AppCompatActivity {
         canvas = secondPage.getCanvas();
         yPainter = 0;
       }
+      // Switch to 3rd attachments page
+      if (rowCounter == 76) {
+        document.finishPage(secondPage);
+        thirdPage = document.startPage(thirdPageInfo);
+        canvas = thirdPage.getCanvas();
+        yPainter = 0;
+      }
       // Draw text as RTL, 20 is for right padding
       xPainter = (firstPageInfo.getPageWidth() - (int) paint.measureText(line)) - 20;
       canvas.drawText(line, xPainter, yPainter, paint);
       yPainter += paint.descent() - paint.ascent();
       rowCounter++;
     }
-    document.finishPage(secondPage);
+    document.finishPage(thirdPage);
 
     // Save file to external storage
     String absFilename =
