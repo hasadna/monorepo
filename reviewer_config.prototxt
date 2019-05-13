@@ -23,20 +23,6 @@ project {
 }
 user {
   id: "oferb"
-  first_name: "Ofer"
-  last_name: "Bartal"
-  email: "oferb@google.com"
-  image_url: "https://i.ibb.co/VJY1Prm/0.jpg"
-  social_network {
-    type: LINKEDIN
-    url: "https://www.linkedin.com/in/ofer-bartal-58a50811/"
-  }
-  social_network {
-    type: TWITTER
-    url: "https://twitter.com/bartalofer"
-  }
-  skill: "Java"
-  skill: "Linux"
   project_id: "google_oss_examples"
   project_id: "reviewer"
   top_contribution {
@@ -59,68 +45,49 @@ user {
 }
 user {
   id: "webdevelopland"
-  first_name: "Vadim"
-  email: "webdevelopland@gmail.com"
-  image_url: "https://i.imgur.com/5padPgx.png"
-  skill: "Angular"
   project_id: "program_website"
-  social_network {
-    type: GITHUB
-    url: "https://github.com/webdevelopland"
-  }
   top_contribution {
     description: "Responsive design implementation"
     url: "https://github.com/hasadna/hasadna/tree/master/projects/angular/program-website"
   }
   crystals:100
 }
- user {
-   id: "vmax"
-   first_name: "Max"
-   last_name: "Vorobev"
-   email: "vmax0770@gmail.com"
-   image_url: "https://www.gravatar.com/avatar/b879e79211df87616ad6f2995ec03a7d?s=400"
-   social_network {
-     type: LINKEDIN
-     url: "https://www.linkedin.com/in/max-vorobev-6a60b6b3/"
-   }
-   skill: "Java"
-   skill: "Python"
-   skill: "Starlark"
-   project_id: "google_oss_examples"
-   project_id: "reviewer"
-   top_contribution {
-     description: "Team member for StartupOS project (Google OSS examples, Reviewer)"
-     url: "https://github.com/google/startup-os"
-   }
-   top_contribution {
-     description: "CI integration for StartupOS"
-     url: "https://github.com/google/startup-os/pull/112"
-   }
-   crystals:100
+user {
+  id: "vmax"
+  project_id: "google_oss_examples"
+  project_id: "reviewer"
+  top_contribution {
+    description: "Team member for StartupOS project (Google OSS examples, Reviewer)"
+    url: "https://github.com/google/startup-os"
   }
-  user {
-    id: "a3l5o7n9"
-    first_name: "Alon"
-    last_name: "Pachter Zafrir"
-    email: "alony60@gmail.com"
-    image_url: "https://media.licdn.com/dms/image/C5603AQF3tLa0c3i9hw/profile-displayphoto-shrink_200_200/0?e=1562198400&v=beta&t=Sat-m2TeTAiv9T_IRLAZoxcHs_ihjWnJRTufKBW1T4M"
-    social_network {
+  top_contribution {
+    description: "CI integration for StartupOS"
+    url: "https://github.com/google/startup-os/pull/112"
+  }
+  crystals:100
+}
+user {
+  id: "a3l5o7n9"
+  first_name: "Alon"
+  last_name: "Pachter Zafrir"
+  email: "alony60@gmail.com"
+  image_url: "https://media.licdn.com/dms/image/C5603AQF3tLa0c3i9hw/profile-displayphoto-shrink_200_200/0?e=1562198400&v=beta&t=Sat-m2TeTAiv9T_IRLAZoxcHs_ihjWnJRTufKBW1T4M"
+  social_network {
     type: LINKEDIN
     url: "https://www.linkedin.com/in/alon-pachter-zafrir-4a626213a/"
-    }
-    social_network {
-      type: GITHUB
-      url: "https://github.com/a3l5o7n9"
-    }
-    skill: "React Native"
-    skill: "Angular"
-    project_id: "mysadna"
-    project_id: "program-website"
-    top_contribution {
-      description: "Profile Pages Angular webapp for Hasadna"
-      url: "https://github.com/hasadna/hasadna/tree/master/projects/angular/mysadna"
-    }
-    crystals:0
   }
- total_crystal: 300
+  social_network {
+    type: GITHUB
+    url: "https://github.com/a3l5o7n9"
+  }
+  skill: "React Native"
+  skill: "Angular"
+  project_id: "mysadna"
+  project_id: "program-website"
+  top_contribution {
+    description: "Profile Pages Angular webapp for Hasadna"
+    url: "https://github.com/hasadna/hasadna/tree/master/projects/angular/mysadna"
+  }
+  crystals:0
+}
+  total_crystal: 300
