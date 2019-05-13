@@ -1,6 +1,6 @@
 httpArchiveDeps {
   name: "startup_os"
-  commit_id: "87ba1ec33bc45fea4af0a1ab33e704ef58e688a2"
+  commit_id: "96864a8a5325476ba405b740f0750a98b6961b3f"
   http_archive_dep {
     java_class: "com.google.startupos.common.CommandLine.java"
     target: "//common"
@@ -122,6 +122,30 @@ httpArchiveDeps {
     target: "//common/flags/tests:flag_test_class"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.GrpcAuthService.java"
+    target: "//common/grpc_auth:service"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Server.java"
+    target: "//common/grpc_auth:server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.ServerAuthInterceptor.java"
+    target: "//common/grpc_auth:server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Client.java"
+    target: "//common/grpc_auth:client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.ClientAuthInterceptor.java"
+    target: "//common/grpc_auth:client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Protos"
+    target: "//common/grpc_auth:messages_java_proto"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.common.repo.GitRepo.java"
     target: "//common/repo"
   }
@@ -146,27 +170,7 @@ httpArchiveDeps {
     target: "//common/tests:file_utils_test_java_proto"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.App.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Impl.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Interface.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example1.Class1Module.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class2.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.SomeComponent.java"
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
@@ -174,7 +178,7 @@ httpArchiveDeps {
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Impl.java"
+    java_class: "com.google.startupos.examples.dagger.example1.Class2.java"
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
@@ -182,75 +186,15 @@ httpArchiveDeps {
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Module.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class2.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.SomeComponent.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.App.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example1.Class1Impl.java"
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Interface.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class1Module.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example1.Class2.java"
-    target: "//examples/dagger/example1:example1_lib"
-  }
-  http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example1.SomeComponent.java"
     target: "//examples/dagger/example1:example1_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.App.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Impl.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Interface.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example2.Class1Module.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Impl.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Interface.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Module.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class3.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.SomeComponent.java"
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
@@ -258,7 +202,7 @@ httpArchiveDeps {
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Impl.java"
+    java_class: "com.google.startupos.examples.dagger.example2.Class2Impl.java"
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
@@ -266,31 +210,7 @@ httpArchiveDeps {
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Module.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Impl.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Interface.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
     java_class: "com.google.startupos.examples.dagger.example2.Class2Module.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class3.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.SomeComponent.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.App.java"
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
@@ -298,23 +218,7 @@ httpArchiveDeps {
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Interface.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class1Module.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Impl.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Interface.java"
-    target: "//examples/dagger/example2:example2_lib"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.Class2Module.java"
+    java_class: "com.google.startupos.examples.dagger.example2.SomeComponent.java"
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
@@ -322,7 +226,7 @@ httpArchiveDeps {
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.examples.dagger.example2.SomeComponent.java"
+    java_class: "com.google.startupos.examples.dagger.example2.Class2Interface.java"
     target: "//examples/dagger/example2:example2_lib"
   }
   http_archive_dep {
@@ -402,6 +306,14 @@ httpArchiveDeps {
     target: "//tools/formatter"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.proto_tool.ProtoLoader.java"
+    target: "//tools/proto_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.proto_tool.ProtoTool.java"
+    target: "//tools/proto_tool"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.ReviewerConstants.java"
     target: "//tools/reviewer:reviewer_constants"
   }
@@ -430,7 +342,7 @@ httpArchiveDeps {
     target: "//tools/reviewer/aa:config_java_proto"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.AaCommand.java"
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.InitCommand.java"
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
@@ -438,15 +350,11 @@ httpArchiveDeps {
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.WorkspaceCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.DiffCommand.java"
-    target: "//tools/reviewer/aa/commands"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.FixCommand.java"
-    target: "//tools/reviewer/aa/commands"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.InitCommand.java"
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
@@ -454,7 +362,23 @@ httpArchiveDeps {
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.FixCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.AaCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.SyncCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.PatchCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.SubmitCommand.java"
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
@@ -466,23 +390,11 @@ httpArchiveDeps {
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.SubmitCommand.java"
-    target: "//tools/reviewer/aa/commands"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.SyncCommand.java"
-    target: "//tools/reviewer/aa/commands"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.WorkspaceCommand.java"
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FormattingCheck.java"
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
     java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FixCommandCheck.java"
-    target: "//tools/reviewer/aa/commands"
-  }
-  http_archive_dep {
-    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FormattingCheck.java"
     target: "//tools/reviewer/aa/commands"
   }
   http_archive_dep {
