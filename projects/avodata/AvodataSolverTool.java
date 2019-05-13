@@ -6,20 +6,14 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
-import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.apache.commons.math3.analysis.function.Abs;
-import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresBuilder;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
+
 
 /* This class reads matrix from csv file, ignores the parmeters and calculate
  * using least squares
