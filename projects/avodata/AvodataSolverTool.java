@@ -5,14 +5,21 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import org.apache.commons.math3.analysis.function.Abs;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.util.CombinatoricsUtils;
+import org.apache.commons.math3.analysis.function.Abs;
+import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresBuilder;
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory;
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem;
 
 /* This class reads matrix from csv file, ignores the parmeters and calculate
  * using least squares
@@ -49,8 +56,8 @@ public class AvodataSolverTool {
   }
 
   public static RealMatrix generateSyntethicC(RealMatrix m, int i, RealMatrix a) {
-    RealMatrix c = a.multiply(m.getRowMatrix(i).transpose());
-    return c;
+
+    return a.multiply(m.getRowMatrix(i).transpose());
   }
 
   public static RealVector solve(RealMatrix a, RealVector c) {
@@ -61,8 +68,7 @@ public class AvodataSolverTool {
 
   public static RealMatrix buildCheck(
       int numOfProfessions, RealMatrix cMatrix, int numOfCharacteristics) {
-    RealMatrix a = new Array2DRowRealMatrix();
-    a = MatrixUtils.createRealMatrix(generateSyntheticA(numOfProfessions).getData());
+    RealMatrix a = MatrixUtils.createRealMatrix(generateSyntheticA(numOfProfessions).getData());
     RealMatrix m = new Array2DRowRealMatrix(numOfCharacteristics, numOfProfessions);
 
     for (int i = 0; i < numOfCharacteristics; i++) {
@@ -73,7 +79,8 @@ public class AvodataSolverTool {
       double min = absoluteValue.value(rowInM.getMinValue());
       rowInM.mapAddToSelf(min);
       double max = absoluteValue.value(rowInM.getMaxValue());
-      rowInM.mapDivideToSelf(max);
+      if (max > 0) rowInM.mapDivideToSelf(max);
+
       m.setRowVector(i, rowInM);
     }
 
@@ -83,14 +90,15 @@ public class AvodataSolverTool {
   // We read the matrix from csv file.
   // We ignore the alphabet chars and build the matrix without them.
   public static RealMatrix readMatrixAndCreate() {
-    Scanner scanner;
+    Scanner scanner = null;
     StringBuilder b = new StringBuilder();
-    RealMatrix rMatrix = new Array2DRowRealMatrix(3, 3);
-    Path currentRelativePath = Paths.get("");
-    String myPath = currentRelativePath.toAbsolutePath().toString();
+    RealMatrix matrix = new Array2DRowRealMatrix(3, 3);
+    // Path currentRelativePath = Paths.get("");
+    // String myPath = currentRelativePath.toAbsolutePath().toString();
 
     try {
-      scanner = new Scanner(new File(myPath + CSV_PATH));
+      scanner = new Scanner(new File(Paths.get("").toAbsolutePath() + CSV_PATH));
+      ;
       scanner.useDelimiter(",");
       // Build one string of all the matrix
       while (scanner.hasNext()) {
@@ -114,7 +122,7 @@ public class AvodataSolverTool {
             i++;
           }
           RealVector v = MatrixUtils.createRealVector(data);
-          rMatrix.setRowVector(row, v);
+          matrix.setRowVector(row, v);
         }
         row++;
       }
@@ -124,7 +132,7 @@ public class AvodataSolverTool {
       e.printStackTrace();
     }
     // The final matrix after build
-    return rMatrix;
+    return matrix;
   }
 
   public static void main(String[] args) {
