@@ -1,6 +1,6 @@
 httpArchiveDeps {
   name: "startup_os"
-  commit_id: "96864a8a5325476ba405b740f0750a98b6961b3f"
+  commit_id: "d6173070626213fae24b8a18f0a38398deb2df8e"
   http_archive_dep {
     java_class: "com.google.startupos.common.CommandLine.java"
     target: "//common"
