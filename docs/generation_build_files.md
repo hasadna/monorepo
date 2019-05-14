@@ -12,24 +12,31 @@ All BUILD files start with `# THIS FILE IS AUTO-GENERATED` line will be regenera
 To generate BUILD files run `generate_build_files.sh` script.
 
 ### How to create a custom BUILD file
-You can generate the BUILD file by the tool and remove `# THIS FILE IS AUTO-GENERATED` line. After that the file won't be regenerated
+You can generate the BUILD file by the tool and remove `# THIS FILE IS AUTO-GENERATED` line. After that the file won't be regenerated.
 
 ### How to ignore some folder
 If you don't want to create BUILD files for some folder add the path to the folder to `generate_build_files.sh` script in `build_file_generation_blacklist` flag.
 
 ### Actions after adding new third party dependency
-After adding new third party dependency run the following command 
+After adding new third party dependency run the following command: 
 
-```tools/build_file_generator/third_party_deps/third_party_deps_updater.sh && bazel run //tools/build_file_generator/third_party_deps:third_party_deps_tool -- --build_file_path tools/build_file_generator/third_party_deps/BUILD``` 
+```
+tools/build_file_generator/third_party_deps/third_party_deps_updater.sh && bazel run //tools/build_file_generator/third_party_deps:third_party_deps_tool -- --build_file_path tools/build_file_generator/third_party_deps/BUILD
+``` 
 
-It'll update `tools/build_file_generator/third_party_deps/BUILD` file and regenerate `third_party_deps.zip` file
+It'll update `tools/build_file_generator/third_party_deps/BUILD` file and regenerate `third_party_deps.zip` file.
 
 ### Actions after adding/updating new http_archive dependency
-By default the tool supports `startup_os` http_archive dependency
+By default the tool supports `startup_os` http_archive dependency.
+
 After updating `startup_os` http_archive dependency run the following command:
-```bazel run //tools/build_file_generator/http_archive_deps:http_archive_deps_tool```
+```
+bazel run //tools/build_file_generator/http_archive_deps:http_archive_deps_tool
+```
 
 After adding or updating new http_archive dependency run the following command: 
-```bazel run //tools/build_file_generator/http_archive_deps:http_archive_deps_tool -- --http_archive_names <your_http_archive_name>```
+```
+bazel run //tools/build_file_generator/http_archive_deps:http_archive_deps_tool -- --http_archive_names <your_http_archive_name>
+```
 
-It'll regenerate `http_archive_deps.prototxt` file
+It'll regenerate `http_archive_deps.prototxt` file.
