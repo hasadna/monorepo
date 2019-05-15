@@ -50,12 +50,11 @@ public class HeatMap {
 
   public void createHeatMap(int stopId, String time) throws IOException {
     /** time has format HH:MM:ss */
-
     for (Stop stop : stopsList) {
       if (stop.getStopId() == stopId) {
         startStop = stop;
       }
-      }
+    }
     // From all the stops
     for (StopTime stopTime : stopTimeList) {
       // Pick the stop that we want, that starts at some trip, at the given time
@@ -355,19 +354,18 @@ public class HeatMap {
 
         if (heatMap[i][j] == 0) // not a stop
         {
-          //Distance from start stop
+          // Distance from start stop
           double ac = Math.abs(i - startStopY); // y distance
           double cb = Math.abs(j - startStopX); // x distance
           double distance = Math.hypot(ac, cb) * 60;
           double stopTimeArrival = distance;
 
-          if((i == startStopX || j == startStopY))
-          {
+          if ((i == startStopX || j == startStopY)) {
             StopsAround firstStop = stopsAroundList.get(0);
-             ac = Math.abs(i - firstStop.j); // y distance
-             cb = Math.abs(j - firstStop.i); // x distance
-             distance = Math.hypot(ac, cb) * 60;
-             stopTimeArrival = firstStop.arrivalTime;
+            ac = Math.abs(i - firstStop.j); // y distance
+            cb = Math.abs(j - firstStop.i); // x distance
+            distance = Math.hypot(ac, cb) * 60;
+            stopTimeArrival = firstStop.arrivalTime;
           }
 
           // Find nearest stop
@@ -383,9 +381,9 @@ public class HeatMap {
 
           heatMap[i][j] = (distance + stopTimeArrival);
         }
-        if (heatMap[i][j] == 0 && (j!= startStopX && i!= startStopY)) {
+        if (heatMap[i][j] == 0 && (j != startStopX && i != startStopY)) {
           System.out.println("Check heatMap assignment");
-          System.out.println("i= "+ i+"j="+j);
+          System.out.println("i= " + i + "j=" + j);
         }
       }
     }
@@ -446,16 +444,16 @@ public class HeatMap {
           int x = getXpixel(startStop.getStopLat(), startStop.getStopLon());
           int startStopX = x;
           int startStopY = y;
-          if(j != x && i != y) //Not the start stop
+          if (j != x && i != y) // Not the start stop
           {
             System.out.println("ERROR:" + "\n" + "heatmap matrix value should not be 0");
           }
-        }
-        else {
+        } else {
           float value = (float) (heatMap[i][j] - minData) / (float) (maxData - minData);
 
           int r = (int) (((float) color2.getRed() - color1.getRed()) * value + color1.getRed());
-          int g = (int) (((float) color2.getGreen() - color1.getGreen()) * value + color1.getGreen());
+          int g =
+              (int) (((float) color2.getGreen() - color1.getGreen()) * value + color1.getGreen());
           int b = (int) (((float) color2.getBlue() - color1.getBlue()) * value + color1.getBlue());
 
           Color color = new Color(r, g, b, 80);
@@ -542,7 +540,7 @@ public class HeatMap {
           break;
         }
       }
-      if(createHeatMap){
+      if (createHeatMap) {
         break;
       }
     }
