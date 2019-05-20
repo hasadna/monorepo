@@ -7,20 +7,7 @@ repo {
   id: "hasadna"
   url: "https://github.com/hasadna/hasadna"
 }
-project {
-  id: "google_oss_examples"
-  display_name: "Google Open Source examples"
-  project_url: "https://github.com/google/startup-os"
-  description: "Working examples of Google's open source stack: Bazel, Protocol Buffers, gRPC, Angular, Dagger, Docker, Kubernetes etc."
-  user_id: "oferb"
-}
-project {
-  id: "reviewer"
-  display_name: "Reviewer: Multi-repo Code Review"
-  project_url: "https://github.com/google/startup-os/tree/master/tools/reviewer"
-  description: "A multi-repo Code Review tool that is hosting-agnostic and supports atomic commits across repos."
-  user_id: "oferb"
-}
+# TODO: Add project exclusive to hasadna
 user {
   id: "oferb"
   project_id: "google_oss_examples"
