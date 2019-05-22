@@ -81,9 +81,21 @@ public class AvodataSolverTool {
     return m;
   }
 
+
+  
   // We read the matrix from csv file.
   // We ignore the alphabet chars and build the matrix without them.
+  // For example:
+  /* We get this matrix from the CSV file.
+   * | a | b | c |
+   * | 1 | 2 | 3 |
+   * | 4 | 5 | 6 |
+   * | 7 | 8 | 9 |
+   * Whem we build the matrix we don't want the parameteres a,b,c.
+   * So we ignore the first line.
+   */
   public static RealMatrix readMatrixAndCreate() {
+    // TODO redo this method using a CSV reader.
     Scanner scanner = null;
     StringBuilder b = new StringBuilder();
     RealMatrix matrix = new Array2DRowRealMatrix(3, 3);
