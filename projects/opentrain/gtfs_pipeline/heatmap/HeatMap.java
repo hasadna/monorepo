@@ -32,6 +32,8 @@ public class HeatMap {
   private static final String TRIPS_PATH = "projects/opentrain/gtfs_pipeline/trips.protobin";
   private static final String STOPS_PATH = "projects/opentrain/gtfs_pipeline/stops.protobin";
   private static final String STOP_TIME_PATH = "projects/opentrain/gtfs_pipeline/stopTime.protobin";
+  private static final int WIDTH = 918; // Image map width
+  private static final int HEIGHT = 770; // Image map height
 
   @FlagDesc(
       name = "image_path",
@@ -46,6 +48,12 @@ public class HeatMap {
 
   public HeatMap() throws IOException {
     loadDataFromFiles();
+  }
+
+  public HeatMap(List<Stop> stopsList, List<StopTime> stopTimeList, List<Trip> tripsList) {
+    this.stopsList.addAll(stopsList);
+    this.stopTimeList.addAll(stopTimeList);
+    this.tripsList.addAll(tripsList);
   }
 
   public void createHeatMap(int stopId, String time) throws IOException {
@@ -221,12 +229,16 @@ public class HeatMap {
 
     // Normalize data
     double maxData = 0;
-    double minData = heatMap[10][10];
+    double minData = heatMap[0][0];
     for (int i = 0; i < heatMap.length; i++) {
       for (int j = 0; j < heatMap[0].length; j++) {
         if (maxData < heatMap[i][j]) {
           maxData = heatMap[i][j];
         }
+        /**
+         * The chosen stop heatMap[i][j] = 0 and minimum data can't be 0, that won't affect on map
+         * colors various
+         */
         if (heatMap[i][j] != 0 && minData > heatMap[i][j]) {
           minData = heatMap[i][j];
         }
@@ -277,7 +289,6 @@ public class HeatMap {
     }
   }
 
-  // Functions by different data and sites to get x pixel on the map:
   // X = 31.84931551 x1^2 - 155.5785894 x1 x2 + 134.2697945 x2^2 + 3427.951862 x1 - 3846.07897 x2 +
   // 2512.552383
   public int getXpixel(double longitude, double latitude) {
@@ -289,20 +300,10 @@ public class HeatMap {
                 + (3427.951862 * longitude)
                 - (3846.07897 * latitude)
                 + 2512.552383);
-    /*#2(int)( -15980 + (69.73)*longitude + (405.4)*latitude);*/
-    /*#1
-    (int)
-            (31.84931551 * (Math.pow(longitude, 2))
-                    + -155.5785894 * longitude * latitude
-                    + 134.2697945 * (Math.pow(latitude, 2))
-                    + 3427.951862 * longitude
-                    - 3846.07897 * latitude
-                    + 2512.552383);*/
-    return // xPixel;
-    xPixel + 58;
+
+    return xPixel + 58;
   }
 
-  // Functions by different data and sites to get y pixel on the map:
   // Y = 67.87903886 x1^2 - 59.89376472 x1 x2 + 11.68179254 x2^2 - 2895.823625 x1 + 1070.268543 x2 +
   // 38611.28426
   public int getYpixel(double longitude, double latitude) {
@@ -314,25 +315,16 @@ public class HeatMap {
                 + (-2895.823625 * longitude)
                 + (1070.268543 * latitude)
                 + 38611.28426);
-    /*#2(int)(23100 + (-653.6)*longitude + (-58.28)*latitude);*/
-    /*#1(int)
-    ((67.87903886 * (Math.pow(longitude, 2)))
-            + (-59.89376472 * longitude * latitude)
-            + (11.68179254 * (Math.pow(latitude, 2)))
-            + (-2895.823625 * longitude)
-            + (1070.268543 * latitude)
-            + 38611.28426);*/
 
-    return // yPixel;
-    yPixel + 53;
+    return yPixel + 53;
   }
 
   private void arrivalTimeToLocationForMap() {
-    heatMap = new double[770][918];
+    heatMap = new double[HEIGHT][WIDTH];
 
     // Start stop x,y
-    int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
     int x = getXpixel(startStop.getStopLat(), startStop.getStopLon());
+    int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
     int startStopX = x;
     int startStopY = y;
     heatMap[x][y] = 0;
@@ -340,8 +332,8 @@ public class HeatMap {
     for (StopsAround stopAround : stopsAroundList) {
 
       // Arrival time of each stop from the chosen stop by location
-      y = getYpixel(stopAround.stop.getStopLat(), stopAround.stop.getStopLon());
       x = getXpixel(stopAround.stop.getStopLat(), stopAround.stop.getStopLon());
+      y = getYpixel(stopAround.stop.getStopLat(), stopAround.stop.getStopLon());
       stopAround.i = x;
       stopAround.j = y;
       heatMap[x][y] = (stopAround.arrivalTime);
@@ -392,7 +384,6 @@ public class HeatMap {
   private boolean inBorders(int x, int y) {
     // Not in the Sea area
     // y = -3.244698554·10-3 x2 - 5.987572519·10-1 x + 583.173052
-    // y = -2.156465775·10-3 x2 - 5.951883509·10-1 x + 693.4643201
     if (y
         > -3.373851571 * (Math.pow(10, -3)) * (Math.pow(x, 2))
             - 1.457345683 * (Math.pow(10, -1)) * x
@@ -440,8 +431,8 @@ public class HeatMap {
     for (int i = 0; i < heatMap.length; i++) {
       for (int j = 0; j < heatMap[0].length; j++) {
         if (heatMap[i][j] == 0) {
-          int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
           int x = getXpixel(startStop.getStopLat(), startStop.getStopLon());
+          int y = getYpixel(startStop.getStopLat(), startStop.getStopLon());
           int startStopX = x;
           int startStopY = y;
           if (j != x && i != y) // Not the start stop

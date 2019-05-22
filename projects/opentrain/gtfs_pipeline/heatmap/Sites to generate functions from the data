@@ -1,0 +1,22 @@
+----------Sites to generate functions from the data----------
+
+Online Multiple Polynomial Regression:
+
+Insert x data to generate getXpixel function.
+Insert y data to generate getYpixel function.
+http://www.xuru.org/rt/MPR.asp#CopyPaste
+
+Record XY mouse coordinates on an uploaded image:
+
+Load map image and pick points on the map to get x,y pixels.
+https://www.mobilefish.com/services/record_mouse_coordinates/record_mouse_coordinates.php
+
+To generate new functions:
+
+1.Use the second site and pick points.
+2.Use google maps and get the latitude and longitude of these points.
+3.Put the data on the third site twice by this struct:
+	Longitude Latitude X/Y
+
+4.Change getXpixel/getYpixel.
+
