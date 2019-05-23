@@ -1,4 +1,5 @@
 package projects.opentrain.israel_railways_pipeline;
+import com.projects.opentrain.gtfs_pipeline.Protos;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -17,6 +18,7 @@ public class CountLines {
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
 
   public static List<Routes> getRoutes(Path csvPath) {
+
     List<Routes> routes = new ArrayList<>();
     try {
       CSVParser parser =
@@ -32,20 +34,24 @@ public class CountLines {
           isHeader = false;
           continue;
         }
-        if (!record.get("agency_id").equals(ISRAEL_RAILWAYS_AGENCY_ID)) {
-          continue;
-        }
+
         Routes.Builder route = Routes.newBuilder();
         routes.add(
                 route
                         .setId(Integer.parseInt(record.get("id")))
-                        .addStopIds(Integer.parseInt(record.get("stop_ids")))
+                        .addStopIds(Integer.parseInt(record.get(parseStopIds("stop_ids"))))
                         .build());
       }
       return routes;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static ImmutableList<Integer> parseStopIds(String stopIds) {
+    ImmutableList.Builder<Integer> result = ImmutableList.builder();
+    // parse `stopIds` and add each value as item to `result`
+    return result.build();
   }
 
   public static void saveRoutes() {
@@ -57,6 +63,23 @@ public class CountLines {
       throw new RuntimeException(e);
     }
   }
+/*
+  public static ImmutableList<Integer> parseStopIds(String stopIds) {
+    ImmutableList.Builder<Integer> result = ImmutableList.builder();
+    // parse `stopIds` and add each value as item to `result`
+    return result.build();
+  }
+
+  public static void saveStops() {
+    try (FileOutputStream output = new FileOutputStream(stopsProtoAbsPath)) {
+      for (Protos.Stop stop : getStops(stopsAbsPath)) {
+        stop.writeDelimitedTo(output);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  */
 
 
   // Paths to the CSVs files
@@ -83,6 +106,8 @@ public class CountLines {
     tripsProtoAbsPath = args[7];
 
     saveRoutes();
+    //saveStops();
+    //saveTrips();
   }
 }
 
