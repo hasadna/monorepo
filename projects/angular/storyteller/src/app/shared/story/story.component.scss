@@ -1,3 +1,6 @@
+:host {
+  width: 100%;
+}
 .story {
   display: flex;
   padding: 20px 35px 20px 25px;
@@ -10,10 +13,7 @@
       $size: 80px;
       width: $size;
       height: $size;
-      >img {
-        width: $size;
-        height: $size;
-      }
+      position: relative;
     }
   }
   >.content {
@@ -50,6 +50,7 @@
     }
     >.screenshot {
       margin-top: $placeholder;
+      min-height: 300px;
       img {
         width: 100%;
         cursor: pointer;

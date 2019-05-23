@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  FeedComponent,
+  HomeComponent,
   UserInfoComponent,
   LoginComponent,
   SingleItemComponent,
@@ -19,7 +19,7 @@ import { SharedModule } from './shared';
   declarations: [
     AppComponent,
     UserInfoComponent,
-    FeedComponent,
+    HomeComponent,
     LoginComponent,
     SingleItemComponent,
   ],

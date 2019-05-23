@@ -1,7 +1,7 @@
 <div class="story card">
   <div class="user">
     <a [routerLink]="['/info', easyStory.email]">
-      <img src="/assets/default-avatar.png">
+      <user-avatar [url]="easyStory.imageURL"></user-avatar>
     </a>
   </div>
   <div class="content">
@@ -31,10 +31,13 @@
         {{ easyStory.note }}
       </a>
     </div>
-    <div class="screenshot" *ngIf="easyStory.screenshot">
+    <div class="screenshot" *ngIf="easyStory.screenshotName">
+      <mat-spinner [diameter]="30" *ngIf="isLoading"></mat-spinner>
       <img class="screenImage" 
-        [src]="'data:image/png;base64,' + easyStory.screenshot"
-        (click)="openScreenshot(easyStory.screenshot)" />
+        [src]="easyStory.screenshotURL"
+        (click)="openScreenshot()"
+        *ngIf="!isLoading && easyStory.screenshotURL"
+      />
     </div>
   </div>
 </div>

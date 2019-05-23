@@ -1,13 +1,5 @@
 <div class="page-container" *ngIf="!loadingService.isLoading">
   <div class="project-menu">
-    <div class="card menu-card">
-      <div class="avatar">
-        <user-avatar [url]="user.getImageUrl()"></user-avatar>
-      </div>
-      <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
-      <div class="hr"></div>
-      <div class="email">{{user.getEmail()}}</div>
-    </div>
     <project-select
       [projectIdList]="projectIdList"
       (selectEmitter)="filtersStories($event)"

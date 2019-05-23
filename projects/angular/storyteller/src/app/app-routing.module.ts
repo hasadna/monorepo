@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import {
-  FeedComponent,
+  HomeComponent,
   UserInfoComponent,
   LoginComponent,
   SingleItemComponent,
@@ -17,7 +17,7 @@ const appRoutes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     children: [
-      { path: 'home', component: FeedComponent },
+      { path: 'home', component: HomeComponent },
       { path: 'info/:email', component: UserInfoComponent },
       { path: 'single-item/:email/:storyId/:itemId', component: SingleItemComponent },
     ],

@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, Subject } from 'rxjs';
 
-import { Screenshot, User, Story } from '@/core/proto';
+import { User, Story } from '@/core/proto';
 import { FirebaseService, StoryService, LoadingService } from '@/core/services';
 import { EasyStory } from '@/shared';
 
 @Component({
-  selector: 'app-feed',
-  templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.scss'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
 })
-export class FeedComponent {
+export class HomeComponent {
   projectIdList: string[];
   easyStories: EasyStory[];
-  filteredEasyStories: EasyStory[];
+  filterChanges = new Subject<string>();
 
   constructor(
     private firebaseService: FirebaseService,
@@ -30,12 +29,12 @@ export class FeedComponent {
       return this.loadUserStories(user);
     });
     zip(...observableRequests).subscribe(easyStoriesBundle => {
-      this.easyStories = [];
-      for (const easyStories of easyStoriesBundle) {
-        this.easyStories.push(...easyStories);
+      const easyStories: EasyStory[] = [];
+      for (const easyStoriesGroup of easyStoriesBundle) {
+        easyStories.push(...easyStoriesGroup);
       }
-      this.storyService.sortStoriesByTime(this.easyStories);
-      this.filteredEasyStories = this.easyStories.slice();
+      this.storyService.sortStoriesByTime(easyStories);
+      this.easyStories = easyStories;
       this.loadingService.isLoading = false;
     });
   }
@@ -43,17 +42,9 @@ export class FeedComponent {
   // Loads stories of specific user
   loadUserStories(user: User): Observable<EasyStory[]> {
     return new Observable(observer => {
-      zip(
-        this.firebaseService.getUserStories(user.getEmail()),
-        this.firebaseService.getUserScreenshot(user.getEmail()),
-      ).subscribe(data => {
-        const stories: Story[] = this.storyService.getStories(data[0]);
-        const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
-        const easyStories: EasyStory[] = this.storyService.createEasyStories(
-          screenshots,
-          stories,
-          user,
-        );
+      this.firebaseService.getUserStories(user.getEmail()).subscribe(storyLists => {
+        const stories: Story[] = this.storyService.getStories(storyLists);
+        const easyStories: EasyStory[] = this.storyService.createEasyStories(stories, user);
         observer.next(easyStories);
       });
     });
@@ -66,10 +57,7 @@ export class FeedComponent {
     });
   }
 
-  // Filters stories by project id
-  loadProjectStories(projectId: string): void {
-    this.filteredEasyStories = (projectId !== 'all') ?
-      this.storyService.getFilteredStories(projectId, this.easyStories)
-      : this.easyStories.slice();
+  filtersStories(projectId: string): void {
+    this.filterChanges.next(projectId);
   }
 }
