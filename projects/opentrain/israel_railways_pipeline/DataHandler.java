@@ -39,7 +39,7 @@ public class CountLines {
         routes.add(
                 route
                         .setId(Integer.parseInt(record.get("id")))
-                        .addStopIds(Integer.parseInt(record.get(parseStopIds("stop_ids"))))
+                        .addAllStopIds(parseStopIds(record.get("stop_ids")))
                         .build());
       }
       return routes;
