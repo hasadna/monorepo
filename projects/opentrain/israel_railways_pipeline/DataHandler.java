@@ -63,6 +63,15 @@ public class CountLines {
       throw new RuntimeException(e);
     }
   }
+
+  //method to test the routes path
+  private static void printRoutes(String csvPath, int amountLinesToPrint){
+    List<Routes> routes = getRoutes(Paths.get(csvPath));
+    for (int i = 0; i < amountLinesToPrint; i++) {
+      System.out.println(routes.get(i));
+    }
+  }
+
 /*
   public static ImmutableList<Integer> parseStopIds(String stopIds) {
     ImmutableList.Builder<Integer> result = ImmutableList.builder();
@@ -106,6 +115,8 @@ public class CountLines {
     tripsProtoAbsPath = args[7];
 
     saveRoutes();
+    printRoutes("/home/dev/data_csv/routes.csv", 5);
+
     //saveStops();
     //saveTrips();
   }

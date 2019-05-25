@@ -9,8 +9,8 @@ checkstyle_test(
 
 java_binary(
     name = "israel_railways_pipeline",
-    srcs = ["CountLines.java"],
-    main_class = "projects.opentrain.israel_railways_pipeline.CountLines",
+    srcs = ["DataHandler.java"],
+    main_class = "projects.opentrain.israel_railways_pipeline.DataHandler",
     visibility = ["//visibility:public"],
     deps = [
         "//projects/opentrain/israel_railways_pipeline/common:common_java_proto",
