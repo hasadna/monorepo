@@ -1,5 +1,4 @@
 package projects.opentrain.israel_railways_pipeline;
-import com.projects.opentrain.gtfs_pipeline.Protos;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -12,8 +11,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import com.projects.opentrain.israel_railways_pipeline.Proto.Routes;
+import com.google.common.collect.ImmutableList;
 
-public class CountLines {
+public class DataHandler {
 
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
 
