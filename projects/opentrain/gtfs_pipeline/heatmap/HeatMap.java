@@ -56,7 +56,7 @@ public class HeatMap {
     this.tripsList.addAll(tripsList);
   }
 
-  public void createHeatMap(int stopId, String time) throws IOException {
+  public void createHeatMap(int stopId, String time) {
     /** time has format HH:MM:ss */
     for (Stop stop : stopsList) {
       if (stop.getStopId() == stopId) {
@@ -147,7 +147,7 @@ public class HeatMap {
 
     private void setStop(StopTime stopTime) {
       // From all stops class pick the chosen stop from stopsTime
-      // *to use longitude/latitude
+      // to use longitude/latitude
       for (Stop stopAround : stopsList) {
 
         if (stopAround.getStopId() == stopTime.getStopId()) {
@@ -157,8 +157,11 @@ public class HeatMap {
       }
     }
   }
-
-  // arrivalTime To Location by stops.latitude,stops.longitude make matrix of colors
+  /**
+   * Use arrivalTimeToLocation to test just the coloring matrix Visualize it with drawHeatMap
+   * method.
+   */
+  // Arrival time to location by stops.latitude,stops.longitude make matrix of colors
   private void arrivalTimeToLocation() {
     double maxLongitude = 0;
     double maxLatitude = 0;
@@ -384,13 +387,10 @@ public class HeatMap {
   private boolean inBorders(int x, int y) {
     // Not in the Sea area
     // y = -3.244698554·10-3 x2 - 5.987572519·10-1 x + 583.173052
-    if (y
+    return (y
         > -3.373851571 * (Math.pow(10, -3)) * (Math.pow(x, 2))
             - 1.457345683 * (Math.pow(10, -1)) * x
-            + 657.4869216) {
-      return true;
-    }
-    return false;
+            + 657.4869216);
   }
 
   public void drawHeatMapOnMap(String imagePath) {
