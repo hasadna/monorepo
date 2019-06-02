@@ -23,7 +23,7 @@ public class LawsuitSummaryFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    lawsuitActivity = (LawsuitActivity)getActivity();
+    lawsuitActivity = (LawsuitActivity) getActivity();
   }
 
   @Override
@@ -38,8 +38,7 @@ public class LawsuitSummaryFragment extends Fragment {
     // Pops share/save dialog
     shareSave.setOnClickListener(v -> lawsuitActivity.sharePdf());
     // Proceed to ClaimFragment
-    claimLawsuit.setOnClickListener(
-        v -> lawsuitActivity.viewPager.setCurrentItem(2, false));
+    claimLawsuit.setOnClickListener(v -> lawsuitActivity.viewPager.setCurrentItem(2, false));
 
     return rootView;
   }

@@ -22,13 +22,12 @@ public class LawsuitClaimFragment extends Fragment {
   TextView courtFax;
   TextView selectCourt;
 
-  public LawsuitClaimFragment() {
-  }
+  public LawsuitClaimFragment() {}
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    lawsuitActivity = (LawsuitActivity)getActivity();
+    lawsuitActivity = (LawsuitActivity) getActivity();
   }
 
   @Override
@@ -57,8 +56,7 @@ public class LawsuitClaimFragment extends Fragment {
 
     // If court had been chosen before, display court's details
     if (lawsuitActivity.selectedCourt != null) {
-      courtName.setText(
-          "בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
+      courtName.setText("בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
       courtAddress.setText(lawsuitActivity.selectedCourt.getAddress());
       courtFax.setText(lawsuitActivity.selectedCourt.getFax());
     }

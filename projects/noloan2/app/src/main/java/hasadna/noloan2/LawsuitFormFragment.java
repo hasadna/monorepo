@@ -28,7 +28,7 @@ public class LawsuitFormFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    lawsuitActivity = (LawsuitActivity)getActivity();
+    lawsuitActivity = (LawsuitActivity) getActivity();
   }
 
   @Override
@@ -45,8 +45,7 @@ public class LawsuitFormFragment extends Fragment {
     receivedDate.setText(lawsuitActivity.selectedSmsSpam.getReceivedAt());
     receivedDate.setOnClickListener(v -> displayDatePicker());
     if (lawsuitActivity.selectedCourt != null) {
-      selectCourt.setText(
-              "בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
+      selectCourt.setText("בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
     }
     selectCourt.setOnClickListener(v -> lawsuitActivity.displayCourtPicker(this));
 
@@ -70,7 +69,7 @@ public class LawsuitFormFragment extends Fragment {
 
     datePickerDialog =
         new DatePickerDialog(
-                lawsuitActivity,
+            lawsuitActivity,
             (datePicker, currentYear, currentMonth, currentDay) ->
                 receivedDate.setText(day + "/" + (month + 1) + "/" + year),
             year,

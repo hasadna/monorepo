@@ -95,7 +95,8 @@ public class LawsuitActivity extends AppCompatActivity {
     viewPager.setPagingEnabled(false);
   }
 
-  // TODO: Split usage of checkPermission from createOutputDir. Make as Thread waiting for result - then create dir.
+  // TODO: Split usage of checkPermission from createOutputDir. Make as Thread waiting for result -
+  // then create dir.
   // Flags 'permissionGranted" for results, creates output dir if granted.
   private void checkPermissions() {
     // Ask runtime permissions for devices running SDK > 22
@@ -104,40 +105,40 @@ public class LawsuitActivity extends AppCompatActivity {
       // Permission granted
       if ((ActivityCompat.checkSelfPermission(
               LawsuitActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-              == PackageManager.PERMISSION_GRANTED)) {
+          == PackageManager.PERMISSION_GRANTED)) {
         permissionGranted = true;
         createOutputDir();
       }
       // User denied permission before, show explanation dialog before requesting
       else {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
           new AlertDialog.Builder(this)
-                  .setTitle("Permission needed")
-                  .setMessage("File access permission is needed for creating lawsuit PDF.")
-                  .setPositiveButton(
-                          "ok",
-                          (dialog, which) ->
-                                  ActivityCompat.requestPermissions(
-                                          this,
-                                          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                          STORAGE_PERMISSION_CODE))
-                  .setNegativeButton(
-                          "cancel",
-                          (dialog, which) -> {
-                            Toast.makeText(this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
-                                    .show();
-                            dialog.dismiss();
-                          })
-                  .create()
-                  .show();
+              .setTitle("Permission needed")
+              .setMessage("File access permission is needed for creating lawsuit PDF.")
+              .setPositiveButton(
+                  "ok",
+                  (dialog, which) ->
+                      ActivityCompat.requestPermissions(
+                          this,
+                          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                          STORAGE_PERMISSION_CODE))
+              .setNegativeButton(
+                  "cancel",
+                  (dialog, which) -> {
+                    Toast.makeText(this, "Permission is needed to create PDF.", Toast.LENGTH_LONG)
+                        .show();
+                    dialog.dismiss();
+                  })
+              .create()
+              .show();
 
         } else {
           ActivityCompat.requestPermissions(
-                  this,
-                  new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                  STORAGE_PERMISSION_CODE);
+              this,
+              new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+              STORAGE_PERMISSION_CODE);
         }
       }
       // Devices running SDK <= 22, permissions granted on installation
@@ -150,12 +151,12 @@ public class LawsuitActivity extends AppCompatActivity {
   // Create a folder for generated PDFs (external storage)
   private void createOutputDir() {
     File directory =
-            new File(
-                    Paths.get(
-                            Environment.getExternalStorageDirectory().getPath(),
-                            getString(R.string.app_name),
-                            getString(R.string.output_folder_name))
-                            .toString());
+        new File(
+            Paths.get(
+                    Environment.getExternalStorageDirectory().getPath(),
+                    getString(R.string.app_name),
+                    getString(R.string.output_folder_name))
+                .toString());
     if (!directory.exists()) {
       directory.mkdirs();
     }

@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-
 // Extension for disabling swipe motion between fragments
 public class LawsuitViewPager extends ViewPager {
 
@@ -23,7 +22,7 @@ public class LawsuitViewPager extends ViewPager {
 
   @Override
   public boolean onInterceptTouchEvent(MotionEvent event) {
-      return this.swipeable && super.onInterceptTouchEvent(event);
+    return this.swipeable && super.onInterceptTouchEvent(event);
   }
 
   public void setPagingEnabled(boolean enabled) {
