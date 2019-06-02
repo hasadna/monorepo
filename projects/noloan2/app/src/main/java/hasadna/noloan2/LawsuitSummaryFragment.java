@@ -1,25 +1,20 @@
 package hasadna.noloan2;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import java.io.File;
 
 import noloan.R;
 
 public class LawsuitSummaryFragment extends Fragment {
   private static final String TAG = "LawsuitSummaryFragment";
 
-  Button shareSaveButton;
-  Button claimButton;
+  LawsuitActivity lawsuitActivity;
+  Button shareSave;
+  Button claimLawsuit;
 
   public LawsuitSummaryFragment() {
     // Required empty public constructor
@@ -28,6 +23,7 @@ public class LawsuitSummaryFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    lawsuitActivity = (LawsuitActivity)getActivity();
   }
 
   @Override
@@ -36,14 +32,14 @@ public class LawsuitSummaryFragment extends Fragment {
     ViewGroup rootView =
         (ViewGroup) inflater.inflate(R.layout.lawsuit_fragment_summary, container, false);
 
-    shareSaveButton = rootView.findViewById(R.id.button_claimFragment_shareSave);
-    claimButton = rootView.findViewById(R.id.button_claimFragment_claim);
+    shareSave = rootView.findViewById(R.id.button_claimFragment_shareSave);
+    claimLawsuit = rootView.findViewById(R.id.button_claimFragment_claim);
 
     // Pops share/save dialog
-    shareSaveButton.setOnClickListener(v -> ((LawsuitActivity) getActivity()).sharePdf());
+    shareSave.setOnClickListener(v -> lawsuitActivity.sharePdf());
     // Proceed to ClaimFragment
-    claimButton.setOnClickListener(
-        v -> ((LawsuitActivity) getActivity()).viewPager.setCurrentItem(2, false));
+    claimLawsuit.setOnClickListener(
+        v -> lawsuitActivity.viewPager.setCurrentItem(2, false));
 
     return rootView;
   }

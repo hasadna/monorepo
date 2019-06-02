@@ -4,14 +4,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class FragmentPageAdapter extends FragmentPagerAdapter {
+public class LawsuitFragmentAdapter extends FragmentPagerAdapter {
 
-  public FragmentPageAdapter(FragmentManager fragmentManager) {
+  public LawsuitFragmentAdapter(FragmentManager fragmentManager) {
     super(fragmentManager);
   }
 
-  @Override
   // Choose a fragment to display on lawsuit main page
+  @Override
   public Fragment getItem(int position) {
     Fragment fragment = null;
     switch (position) {

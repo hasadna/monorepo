@@ -9,7 +9,7 @@ option java_package = "hasadna.noloan2.protobuf";
 option java_outer_classname = "LawsuitProto";
 
 message Lawsuit {
-    string privateName = 1;
+    string firstName = 1;
     string lastName = 2;
     string userId = 3;
     string userAddress = 4;

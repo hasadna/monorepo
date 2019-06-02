@@ -1,6 +1,5 @@
 package hasadna.noloan2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,26 +9,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import javax.annotation.Nullable;
 
 import noloan.R;
 
 public class LawsuitClaimFragment extends Fragment {
   private static final String TAG = "LawsuitClaimFragment";
 
-  Button sendOnline;
+  LawsuitActivity lawsuitActivity;
+  Button claimOnline;
   TextView courtName;
   TextView courtAddress;
   TextView courtFax;
   TextView selectCourt;
 
   public LawsuitClaimFragment() {
-    // Required empty public constructor
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    lawsuitActivity = (LawsuitActivity)getActivity();
   }
 
   @Override
@@ -39,8 +38,8 @@ public class LawsuitClaimFragment extends Fragment {
         (ViewGroup) inflater.inflate(R.layout.lawsuit_fragment_claim, container, false);
 
     // Link user to נט המשפט
-    sendOnline = rootView.findViewById(R.id.button_claimOnline);
-    sendOnline.setOnClickListener(
+    claimOnline = rootView.findViewById(R.id.button_claimOnline);
+    claimOnline.setOnClickListener(
         v -> {
           Uri uri = Uri.parse(getString(R.string.lawsuit_claim_online_website_link));
           Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -54,14 +53,14 @@ public class LawsuitClaimFragment extends Fragment {
 
     // Choose court
     selectCourt = rootView.findViewById(R.id.textView_ClaimFragment_selectCourt);
-    selectCourt.setOnClickListener(v -> ((LawsuitActivity) getActivity()).displayCourtPicker(this));
+    selectCourt.setOnClickListener(v -> lawsuitActivity.displayCourtPicker(this));
 
     // If court had been chosen before, display court's details
-    if (((LawsuitActivity) getActivity()).selectedCourt != null) {
+    if (lawsuitActivity.selectedCourt != null) {
       courtName.setText(
-          "בית המשפט לתביעות קטנות - " + ((LawsuitActivity) getActivity()).selectedCourt.getName());
-      courtAddress.setText(((LawsuitActivity) getActivity()).selectedCourt.getAddress());
-      courtFax.setText(((LawsuitActivity) getActivity()).selectedCourt.getFax());
+          "בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
+      courtAddress.setText(lawsuitActivity.selectedCourt.getAddress());
+      courtFax.setText(lawsuitActivity.selectedCourt.getFax());
     }
 
     return rootView;

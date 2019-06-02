@@ -18,15 +18,17 @@ import noloan.R;
 public class LawsuitFormFragment extends Fragment {
   private static final String TAG = "LawsuitFormFragment";
 
+  LawsuitActivity lawsuitActivity;
   EditText receivedDate;
   DatePickerDialog datePickerDialog;
   Calendar calendar;
-  Button buttonNext;
+  Button confirmForm;
   TextView selectCourt;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    lawsuitActivity = (LawsuitActivity)getActivity();
   }
 
   @Override
@@ -37,23 +39,23 @@ public class LawsuitFormFragment extends Fragment {
 
     receivedDate = rootView.findViewById(R.id.EditText_receivedSpamDate);
     selectCourt = rootView.findViewById(R.id.textView_selectCourt_FormFragment);
-    buttonNext = rootView.findViewById(R.id.button_formFragment_next);
+    confirmForm = rootView.findViewById(R.id.button_formFragment_next);
 
     // If court was already selected, display its name
-    if (((LawsuitActivity) getActivity()).selectedCourt != null) {
-      selectCourt.setText(
-          "בית המשפט לתביעות קטנות - " + ((LawsuitActivity) getActivity()).selectedCourt.getName());
-    }
-    selectCourt.setOnClickListener(v -> ((LawsuitActivity) getActivity()).displayCourtPicker(this));
-    receivedDate.setText(((LawsuitActivity) getActivity()).selectedSmsSpam.getReceivedAt());
+    receivedDate.setText(lawsuitActivity.selectedSmsSpam.getReceivedAt());
     receivedDate.setOnClickListener(v -> displayDatePicker());
+    if (lawsuitActivity.selectedCourt != null) {
+      selectCourt.setText(
+              "בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
+    }
+    selectCourt.setOnClickListener(v -> lawsuitActivity.displayCourtPicker(this));
 
     // Create PDF and proceed to SummaryFragment
-    buttonNext.setOnClickListener(
+    confirmForm.setOnClickListener(
         v -> {
           createLawsuitProto();
-          ((LawsuitActivity) getActivity()).createPdf();
-          ((LawsuitActivity) getActivity()).viewPager.setCurrentItem(1, false);
+          lawsuitActivity.createPdf();
+          lawsuitActivity.viewPager.setCurrentItem(1, false);
         });
 
     return rootView;
@@ -68,7 +70,7 @@ public class LawsuitFormFragment extends Fragment {
 
     datePickerDialog =
         new DatePickerDialog(
-            getActivity(),
+                lawsuitActivity,
             (datePicker, currentYear, currentMonth, currentDay) ->
                 receivedDate.setText(day + "/" + (month + 1) + "/" + year),
             year,
@@ -79,10 +81,10 @@ public class LawsuitFormFragment extends Fragment {
 
   // Update LawsuitProto with form's fields
   private void createLawsuitProto() {
-    ((LawsuitActivity) getActivity()).lawsuitProto =
+    lawsuitActivity.lawsuitProto =
         Lawsuit.newBuilder()
             // User
-            .setPrivateName(
+            .setFirstName(
                 ((EditText) getView().findViewById(R.id.userPrivateName)).getText().toString())
             .setLastName(
                 ((EditText) getView().findViewById(R.id.userLastName)).getText().toString())
