@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     // Filling the recycler
     RecyclerView recycler = findViewById(R.id.recycler_view);
-    SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(messages);
+    SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(spam);
     recycler.setAdapter(adapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
     TextView statusTitle = findViewById(R.id.status_lawsuit);
