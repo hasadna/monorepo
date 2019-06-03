@@ -95,7 +95,8 @@ public class LawsuitActivity extends AppCompatActivity {
     viewPager.setPagingEnabled(false);
   }
 
-  // TODO: Split usage of checkPermission from createOutputDir. Make as Thread waiting for result -
+  // TODO: Split usage of checkPermission from createOutputDir. Perhaps make as a Thread waiting for
+  // result -
   // then create dir.
   // Flags 'permissionGranted" for results, creates output dir if granted.
   private void checkPermissions() {
@@ -148,6 +149,19 @@ public class LawsuitActivity extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (requestCode == STORAGE_PERMISSION_CODE) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        permissionGranted = true;
+        createOutputDir();
+      } else {
+        Toast.makeText(this, "Permission is needed to create PDF.", Toast.LENGTH_LONG).show();
+      }
+    }
+  }
+
   // Create a folder for generated PDFs (external storage)
   private void createOutputDir() {
     File directory =
@@ -160,6 +174,26 @@ public class LawsuitActivity extends AppCompatActivity {
     if (!directory.exists()) {
       directory.mkdirs();
     }
+  }
+
+  // TODO: Change courtHouses to prototxt
+  public ArrayList<Court> initCourts() {
+    ArrayList<Court> courts = new ArrayList<>(28);
+    String[] courtList = getResources().getStringArray(R.array.courts_detailed);
+    String[] courtDetail;
+
+    for (int i = 0; i < courtList.length; i++) {
+      courtDetail = courtList[i].split("\\|");
+      Court court =
+          Court.newBuilder()
+              .setName(courtDetail[0])
+              .setAddress(courtDetail[1])
+              .setFax(courtDetail[2])
+              .setWebsite(courtDetail[3])
+              .build();
+      courts.add(court);
+    }
+    return courts;
   }
 
   // Save PDF to device's external storage
@@ -333,47 +367,15 @@ public class LawsuitActivity extends AppCompatActivity {
   }
 
   @Override
-  public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    if (requestCode == STORAGE_PERMISSION_CODE) {
-      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        permissionGranted = true;
-        createOutputDir();
-      } else {
-        Toast.makeText(this, "Permission is needed to create PDF.", Toast.LENGTH_LONG).show();
-      }
-    }
-  }
-
-  @Override
   public void onBackPressed() {
     if (viewPager.getCurrentItem() == 0) {
       // If the user is currently looking at the first page, allow the system to handle the
-      // Back button_blue. This calls finish() on this activity and pops the back stack.
+      // Back button. This calls finish() on this activity and pops the back stack.
       super.onBackPressed();
     } else {
       // Otherwise, select the previous step.
       viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
     }
-  }
-
-  public ArrayList<Court> initCourts() {
-    ArrayList<Court> courts = new ArrayList<>(28);
-    String[] courtList = getResources().getStringArray(R.array.courts_detailed);
-    String[] courtDetail;
-
-    for (int i = 0; i < courtList.length; i++) {
-      courtDetail = courtList[i].split("\\|");
-      Court court =
-          Court.newBuilder()
-              .setName(courtDetail[0])
-              .setAddress(courtDetail[1])
-              .setFax(courtDetail[2])
-              .setWebsite(courtDetail[3])
-              .build();
-      courts.add(court);
-    }
-    return courts;
   }
 }
 
