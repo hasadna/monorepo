@@ -35,11 +35,6 @@
         <item name="android:layoutDirection">rtl</item>
     </style>
 
-    <style name="LawsuitFormTitle" >
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorTextGrey3</item>
-    </style>
 
     <style name="ListFrom" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -72,4 +67,52 @@
         <item name="android:paddingRight">7dp</item>"
         <item name="android:textColor">@color/colorGreyBackground</item>"
     </style>
+
+    // Lawsuit activity, fragments
+
+    <style name="LawsuitTopBar">
+        <item name="android:layout_marginVertical">5dp</item>
+
+    </style>
+    <style name="LawsuitFragmentTitle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/colorTextGrey3</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="LawsuitFormFragmentSubTitle" >
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/colorTextGrey3</item>
+    </style>
+    <style name="LawsuitThirdFragmentSubTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="LawsuitThirdFragmentSubTitleSmall">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="LawsuitThirdFragment_subTitlePrimary" parent="LawsuitFragmentTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
 </resources>
