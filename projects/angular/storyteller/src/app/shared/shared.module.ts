@@ -10,6 +10,8 @@ import { ProjectSelectComponent } from './project-select';
 import { HeaderComponent } from './header';
 import { ScreenshotDialogComponent } from './screenshot-dialog';
 import { LoadingComponent } from './loading';
+import { FeedComponent } from './feed';
+import { AvatarComponent } from './avatar';
 
 const ExportDeclarations = [
   StoryComponent,
@@ -17,6 +19,8 @@ const ExportDeclarations = [
   HeaderComponent,
   ScreenshotDialogComponent,
   LoadingComponent,
+  FeedComponent,
+  AvatarComponent,
 ];
 const ExportModules = [
   FormsModule,

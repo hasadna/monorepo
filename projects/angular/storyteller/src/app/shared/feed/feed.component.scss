@@ -1,0 +1,15 @@
+:host {
+  width: 100%;
+}
+.feed {
+  app-story {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .align-container {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+}

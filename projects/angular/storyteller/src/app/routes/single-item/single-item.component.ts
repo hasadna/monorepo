@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { zip } from 'rxjs';
 
-import { Screenshot, User, Story } from '@/core/proto';
+import { User, Story } from '@/core/proto';
 import {
   FirebaseService,
   NotificationService,
@@ -37,19 +36,11 @@ export class SingleItemComponent {
   }
 
   loadStories(user: User): void {
-    zip(
-      this.firebaseService.getUserStories(user.getEmail()),
-      this.firebaseService.getUserScreenshot(user.getEmail()),
-    ).subscribe(data => {
-      const stories: Story[] = this.storyService.getStories(data[0]);
+    this.firebaseService.getUserStories(user.getEmail()).subscribe(storyLists => {
+      const stories: Story[] = this.storyService.getStories(storyLists);
       const story: Story = this.getStory(stories);
-      const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
       if (!this.isCrashError) {
-        const easyStories: EasyStory[] = this.storyService.createEasyStoryItemList(
-          screenshots,
-          story,
-          user,
-        );
+        const easyStories: EasyStory[] = this.storyService.createEasyStoryItemList(story, user);
         this.easyStory = this.getEasyStory(easyStories);
         this.loadingService.isLoading = false;
       }

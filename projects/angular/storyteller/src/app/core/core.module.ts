@@ -8,6 +8,7 @@ import {
   ScreenService,
   NotificationService,
   LoadingService,
+  ScrollService,
 } from './services';
 
 @NgModule({
@@ -19,6 +20,7 @@ import {
     ScreenService,
     NotificationService,
     LoadingService,
+    ScrollService,
   ],
 })
 export class CoreModule { }
