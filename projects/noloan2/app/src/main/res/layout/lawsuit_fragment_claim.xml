@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LawsuitThirdSummaryFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp">
+
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/LawsuitThirdFragmentSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
+            android:text="הגשה מקוונת"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_claimOnline_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/claimFragment_claimOnline_description_text"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="4dp"
+
+            android:text="יש להזדהות בעזרת 2 מבין שלושת אמצעי הזיהוי הבאים\n תעודת זהות /דרכון ישראלי/כרטיס אשראי"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_claimOnline_description" />
+
+        <TextView
+            android:id="@+id/textView_titleAgra"
+            style="@style/LawsuitThirdFragmentSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="אגרה"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text='50 ש\"ח עבור תביעה של עד 5,000 ש"ח'
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_titleAgra" />
+
+        <Button
+            android:id="@+id/button_claimOnline"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+
+            android:layout_marginStart="8dp"
+
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_blue"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            android:text="@string/claimFragment_claimOnline_button_toWebSite_text"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout_claimFaxAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_claimOnline">
+
+            <TextView
+                style="@style/LawsuitThirdFragmentSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:text="הגשה בדואר / בפקס"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout_selectedCourt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView_ClaimFragment_selectCourt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/formFragment_button_chooseCourt_text"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:id="@+id/textView_ClaimFragment_courtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView_ClaimFragment_courtFax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textView_ClaimFragment_courtAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
+
+
+
+
+
+
+
+     <!--   <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp"
+            >
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayout_thirdFragment_sendOptions"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_sendTitle"
+                            style="@style/LawsuitThirdFragment_subTitlePrimary"
+                            android:text="@string/thirdFragment_sendOption_title_text" />
+
+                        <LinearLayout
+                            android:id="@+id/LinearLayout_thirdFragment_sendOption_online"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            &lt;!&ndash; <TextView
+                        android:id="@+id/textView_sendOption_onlineTitle"
+                        android:text="@string/thirdFragment_sendOption_online_text"
+                        style="@style/LawsuitThirdFragmentSubTitleSmall" />&ndash;&gt;
+
+                            <TextView
+                                android:id="@+id/textView_sendOption_onlineDescription_firstParagraph"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_onlineDescription_firstParagraph" />
+
+                            <TextView
+                                android:id="@+id/textView_sendOption_requiredId_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_onlineExplanation_text"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/textView_sendOption_requiredIds"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_onlineRequiredIds_text"
+                                android:textAlignment="center" />
+
+                            <Button
+                                android:id="@+id/button_sendOnline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/thirdFragment_sendOnline_button_text" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/LinearLayout_thirdFragment_sendOption_faxMail"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="18dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_sendOption_faxMailTitle"
+                                style="@style/LawsuitThirdFragmentSubTitleSmall"
+                                android:text="@string/thirdFragment_sendOption_faxAddress_text" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_faxMailDescription" />
+
+                            <LinearLayout
+                                android:id="@+id/LinearLayout_sendOption_faxAddress_court"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView_thirdFragment_courtName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="בית המשפט לתביעות קטנות - אילת"
+                                    android:textAlignment="center"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/textView_thirdFragment_courtAddress"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="כתובת: מורך יותם 3 , אילת"
+
+                                    android:textAlignment="center" />
+
+                                &lt;!&ndash;                        <TextView
+                            android:id="@+id/textView_thirdFragment_courtPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/court_phone_title_text" />&ndash;&gt;
+
+                                <TextView
+                                    android:id="@+id/textView_thirdFragment_courtFax"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="פקס: 08-6362673"
+
+                                    android:textAlignment="center" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayout_thirdFragment_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_paymentTitle"
+                            style="@style/LawsuitThirdFragment_subTitlePrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdFragment_payment_title_text" />
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_paymentDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdFragment_payment_description" />
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_paymentExplanation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            android:text="@string/thirdFragment_payment_explanation" />
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_paymentDescription2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdFragment_payment_description2" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+
+        </LinearLayout>-->
+
+
+
+
+
+    <!--
+           &lt;!&ndash; <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView_thirdFragment_title"
+                    style="@style/LawsuitFragmentTitle"
+                    android:text="@string/thirdFragment_title_text" />
+
+                <TextView
+                    android:id="@+id/textView_thirdFragment_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/thirdFragment_description_text"
+                    android:textAlignment="center" />
+
+            </LinearLayout>&ndash;&gt;
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_pdfSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+                &lt;!&ndash;
+
+                <TextView
+                    android:id="@+id/textView_pdfSummary_title"
+                    style="@style/LawsuitFragmentSubTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thirdFragment_pdf_title_text" />
+    &ndash;&gt;
+
+                <TextView
+                    android:id="@+id/textView_pdfSummary_title"
+                    style="@style/LawsuitThirdFragmentSubTitle"
+                    android:text="כתב התביעה נוצר!" />
+
+                <TextView
+                    android:id="@+id/TextView_pdfSummary_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/thirdFragment_pdf_description_text"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+    &lt;!&ndash;
+                    <TextView
+                        android:id="@+id/textView_send_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/thirdFragment_sendOption_title_text"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />&ndash;&gt;
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/LawsuitThirdFragmentSubTitle"
+                        android:text="מה הלאה?" />
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayout_sendOption_faxAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_sendOption_faxAddress_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdFragment_sendOption_faxAddress_text"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <LinearLayout
+                            android:id="@+id/LinearLayout_sendOption_faxAddress_court"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_courtName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="בית המשפט לתביעות קטנות - אילת"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_courtAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="כתובת: מורך יותם 3 , אילת" />
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_courtPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/court_phone_title_text" />
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_courtFax"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="פקס: 08-6362673" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayout_sendOption_online"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView_thirdFragment_sendOption_faxAddress_title2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdFragment_sendOption_online_text"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_sendOption_online_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_onlineDescription_text" />
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_sendOption_onlineDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:text="@string/thirdFragment_sendOption_onlineExplenation_text" />
+
+                            <TextView
+                                android:id="@+id/textView_thirdFragment_requiredIds"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/thirdFragment_sendOption_onlineRequiredIds_text" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>-->
