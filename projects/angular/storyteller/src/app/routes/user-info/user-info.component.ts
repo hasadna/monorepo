@@ -19,7 +19,6 @@ import { EasyStory } from '@/shared';
 export class UserInfoComponent {
   projectIdList: string[];
   easyStories: EasyStory[];
-  filteredEasyStories: EasyStory[];
   user: User;
   email: string;
   filterChanges = new Subject<string>();
@@ -42,7 +41,6 @@ export class UserInfoComponent {
       const stories: Story[] = this.storyService.getStories(storyLists);
       this.easyStories = this.storyService.createEasyStories(stories, this.user);
       this.storyService.sortStoriesByTime(this.easyStories);
-      this.filteredEasyStories = this.easyStories.slice();
       this.loadingService.isLoading = false;
     });
   }

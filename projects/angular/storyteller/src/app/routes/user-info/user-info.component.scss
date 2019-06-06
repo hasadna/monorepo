@@ -1,3 +1,27 @@
+@import 'media';
+
+.user-info-small {
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+  display: flex;
+  >.avatar {
+    position: relative;
+  }
+  >.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    >.name {
+      font-weight: bold;
+      color: #4e4e4e;
+    }
+    >.email {
+      color: #4e4e4e;
+    }
+  }
+}
 .page-container {
   >.project-menu {
     >.card {
