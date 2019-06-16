@@ -1,4 +1,4 @@
-package hasadna.noloan.Lawsuit.fragments;
+package hasadna.noloan.lawsuit.fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.util.Calendar;
 
-import hasadna.noloan.Lawsuit.LawsuitActivity;
+import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import noloan.R;
 

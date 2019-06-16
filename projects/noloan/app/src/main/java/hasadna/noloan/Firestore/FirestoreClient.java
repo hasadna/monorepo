@@ -1,4 +1,4 @@
-package hasadna.noloan.Firestore;
+package hasadna.noloan.firestore;
 
 import android.util.Base64;
 

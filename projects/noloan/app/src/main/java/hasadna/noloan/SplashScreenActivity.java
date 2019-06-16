@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.Firestore.FirestoreClient;
+import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SpamList;
 import noloan.R;
 

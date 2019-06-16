@@ -1,4 +1,4 @@
-package hasadna.noloan.Firestore;
+package hasadna.noloan.firestore;
 
 // TODO need to be deleted
 // For storing proto type to Firestore

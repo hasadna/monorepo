@@ -1,4 +1,4 @@
-package hasadna.noloan.Lawsuit;
+package hasadna.noloan.lawsuit;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

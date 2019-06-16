@@ -1,12 +1,12 @@
-package hasadna.noloan.Lawsuit;
+package hasadna.noloan.lawsuit;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import hasadna.noloan.Lawsuit.fragments.LawsuitClaimFragment;
-import hasadna.noloan.Lawsuit.fragments.LawsuitFormFragment;
-import hasadna.noloan.Lawsuit.fragments.LawsuitSummaryFragment;
+import hasadna.noloan.lawsuit.fragments.LawsuitClaimFragment;
+import hasadna.noloan.lawsuit.fragments.LawsuitFormFragment;
+import hasadna.noloan.lawsuit.fragments.LawsuitSummaryFragment;
 
 public class LawsuitFragmentAdapter extends FragmentPagerAdapter {
 

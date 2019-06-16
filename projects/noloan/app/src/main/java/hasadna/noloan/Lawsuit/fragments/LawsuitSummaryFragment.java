@@ -1,4 +1,4 @@
-package hasadna.noloan.Lawsuit.fragments;
+package hasadna.noloan.lawsuit.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import hasadna.noloan.Lawsuit.LawsuitActivity;
+import hasadna.noloan.lawsuit.LawsuitActivity;
 import noloan.R;
 
 public class LawsuitSummaryFragment extends Fragment {

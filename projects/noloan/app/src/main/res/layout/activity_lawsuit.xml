@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hasadna.noloan.Lawsuit.LawsuitActivity">
+    tools:context="hasadna.noloan.lawsuit.LawsuitActivity">
 
-<hasadna.noloan.Lawsuit.LawsuitViewPager
+<hasadna.noloan.lawsuit.LawsuitViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package hasadna.noloan.Lawsuit;
+package hasadna.noloan.lawsuit;
 
 import android.Manifest;
 import android.content.Intent;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-import hasadna.noloan.Lawsuit.fragments.LawsuitClaimFragment;
+import hasadna.noloan.lawsuit.fragments.LawsuitClaimFragment;
 import hasadna.noloan.protobuf.CourtProto.Court;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;

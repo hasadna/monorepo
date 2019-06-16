@@ -1,4 +1,4 @@
-package hasadna.noloan.Lawsuit.fragments;
+package hasadna.noloan.lawsuit.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hasadna.noloan.Lawsuit.LawsuitActivity;
+import hasadna.noloan.lawsuit.LawsuitActivity;
 import noloan.R;
 
 public class LawsuitClaimFragment extends Fragment {
