@@ -1,18 +1,19 @@
-import { Component, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ScreenshotDialogComponent } from '@/shared/screenshot-dialog';
+import { FirebaseService } from '@/core/services';
 
 export interface EasyStory {
   storyId: string;
   itemId: string;
   username: string;
+  imageURL: string;
   email: string;
   project: string;
   timestamp: number;
   oneliner: string;
   note: string;
-  screenshot: string;
+  screenshotName: string;
+  screenshotURL?: string;
 }
 
 @Component({
@@ -20,14 +21,30 @@ export interface EasyStory {
   templateUrl: './story.component.html',
   styleUrls: ['./story.component.scss'],
 })
-export class StoryComponent {
+export class StoryComponent implements OnInit {
+  isLoading: boolean = true;
   @Input() easyStory: EasyStory;
 
-  constructor(private matDialog: MatDialog) { }
+  constructor(
+    private firebaseService: FirebaseService,
+  ) { }
+
+  ngOnInit() {
+    this.firebaseService.getScreenshotURL(this.easyStory.screenshotName).subscribe(url => {
+      this.easyStory.screenshotURL = url;
+      const screenshot = new Image();
+      screenshot.onload = () => {
+        // Screenshot loaded
+        this.isLoading = false;
+      };
+      screenshot.src = url;
+    }, () => {
+      // Screenshot not found
+      this.isLoading = false;
+    });
+  }
 
   openScreenshot(): void {
-    this.matDialog.open(ScreenshotDialogComponent, {
-      data: this.easyStory.screenshot,
-    });
+    window.open(this.easyStory.screenshotURL, '_blank');
   }
 }

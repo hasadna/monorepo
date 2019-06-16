@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { config } from './config';
 
@@ -11,18 +12,16 @@ import { config } from './config';
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
     AngularFireAuthModule,
-
+    AngularFireStorageModule,
   ],
-  declarations: [],
   providers: [
     AngularFireDatabase,
     AngularFireAuth,
-    { provide: FirestoreSettingsToken, useValue: {} },
   ],
   exports: [
     AngularFirestoreModule,
     AngularFireAuthModule,
-
+    AngularFireStorageModule,
   ],
 })
 export class FirebaseModule { }
