@@ -59,7 +59,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.displayStories();
   }
 
-  // Puts limited about of stories to a variable, which is used in html template
+  // Puts limited amount of stories to a variable, which is used in html template
   private displayStories(): void {
     this.displayedAmount = Math.min(this.displayedAmount, this.filteredEasyStories.length);
     this.displayedEasyStories = this.filteredEasyStories.slice(0, this.displayedAmount);
