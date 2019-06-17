@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 
-import { ScrollService, ScreenService } from '@/core/services';
+import { ScrollService, ScreenService, HeaderService } from '@/core/services';
 import { EasyStory } from '@/shared';
 
 const DEFAULT_STORIES_AMOUNT = 4;
@@ -23,6 +23,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   constructor(
     private scrollService: ScrollService,
     private screenService: ScreenService,
+    private headerService: HeaderService,
   ) {
     // Detect user scrolling
     this.scrollSubscription = this.scrollService.scroll.subscribe(scrollTop => {
@@ -38,6 +39,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.filteredEasyStories = this.easyStories.slice();
     this.displayStories();
+    this.filtersStories(this.headerService.selectedProjectId);
     this.filterSubscription = this.filterChanges.subscribe(projectId => {
       this.filtersStories(projectId);
     });
@@ -57,6 +59,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.displayStories();
   }
 
+  // Puts limited amount of stories to a variable, which is used in html template
   private displayStories(): void {
     this.displayedAmount = Math.min(this.displayedAmount, this.filteredEasyStories.length);
     this.displayedEasyStories = this.filteredEasyStories.slice(0, this.displayedAmount);

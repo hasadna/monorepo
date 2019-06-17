@@ -1,20 +1,35 @@
-<div class="page-container" *ngIf="!loadingService.isLoading">
-  <div class="project-menu">
-    <div class="card menu-card">
-      <div class="avatar">
-        <user-avatar [url]="user.getImageUrl()"></user-avatar>
-      </div>
+<ng-container *ngIf="!loadingService.isLoading">
+  <div class="user-info-small media-lg-hidden">
+    <div class="avatar">
+      <user-avatar [url]="user.getImageUrl()"></user-avatar>
+    </div>
+    <div class="info">
       <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
-      <div class="hr"></div>
       <div class="email">{{user.getEmail()}}</div>
     </div>
-    <project-select
-      [projectIdList]="projectIdList"
-      (selectEmitter)="filtersStories($event)"
-    ></project-select>
   </div>
-  <story-feed
-    [easyStories]="easyStories"
-    [filterChanges]="filterChanges"
-  ></story-feed>
-</div>
+  <div class="page-container">
+    <div class="project-menu media-lg-visible">
+      <div class="card menu-card">
+        <div class="avatar">
+          <user-avatar [url]="user.getImageUrl()"></user-avatar>
+        </div>
+        <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
+        <div class="hr"></div>
+        <div class="email">{{user.getEmail()}}</div>
+      </div>
+      <project-select-card
+        [projectIdList]="projectIdList"
+        (selectEmitter)="filtersStories($event)"
+      ></project-select-card>
+    </div>
+    <story-feed
+      [easyStories]="easyStories"
+      [filterChanges]="filterChanges"
+    ></story-feed>
+  </div>
+  <project-select-popup
+    [projectIdList]="projectIdList"
+    (selectEmitter)="filtersStories($event)"
+  ></project-select-popup>
+</ng-container>

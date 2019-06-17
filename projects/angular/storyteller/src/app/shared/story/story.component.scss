@@ -1,18 +1,17 @@
+@import 'media';
+
 :host {
   width: 100%;
 }
 .story {
   display: flex;
-  padding: 20px 35px 20px 25px;
   color: #4e4e4e;
+  cursor: pointer;
+  outline: none;
   >.user {
     display: flex;
     justify-content: center;
-    padding-right: 25px;
     >a {
-      $size: 80px;
-      width: $size;
-      height: $size;
       position: relative;
     }
   }
@@ -21,9 +20,12 @@
     >.header {
       display: flex;
       >.info {
-        font-size: 18px;
+        margin-right: 10px;
         >.author {
           font-weight: bold;
+          &:hover {
+            text-decoration: underline;
+          }
         }
         >.project {
           font-weight: bold;
@@ -34,23 +36,11 @@
         display: flex;
         flex: 1;
         justify-content: flex-end;
-        font-size: 16px;
         font-weight: 600;
         color: #767676;
       }
     }
-    $placeholder: 17px;
-    >.oneliner {
-      margin-top: $placeholder;
-      font-size: 17px;
-    }
-    >.note {
-      margin-top: $placeholder;
-      font-size: 16px;
-    }
     >.screenshot {
-      margin-top: $placeholder;
-      min-height: 300px;
       img {
         width: 100%;
         cursor: pointer;

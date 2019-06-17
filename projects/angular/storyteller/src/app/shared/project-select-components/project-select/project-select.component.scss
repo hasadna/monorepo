@@ -1,0 +1,40 @@
+.all {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 6px 22px;
+  &:hover {
+    padding: 4px 20px;
+  }
+}
+.project-id-list {
+  margin-top: 30px;
+  .select-button {
+    font-size: 18px;
+    font-weight: 600;
+    &:hover {
+      color: #01d4d1;
+    }
+  }
+}
+.select-button {
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 5px;
+  border-radius: 21px;
+  user-select: none;
+  &:hover {
+    border: solid 2px #01d4d1;
+    color: #01d4d1;
+  }
+}
+.sub-select {
+  padding: 9px 13px;
+  &:hover {
+    padding: 7px 11px;
+  }
+}
+.selected {
+  color: white !important;
+  cursor: default;
+  background: #01d4d1;
+}

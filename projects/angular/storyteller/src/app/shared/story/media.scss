@@ -1,0 +1,71 @@
+@import 'styles/variables';
+
+@media only screen and (max-width: $xs) {
+  .story {
+    padding: 9px;
+    >.user {
+      padding-right: 9px;
+      >a {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    >.content {
+      >.header {
+        >.info {
+          font-size: 14px;
+        }
+        >.time {
+          font-size: 13px;
+        }
+      }
+      $placeholder: 4px;
+      >.oneliner {
+        margin-top: $placeholder;
+        font-size: 14px;
+      }
+      >.note {
+        margin-top: $placeholder;
+        font-size: 14px;
+      }
+      >.screenshot {
+        margin-top: $placeholder;
+      }
+    }
+  }
+}
+@media only screen and (min-width: $xs + 1) {
+  .story {
+    padding: 20px 35px 20px 25px;
+    >.user {
+      padding-right: 25px;
+      >a {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    >.content {
+      >.header {
+        >.info {
+          font-size: 18px;
+        }
+        >.time {
+          font-size: 16px;
+          white-space: nowrap;
+        }
+      }
+      $placeholder: 17px;
+      >.oneliner {
+        font-size: 17px;
+        margin-top: $placeholder;
+      }
+      >.note {
+        margin-top: $placeholder;
+        font-size: 16px;
+      }
+      >.screenshot {
+        margin-top: $placeholder;
+      }
+    }
+  }
+}

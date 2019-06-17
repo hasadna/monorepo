@@ -28,7 +28,7 @@ export class StoryService {
     const easyStoryBuilder: EasyStory = {
       storyId: story.getId(),
       itemId: '',
-      username: user.getFirstName() + ' ' + user.getLastName(),
+      username: (user.getFirstName() + ' ' + user.getLastName()).trim(),
       imageURL: user.getImageUrl(),
       email: user.getEmail(),
       project: story.getProject(),
