@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { zip } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { Screenshot, User, Story } from '@/core/proto';
+import { User, Story } from '@/core/proto';
 import {
   FirebaseService,
   NotificationService,
@@ -19,9 +19,9 @@ import { EasyStory } from '@/shared';
 export class UserInfoComponent {
   projectIdList: string[];
   easyStories: EasyStory[];
-  filteredEasyStories: EasyStory[];
   user: User;
   email: string;
+  filterChanges = new Subject<string>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,15 +37,10 @@ export class UserInfoComponent {
   }
 
   loadStories(): void {
-    zip(
-      this.firebaseService.getUserStories(this.user.getEmail()),
-      this.firebaseService.getUserScreenshot(this.user.getEmail()),
-    ).subscribe(data => {
-      const stories: Story[] = this.storyService.getStories(data[0]);
-      const screenshots: Screenshot[] = this.storyService.filterScreenshots(data[1], stories);
-      this.easyStories = this.storyService.createEasyStories(screenshots, stories, this.user);
+    this.firebaseService.getUserStories(this.user.getEmail()).subscribe(storyLists => {
+      const stories: Story[] = this.storyService.getStories(storyLists);
+      this.easyStories = this.storyService.createEasyStories(stories, this.user);
       this.storyService.sortStoriesByTime(this.easyStories);
-      this.filteredEasyStories = this.easyStories.slice();
       this.loadingService.isLoading = false;
     });
   }
@@ -64,11 +59,8 @@ export class UserInfoComponent {
     });
   }
 
-  // Filters stories by project id
-  loadProjectStories(projectId: string): void {
-    this.filteredEasyStories = (projectId !== 'all') ?
-      this.storyService.getFilteredStories(projectId, this.easyStories)
-      : this.easyStories.slice();
+  filtersStories(projectId: string): void {
+    this.filterChanges.next(projectId);
   }
 
   crash(message: string): void {

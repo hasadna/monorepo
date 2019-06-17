@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -17,6 +18,7 @@ export class FirebaseService {
   constructor(
     private db: AngularFirestore,
     private encodingService: EncodingService,
+    private storage: AngularFireStorage,
   ) {
     this.reviewerConfig = this.db.collection('reviewer');
   }
@@ -76,5 +78,18 @@ export class FirebaseService {
           return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
         }),
       );
+  }
+
+  getScreenshotURL(filename: string): Observable<string> {
+    return new Observable(observer => {
+      this.storage
+        .ref('storyteller/' + filename)
+        .getDownloadURL()
+        .subscribe((url: string) => {
+          observer.next(url);
+        }, () => {
+          observer.error();
+        });
+    });
   }
 }

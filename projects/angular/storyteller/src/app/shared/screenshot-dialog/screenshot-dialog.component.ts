@@ -4,6 +4,10 @@ import { Subscription } from 'rxjs';
 
 import { ScreenService } from '@/core/services';
 
+// This component is temporarily used nowhere, because of lack of image zooming.
+// Opening images directly by their links are used instead.
+// TODO: remove it or fix issues.
+
 @Component({
   selector: 'screenshot-dialog',
   templateUrl: './screenshot-dialog.component.html',

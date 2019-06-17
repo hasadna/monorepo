@@ -5,7 +5,7 @@ import { AuthService } from '@/core/services';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
+  template: '',
 })
 export class LoginComponent {
   constructor(

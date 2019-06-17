@@ -6,17 +6,27 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '@/import';
 import { StoryComponent } from './story';
-import { ProjectSelectComponent } from './project-select';
+import {
+  ProjectSelectComponent,
+  ProjectSelectCardComponent,
+  ProjectSelectPopupComponent,
+} from './project-select-components';
 import { HeaderComponent } from './header';
 import { ScreenshotDialogComponent } from './screenshot-dialog';
 import { LoadingComponent } from './loading';
+import { FeedComponent } from './feed';
+import { AvatarComponent } from './avatar';
 
 const ExportDeclarations = [
   StoryComponent,
   ProjectSelectComponent,
+  ProjectSelectCardComponent,
+  ProjectSelectPopupComponent,
   HeaderComponent,
   ScreenshotDialogComponent,
   LoadingComponent,
+  FeedComponent,
+  AvatarComponent,
 ];
 const ExportModules = [
   FormsModule,
