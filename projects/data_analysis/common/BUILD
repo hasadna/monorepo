@@ -1,10 +1,13 @@
+# THIS FILE IS AUTO-GENERATED
+
+package(default_visibility = ["//visibility:public"])
+
 proto_library(
-    name = "common",
-    srcs = ["messages.proto"]
+    name = "messages_proto",
+    srcs = ["messages.proto"],
 )
 
 java_proto_library(
-    name = "java_common",
-    deps = [":common"],
-    visibility = ["//visibility:public"]
+    name = "messages_java_proto",
+    deps = [":messages_proto"],
 )

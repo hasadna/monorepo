@@ -1,8 +1,8 @@
 package projects.opentrain.gtfs_pipeline.heatmap;
 
-import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
-import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
-import com.projects.opentrain.gtfs_pipeline.Protos.Trip;
+import projects.opentrain.gtfs_pipeline.common.Protos.Stop;
+import projects.opentrain.gtfs_pipeline.common.Protos.StopTime;
+import projects.opentrain.gtfs_pipeline.common.Protos.Trip;
 
 import com.google.startupos.common.flags.Flags;
 import com.google.startupos.common.flags.Flag;

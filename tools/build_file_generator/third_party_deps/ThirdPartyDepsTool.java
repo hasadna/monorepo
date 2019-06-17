@@ -27,9 +27,9 @@ public class ThirdPartyDepsTool {
   @FlagDesc(
       name = "build_file_path",
       description =
-          "Absolute path to BUILD file with third party deps. "
+          "Path to BUILD file with third party deps inside the project. "
               + "The file usually located by path: "
-              + "<path/to/repo>/tools/build_file_generator/third_party_deps/BUILD")
+              + "tools/build_file_generator/third_party_deps/BUILD")
   private static Flag<String> buildFilePath = Flag.create("");
 
   public static void main(String[] args) throws IOException {
@@ -39,7 +39,10 @@ public class ThirdPartyDepsTool {
 
     FileUtils fileUtils = component.getFileUtils();
     fileUtils.writePrototxtToZip(
-        component.getThirdPartyDepsAnalyzer().getThirdPartyDeps(buildFilePath.get()),
+        component
+            .getThirdPartyDepsAnalyzer()
+            .getThirdPartyDeps(
+                fileUtils.joinPaths(fileUtils.getCurrentWorkingDirectory(), buildFilePath.get())),
         fileUtils.joinPaths(fileUtils.getCurrentWorkingDirectory(), PATH_TO_ZIP),
         PROTOTXT_FILENAME_INSIDE_ZIP);
   }

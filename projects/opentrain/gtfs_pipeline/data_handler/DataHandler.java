@@ -1,30 +1,27 @@
 package projects.opentrain.gtfs_pipeline.data_handler;
 
-import com.projects.opentrain.gtfs_pipeline.Protos;
-import com.projects.opentrain.gtfs_pipeline.Protos.Route;
-import com.projects.opentrain.gtfs_pipeline.Protos.Stop;
-import com.projects.opentrain.gtfs_pipeline.Protos.StopTime;
-import com.projects.opentrain.gtfs_pipeline.Protos.Translation;
-import com.projects.opentrain.gtfs_pipeline.Protos.Trip;
-import java.nio.file.StandardOpenOption;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.io.FileOutputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import java.util.stream.Collectors;
+import projects.opentrain.gtfs_pipeline.common.Protos;
+import projects.opentrain.gtfs_pipeline.common.Protos.Route;
+import projects.opentrain.gtfs_pipeline.common.Protos.Stop;
+import projects.opentrain.gtfs_pipeline.common.Protos.StopTime;
+import projects.opentrain.gtfs_pipeline.common.Protos.Translation;
+import projects.opentrain.gtfs_pipeline.common.Protos.Trip;
 
 class DataHandler {
 
