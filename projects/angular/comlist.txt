@@ -25,5 +25,3 @@
     * Add document how to use the Build file generator tool
     
     * Update generation_build_files.md
-    
-    * Fix import paths
