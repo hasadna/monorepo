@@ -1,0 +1,29 @@
+    * Add HttpArchiveDepsTool
+    
+    * Add java_proto_libraries deps to http_archive_deps.prototxt
+    
+    * Update StartupOS commitId
+    
+    * Set correct packages
+    
+    * Set correct packages gtfs_pipeline
+    
+    * Fix formatting
+    
+    * Using Build File Generator tool
+    
+    * Update http_archive_deps.prototxt
+    
+    * Shorten targets
+    
+    * Set the latest StartupOS commit id
+    
+    * Update http_archive_deps.prototxt
+    
+    * Add fixes
+    
+    * Add document how to use the Build file generator tool
+    
+    * Update generation_build_files.md
+    
+    * Fix import paths
