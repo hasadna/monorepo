@@ -21,5 +21,3 @@
     * Update http_archive_deps.prototxt
     
     * Add fixes
-    
-    * Add document how to use the Build file generator tool
