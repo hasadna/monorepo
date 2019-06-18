@@ -17,5 +17,3 @@
     * Shorten targets
     
     * Set the latest StartupOS commit id
-    
-    * Update http_archive_deps.prototxt
