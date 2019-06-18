@@ -13,5 +13,3 @@
     * Using Build File Generator tool
     
     * Update http_archive_deps.prototxt
-    
-    * Shorten targets
