@@ -70,4 +70,5 @@ Once your PR is approved and all CI checks have passed, do the following to merg
 * Make sure the title and description reflect what changed and are up-to-date.
 * Select the second option in merge options list and click "Squash and merge":
 ![Screenshot 4](https://i.imgur.com/Lne6GbI.png)
-* Set the merge commit message as the PR title.
+* Set the merge commit message as the PR title. If your PR contains a lot of commits, no need to add them to the description, because it takes too much space on git. You can leave this space empty or add a small description.
+![Screenshot 5](https://i.imgur.com/ZuiGruB.png)
