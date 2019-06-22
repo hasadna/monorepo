@@ -1,0 +1,65 @@
+.home {
+  padding: 10px;
+  >.open-project {
+    input {
+      margin-right: 10px;
+    }
+  }
+  >.project {
+    .close {
+      margin-bottom: 10px;
+      a {
+        color: #3083ee;
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+    .story {
+      margin-bottom: 10px;
+      .project-id {
+        margin-bottom: 10px;
+        font-size: 20px;
+        span {
+          margin-right: 10px;
+        }
+        mat-spinner {
+          display: inline-block;
+        }
+      }
+      .tracker {
+        .button {
+          width: 70px;
+          display: inline-block;
+        }
+      }
+    }
+    .story-item {
+      background: white;
+      padding: 10px;
+      margin-top: 10px;
+      width: 500px;
+      input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      textarea {
+        width: 100%;
+        resize: none;
+        box-sizing: border-box;
+      }
+      img {
+        width: 100%;
+        border: 1px solid grey;
+      }
+      >div {
+        margin-bottom: 10px;
+      }
+      .save {
+        color: green;
+        font-size: 14px;
+      }
+    }
+  }
+}
