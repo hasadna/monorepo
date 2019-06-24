@@ -1,0 +1,8 @@
+<div class="header">
+  <div class="label">Storyteller tracker</div>
+  <div class="user" *ngIf="authService.isOnline">
+    <span class="email">{{ authService.email }}</span>
+    <button (click)="logOut()">Logout</button>
+  </div>
+</div>
+<div class="placeholder"></div>

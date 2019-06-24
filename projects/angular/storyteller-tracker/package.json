@@ -1,0 +1,16 @@
+{
+  "name": "storyteller-tracker",
+  "scripts": {
+    "start": "ng serve storyteller-tracker",
+    "build": "ng build storyteller-tracker",
+    "test": "ng test storyteller-tracker",
+    "lint": "ng lint storyteller-tracker",
+    "fix": "ng lint storyteller-tracker --fix",
+    "deploy": "firebase deploy --only hosting",
+    "protoc": "workspacerun protoc"
+  },
+  "devDependencies": {
+    "ts-protoc-gen": "^0.9.0",
+    "workspacerun": "^1.0.5"
+  }
+}
