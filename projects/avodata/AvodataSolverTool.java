@@ -14,7 +14,6 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.apache.commons.math3.analysis.function.Abs;
 
-
 /* This class reads matrix from csv file, ignores the parmeters and calculate
  * using least squares
  * To build:
@@ -81,8 +80,6 @@ public class AvodataSolverTool {
     return m;
   }
 
-
-  
   // We read the matrix from csv file.
   // We ignore the alphabet chars and build the matrix without them.
   // For example:
@@ -91,7 +88,7 @@ public class AvodataSolverTool {
    * | 1 | 2 | 3 |
    * | 4 | 5 | 6 |
    * | 7 | 8 | 9 |
-   * Whem we build the matrix we don't want the parameteres a,b,c.
+   * When we build the matrix we don't want the parameteres a,b,c.
    * So we ignore the first line.
    */
   public static RealMatrix readMatrixAndCreate() {
