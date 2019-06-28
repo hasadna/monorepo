@@ -11,8 +11,8 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
-import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.apache.commons.math3.analysis.function.Abs;
+import org.apache.commons.math3.util.CombinatoricsUtils;
 
 /* This class reads matrix from csv file, ignores the parmeters and calculate
  * using least squares
@@ -30,21 +30,22 @@ public class AvodataSolverTool {
     return CombinatoricsUtils.factorialDouble(n);
   }
 
-  public static double nChooseK(int n, int k) {
+  public static double getNChooseK(int n, int k) {
     return CombinatoricsUtils.binomialCoefficientDouble(n, k);
   }
 
   public static RealMatrix generateSyntheticA(int numOfProfessions) {
-    int numOfraws = (int) nChooseK(numOfProfessions, 2);
+    int numOfraws = (int) getNChooseK(numOfProfessions, 2);
     RealMatrix matrix = new Array2DRowRealMatrix(numOfraws, numOfProfessions);
 
     int row = 0;
-    for (int i = 0; i < numOfProfessions; i++)
+    for (int i = 0; i < numOfProfessions; i++) {
       for (int j = i + 1; j < numOfProfessions; j++) {
         matrix.addToEntry(row, i, 1);
         matrix.addToEntry(row, j, -1);
         row++;
       }
+    }
     return matrix;
   }
 
@@ -60,19 +61,21 @@ public class AvodataSolverTool {
   }
 
   public static RealMatrix buildCheck(
-      int numOfProfessions, RealMatrix cMatrix, int numOfCharacteristics) {
+      int numOfProfessions, RealMatrix cmatrix, int numOfCharacteristics) {
     RealMatrix a = MatrixUtils.createRealMatrix(generateSyntheticA(numOfProfessions).getData());
     RealMatrix m = new Array2DRowRealMatrix(numOfCharacteristics, numOfProfessions);
 
     for (int i = 0; i < numOfCharacteristics; i++) {
 
-      RealVector c = cMatrix.getRowVector(i);
+      RealVector c = cmatrix.getRowVector(i);
       RealVector rowInM = solve(a, c);
       Abs absoluteValue = new Abs();
       double min = absoluteValue.value(rowInM.getMinValue());
       rowInM.mapAddToSelf(min);
       double max = absoluteValue.value(rowInM.getMaxValue());
-      if (max > 0) rowInM.mapDivideToSelf(max);
+      if (max > 0) {
+        rowInM.mapDivideToSelf(max);
+      }
 
       m.setRowVector(i, rowInM);
     }
