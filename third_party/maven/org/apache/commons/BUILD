@@ -27,3 +27,18 @@ java_library(
 )
 
 
+
+java_library(
+    name = "commons_math3",
+    exports = [
+        "//external:jar/mvnorg/apache/commons/commons_math3"
+    ],
+    licenses = [
+        "permissive"
+    ],
+    visibility = [
+        "//visibility:public"
+    ]
+)
+
+
