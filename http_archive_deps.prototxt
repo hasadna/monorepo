@@ -1,0 +1,528 @@
+httpArchiveDeps {
+  name: "startup_os"
+  commit_id: "d6173070626213fae24b8a18f0a38398deb2df8e"
+  http_archive_dep {
+    java_class: "com.google.startupos.common.CommandLine.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.CommonComponent.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.CommonModule.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.FileUtils.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.HttpUtils.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Lists.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.MessageDifferencer.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.StringBuilder.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Strings.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Time.java"
+    target: "//common"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Lists.java"
+    target: "//common:lists"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.TextDifferencer.java"
+    target: "//common:text_differencer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.DiffMatchPatch.java"
+    target: "//common:diff_match_patch"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Base64Tool.java"
+    target: "//common:base64_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.Protos"
+    target: "//common:text_difference_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.FirestoreProtoClient.java"
+    target: "//common/firestore"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.MessageWithId.java"
+    target: "//common/firestore"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.ProtoChange.java"
+    target: "//common/firestore"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.ProtoEventListener.java"
+    target: "//common/firestore"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.ProtoQuerySnapshot.java"
+    target: "//common/firestore"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.firestore.tests.FirestoreClientTool.java"
+    target: "//common/firestore/tests:firestore_client_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.ClassScanner.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.Flag.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.FlagDesc.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.Flags.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.GflagsParser.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.UsagePrinter.java"
+    target: "//common/flags"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.Proto"
+    target: "//common/flags:flags_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.tests.FlagDescTestClass.java"
+    target: "//common/flags/tests:flag_desc_test_class"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.flags.tests.FlagTestClass.java"
+    target: "//common/flags/tests:flag_test_class"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.GrpcAuthService.java"
+    target: "//common/grpc_auth:service"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Server.java"
+    target: "//common/grpc_auth:server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.ServerAuthInterceptor.java"
+    target: "//common/grpc_auth:server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Client.java"
+    target: "//common/grpc_auth:client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.ClientAuthInterceptor.java"
+    target: "//common/grpc_auth:client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.grpc_auth.Protos"
+    target: "//common/grpc_auth:messages_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.repo.GitRepo.java"
+    target: "//common/repo"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.repo.Repo.java"
+    target: "//common/repo"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.repo.Protos"
+    target: "//common/repo:repo_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.repo.tests.TestTool.java"
+    target: "//common/repo/tests:test_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.tests.TextDifferencerTool.java"
+    target: "//common/tests:text_differencer_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.common.tests.Protos"
+    target: "//common/tests:file_utils_test_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.Class1Module.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.App.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.Class2.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.Class1Interface.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.Class1Impl.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example1.SomeComponent.java"
+    target: "//examples/dagger/example1:example1_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class1Module.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.App.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class2Impl.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class1Interface.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class2Module.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class1Impl.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.SomeComponent.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class3.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.dagger.example2.Class2Interface.java"
+    target: "//examples/dagger/example2:example2_lib"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.errorprone.Hello.java"
+    target: "//examples/errorprone:Hello"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.proto_vs_json.ProtoVsJsonTool.java"
+    target: "//examples/proto_vs_json:proto_vs_json_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.examples.proto_vs_json.Protos"
+    target: "//examples/proto_vs_json:data_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileGenerator.java"
+    target: "//tools/build_file_generator"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileGeneratorUtils.java"
+    target: "//tools/build_file_generator:build_file_generator_utils"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileParser.java"
+    target: "//tools/build_file_generator:build_file_parser"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileWriter.java"
+    target: "//tools/build_file_generator:build_file_writer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.JavaClassAnalyzer.java"
+    target: "//tools/build_file_generator:java_class_analyzer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.ProtoFileAnalyzer.java"
+    target: "//tools/build_file_generator:proto_file_analyzer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.BuildFileGeneratorTool.java"
+    target: "//tools/build_file_generator:build_file_generator_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.Protos"
+    target: "//tools/build_file_generator:build_file_generator_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.http_archive_deps.HttpArchiveDepsGenerator.java"
+    target: "//tools/build_file_generator/http_archive_deps:http_archive_deps_generator"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.http_archive_deps.WorkspaceParser.java"
+    target: "//tools/build_file_generator/http_archive_deps:workspace_parser"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.http_archive_deps.HttpArchiveDepsTool.java"
+    target: "//tools/build_file_generator/http_archive_deps:http_archive_deps_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.third_party_deps.ThirdPartyDepsAnalyzer.java"
+    target: "//tools/build_file_generator/third_party_deps:third_party_deps_analyzer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.build_file_generator.third_party_deps.ThirdPartyDepsTool.java"
+    target: "//tools/build_file_generator/third_party_deps:third_party_deps_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.deps.WorkspacePatcher.java"
+    target: "//tools/deps:workspace_patcher"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.deps.Protos"
+    target: "//tools/deps:dependencies_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.formatter.FormatterTool.java"
+    target: "//tools/formatter"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.proto_tool.ProtoLoader.java"
+    target: "//tools/proto_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.proto_tool.ProtoTool.java"
+    target: "//tools/proto_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.ReviewerConstants.java"
+    target: "//tools/reviewer:reviewer_constants"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.ReviewerProtos"
+    target: "//tools/reviewer:reviewer_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.RegistryProtos"
+    target: "//tools/reviewer:reviewer_registry_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.AaModule.java"
+    target: "//tools/reviewer/aa:aa_module"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.AaScriptHelper.java"
+    target: "//tools/reviewer/aa:aa_script_helper"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.AaTool.java"
+    target: "//tools/reviewer/aa:aa_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.Protos"
+    target: "//tools/reviewer/aa:config_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.InitCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.AddRepoCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.WorkspaceCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.DiffCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.KillServerCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.FixCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.AaCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.SyncCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.PatchCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.SubmitCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.ReviewCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.SnapshotCommand.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FormattingCheck.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.aa.commands.checks.FixCommandCheck.java"
+    target: "//tools/reviewer/aa/commands"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.ReviewerJob.java"
+    target: "//tools/reviewer/job"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.DiffConverter.java"
+    target: "//tools/reviewer/job/sync:diff_converter"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubClient.java"
+    target: "//tools/reviewer/job/sync:github_client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubPatch.java"
+    target: "//tools/reviewer/job/sync:github_patch"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubReader.java"
+    target: "//tools/reviewer/job/sync:github_reader"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubSync.java"
+    target: "//tools/reviewer/job/sync:github_sync"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubWriter.java"
+    target: "//tools/reviewer/job/sync:github_writer"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.LineNumberConverter.java"
+    target: "//tools/reviewer/job/sync:line_number_converter"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.ReviewerClient.java"
+    target: "//tools/reviewer/job/sync:reviewer_client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubSyncTool.java"
+    target: "//tools/reviewer/job/sync:github_sync_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubPullRequestProtos"
+    target: "//tools/reviewer/job/sync:full_github_pr_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.sync.GithubProtos"
+    target: "//tools/reviewer/job/sync:github_api_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.CiTask.java"
+    target: "//tools/reviewer/job/tasks:ci_task"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.ReviewerMetadataUpdaterTask.java"
+    target: "//tools/reviewer/job/tasks:reviewer_metadata_updater_task"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.SubmitterTask.java"
+    target: "//tools/reviewer/job/tasks:submitter_task"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.Task.java"
+    target: "//tools/reviewer/job/tasks:task"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.TaskExecutor.java"
+    target: "//tools/reviewer/job/tasks:task_executor"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.tests.CiTaskTool.java"
+    target: "//tools/reviewer/job/tasks/tests:ci_task_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.job.tasks.tests.SubmitterTaskTool.java"
+    target: "//tools/reviewer/job/tasks/tests:submitter_task_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.LocalHttpGateway.java"
+    target: "//tools/reviewer/local_server:local_http_gateway"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.LocalHttpGatewayGrpcClient.java"
+    target: "//tools/reviewer/local_server:local_http_gateway_grpc_client"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.LocalServer.java"
+    target: "//tools/reviewer/local_server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.AuthService.java"
+    target: "//tools/reviewer/local_server/service:auth_service"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.CodeReviewService.java"
+    target: "//tools/reviewer/local_server/service:code_review_service"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.AuthProtos"
+    target: "//tools/reviewer/local_server/service:auth_service_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.Protos"
+    target: "//tools/reviewer/local_server/service:code_review_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.local_server.service.tests.TestTool.java"
+    target: "//tools/reviewer/local_server/service/tests:test_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.remote_server.RemoteServer.java"
+    target: "//tools/reviewer/remote_server"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.remote_server.Protos"
+    target: "//tools/reviewer/remote_server:messages_java_proto"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tools.reviewer.rules_updater.RulesUpdater.java"
+    target: "//tools/reviewer/rules_updater"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tutorials.proto_rename.PersonTool.java"
+    target: "//tutorials/proto_rename:person_tool"
+  }
+  http_archive_dep {
+    java_class: "com.google.startupos.tutorials.proto_rename.Protos"
+    target: "//tutorials/proto_rename:person_java_proto"
+  }
+}

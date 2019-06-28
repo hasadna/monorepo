@@ -1,0 +1,54 @@
+@import 'media';
+
+:host {
+  width: 100%;
+}
+.story {
+  display: flex;
+  color: #4e4e4e;
+  cursor: pointer;
+  outline: none;
+  >.user {
+    display: flex;
+    justify-content: center;
+    >a {
+      position: relative;
+    }
+  }
+  >.content {
+    flex: 1;
+    >.header {
+      display: flex;
+      >.info {
+        margin-right: 10px;
+        >.author {
+          font-weight: bold;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        >.project {
+          font-weight: bold;
+          font-style: italic;
+        }
+      }
+      >.time {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        font-weight: 600;
+        color: #767676;
+      }
+    }
+    >.screenshot {
+      img {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+  }
+  a {
+    text-decoration: none;
+    color:inherit;
+  }
+}

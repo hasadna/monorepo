@@ -1,6 +1,7 @@
 syntax = "proto3";
+package projects.data_analysis.common;
 
-option java_package = "com.example.tasks";
+option java_package = "projects.data_analysis.common";
 option java_outer_classname = "Protos";
 
 message User {

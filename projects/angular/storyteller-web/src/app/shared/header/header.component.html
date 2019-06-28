@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <div class="icon-button">
+    <mat-icon
+      class="media-lg-hidden"
+      *ngIf="!headerService.isPushed"
+      (click)="headerService.toggle()"
+    >dehaze</mat-icon>
+    <mat-icon
+      class="media-lg-hidden"
+      *ngIf="headerService.isPushed"
+      (click)="headerService.toggle()"
+    >clear</mat-icon>
+  </div>
+  <div class="label">
+    <a class="home" routerLink="/home">Storyteller Web</a>
+  </div>
+</mat-toolbar>
+<div class="placeholder"></div>
