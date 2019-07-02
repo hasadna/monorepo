@@ -23,3 +23,26 @@ checkstyle_test(
     config = "//tools/checkstyle:config.xml",
     target = ":Data_Uploader",
 )
+
+java_binary(
+    name = "SuggestedSpamViewer",
+    srcs = ["SuggestedSpamViewer.java"],
+    main_class = "hasadna.projects.noloan.server.SuggestedSpamViewer",
+    deps = [
+            "//projects/noloan/app/src/main/proto:SMS_java_proto",
+            "//third_party/maven/com/google/flogger:flogger_system_backend",
+            "//third_party/maven/javax/inject:javax_inject",
+            "@startup_os//common",
+            "@startup_os//common:dagger_with_annotation_processor",
+            "@startup_os//common/firestore",
+            "@startup_os//common/flags",
+            "@startup_os//tools/reviewer/local_server/service:auth_service",
+            "//third_party/maven/com/google/http_client:google_http_client_jackson"
+    ],
+)
+
+checkstyle_test(
+    name = "SuggestedSpamViewer-checkstyle",
+    config = "//tools/checkstyle:config.xml",
+    target = ":SuggestedSpamViewer",
+)

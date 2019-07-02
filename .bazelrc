@@ -1,5 +1,8 @@
 # TODO: Remove incompatability flags
 build --proto_compiler //external:proto_compiler \
-      --proto_toolchain_for_java //external:proto_java_toolchain
+      --proto_toolchain_for_java //external:proto_java_toolchain\
+      --incompatible_new_actions_api=false\
+      --incompatible_depset_is_not_iterable=false\
+      --incompatible_no_support_tools_in_action_inputs=false
 run --direct_run
 test --test_output=errors
