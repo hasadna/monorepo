@@ -8,13 +8,13 @@ java_binary(
     deps = [
         "//projects/noloan/app/src/main/proto:SMS_java_proto",
         "//third_party/maven/com/google/flogger:flogger_system_backend",
+        "//third_party/maven/com/google/http_client:google_http_client_jackson",
         "//third_party/maven/javax/inject:javax_inject",
         "@startup_os//common",
         "@startup_os//common:dagger_with_annotation_processor",
         "@startup_os//common/firestore",
         "@startup_os//common/flags",
         "@startup_os//tools/reviewer/local_server/service:auth_service",
-        "//third_party/maven/com/google/http_client:google_http_client_jackson"
     ],
 )
 
@@ -29,15 +29,16 @@ java_binary(
     srcs = ["SuggestedSpamViewer.java"],
     main_class = "hasadna.projects.noloan.server.SuggestedSpamViewer",
     deps = [
-            "//projects/noloan/app/src/main/proto:SMS_java_proto",
-            "//third_party/maven/com/google/flogger:flogger_system_backend",
-            "//third_party/maven/javax/inject:javax_inject",
-            "@startup_os//common",
-            "@startup_os//common:dagger_with_annotation_processor",
-            "@startup_os//common/firestore",
-            "@startup_os//common/flags",
-            "@startup_os//tools/reviewer/local_server/service:auth_service",
-            "//third_party/maven/com/google/http_client:google_http_client_jackson"
+        "//projects/noloan/app/src/main/proto:SMS_java_proto",
+        "//third_party/maven/com/google/flogger:flogger_system_backend",
+        "//third_party/maven/com/google/http_client:google_http_client_jackson",
+        "//third_party/maven/javax/inject:javax_inject",
+        "@mvncom_google_protobuf_protobuf_java//jar",
+        "@startup_os//common",
+        "@startup_os//common:dagger_with_annotation_processor",
+        "@startup_os//common/firestore",
+        "@startup_os//common/flags",
+        "@startup_os//tools/reviewer/local_server/service:auth_service",
     ],
 )
 
