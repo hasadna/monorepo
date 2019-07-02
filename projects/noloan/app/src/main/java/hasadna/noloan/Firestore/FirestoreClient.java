@@ -22,7 +22,8 @@ public class FirestoreClient {
     client = FirebaseFirestore.getInstance();
   }
 
-  public void writeMessage(SmsMessage message) {
+  // Send SMS to the suggested spam directory in the DB
+  public void SuggestSpam(SmsMessage message) {
     FirestoreElement element = encodeMessage(message);
     client.collection(USER_SUGGEST_COLLECTION).add(element);
   }

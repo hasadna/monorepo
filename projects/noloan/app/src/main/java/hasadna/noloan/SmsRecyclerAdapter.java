@@ -22,7 +22,6 @@ public class SmsRecyclerAdapter
     extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
 
   List<SmsMessage> messages;
-  boolean suggest;
 
   public SmsRecyclerAdapter(List<SmsMessage> messages) {
     if (messages.size() == 0) {
@@ -32,7 +31,6 @@ public class SmsRecyclerAdapter
     } else {
       this.messages = messages;
     }
-    suggest = false;
   }
 
   @NonNull
@@ -52,16 +50,10 @@ public class SmsRecyclerAdapter
     return messages.size();
   }
 
-  public void changeList(List<SmsMessage> newList, boolean suggest) {
-    messages = newList;
-    this.suggest = suggest;
-    notifyDataSetChanged();
-  }
-
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView from, content, receivedAt;
-    Button buttonSmsToLawsuit, bottonSuggest;
+    Button buttonSmsToLawsuit, buttonSuggest;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -69,7 +61,7 @@ public class SmsRecyclerAdapter
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
       buttonSmsToLawsuit = itemView.findViewById(R.id.button_smsToLawsuit);
-      bottonSuggest = itemView.findViewById(R.id.button_suggest);
+      buttonSuggest = itemView.findViewById(R.id.button_suggest);
     }
 
     public void bind(SmsMessage sms) {
@@ -87,10 +79,9 @@ public class SmsRecyclerAdapter
             intentToLawsuitForm.putExtra("body", sms.getBody());
             view.getContext().startActivity(intentToLawsuitForm);
           });
-      bottonSuggest.setOnClickListener(
+      buttonSuggest.setOnClickListener(
           view -> {
-            FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms);
+            new FirestoreClient().SuggestSpam(sms);
             Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
           });
     }
