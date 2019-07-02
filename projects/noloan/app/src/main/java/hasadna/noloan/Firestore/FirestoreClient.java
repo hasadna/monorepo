@@ -41,7 +41,7 @@ public class FirestoreClient {
 
   public MessageLite decodeMessage(String message, MessageLite.Builder builder)
       throws InvalidProtocolBufferException {
-    byte[] messageBytes = Base64.decode(message, Base64.DEFAULT);
+    byte[] messageBytes = Base64.decode(message, Base64.NO_WRAP);
     return builder.build().getParserForType().parseFrom(messageBytes);
   }
 }
