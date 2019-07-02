@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(spam);
     recycler.setAdapter(adapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
+
     TextView statusTitle = findViewById(R.id.status_lawsuit);
     statusTitle.setText(
         (String.format(getResources().getString(R.string.content_summary), spam.size())));
