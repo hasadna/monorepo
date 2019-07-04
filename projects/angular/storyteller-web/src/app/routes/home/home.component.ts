@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable, zip, Subject } from 'rxjs';
 
-import { User, Story } from '@/core/proto';
+import { User, Story, Moment } from '@/core/proto';
+import { EasyStory } from '@/core/interfaces';
 import { FirebaseService, StoryService, LoadingService } from '@/core/services';
-import { EasyStory } from '@/shared';
 
 @Component({
   selector: 'app-home',
@@ -42,9 +42,17 @@ export class HomeComponent {
   // Loads stories of specific user
   loadUserStories(user: User): Observable<EasyStory[]> {
     return new Observable(observer => {
-      this.firebaseService.getUserStories(user.getEmail()).subscribe(storyLists => {
-        const stories: Story[] = this.storyService.getStories(storyLists);
-        const easyStories: EasyStory[] = this.storyService.createEasyStories(stories, user);
+      zip(
+        this.firebaseService.getStoryList(user.getEmail()),
+        this.firebaseService.getMoments(user.getEmail()),
+      ).subscribe(data => {
+        const storyList: Story[] = data[0];
+        const moments: Moment[] = data[1];
+        const easyStories: EasyStory[] = this.storyService.createEasyStories(
+          storyList,
+          moments,
+          user,
+        );
         observer.next(easyStories);
       });
     });

@@ -1,20 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { EasyStory } from '@/core/interfaces';
 import { FirebaseService } from '@/core/services';
-
-export interface EasyStory {
-  storyId: string;
-  itemId: string;
-  username: string;
-  imageURL: string;
-  email: string;
-  project: string;
-  timestamp: number;
-  oneliner: string;
-  note: string;
-  screenshotName: string;
-  screenshotURL?: string;
-}
 
 @Component({
   selector: 'app-story',

@@ -1,6 +1,6 @@
 <div
   class="story card"
-  [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]"
+  [routerLink]="['/moment', easyStory.email, easyStory.storyId, easyStory.momentId]"
 >
   <div class="user">
     <a [routerLink]="['/info', easyStory.email]">
@@ -14,10 +14,10 @@
           <a [routerLink]="['/info', easyStory.email]">{{ easyStory.username }}</a>
         </span>
         on
-        <span class="project">{{ easyStory.project }}</span>
+        <span class="project">{{ easyStory.projectId }}</span>
       </div>
       <div class="time">
-        <a [routerLink]="['/single-item', easyStory.email, easyStory.storyId, easyStory.itemId]">
+        <a [routerLink]="['/moment', easyStory.email, easyStory.storyId, easyStory.momentId]">
           {{ easyStory.timestamp | date:'HH:mm, MMM d, y' }}
         </a>
       </div>

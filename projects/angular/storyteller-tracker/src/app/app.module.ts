@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   HomeComponent,
   LoginComponent,
+  StoryComponent,
 } from '@/routes';
 import { LibraryModule } from 'common/module';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +19,7 @@ import { SharedModule } from './shared';
     AppComponent,
     HomeComponent,
     LoginComponent,
+    StoryComponent,
   ],
   imports: [
     BrowserModule,

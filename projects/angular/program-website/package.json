@@ -5,7 +5,7 @@
     "build": "ng build program-website",
     "test": "ng test program-website",
     "lint": "ng lint program-website",
-    "fix": "ng lint program-website --fix",
+    "lint-fix": "ng lint program-website --fix",
     "deploy": "firebase deploy --only hosting",
     "protoc": "workspacerun protoc"
   },

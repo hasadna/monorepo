@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 
+import { EasyStory } from '@/core/interfaces';
 import { ScrollService, ScreenService, HeaderService } from '@/core/services';
-import { EasyStory } from '@/shared';
 
 const DEFAULT_STORIES_AMOUNT = 4;
 
@@ -54,7 +54,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   private filtersStories(projectId: string): void {
     this.displayedAmount = DEFAULT_STORIES_AMOUNT;
     this.filteredEasyStories = (projectId !== 'all') ?
-      this.easyStories.filter(story => story.project === projectId) :
+      this.easyStories.filter(story => story.projectId === projectId) :
       this.easyStories;
     this.displayStories();
   }

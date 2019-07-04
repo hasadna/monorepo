@@ -5,7 +5,7 @@
     "build": "ng build storyteller-web",
     "test": "ng test storyteller-web",
     "lint": "ng lint storyteller-web",
-    "fix": "ng lint storyteller-web --fix",
+    "lint-fix": "ng lint storyteller-web --fix",
     "deploy": "firebase deploy --only hosting",
     "protoc": "workspacerun protoc"
   },

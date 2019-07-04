@@ -1,7 +1,7 @@
 {
   "exportPath": "src/app/core/proto",
   "protoList": [
-    "hasadna/tools/storyteller/data.proto",
+    "hasadna/tools/storyteller/storyteller.proto",
     "startup-os/tools/reviewer/reviewer.proto"
   ]
 }
