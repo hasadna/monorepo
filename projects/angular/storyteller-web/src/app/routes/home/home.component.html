@@ -1,0 +1,16 @@
+<div class="page-container" *ngIf="!loadingService.isLoading">
+  <div class="project-menu media-lg-visible">
+    <project-select-card
+      [projectIdList]="projectIdList"
+      (selectEmitter)="filtersStories($event)"
+    ></project-select-card>
+  </div>
+  <story-feed
+    [easyStories]="easyStories"
+    [filterChanges]="filterChanges"
+  ></story-feed>
+</div>
+<project-select-popup
+  [projectIdList]="projectIdList"
+  (selectEmitter)="filtersStories($event)"
+></project-select-popup>

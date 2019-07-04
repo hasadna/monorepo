@@ -1,0 +1,14 @@
+<div
+  class="select-button all"
+  (click)="select('all')"
+  [ngClass]="{ selected: headerService.selectedProjectId === 'all' }"
+>All Projects</div>
+<div class="project-id-list">
+  <div *ngFor="let projectId of projectIdList">
+    <div
+      class="select-button sub-select"
+      (click)="select(projectId)"
+      [ngClass]="{ selected: headerService.selectedProjectId === projectId }"
+    >{{ projectId }}</div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./variables";
+@import "./global-styles";
+@import './notification';
+@import './media';
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  body {
+    margin: 0;
+    font-family: $font-stack;
+    background-color: #e6eff0;
+  }
+}

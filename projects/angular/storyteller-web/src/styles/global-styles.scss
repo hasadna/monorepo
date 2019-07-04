@@ -1,0 +1,19 @@
+body {
+  .card {
+    box-sizing: border-box;
+    background: white;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.35);
+    border-radius: 2px;
+  }
+
+  .menu-card {
+    width: 311px;
+    margin-right: 40px;
+    padding: 20px;
+  }
+
+  .page-container {
+    display: 100%;
+    display: flex;
+  }
+}

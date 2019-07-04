@@ -1,0 +1,80 @@
+display_name: "StartupOS"
+repo {
+  id: "startup-os"
+  url: "https://github.com/google/startup-os"
+}
+repo {
+  id: "hasadna"
+  url: "https://github.com/hasadna/hasadna"
+}
+# TODO: Add project exclusive to hasadna
+user {
+  id: "oferb"
+  project_id: "google_oss_examples"
+  project_id: "reviewer"
+  top_contribution {
+    description: "Team leader for StartupOS project (Google OSS examples, Reviewer)"
+    url: "https://github.com/google/startup-os"
+  }
+  top_contribution {
+    description: "Java port of C++ gflags"
+    url: "https://github.com/google/startup-os/tree/master/common/flags"
+  }
+  top_contribution {
+    description: "Text diff implementation for Reviewer (using git and DiffPatchMatch)"
+    url: "https://github.com/google/startup-os/blob/master/common/TextDifferencer.java"
+  }
+  top_contribution {
+    description: "Various common infra libraries for StartupOS"
+    url: "https://github.com/google/startup-os/tree/master/common"
+  }
+  crystals:100
+}
+user {
+  id: "webdevelopland"
+  project_id: "program_website"
+  top_contribution {
+    description: "Responsive design implementation"
+    url: "https://github.com/hasadna/hasadna/tree/master/projects/angular/program-website"
+  }
+  crystals:100
+}
+user {
+  id: "vmax"
+  project_id: "google_oss_examples"
+  project_id: "reviewer"
+  top_contribution {
+    description: "Team member for StartupOS project (Google OSS examples, Reviewer)"
+    url: "https://github.com/google/startup-os"
+  }
+  top_contribution {
+    description: "CI integration for StartupOS"
+    url: "https://github.com/google/startup-os/pull/112"
+  }
+  crystals:100
+}
+user {
+  id: "a3l5o7n9"
+  first_name: "Alon"
+  last_name: "Pachter Zafrir"
+  email: "alony60@gmail.com"
+  image_url: "https://media.licdn.com/dms/image/C5603AQF3tLa0c3i9hw/profile-displayphoto-shrink_200_200/0?e=1562198400&v=beta&t=Sat-m2TeTAiv9T_IRLAZoxcHs_ihjWnJRTufKBW1T4M"
+  social_network {
+    type: LINKEDIN
+    url: "https://www.linkedin.com/in/alon-pachter-zafrir-4a626213a/"
+  }
+  social_network {
+    type: GITHUB
+    url: "https://github.com/a3l5o7n9"
+  }
+  skill: "React Native"
+  skill: "Angular"
+  project_id: "mysadna"
+  project_id: "program-website"
+  top_contribution {
+    description: "Profile Pages Angular webapp for Hasadna"
+    url: "https://github.com/hasadna/hasadna/tree/master/projects/angular/mysadna"
+  }
+  crystals:0
+}
+  total_crystal: 300

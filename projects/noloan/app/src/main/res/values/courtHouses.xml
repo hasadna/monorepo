@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="lawsuit_claim_online_website_link">https://account.gov.il/sspr/public/newuser</string>
+    <string-array name="courts_detailed">
+        <item>אילת | מורך יותם 3, אילת | 08-6362673 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_eilat
+        </item>
+
+        <item>אשדוד | מורדי הגטאות 1, אשדוד | 08-8514014 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_ashdod
+        </item>
+
+        <item>               אשקלון | שדרות בן-גוריון 19, אשקלון | 08-6682055 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_ashkelon
+        </item>
+
+        <item>             באר שבע | התקווה 5, באר שבע | 08-6470382 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_beer_sheva
+        </item>
+
+        <item>                 בית שאן | רחוב שאול המלך 31, בית שאן | 04-6087454 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_bet_shean
+        </item>
+
+        <item> בית שמש | רחוב הרצל 9, בית שמש |02-5010290|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_bet_shemesh
+        </item>
+
+        <item> דימונה | שדרות בן גוריון 1, דימונה כיכר דנמרק | 08-6543220 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_dimona
+        </item>
+
+        <item>                   הרצליה | רחוב בן גוריון 31, הרצליה | 09-9620435|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_herzliya
+        </item>
+
+        <item> חדרה | הלל יפה 7, חדרה | 04-6327570|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_hadera
+        </item>
+
+        <item> חיפה | שדרות הפלי"ם 12, חיפה | 04-8698294|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_haifa
+        </item>
+
+        <item>  טבריה | שדרות מנחם בגין 1, טבריה | 04-6087930|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_tiberias
+        </item>
+
+        <item>  ירושלים | חשין 6, ירושלים | 02-5010290|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_jerusalem
+        </item>
+
+        <item>  כפר סבא | רחוב הטחנה 5, כפר סבא | 09-7763227|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_kfar_saba
+        </item>
+
+        <item>  מסעדה | כפר מסעדה מסעדה, מול בית הדואר בכפר | 04-6985028|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_masade
+        </item>
+
+        <item>  נצרת עילית | כיכר קריית יצחק רבין נצרת עילית, היכל המשפט החדש | 04-6087454|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_nazareth_illit
+        </item>
+
+        <item>  נתניה | רחוב הרצל 57, נתניה | 09-8605667|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_netanya
+        </item>
+
+        <item>  עכו | רחוב יהושפט 15, עכו | 04-9876643 | https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_akko
+        </item>
+
+        <item>  עפולה | רחוב מנחם אוסישקין 42, עפולה | 04-6087454|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_afula
+        </item>
+
+        <item>  פתח תקווה | רחוב בזל 1, פתח תקווה | 03-9299546|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_petah_tikva
+        </item>
+
+        <item>  צפת | מרום כנען צפת, בניין המשטרה, מרום כנען | 04-6087540|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_zefat
+        </item>
+
+        <item>  קצרין | רחוב שיאון 1, קצרין | 04-6087960|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_qatzrin
+        </item>
+
+        <item>  קריות | דרך עכו 194, קריית ביאליק | 04-8748719|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_krayot
+        </item>
+
+        <item>  קריית גת | רחוב חשוון 12, קריית גת | 08-6670616|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_qiryat_gat
+        </item>
+
+        <item>  קריית שמונה | שדרות תל-חי 97, קריית שמונה, אזור תעשייה דרומי, קריית-שמונה | 04-6087930|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_kiryat_shmona
+        </item>
+
+        <item>  ראשון לציון | רחוב ישראל גלילי 5, ראשון לציון | 03-9425604|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_rishonlezion
+        </item>
+
+        <item>  רחובות | רחוב רוז\'נסקי 9, רחובות | 08-9468310|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_rehovot
+        </item>
+
+        <item>  רמלה | שדרות ויצמן 3, רמלה | 08-9234320|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_ramla
+        </item>
+
+        <item>  תל אביב | ויצמן 1, תל אביב-יפו | 03-6910699|https://www.gov.il/he/departments/bureaus/courts_reception_of_the_public_tel_aviv
+        </item>
+
+    </string-array>
+
+
+</resources>
+
+
+
