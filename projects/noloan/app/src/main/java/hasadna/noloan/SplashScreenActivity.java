@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import hasadna.noloan.firestore.FirestoreClient;
+import hasadna.noloan.protobuf.SmsProto;
 import hasadna.noloan.protobuf.SmsProto.SpamList;
 import noloan.R;
 
@@ -83,25 +85,32 @@ public class SplashScreenActivity extends AppCompatActivity {
   }
 
   // Get the spam from the Firestore
-  private Task<DocumentSnapshot> getSpam() {
+  private Task<QuerySnapshot> getSpam() {
     FirestoreClient client = new FirestoreClient();
+   // client.setSpamListener();
+    Task<QuerySnapshot> task = client.getSpamTask();
+/*
     Executor executor = Executors.newSingleThreadExecutor();
-    Task<DocumentSnapshot> task = client.getSpamTask();
     task.addOnCompleteListener(
         executor,
         task1 -> {
           if (task1.isSuccessful()) {
-            DocumentSnapshot snapshot = task1.getResult();
+            QuerySnapshot snapshot = task1.getResult();
             try {
-              SpamList spam =
-                  (SpamList)
-                      client.decodeMessage(snapshot.getString("proto"), SpamList.newBuilder());
-              SpamHolder.getInstance().setSpam(spam.getSmsList());
+              ArrayList<SmsProto.SmsMessage> list= new ArrayList<>();
+              for(DocumentSnapshot doc : snapshot.getDocuments())
+              {
+               // System.out.println(doc);
+                list.add((SmsProto.SmsMessage) client.decodeMessage(doc.getString("proto"), SmsProto.SmsMessage.newBuilder()));
+              }
+
+              SpamHolder.getInstance().init(list);
             } catch (InvalidProtocolBufferException e) {
               Log.e("SplashScreen", "Decoding spam failed");
             }
           }
-        });
+         // client.setSpamListener();
+        });*/
     return task;
   }
 
@@ -120,7 +129,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task<DocumentSnapshot> spam = getSpam();
+      Task<QuerySnapshot> spam = getSpam();
       Task<Boolean> permissions = permissionTask.getTask();
       try {
 

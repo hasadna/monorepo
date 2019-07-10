@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -35,6 +36,11 @@ public class MainActivity extends AppCompatActivity
   private static final String TAG = "MainActivity";
 
   private DrawerLayout drawerLayout;
+
+  private SpamRecyclerAdapter spamAdapter;
+  private SmsRecyclerAdapter smsAdapter;
+  private RecyclerView recycler;
+  private boolean spamActive;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +82,25 @@ public class MainActivity extends AppCompatActivity
         messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
 
     // Filling the recycler
-    RecyclerView recycler = findViewById(R.id.recycler_view);
-    SmsRecyclerAdapter adapter = new SmsRecyclerAdapter(spam);
-    recycler.setAdapter(adapter);
+    recycler = findViewById(R.id.recycler_view);
+    spamAdapter = new SpamRecyclerAdapter();
+    smsAdapter = new SmsRecyclerAdapter(messages);
+    spamActive = false;
+    recycler.setAdapter(smsAdapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
     TextView statusTitle = findViewById(R.id.status_lawsuit);
     statusTitle.setText(
         (String.format(getResources().getString(R.string.content_summary), spam.size())));
+
+    FirestoreClient client = new FirestoreClient();
+    client.setSpamListener();
   }
 
   // Reads SMS. If no permissions are granted, exit app.
   private ArrayList<SmsMessage> readSmsFromDevice() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
+
     // If don't have permission show toast and close the app
     if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
       Log.e("ReadSms", "No permission for reading SMSs");
@@ -129,6 +141,14 @@ public class MainActivity extends AppCompatActivity
     int id = item.getItemId();
     if (id == R.id.nav_about) {
       openAbout();
+    } else if (id == R.id.nav_change) {
+      changeAdapter();
+      if (spamActive) {
+        item.setTitle("הצג סמס");
+      } else {
+        item.setTitle("הצג ספם");
+
+      }
     }
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
@@ -137,6 +157,15 @@ public class MainActivity extends AppCompatActivity
 
   private void openAbout() {
     AboutActivity.startActivity(this);
+  }
+
+  public void changeAdapter() {
+    if (spamActive) {
+      recycler.setAdapter(smsAdapter);
+    } else {
+      recycler.setAdapter(spamAdapter);
+    }
+    spamActive = !spamActive;
   }
 }
 

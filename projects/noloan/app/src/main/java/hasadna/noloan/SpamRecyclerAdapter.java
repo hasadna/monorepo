@@ -8,46 +8,52 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class SmsRecyclerAdapter
-    extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
+public class SpamRecyclerAdapter
+    extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  List<SmsMessage> messages;
+  SpamHolder spam;
 
-  public SmsRecyclerAdapter(List<SmsMessage> messages) {
-    if (messages.size() == 0) {
-      this.messages = new ArrayList<>();
-      SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      this.messages.add(noMessage);
-    } else {
-      this.messages = messages;
-    }
+  public SpamRecyclerAdapter() {
+    spam = SpamHolder.getInstance();
+
+    spam.setSpamListener(new SpamHolder.SpamListener() {
+      @Override
+      public void spamAdded() {
+        notifyItemInserted(spam.getSpam().size());
+      }
+
+      @Override
+      public void spamRemoved() {
+        notifyItemRemoved(spam.getSpam().size());
+      }
+
+      @Override
+      public void spamModified(int index) {
+        notifyItemChanged(index);
+      }
+    });
   }
 
   @NonNull
   @Override
   public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
     LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-    return new RecyclerViewHolder(inflater.inflate(R.layout.sms_list_item, viewGroup, false));
+    return new RecyclerViewHolder(inflater.inflate(R.layout.spam_list_item, viewGroup, false));
   }
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(messages.get(i));
+    recyclerViewHolder.bind(spam.getSpam().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return messages.size();
+    return spam.getSpam().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -72,9 +78,11 @@ public class SmsRecyclerAdapter
       // DATA.
       buttonSmsToLawsuit.setOnClickListener(
           view -> {
-            FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
-            Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
+            intentToLawsuitForm.putExtra("from", sms.getSender());
+            intentToLawsuitForm.putExtra("body", sms.getBody());
+            view.getContext().startActivity(intentToLawsuitForm);
           });
     }
   }
