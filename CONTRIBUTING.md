@@ -58,7 +58,7 @@ Open page of your repository on github. You will see an offer to create Pull Req
 ![Screenshot 1](https://i.imgur.com/ChTkwOt.png)
 
 Now you can write a nice title, ask someone to review, and add some description.
-Make sure your PR title and description match what you actually did. If it is related to a specific project, mark it as such. For example:
+Make sure your PR title and description match what you actually did. If it is related to a specific project, mark the title as such. For example:
 
 `Noloan: Adding a new button to the PrettyButtonsActivity`
 
@@ -77,7 +77,7 @@ Once your PR is approved and all CI checks have passed, do the following to merg
 ![Screenshot 5](https://i.imgur.com/ZuiGruB.png)
 
 # Opening an issue
-If it is related to a specific project, mark it as such. For example:
+If it is related to a specific project, mark the title as such. For example:
 
 `Noloan: New button in PrettyButtonsActivity doesn't work`
 
