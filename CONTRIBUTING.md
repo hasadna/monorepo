@@ -82,5 +82,9 @@ If it is related to a specific project, mark the title as such. For example:
 `Noloan: New button in PrettyButtonsActivity doesn't work`
 
 # Adding a new project
-When adding a new project, add a README.md.
-If you want a different license than the rest of the repo, add it to the project root.
+When adding a new project:
+* Add a README.md. Mention the following:
+  * Project abstract
+  * How to install / use / run
+  * Issue and PR labelling name
+* If you want a different license than the rest of the repo, add it to the project root.
