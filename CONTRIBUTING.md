@@ -57,7 +57,7 @@ git push origin my-dev-branch
 Open page of your repository on github. You will see an offer to create Pull Request:
 ![Screenshot 1](https://i.imgur.com/ChTkwOt.png)
 
-Now you can write nice title, ask someone to review, and add some description.
+Now you can write a nice title, ask someone to review, and add some description.
 Make sure your PR title and description match what you actually did. If it is related to a specific project, mark it as such. For example:
 
 `Noloan: Adding a new button to the PrettyButtonsActivity`
