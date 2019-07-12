@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {
   HomeComponent,
   LoginComponent,
+  StoryComponent,
 } from '@/routes';
 import { AuthGuard } from '@/core/services';
 
@@ -16,6 +17,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeComponent },
+      { path: 'story/:id', component: StoryComponent },
     ],
   },
   { path: '**', redirectTo: 'login' },

@@ -5,7 +5,7 @@
     "build": "ng build storyteller-tracker",
     "test": "ng test storyteller-tracker",
     "lint": "ng lint storyteller-tracker",
-    "fix": "ng lint storyteller-tracker --fix",
+    "lint-fix": "ng lint storyteller-tracker --fix",
     "deploy": "firebase deploy --only hosting",
     "protoc": "workspacerun protoc"
   },

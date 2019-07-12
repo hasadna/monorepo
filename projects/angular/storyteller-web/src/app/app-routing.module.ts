@@ -6,7 +6,7 @@ import {
   HomeComponent,
   UserInfoComponent,
   LoginComponent,
-  SingleItemComponent,
+  MomentComponent,
 } from '@/routes';
 import { AuthGuard } from '@/core/services';
 
@@ -19,7 +19,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'info/:email', component: UserInfoComponent },
-      { path: 'single-item/:email/:storyId/:itemId', component: SingleItemComponent },
+      { path: 'moment/:email/:storyId/:momentId', component: MomentComponent },
     ],
   },
   { path: '**', redirectTo: 'login' },

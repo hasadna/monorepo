@@ -6,7 +6,6 @@ import { AuthService, LoadingService } from '@/core/services';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   constructor(
@@ -14,11 +13,11 @@ export class LoginComponent {
     public loadingService: LoadingService,
     private router: Router,
   ) {
-    this.loadingService.isLoading = false;
+    this.loadingService.stop();
   }
 
   logInWithGoogle(): void {
-    this.loadingService.isLoading = true;
+    this.loadingService.load();
     this.authService.logInWithGoogle().subscribe(() => {
       this.router.navigate(['/home']);
     });
