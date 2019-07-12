@@ -125,9 +125,9 @@ export class StoryComponent implements OnDestroy {
   }
 
   private loadTracks(storyId: string): void {
-    this.tracksSubscription = this.firebaseService.getTracks().subscribe(tracks => {
+    this.tracksSubscription = this.firebaseService.getTracks(storyId).subscribe(tracks => {
       this.tracksSubscription.unsubscribe();
-      this.tracks = tracks.filter(track => track.getStoryId() === storyId);
+      this.tracks = tracks;
       // Display loaded tracks
       for (const track of this.tracks) {
         this.tracker.savedMs += track.getEndedMs() - track.getStartedMs();
@@ -138,14 +138,15 @@ export class StoryComponent implements OnDestroy {
   }
 
   private loadMoments(storyId: string): void {
-    this.momentsSubscription = this.firebaseService.getMoments().subscribe(moments => {
+    this.momentsSubscription = this.firebaseService.getMoments(storyId).subscribe(moments => {
       this.momentsSubscription.unsubscribe();
       this.isMomentsLoading = false;
-      moments = moments.filter(moment => moment.getStoryId() === storyId);
       moments.sort((a, b) => {
         // Newest firts
         return Math.sign(b.getTimestampMs() - a.getTimestampMs());
       });
+
+      // Convert Moment[] to MomentUI[]
       for (const moment of moments) {
         const momentUI: MomentUI = {
           note: moment.getNote(),
@@ -216,7 +217,7 @@ export class StoryComponent implements OnDestroy {
         track.setStoryId(this.story.getId());
         track.setStartedMs(this.tracker.sendedMs);
         track.setEndedMs(now);
-        this.firebaseService.addTrack(track).subscribe(() => {
+        this.firebaseService.addTrack(track, this.story.getId()).subscribe(() => {
           observer.next();
         });
         this.tracker.sendedMs = now;
@@ -271,7 +272,7 @@ export class StoryComponent implements OnDestroy {
   private sendMoment(moment: Moment, momentUI: MomentUI): void {
     moment.setTimestampMs(Date.now());
     momentUI.timestamp = moment.getTimestampMs();
-    this.firebaseService.addMoment(moment).subscribe(() => {
+    this.firebaseService.addMoment(moment, this.story.getId()).subscribe(() => {
       momentUI.isSaved = true;
       momentUI.isSaving = false;
     });

@@ -50,8 +50,8 @@ export class FirebaseService {
       );
   }
 
-  getMoments(email: string): Observable<Moment[]> {
-    return this.db.collection(`/storyteller/data/user/${email}/moment`)
+  getMoments(email: string, storyId: string): Observable<Moment[]> {
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
       .snapshotChanges()
       .pipe(
         map(action => action.map(a => {
@@ -61,8 +61,8 @@ export class FirebaseService {
       );
   }
 
-  getMoment(id: string, email: string): Observable<Moment> {
-    return this.db.collection(`/storyteller/data/user/${email}/moment`)
+  getMoment(id: string, email: string, storyId: string): Observable<Moment> {
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
       .doc(id)
       .snapshotChanges()
       .pipe(

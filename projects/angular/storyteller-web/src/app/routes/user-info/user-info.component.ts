@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, zip } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { User, Story, Moment } from '@/core/proto';
+import { User } from '@/core/proto';
 import {
   FirebaseService,
   NotificationService,
@@ -36,19 +36,6 @@ export class UserInfoComponent {
     this.loadReviewerConfig(this.email);
   }
 
-  loadStories(): void {
-    zip(
-      this.firebaseService.getStoryList(this.user.getEmail()),
-      this.firebaseService.getMoments(this.user.getEmail()),
-    ).subscribe(data => {
-      const storyList: Story[] = data[0];
-      const moments: Moment[] = data[1];
-      this.easyStories = this.storyService.createEasyStories(storyList, moments, this.user);
-      this.storyService.sortStoriesByTime(this.easyStories);
-      this.loadingService.stop();
-    });
-  }
-
   loadReviewerConfig(email: string): void {
     this.firebaseService.getReviewerConfig().subscribe(reviewerConfig => {
       // Get user and project id list
@@ -59,7 +46,10 @@ export class UserInfoComponent {
       }
       this.projectIdList = this.storyService.getProjectIdList(reviewerConfig);
 
-      this.loadStories();
+      this.storyService.getUserEasyStories(this.user).subscribe(easyStories => {
+        this.easyStories = easyStories;
+        this.loadingService.stop();
+      });
     });
   }
 

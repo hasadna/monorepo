@@ -38,7 +38,7 @@ export class MomentComponent {
   loadStory(user: User): void {
     zip(
       this.firebaseService.getStory(this.storyId, user.getEmail()),
-      this.firebaseService.getMoment(this.momentId, user.getEmail()),
+      this.firebaseService.getMoment(this.momentId, user.getEmail(), this.storyId),
     ).subscribe(data => {
       const story: Story = data[0];
       const moment: Moment = data[1];

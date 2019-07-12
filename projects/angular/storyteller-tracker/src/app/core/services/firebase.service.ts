@@ -59,11 +59,12 @@ export class FirebaseService {
     });
   }
 
-  addTrack(track: Track): Observable<string> {
+  addTrack(track: Track, storyId: string): Observable<string> {
     track.setId(randstr64(20));
+    const email: string = this.authService.email;
     return new Observable(observer => {
-      this.db.collection(`/storyteller/data/user/${this.authService.email}/track`)
-      .doc(track.getId())
+      this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/track`)
+        .doc(track.getId())
         .set({
           proto: this.encodingService.encodeUint8ArrayToBase64String(track.serializeBinary()),
         })
@@ -72,10 +73,11 @@ export class FirebaseService {
     });
   }
 
-  addMoment(moment: Moment): Observable<string> {
+  addMoment(moment: Moment, storyId: string): Observable<string> {
     moment.setId(randstr64(16));
+    const email: string = this.authService.email;
     return new Observable(observer => {
-      this.db.collection(`/storyteller/data/user/${this.authService.email}/moment`)
+      this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
         .doc(moment.getId())
         .set({
           proto: this.encodingService.encodeUint8ArrayToBase64String(moment.serializeBinary()),
@@ -112,8 +114,9 @@ export class FirebaseService {
       );
   }
 
-  getTracks(): Observable<Track[]> {
-    return this.db.collection(`/storyteller/data/user/${this.authService.email}/track`)
+  getTracks(storyId: string): Observable<Track[]> {
+    const email: string = this.authService.email;
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/track`)
       .snapshotChanges()
       .pipe(
         map(action => action.map(a => {
@@ -123,8 +126,9 @@ export class FirebaseService {
       );
   }
 
-  getMoments(): Observable<Moment[]> {
-    return this.db.collection(`/storyteller/data/user/${this.authService.email}/moment`)
+  getMoments(storyId: string): Observable<Moment[]> {
+    const email: string = this.authService.email;
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
       .snapshotChanges()
       .pipe(
         map(action => action.map(a => {

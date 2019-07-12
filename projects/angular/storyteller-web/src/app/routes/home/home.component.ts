@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable, zip, Subject } from 'rxjs';
 
-import { User, Story, Moment } from '@/core/proto';
+import { User } from '@/core/proto';
 import { EasyStory } from '@/core/interfaces';
 import { FirebaseService, StoryService, LoadingService } from '@/core/services';
 
@@ -19,14 +19,14 @@ export class HomeComponent {
     private storyService: StoryService,
     public loadingService: LoadingService,
   ) {
-    this.loadingService.isLoading = true;
+    this.loadingService.load();
     this.loadReviewerConfig();
   }
 
   // Loads all available stories
   loadStories(users: User[]): void {
     const observableRequests: Observable<EasyStory[]>[] = users.map(user => {
-      return this.loadUserStories(user);
+      return this.storyService.getUserEasyStories(user);
     });
     zip(...observableRequests).subscribe(easyStoriesBundle => {
       const easyStories: EasyStory[] = [];
@@ -35,26 +35,7 @@ export class HomeComponent {
       }
       this.storyService.sortStoriesByTime(easyStories);
       this.easyStories = easyStories;
-      this.loadingService.isLoading = false;
-    });
-  }
-
-  // Loads stories of specific user
-  loadUserStories(user: User): Observable<EasyStory[]> {
-    return new Observable(observer => {
-      zip(
-        this.firebaseService.getStoryList(user.getEmail()),
-        this.firebaseService.getMoments(user.getEmail()),
-      ).subscribe(data => {
-        const storyList: Story[] = data[0];
-        const moments: Moment[] = data[1];
-        const easyStories: EasyStory[] = this.storyService.createEasyStories(
-          storyList,
-          moments,
-          user,
-        );
-        observer.next(easyStories);
-      });
+      this.loadingService.stop();
     });
   }
 
