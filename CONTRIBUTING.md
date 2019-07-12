@@ -83,3 +83,4 @@ If it is related to a specific project, mark the title as such. For example:
 
 # Adding a new project
 When adding a new project, add a README.md.
+If you want a different license than the rest of the repo, add it to the project root.
