@@ -217,7 +217,7 @@ export class StoryComponent implements OnDestroy {
         track.setStoryId(this.story.getId());
         track.setStartedMs(this.tracker.sendedMs);
         track.setEndedMs(now);
-        this.firebaseService.addTrack(track, this.story.getId()).subscribe(() => {
+        this.firebaseService.addTrack(track).subscribe(() => {
           observer.next();
         });
         this.tracker.sendedMs = now;
@@ -272,7 +272,7 @@ export class StoryComponent implements OnDestroy {
   private sendMoment(moment: Moment, momentUI: MomentUI): void {
     moment.setTimestampMs(Date.now());
     momentUI.timestamp = moment.getTimestampMs();
-    this.firebaseService.addMoment(moment, this.story.getId()).subscribe(() => {
+    this.firebaseService.addMoment(moment).subscribe(() => {
       momentUI.isSaved = true;
       momentUI.isSaving = false;
     });

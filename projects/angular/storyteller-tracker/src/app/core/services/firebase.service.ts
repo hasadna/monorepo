@@ -59,11 +59,11 @@ export class FirebaseService {
     });
   }
 
-  addTrack(track: Track, storyId: string): Observable<string> {
+  addTrack(track: Track): Observable<string> {
     track.setId(randstr64(20));
     const email: string = this.authService.email;
     return new Observable(observer => {
-      this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/track`)
+      this.db.collection(`/storyteller/data/user/${email}/story/${track.getStoryId()}/track`)
         .doc(track.getId())
         .set({
           proto: this.encodingService.encodeUint8ArrayToBase64String(track.serializeBinary()),
@@ -73,11 +73,11 @@ export class FirebaseService {
     });
   }
 
-  addMoment(moment: Moment, storyId: string): Observable<string> {
+  addMoment(moment: Moment): Observable<string> {
     moment.setId(randstr64(16));
     const email: string = this.authService.email;
     return new Observable(observer => {
-      this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
+      this.db.collection(`/storyteller/data/user/${email}/story/${moment.getStoryId()}/moment`)
         .doc(moment.getId())
         .set({
           proto: this.encodingService.encodeUint8ArrayToBase64String(moment.serializeBinary()),
