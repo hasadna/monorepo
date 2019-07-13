@@ -3,7 +3,7 @@
 ## angular/angular-proto-firestore
 An template project that shows how to use Angular + Protocol Buffers.
 
-See [README](projects/angular/angular-proto-firestore/README.md).
+See [README](angular/angular-proto-firestore/README.md).
 
 
 ## angular/mysadna
@@ -16,7 +16,7 @@ contributions and other profile links (LinkedIn, Twitter etc).
 Website content can be modified by sending a PR.
 
 
-See [README](projects/angular/mysadna/README.md).
+See [README](angular/mysadna/README.md).
 
 
 ## angular/program-website
@@ -24,7 +24,7 @@ A website similar to mysadna, focused on the projects and participants in
 the Open Source Development Program with The Joint.
 
 
-See [README](projects/angular/program-website/README.md).
+See [README](angular/program-website/README.md).
 
 
 ## angular/storyteller-tracker
@@ -32,19 +32,19 @@ A webapp that allows you to share development "moments" (e.g when you solve a bu
 or a screenshot of something surprising you saw while developing).
 You can also track time while developing.
 
-See [README](projects/angular/storyteller-tracker/README.md).
+See [README](angular/storyteller-tracker/README.md).
 
 
 ## angular/storyteller-web
 A webapp that shows the shared moments of others on your team.
 
-See [README](projects/angular/storyteller-web/README.md).
+See [README](angular/storyteller-web/README.md).
 
 
 ## avodata
 A research project to help gather "soft attributes" for professions, to help people choose their next profession.
 
-See [README](projects/avodata/README.md).
+See [README](avodata/README.md).
 
 
 ## data_analysis
@@ -61,7 +61,7 @@ For a talk on the pipeline given at the [Big Data Analytics Israel meetup](https
 [Part 2](https://www.youtube.com/watch?v=hBuasmcYS00&list=PLn2GS4h9ia-bp74rtKnoMFsFyYn4RgBLR&index=2)
 [Part 1+2 slides-only video](https://www.youtube.com/watch?v=64qcGYdM4JE)
 
-See [README](projects/data_analysis/README.md).
+See [README](data_analysis/README.md).
 
 
 ## noloan
