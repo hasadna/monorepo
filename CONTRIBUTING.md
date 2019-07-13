@@ -58,9 +58,9 @@ Open page of your repository on github. You will see an offer to create Pull Req
 ![Screenshot 1](https://i.imgur.com/ChTkwOt.png)
 
 Now you can write a nice title, ask someone to review, and add some description.
-Make sure your PR title and description match what you actually did. If it is related to a specific project, mark the title as such. For example:
+Make sure your PR title and description match what you actually did. If it is related to a specific project, mark the title as such with the format:
 
-`Noloan: Adding a new button to the PrettyButtonsActivity`
+`ProjectName: PR title`
 
 Also it's last chance to check your code before creating PR :)
 ![Screenshot 2](https://i.imgur.com/lIvipvz.png)
@@ -77,14 +77,14 @@ Once your PR is approved and all CI checks have passed, do the following to merg
 ![Screenshot 5](https://i.imgur.com/ZuiGruB.png)
 
 # Opening an issue
-If it is related to a specific project, mark the title as such. For example:
+If it is related to a specific project, mark the title as such, like this:
 
-`Noloan: New button in PrettyButtonsActivity doesn't work`
+`ProjectName: Issue title`
 
 # Adding a new project
 When adding a new project:
 * Add a README.md. Mention the following:
   * Project abstract
   * How to install / use / run
-  * Issue and PR labelling name
+  * `ProjectName`, which is like the ID for the project, so issue and PR titles can be labelled using it.
 * If you want a different license than the rest of the repo, add it to the project root.
