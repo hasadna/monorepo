@@ -27,7 +27,7 @@ You need to open protoc folder and intall node modules there too.
 Open direct project  
 Run `npm start` to start a dev server. Navigate to `http://localhost:4200/`  
 Run `npm run lint` to find tslint errors.  
-Run `npm run fix` to fix tslint errors.  
+Run `npm run lint-fix` to fix tslint errors.  
 Run `npm run build` to make a build.  
 Run `npm run deploy` to publish the app on the server.  
 Run `npm run functions` to update cloud functions on the server.  

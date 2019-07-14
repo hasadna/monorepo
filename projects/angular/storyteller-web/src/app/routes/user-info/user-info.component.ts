@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { User, Story } from '@/core/proto';
+import { User } from '@/core/proto';
 import {
   FirebaseService,
   NotificationService,
   StoryService,
   LoadingService,
 } from '@/core/services';
-import { EasyStory } from '@/shared';
+import { EasyStory } from '@/core/interfaces';
 
 @Component({
   selector: 'user-info',
@@ -31,18 +31,9 @@ export class UserInfoComponent {
     private notificationService: NotificationService,
     public loadingService: LoadingService,
   ) {
-    this.loadingService.isLoading = true;
+    this.loadingService.load();
     this.email = this.activatedRoute.snapshot.params['email'];
     this.loadReviewerConfig(this.email);
-  }
-
-  loadStories(): void {
-    this.firebaseService.getUserStories(this.user.getEmail()).subscribe(storyLists => {
-      const stories: Story[] = this.storyService.getStories(storyLists);
-      this.easyStories = this.storyService.createEasyStories(stories, this.user);
-      this.storyService.sortStoriesByTime(this.easyStories);
-      this.loadingService.isLoading = false;
-    });
   }
 
   loadReviewerConfig(email: string): void {
@@ -55,7 +46,10 @@ export class UserInfoComponent {
       }
       this.projectIdList = this.storyService.getProjectIdList(reviewerConfig);
 
-      this.loadStories();
+      this.storyService.getUserEasyStories(this.user).subscribe(easyStories => {
+        this.easyStories = easyStories;
+        this.loadingService.stop();
+      });
     });
   }
 

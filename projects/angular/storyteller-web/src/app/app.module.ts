@@ -6,7 +6,7 @@ import {
   HomeComponent,
   UserInfoComponent,
   LoginComponent,
-  SingleItemComponent,
+  MomentComponent,
 } from '@/routes';
 import { LibraryModule } from 'common/module';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,7 +21,7 @@ import { SharedModule } from './shared';
     UserInfoComponent,
     HomeComponent,
     LoginComponent,
-    SingleItemComponent,
+    MomentComponent,
   ],
   imports: [
     BrowserModule,

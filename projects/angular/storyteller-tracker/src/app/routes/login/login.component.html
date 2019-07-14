@@ -1,4 +1,4 @@
-<div *ngIf="authService.isInit && !loadingService.isLoading">
+<div class="page" *ngIf="authService.isInit && !loadingService.isLoading">
   <button (click)="logInWithGoogle()" *ngIf="!authService.isOnline">Login</button>
   <button (click)="logOut()" *ngIf="authService.isOnline">Logout</button>
 </div>

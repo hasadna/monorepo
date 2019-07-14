@@ -1,70 +1,27 @@
-<div class="home">
-  <div class="open-project" *ngIf="!isOpened">
-    <input type="text" placeholder="project" [(ngModel)]="id">
-    <button (click)="open()">Open</button>
-  </div>
-  <div class="project" *ngIf="isOpened">
-    <div class="close">
-      <a (click)="close()">back</a>
+<div class="page" *ngIf="!loadingService.isLoading">
+  <div class="new-story card">
+    <div class="line">
+      <input type="text" placeholder="project ID" #projectId>
     </div>
-    <div class="story">
-      <div class="project-id">
-        <span>{{ id }}</span>
-        <mat-spinner [diameter]="20" *ngIf="isLoading"></mat-spinner>
-      </div>
-      <div class="tracker">
-        <div class="button">
-          <button
-            *ngIf="!isStarted"
-            (click)="start()"
-            [disabled]="isLoading"
-          >start</button>
-          <button
-            *ngIf="isStarted"
-            (click)="stopClock()"
-            [disabled]="isLoading"
-          >stop</button>
-        </div>
-        <span>{{ timeConversion(display) }}</span>
-      </div>
+    <div class="line">
+      <input type="text" placeholder="Oneliner" #oneliner>
     </div>
     <div>
-      <button
-        (click)="addStoryItem()"
-        [disabled]="!isStarted || isLoading"
-      >Add Story Item</button>
+      <button (click)="create(projectId, oneliner)">Create story</button>
     </div>
-    <div class="story-item" *ngFor="let storyItemUI of storyItemList">
-      <div>
-        <input
-          type="text"
-          placeholder="oneliner"
-          [readonly]="storyItemUI.isSaved"
-          [(ngModel)]="storyItemUI.oneliner"
-          (paste)="onPaste($event, storyItemUI)"
-        >
-      </div>
-      <div>
-        <textarea
-          (paste)="onPaste($event, storyItemUI)"
-          placeholder="note"
-          [readonly]="storyItemUI.isSaved"
-          [(ngModel)]="storyItemUI.note"
-        ></textarea>
-      </div>
-      <div *ngIf="storyItemUI.screenshot">
-        <img [src]="storyItemUI.screenshot">
-      </div>
-      <div class="save">
-        <button
-          (click)="saveStoryItem(storyItemUI)"
-          *ngIf="!storyItemUI.isSaved"
-          [disabled]="!isStarted || isLoading"
-        >
-          Save
-        </button>
-        <span *ngIf="storyItemUI.isSaved">Saved</span>
-      </div>
+  </div>
+
+  <div class="stories-loading" *ngIf="isStoriesLoading">
+     <mat-spinner [diameter]="30"></mat-spinner>
+  </div>
+
+  <div class="story-id-list" *ngIf="!isStoriesLoading">
+    <div class="title">Ongoing stories</div>
+    <div class="story" *ngFor="let story of storyList">
+      <a
+        [routerLink]="['/story', story.getId()]"
+        (click)="loadingService.load()"
+      >{{ story.getProjectId() }} - {{ story.getOneliner() }}</a>
     </div>
   </div>
 </div>

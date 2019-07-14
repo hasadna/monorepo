@@ -4,7 +4,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Screenshot, StoryList, ReviewerConfig } from '@/core/proto';
+import { Story, Moment, ReviewerConfig } from '@/core/proto';
 import { EncodingService } from 'common/services';
 
 interface FirebaseElement {
@@ -23,40 +23,58 @@ export class FirebaseService {
     this.reviewerConfig = this.db.collection('reviewer');
   }
 
-  getStoryLists(
-    collection: AngularFirestoreCollection<FirebaseElement>,
-  ): Observable<StoryList[]> {
-    return collection.snapshotChanges().pipe(
-      map(action => action.map(a => {
-        const firebaseElement = a.payload.doc.data() as FirebaseElement;
-        return StoryList.deserializeBinary(this.getBinary(firebaseElement));
-      })));
+  getStoryList(email: string): Observable<Story[]> {
+    return this.db.collection(`/storyteller/data/user/${email}/story`)
+      .snapshotChanges()
+      .pipe(
+        map(action => action.map(a => {
+          const firebaseElement = a.payload.doc.data() as FirebaseElement;
+          return Story.deserializeBinary(this.getBinary(firebaseElement));
+        })),
+      );
   }
 
-  getScreenshots(
-    collection: AngularFirestoreCollection<FirebaseElement>,
-  ): Observable<Screenshot[]> {
-    return collection.snapshotChanges().pipe(
-      map(action => action.map(a => {
-        const firebaseElement = a.payload.doc.data() as FirebaseElement;
-        return Screenshot.deserializeBinary(this.getBinary(firebaseElement));
-      })));
+  getStory(id: string, email: string): Observable<Story> {
+    return this.db.collection(`/storyteller/data/user/${email}/story`)
+      .doc(id)
+      .snapshotChanges()
+      .pipe(
+        map(action => {
+          const firebaseElement = action.payload.data() as FirebaseElement;
+          if (!firebaseElement) {
+            return;
+          } else {
+            return Story.deserializeBinary(this.getBinary(firebaseElement));
+          }
+        }),
+      );
   }
 
-  getUserStories(userEmail: string): Observable<StoryList[]> {
-    let collection: AngularFirestoreCollection<FirebaseElement>;
-    if (userEmail) {
-      collection = this.db.collection(`/storyteller/data/user/${userEmail}/story`);
-      return this.getStoryLists(collection);
-    }
+  getMoments(email: string, storyId: string): Observable<Moment[]> {
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
+      .snapshotChanges()
+      .pipe(
+        map(action => action.map(a => {
+          const firebaseElement = a.payload.doc.data() as FirebaseElement;
+          return Moment.deserializeBinary(this.getBinary(firebaseElement));
+        })),
+      );
   }
 
-  getUserScreenshot(userEmail: string): Observable<Screenshot[]> {
-    let collection: AngularFirestoreCollection<FirebaseElement>;
-    if (userEmail) {
-      collection = this.db.collection(`/storyteller/data/user/${userEmail}/screenshot`);
-      return this.getScreenshots(collection);
-    }
+  getMoment(id: string, email: string, storyId: string): Observable<Moment> {
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/moment`)
+      .doc(id)
+      .snapshotChanges()
+      .pipe(
+        map(action => {
+          const firebaseElement = action.payload.data() as FirebaseElement;
+          if (!firebaseElement) {
+            return;
+          } else {
+            return Moment.deserializeBinary(this.getBinary(firebaseElement));
+          }
+        }),
+      );
   }
 
   // Converts firebaseElement to binary
@@ -67,14 +85,13 @@ export class FirebaseService {
     return binary;
   }
 
-  // Gets users from Firebase
   getReviewerConfig(): Observable<ReviewerConfig> {
     return this.reviewerConfig
       .doc('config_binary')
       .snapshotChanges()
       .pipe(
         map(action => {
-          const firebaseElement: FirebaseElement = action.payload.data() as FirebaseElement;
+          const firebaseElement = action.payload.data() as FirebaseElement;
           return ReviewerConfig.deserializeBinary(this.getBinary(firebaseElement));
         }),
       );

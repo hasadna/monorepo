@@ -12,7 +12,6 @@ import {
   ProjectSelectPopupComponent,
 } from './project-select-components';
 import { HeaderComponent } from './header';
-import { ScreenshotDialogComponent } from './screenshot-dialog';
 import { LoadingComponent } from './loading';
 import { FeedComponent } from './feed';
 import { AvatarComponent } from './avatar';
@@ -23,7 +22,6 @@ const ExportDeclarations = [
   ProjectSelectCardComponent,
   ProjectSelectPopupComponent,
   HeaderComponent,
-  ScreenshotDialogComponent,
   LoadingComponent,
   FeedComponent,
   AvatarComponent,
@@ -47,6 +45,5 @@ const ExportModules = [
     ...ExportDeclarations,
     ...ExportModules,
   ],
-  entryComponents: [ScreenshotDialogComponent],
 })
 export class SharedModule { }
