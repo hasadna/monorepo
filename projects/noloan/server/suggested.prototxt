@@ -1,0 +1,15 @@
+sms {
+  sender: "TaxRefund"
+  body: "הודעה חשובה:\nייתכן ומגיע לך החזר כספי מרשויות המס.\nאם עבדת כשכיר ב- 6 השנים האחרונות ושילמת מס הכנסה, כעת הזמן לבדוק כמה החזר מגיע לך. לבדיקת ההחזר לחצו כאן:\nhttps://tinyurl.com/yxuyt337\n\nלהסרה שלח \"הסר\" ל- 0506852069\n"
+  receivedAt: "28/6/2019"
+}
+sms {
+  sender: "yes"
+  body: "היי גולן, \nעל פי רישומנו, ביקשת לקבל את החשבונית החודשית שלך מ-yes לכתובת הדוא\"ל שלך\nאך כתובת המייל שלך אינה מעודכנת אצלנו.\nעל מנת ליהנות מהשרות ללא עלות, יש לעדכן את כתובת המייל כאן \nhttps://ma.yes.co.il:8443/confirmation/?an=406898\n\nהמשך צפייה מהנה,\nyes\n\nלמידע על דיוור ישיר זה:  bit.ly/Marketing_information\nלהסרה יש להשיב \"הסר\" למספר- 09-7702820"
+  receivedAt: "25/6/2019"
+}
+sms {
+  sender: "+44777000111"
+  body: "Your mobile number has been Awarded 950,000 Euros in the 2019 Pepsi Promotional Awards. To receive, contact Dr. Lucas via email: awards@pepclaims.com"
+  receivedAt: "18/6/2019"
+}
