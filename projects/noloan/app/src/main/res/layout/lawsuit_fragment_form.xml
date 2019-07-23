@@ -202,7 +202,8 @@
                         android:ems="10"
                         android:gravity="right"
                         android:hint="@string/formFragment_claimAmount_hint"
-                        android:inputType="number|textCapWords" />
+                        android:inputType="number|textCapWords"
+                        android:text="1000" />
 
                     <CheckBox
                         android:id="@+id/checkBox_sentHaser"
