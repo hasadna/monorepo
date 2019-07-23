@@ -209,7 +209,7 @@
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='* בגין כל הודעה תוכלו לתבוע סכום של עד 1,000 ש"ח' />
+                        android:text="@string/formFragment_claimValue_explanation_text" />
 
                     <CheckBox
                         android:id="@+id/checkBox_sentHaser"
