@@ -205,6 +205,12 @@
                         android:inputType="number|textCapWords"
                         android:text="1000" />
 
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='* בגין כל הודעה תוכלו לתבוע סכום של עד 1,000 ש"ח' />
+
                     <CheckBox
                         android:id="@+id/checkBox_sentHaser"
                         android:layout_width="wrap_content"
