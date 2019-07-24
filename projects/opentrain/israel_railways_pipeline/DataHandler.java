@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import com.projects.opentrain.israel_railways_pipeline.Proto.Routes;
+import com.projects.opentrain.israel_railway_pipeline;
 import com.google.common.collect.ImmutableList;
 
 public class DataHandler {
@@ -64,34 +64,30 @@ public class DataHandler {
     }
   }
 
-  //method to test the routes path
-  private static void printRoutes(String csvPath, int amountLinesToPrint){
-    List<Routes> routes = getRoutes(Paths.get(csvPath));
-    for (int i = 0; i < amountLinesToPrint; i++) {
-      System.out.println(routes.get(i));
-    }
+  public static List<Samples> getSamples(Path csvPath){
+
   }
 
-/*
-  public static ImmutableList<Integer> parseStopIds(String stopIds) {
-    ImmutableList.Builder<Integer> result = ImmutableList.builder();
-    // parse `stopIds` and add each value as item to `result`
-    return result.build();
-  }
-
-  public static void saveStops() {
-    try (FileOutputStream output = new FileOutputStream(stopsProtoAbsPath)) {
-      for (Protos.Stop stop : getStops(stopsAbsPath)) {
-        stop.writeDelimitedTo(output);
+  public static void saveSamples() {
+    try (FileOutputStream output = new FileOutputStream(samplesProtoAbsPath)) {
+      for (Sample sample : getSamples(samplesAbsPath)) {
+        sample.writeDelimitedTo(output);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
-  */
 
 
-  // Paths to the CSVs files
+  //method to test the routes path
+  //private static void printRoutes(String csvPath, int amountLinesToPrint){
+    //List<Routes> routes = getRoutes(Paths.get(csvPath));
+    //for (int i = 0; i < amountLinesToPrint; i++) {
+      //System.out.println(routes.get(i));
+    //}
+  //}
+
+
   static Path routesAbsPath;
   static Path samplesAbsPath;
   static Path stopsAbsPath;
@@ -115,9 +111,9 @@ public class DataHandler {
     tripsProtoAbsPath = args[7];
 
     saveRoutes();
-    printRoutes("/home/dev/data_csv/routes.csv", 5);
+    //printRoutes("/home/dev/data_csv/routes.csv", 5);
 
-    //saveStops();
+    saveSamples();
     //saveTrips();
   }
 }
