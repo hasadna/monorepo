@@ -1,0 +1,24 @@
+@import 'media';
+
+.page {
+  >.user-info {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+    >.avatar {
+      position: relative;
+    }
+    >.info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      >.name {
+        font-weight: bold;
+        color: #4e4e4e;
+      }
+      >.email {
+        color: #4e4e4e;
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+.auth-avatar {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+}
+.auth-popup {
+  margin-top: 4px;
+  position: absolute;
+  right: 10px;
+  z-index: 2;
+  width: 300px;
+  padding: 15px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  border: solid 1px #a9a9a9;
+  background: #f0f0f0;
+  >.user-info {
+    width: 100%;
+    display: flex;
+    margin-bottom: 79px;
+    >.avatar {
+      position: relative;
+      width: 60px;
+      min-width: 60px;
+      height: 60px;
+      margin-right: 14px;
+      cursor: pointer;
+      outline: none;
+    }
+    >.info {
+      width: calc(100% - 60px - 14px);
+      >.name {
+        font-size: 16px;
+        word-wrap: break-word;
+        font-weight: bold;
+        color: #4e4e4e;
+      }
+      >.email {
+        font-size: 13px;
+        word-wrap: break-word;
+        color: #4e4e4e;
+      }
+    }
+  }
+  >.button {
+    direction: rtl;
+    a {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: bold;
+      color: #f7faff;
+      border-radius: 11px;
+      border: solid 1px #00b3b1;
+      background: #00b3b1;
+      padding: 4px 20px;
+      cursor: pointer;
+    }
+  }
+}
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}

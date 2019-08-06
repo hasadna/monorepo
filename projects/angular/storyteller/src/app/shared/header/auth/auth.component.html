@@ -1,0 +1,18 @@
+<div class="auth-avatar" (click)="toggle()">
+  <app-avatar [url]="user.getImageUrl()"></app-avatar>
+</div>
+<div class="auth-popup card" *ngIf="!isHidden">
+  <div class="user-info">
+    <div class="avatar" [routerLink]="['/info', user.getEmail()]">
+      <app-avatar [url]="user.getImageUrl()"></app-avatar>
+    </div>
+    <div class="info">
+      <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
+      <div class="email">{{ user.getEmail() }}</div>
+    </div>
+  </div>
+  <div class="button">
+    <a (click)="logOut()">Sign out</a>
+  </div>
+</div>
+<div class="popup-overlay" (click)="close()" *ngIf="!isHidden"></div>

@@ -1,0 +1,39 @@
+<div
+  class="story card"
+  [routerLink]="['/moment', easyStory.email, easyStory.storyId, easyStory.momentId]"
+>
+  <div class="user">
+    <a [routerLink]="['/info', easyStory.email]">
+      <app-avatar [url]="easyStory.imageURL"></app-avatar>
+    </a>
+  </div>
+  <div class="content">
+    <div class="header">
+      <div class="info">
+        <a
+          class="author"
+          [routerLink]="['/info', easyStory.email]"
+        >{{ easyStory.username }}</a>
+        <a
+          class="time"
+          [routerLink]="['/moment', easyStory.email, easyStory.storyId, easyStory.momentId]"
+        >at {{ easyStory.timestamp | date:'HH:mm, MMM d, y' }}</a>
+      </div>
+    </div>
+    <div class="oneliner">
+      {{ easyStory.oneliner }}
+    </div>
+    <div class="note">
+      {{ easyStory.note }}
+    </div>
+    <div class="screenshot" *ngIf="easyStory.screenshotName">
+      <mat-spinner [diameter]="30" *ngIf="isLoading"></mat-spinner>
+      <img
+        class="screenImage"
+        [src]="easyStory.screenshotURL"
+        (click)="$event.stopPropagation(); openScreenshot()"
+        *ngIf="!isLoading && easyStory.screenshotURL"
+      />
+    </div>
+  </div>
+</div>

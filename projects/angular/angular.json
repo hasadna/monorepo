@@ -203,9 +203,9 @@
         }
       }
     },
-    "storyteller-web": {
+    "storyteller": {
       "root": "",
-      "sourceRoot": "storyteller-web/src",
+      "sourceRoot": "storyteller/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -213,21 +213,21 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "storyteller-web/dist",
-            "index": "storyteller-web/src/index.html",
-            "main": "storyteller-web/src/main.ts",
+            "outputPath": "storyteller/dist",
+            "index": "storyteller/src/index.html",
+            "main": "storyteller/src/main.ts",
             "polyfills": "common/angular-cli/polyfills.ts",
-            "tsConfig": "storyteller-web/src/tsconfig.app.json",
+            "tsConfig": "storyteller/src/tsconfig.app.json",
             "assets": [
-              "storyteller-web/src/favicon.ico",
-              "storyteller-web/src/assets"
+              "storyteller/src/favicon.ico",
+              "storyteller/src/assets"
             ],
             "styles": [
-              "storyteller-web/src/styles/styles.scss"
+              "storyteller/src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
                "includePaths": [
-                 "storyteller-web/src"
+                 "storyteller/src"
                ]
              },
             "scripts": []
@@ -236,8 +236,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "storyteller-web/src/environments/environment.ts",
-                  "with": "storyteller-web/src/environments/environment.prod.ts"
+                  "replace": "storyteller/src/environments/environment.ts",
+                  "with": "storyteller/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -262,11 +262,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "storyteller-web:build"
+            "browserTarget": "storyteller:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "storyteller-web:build:production"
+              "browserTarget": "storyteller:build:production"
             }
           }
         },
@@ -275,20 +275,20 @@
           "options": {
             "main": "common/angular-cli/test.ts",
             "polyfills": "common/angular-cli/polyfills.ts",
-            "tsConfig": "storyteller-web/src/tsconfig.spec.json",
+            "tsConfig": "storyteller/src/tsconfig.spec.json",
             "karmaConfig": "common/angular-cli/karma.conf.js",
             "styles": [
-              "storyteller-web/src/styles/styles.scss"
+              "storyteller/src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
                "includePaths": [
-                 "storyteller-web/src"
+                 "storyteller/src"
                ]
              },
             "scripts": [],
             "assets": [
-              "storyteller-web/src/favicon.ico",
-              "storyteller-web/src/assets"
+              "storyteller/src/favicon.ico",
+              "storyteller/src/assets"
             ]
           }
         },
@@ -296,8 +296,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "storyteller-web/src/tsconfig.app.json",
-              "storyteller-web/src/tsconfig.spec.json"
+              "storyteller/src/tsconfig.app.json",
+              "storyteller/src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -306,9 +306,9 @@
         }
       }
     },
-    "storyteller-tracker": {
+    "old-tracker": {
       "root": "",
-      "sourceRoot": "storyteller-tracker/src",
+      "sourceRoot": "old-tracker/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -316,21 +316,21 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "storyteller-tracker/dist",
-            "index": "storyteller-tracker/src/index.html",
-            "main": "storyteller-tracker/src/main.ts",
+            "outputPath": "old-tracker/dist",
+            "index": "old-tracker/src/index.html",
+            "main": "old-tracker/src/main.ts",
             "polyfills": "common/angular-cli/polyfills.ts",
-            "tsConfig": "storyteller-tracker/src/tsconfig.app.json",
+            "tsConfig": "old-tracker/src/tsconfig.app.json",
             "assets": [
-              "storyteller-tracker/src/favicon.ico",
-              "storyteller-tracker/src/assets"
+              "old-tracker/src/favicon.ico",
+              "old-tracker/src/assets"
             ],
             "styles": [
-              "storyteller-tracker/src/styles/styles.scss"
+              "old-tracker/src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
                "includePaths": [
-                 "storyteller-tracker/src"
+                 "old-tracker/src"
                ]
              },
             "scripts": []
@@ -339,8 +339,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "storyteller-tracker/src/environments/environment.ts",
-                  "with": "storyteller-tracker/src/environments/environment.prod.ts"
+                  "replace": "old-tracker/src/environments/environment.ts",
+                  "with": "old-tracker/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -365,11 +365,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "storyteller-tracker:build"
+            "browserTarget": "old-tracker:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "storyteller-tracker:build:production"
+              "browserTarget": "old-tracker:build:production"
             }
           }
         },
@@ -378,20 +378,20 @@
           "options": {
             "main": "common/angular-cli/test.ts",
             "polyfills": "common/angular-cli/polyfills.ts",
-            "tsConfig": "storyteller-tracker/src/tsconfig.spec.json",
+            "tsConfig": "old-tracker/src/tsconfig.spec.json",
             "karmaConfig": "common/angular-cli/karma.conf.js",
             "styles": [
-              "storyteller-tracker/src/styles/styles.scss"
+              "old-tracker/src/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
                "includePaths": [
-                 "storyteller-tracker/src"
+                 "old-tracker/src"
                ]
              },
             "scripts": [],
             "assets": [
-              "storyteller-tracker/src/favicon.ico",
-              "storyteller-tracker/src/assets"
+              "old-tracker/src/favicon.ico",
+              "old-tracker/src/assets"
             ]
           }
         },
@@ -399,8 +399,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "storyteller-tracker/src/tsconfig.app.json",
-              "storyteller-tracker/src/tsconfig.spec.json"
+              "old-tracker/src/tsconfig.app.json",
+              "old-tracker/src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

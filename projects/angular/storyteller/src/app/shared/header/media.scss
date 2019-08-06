@@ -1,0 +1,36 @@
+@media only screen and (max-width: $lg) {
+  .toolbar {
+    >.label {
+      margin-left: 40px;
+    }
+  }
+}
+@media only screen and (min-width: $lg + 1) {
+  .toolbar {
+    >.label {
+      margin-left: 95px;
+    }
+  }
+}
+
+@media only screen and (max-width: $xs) {
+  .toolbar {
+    >.tracker {
+      display: none;
+    }
+  }
+}
+@media only screen and (min-width: $xs + 1) and (max-width: $lg) {
+  .toolbar {
+    >.tracker {
+      margin-left: 20px;
+    }
+  }
+}
+@media only screen and (min-width: $lg + 1) {
+  .toolbar {
+    >.tracker {
+      margin-left: 190px;
+    }
+  }
+}

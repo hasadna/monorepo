@@ -1,0 +1,16 @@
+{
+  "name": "old-tracker",
+  "scripts": {
+    "start": "ng serve old-tracker",
+    "build": "ng build old-tracker",
+    "test": "ng test old-tracker",
+    "lint": "ng lint old-tracker",
+    "lint-fix": "ng lint old-tracker --fix",
+    "deploy": "firebase deploy --only hosting",
+    "protoc": "workspacerun protoc"
+  },
+  "devDependencies": {
+    "ts-protoc-gen": "^0.9.0",
+    "workspacerun": "^1.0.5"
+  }
+}
