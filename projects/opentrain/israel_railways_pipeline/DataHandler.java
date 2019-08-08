@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import com.projects.opentrain.israel_railway_pipeline;
+import com.projects.opentrain.israel_railways_pipeline;
 import com.google.common.collect.ImmutableList;
 
 public class DataHandler {
@@ -65,7 +65,6 @@ public class DataHandler {
   }
 
   public static List<Samples> getSamples(Path csvPath){
-
   }
 
   public static void saveSamples() {
@@ -110,10 +109,10 @@ public class DataHandler {
     stopsProtoAbsPath = args[6];
     tripsProtoAbsPath = args[7];
 
-    saveRoutes();
+   // saveRoutes();
     //printRoutes("/home/dev/data_csv/routes.csv", 5);
 
-    saveSamples();
+    //saveSamples();
     //saveTrips();
   }
 }
