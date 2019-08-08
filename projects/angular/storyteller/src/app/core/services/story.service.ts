@@ -27,6 +27,14 @@ export class StoryService {
         return user;
       }
     }
+
+    // User isn't listed in ReviewerConfig.
+    // Mock user is used instead
+    const mockUser = new User();
+    mockUser.setEmail(email);
+    mockUser.setFirstName(email.split('@')[0]);
+    mockUser.setImageUrl('/assets/mock-avatar.svg');
+    return mockUser;
   }
 
   sortStoriesByTime(easyStories: EasyStory[]): void {

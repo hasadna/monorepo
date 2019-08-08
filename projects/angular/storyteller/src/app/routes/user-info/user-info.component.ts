@@ -23,6 +23,7 @@ export class UserInfoComponent implements OnDestroy {
   email: string;
   configSub = new Subscription();
   storySub = new Subscription();
+  routeSub = new Subscription();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,9 +34,11 @@ export class UserInfoComponent implements OnDestroy {
     private firestoryService: FirestoryService,
     private authService: AuthService,
   ) {
-    this.loadingService.isLoading = true;
-    this.email = this.activatedRoute.snapshot.params['email'];
-    this.loadReviewerConfig(this.email);
+    this.routeSub = this.activatedRoute.params.subscribe(routeParams => {
+      this.loadingService.isLoading = true;
+      this.email = routeParams.email;
+      this.loadReviewerConfig(this.email);
+    });
   }
 
   loadReviewerConfig(email: string): void {
@@ -61,6 +64,7 @@ export class UserInfoComponent implements OnDestroy {
   ngOnDestroy() {
     this.configSub.unsubscribe();
     this.storySub.unsubscribe();
+    this.routeSub.unsubscribe();
     this.firestoryService.unsubscribe();
   }
 }
