@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableList;
 public class DataHandler {
 
   private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
-
+/*
   public static List<Routes> getRoutes(Path csvPath) {
 
     List<Routes> routes = new ArrayList<>();
@@ -47,7 +47,10 @@ public class DataHandler {
       throw new RuntimeException(e);
     }
   }
+  */
 
+
+/*
   public static ImmutableList<Integer> parseStopIds(String stopIds) {
     ImmutableList.Builder<Integer> result = ImmutableList.builder();
     // parse `stopIds` and add each value as item to `result`
@@ -63,10 +66,12 @@ public class DataHandler {
       throw new RuntimeException(e);
     }
   }
-
+*/
+/*
   public static List<Samples> getSamples(Path csvPath){
   }
-
+  */
+/*
   public static void saveSamples() {
     try (FileOutputStream output = new FileOutputStream(samplesProtoAbsPath)) {
       for (Sample sample : getSamples(samplesAbsPath)) {
@@ -76,7 +81,7 @@ public class DataHandler {
       throw new RuntimeException(e);
     }
   }
-
+*/
 
   //method to test the routes path
   //private static void printRoutes(String csvPath, int amountLinesToPrint){
