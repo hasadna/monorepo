@@ -1,0 +1,78 @@
+@import 'styles/variables';
+
+.page {
+  >.nav {
+    margin-bottom: 10px;
+    a {
+      color: #3083ee;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+  >.story {
+    width: 500px;
+    margin-bottom: 15px;
+    >.public {
+      height: 24px;
+      margin-bottom: 10px;
+    }
+    >.oneliner {
+      font-size: 18px;
+      color: #404040;
+      margin-bottom: 10px;
+    }
+    >.tracker {
+      >.button {
+        width: 70px;
+        display: inline-block;
+      }
+      >.tracking {
+        color: #37a000;
+      }
+    }
+  }
+  >.moments {
+    >.moment {
+      width: 500px;
+      margin-top: 10px;
+      >.time {
+        color: grey;
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      >.note {
+        margin-bottom: 5px;
+        >.note-text {
+          font-size: 15px;
+          font-family: $default-font;
+          margin: 0;
+        }
+        textarea {
+          width: calc(100% - 6px);
+          resize: none;
+        }
+        pre {
+          padding: 0;
+          white-space: pre-wrap;
+        }
+      }
+      >.screenshot {
+        margin-bottom: 5px;
+        img {
+          width: 100%;
+          border: 1px solid grey;
+        }
+      }
+      >.save {
+        display: flex;
+        color: green;
+        font-size: 15px;
+        >.label {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

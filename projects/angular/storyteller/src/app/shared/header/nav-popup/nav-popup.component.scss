@@ -1,0 +1,29 @@
+.icon-button {
+  cursor: pointer;
+  user-select: none;
+  width: 24px;
+  display: flex;
+  align-items: center;
+}
+.popup {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 64px;
+  width: 100%;
+  height: 100%;
+  background: white;
+  padding: 27px;
+  >.link {
+    margin-bottom: 10px;
+    a {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4e4e4e;
+      margin-right: 63px;
+      cursor: pointer;
+      outline: none;
+      text-decoration: none;
+    }
+  }
+}
