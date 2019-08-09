@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package projects.opentrain.israel_railways_pipeline.data_handler;
+
+option java_package = "projects.opentrain.israel_railways_pipeline.data_handler";
+option java_outer_classname = "Protos";
+
+message Test {
+    int32 id = 1;
+}

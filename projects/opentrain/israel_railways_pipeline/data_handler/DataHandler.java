@@ -1,4 +1,5 @@
-package projects.opentrain.israel_railways_pipeline;
+package projects.opentrain.israel_railways_pipeline.data_handler;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -10,8 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import com.projects.opentrain.israel_railways_pipeline;
 import com.google.common.collect.ImmutableList;
+
+//import projects.opentrain.israel_railways_pipeline.test_proto.Protos;
+
+//import projects.opentrain.israel_railways_pipeline.test_proto.Protos;
+
 
 public class DataHandler {
 
@@ -102,8 +107,10 @@ public class DataHandler {
   static String samplesProtoAbsPath;
   static String stopsProtoAbsPath;
   static String tripsProtoAbsPath;
-  public static void main(String[] args) throws IOException {
 
+
+  public static void main(String[] args) throws IOException {
+/*
     routesAbsPath = Paths.get(args[0]);
     samplesAbsPath = Paths.get(args[1]);
     stopsAbsPath = Paths.get(args[2]);
@@ -113,6 +120,11 @@ public class DataHandler {
     samplesProtoAbsPath = args[5];
     stopsProtoAbsPath = args[6];
     tripsProtoAbsPath = args[7];
+
+*/
+
+    System.out.println("ok");
+
 
    // saveRoutes();
     //printRoutes("/home/dev/data_csv/routes.csv", 5);

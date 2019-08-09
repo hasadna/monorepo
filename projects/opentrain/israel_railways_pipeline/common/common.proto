@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package com.projects.opentrain.israel_railways_pipeline;
+package projects.opentrain.israel_railways_pipeline.common;
 
-option java_package = "com.projects.opentrain.israel_railways_pipeline";
-option java_outer_classname = "Proto";
+option java_package = "projects.opentrain.israel_railways_pipeline.common";
+option java_outer_classname = "Protos";
 
 message Routes {
    int32 id = 1;
