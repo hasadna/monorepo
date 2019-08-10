@@ -1,12 +1,8 @@
 package projects.opentrain.israel_railways_pipeline.datahandler;
-
-
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import projects.opentrain.israel_railways_pipeline.common.RailWayProtos;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,99 +19,6 @@ import java.util.stream.StreamSupport;
 
 class DataHandler {
 
-    private static final int FILTER_DATE = 20190217;
-    private static final String ISRAEL_RAILWAYS_AGENCY_ID = "2";
-
-    private static String getDayOfToday() {
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        switch (day) {
-            case Calendar.SUNDAY:
-                return "sunday";
-            case Calendar.MONDAY:
-                return "monday";
-            case Calendar.TUESDAY:
-                return "tuesday";
-            case Calendar.WEDNESDAY:
-                return "wednesday";
-            case Calendar.THURSDAY:
-                return "thursday";
-            case Calendar.FRIDAY:
-                return "friday";
-            case Calendar.SATURDAY:
-                return "saturday";
-            default:
-                return "";
-        }
-    }
-
-    private static boolean isServiceIdRelevantToday(CSVRecord record) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        int startDate = Integer.parseInt(record.get("start_date"));
-        int endDate = Integer.parseInt(record.get("end_date"));
-
-        // Uncomment to read today's data:
-        // int currentDate = Integer.parseInt(dateFormat.format(new Date()));
-        // return (startDate <= currentDate && currentDate <= endDate && isRecordDayTrueOnDayOfToday);
-        boolean isRecordDayTrueOnDayOfToday = Integer.parseInt(record.get(getDayOfToday())) == 1;
-        return (startDate <= FILTER_DATE && FILTER_DATE <= endDate && isRecordDayTrueOnDayOfToday);
-    }
-
-//  public static List<Integer> getServiceIds() {
-//    List<Protos.Calendar> calendars = getCalendar(calendarsAbsPath);
-//    List<Integer> serviceIds = new ArrayList<>();
-//    for (Protos.Calendar calendar : calendars) {
-//      serviceIds.add(calendar.getServiceId());
-//    }
-//    return serviceIds;
-//  }
-//
-//  public static List<Protos.Calendar> getCalendar(Path csvPath) {
-//    List<Protos.Calendar> calendars = new ArrayList<>();
-//    try {
-//      CSVParser parser =
-//          CSVParser.parse(
-//              csvPath,
-//              StandardCharsets.UTF_8,
-//              CSVFormat.DEFAULT.withHeader(
-//                  "service_id",
-//                  "sunday",
-//                  "monday",
-//                  "tuesday",
-//                  "wednesday",
-//                  "thursday",
-//                  "friday",
-//                  "saturday",
-//                  "start_date",
-//                  "end_date"));
-//      boolean isHeader = true;
-//      for (CSVRecord record : parser) {
-//        if (isHeader) {
-//          isHeader = false;
-//          continue;
-//        }
-//        if (isServiceIdRelevantToday(record)) {
-//          Protos.Calendar.Builder calendar = Protos.Calendar.newBuilder();
-//
-//          calendars.add(
-//              calendar
-//                  .setServiceId(Integer.parseInt(record.get("service_id")))
-//                  .setSunday(Boolean.parseBoolean(record.get("sunday")))
-//                  .setMonday(Boolean.parseBoolean(record.get("monday")))
-//                  .setTuesday(Boolean.parseBoolean(record.get("tuesday")))
-//                  .setWednesday(Boolean.parseBoolean(record.get("wednesday")))
-//                  .setThursday(Boolean.parseBoolean(record.get("thursday")))
-//                  .setFriday(Boolean.parseBoolean(record.get("friday")))
-//                  .setSaturday(Boolean.parseBoolean(record.get("saturday")))
-//                  .setStartDate(Integer.parseInt(record.get("start_date")))
-//                  .setEndDate(Integer.parseInt(record.get("end_date")))
-//                  .build());
-//        }
-//      }
-//      return calendars;
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
 //
 //  public static List<Integer> getRouteIds() {
 //    return getRoutes(routesAbsPath).stream().map(Route::getRouteId).collect(Collectors.toList());
@@ -297,37 +200,7 @@ class DataHandler {
 //    }
 //  }
 //
-//  public static void saveRoutes(){
-//    try(FileOutputStream output = new FileOutputStream(calendarsProtoAbsPath)){
-//      for(Protos.s)
-//    }
-//  }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
     public static List<RailWayProtos.Routes> getRoutes(Path sampleCsv) {
@@ -373,27 +246,7 @@ class DataHandler {
     }
 
 
-//
-//  public static void saveRoutes() {
-//    try (FileOutputStream output = new FileOutputStream(routesProtoAbsPath)) {
-//      for (Route route : getRoutes(routesAbsPath)) {
-//        route.writeDelimitedTo(output);
-//      }
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-//
-//  public static void saveStopTimes() {
-//    try (FileOutputStream output = new FileOutputStream(stopTimesProtoAbsPath)) {
-//      for (StopTime stopTime : getStopTimes(stopTimesAbsPath)) {
-//        stopTime.writeDelimitedTo(output);
-//      }
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-//
+
 //  public static void saveStops() {
 //    try (FileOutputStream output = new FileOutputStream(stopsProtoAbsPath)) {
 //      for (Stop stop : getStops(stopsAbsPath)) {
@@ -404,16 +257,7 @@ class DataHandler {
 //    }
 //  }
 //
-//  public static void saveTranslations() {
-//    try (FileOutputStream output = new FileOutputStream(translationsProtoAbsPath)) {
-//      for (Translation translation : getTranslations(translationsAbsPath)) {
-//        translation.writeDelimitedTo(output);
-//      }
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-//
+
 //  public static void saveTrips() {
 //    try (FileOutputStream output = new FileOutputStream(tripsProtoAbsPath)) {
 //      for (Trip trip : getTrips(tripsAbsPath)) {
@@ -425,49 +269,21 @@ class DataHandler {
 //  }
 //
 //  // Paths to the CSVs files
-//  static Path calendarsAbsPath;
 //  static Path routesAbsPath;
-//  static Path stopTimesAbsPath;
-//  static Path stopsAbsPath;
-//  static Path translationsAbsPath;
-//  static Path tripsAbsPath;
-//
 //  // Paths to output files
-//  static String calendarsProtoAbsPath;
 //  static String routesProtoAbsPath;
-//  static String stopTimesProtoAbsPath;
-//  static String stopsProtoAbsPath;
-//  static String translationsProtoAbsPath;
-//  static String tripsProtoAbsPath;
 
     public static void main(String[] args) {
 
 //    {
-////      calendarsAbsPath = Paths.get(args[0]);
 //      routesAbsPath = Paths.get(args[0]);
-////      stopTimesAbsPath = Paths.get(args[2]);
-////      stopsAbsPath = Paths.get(args[3]);
-////      translationsAbsPath = Paths.get(args[4]);
-////      tripsAbsPath = Paths.get(args[5]);
-////
-////      calendarsProtoAbsPath = args[6];
 //      routesProtoAbsPath = args[1];
-////      stopTimesProtoAbsPath = args[8];
-////      stopsProtoAbsPath = args[9];
-////      translationsProtoAbsPath = args[10];
-////      tripsProtoAbsPath = args[11];
+
 //    }
-//        System.out.println(args[0]);
-//        System.out.println(args[1]);
-//    return;
 //        getRoutes(Paths.get(args[0]));
 //        System.out.println(getRoutes(Paths.get(args[0])));
         saveRoutes(Paths.get(args[0]), args[1]);
-//    saveRoutes();
-//    saveStopTimes();
-//    saveStops();
-//    saveTranslations();
-//    saveTrips();
+
     }
 }
 
