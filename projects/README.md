@@ -57,9 +57,9 @@ The benefit of this pipeline are:
 * Paralellism - the pipeline can take advantage of multiple cores.
 
 For a talk on the pipeline given at the [Big Data Analytics Israel meetup](https://www.meetup.com/Big-Data-Analytics-Israel/events/259235551), see:
-[Part 1](https://www.youtube.com/watch?v=XGc1sIsYgvM&list=PLn2GS4h9ia-bp74rtKnoMFsFyYn4RgBLR&index=1)
-[Part 2](https://www.youtube.com/watch?v=hBuasmcYS00&list=PLn2GS4h9ia-bp74rtKnoMFsFyYn4RgBLR&index=2)
-[Part 1+2 slides-only video](https://www.youtube.com/watch?v=64qcGYdM4JE)
+* [Part 1](https://www.youtube.com/watch?v=XGc1sIsYgvM&list=PLn2GS4h9ia-bp74rtKnoMFsFyYn4RgBLR&index=1)
+* [Part 2](https://www.youtube.com/watch?v=hBuasmcYS00&list=PLn2GS4h9ia-bp74rtKnoMFsFyYn4RgBLR&index=2)
+* [Part 1+2 slides-only video](https://www.youtube.com/watch?v=64qcGYdM4JE)
 
 See [README](data_analysis/README.md).
 
