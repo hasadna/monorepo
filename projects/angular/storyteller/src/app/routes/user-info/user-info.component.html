@@ -1,0 +1,12 @@
+<div class="page" *ngIf="!loadingService.isLoading">
+  <div class="user-info card">
+    <div class="avatar">
+      <app-avatar [url]="user.getImageUrl()"></app-avatar>
+    </div>
+    <div class="info">
+      <div class="name">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
+      <div class="email">{{ user.getEmail() }}</div>
+    </div>
+  </div>
+  <app-stories [easyStories]="easyStories"></app-stories>
+</div>

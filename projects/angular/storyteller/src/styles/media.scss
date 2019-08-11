@@ -1,0 +1,16 @@
+@media only screen and (max-width: $lg) {
+  .media-sm-hidden {
+    display: none !important;
+  }
+  .page {
+    padding: 20px 0;
+  }
+}
+@media only screen and (min-width: $lg + 1) {
+  .media-lg-hidden {
+    display: none !important;
+  }
+  .page {
+    padding: 20px 110px;
+  }
+}

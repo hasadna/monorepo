@@ -1,0 +1,74 @@
+@import 'styles/variables';
+@import './media';
+
+.toolbar {
+  height: 64px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  background: #e6eff0;
+  padding: 0 15px;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  >nav-popup {
+    position: absolute;
+  }
+  >.label {
+    font-family: $satisfy;
+    font-size: 36px;
+    text-decoration: none;
+    color: black;
+  }
+  >.tracker {
+    >.time {
+      display: flex;
+      align-items: center;
+      border-radius: 21px;
+      border: solid 2px #00b3b1;
+      background: #00b3b1;
+      padding: 3px 19px;
+      >span {
+        font-family: $heebo;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+      }
+      img {
+        padding-bottom: 4px;
+        margin-right: 10px;
+      }
+    }
+  }
+  >.placeholder {
+    flex: 1;
+  }
+  >.nav {
+    display: flex;
+    position: absolute;
+    right: 110px;
+    >.link {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4e4e4e;
+      margin-left: 63px;
+      cursor: pointer;
+      outline: none;
+      &:hover {
+        color: #01d4d1;
+      }
+    }
+    >.selected {
+      color: #00b3b1;
+      &:hover {
+        color: #00b3b1;
+      }
+    }
+  }
+}
+.header-placeholder {
+  height: 64px;
+}
