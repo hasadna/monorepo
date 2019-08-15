@@ -1,4 +1,4 @@
-package hasadna.noloanadmin;
+package hasadna.noloan.admin.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
