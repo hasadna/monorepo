@@ -3,12 +3,20 @@ package hasadna.noloan.firestore;
 import android.util.Base64;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import javax.annotation.Nullable;
 
 import hasadna.noloan.SpamHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -34,13 +42,15 @@ public class FirestoreClient {
     return collectionReference.get();
   }
 
-  public void setSpamListener() {
+  // Start real-time listening to the DB for change, return set the result to true when done.
+  public TaskCompletionSource StartListeningSpam() {
+    Executor executor = Executors.newSingleThreadExecutor();
+    TaskCompletionSource task = new TaskCompletionSource<> ();
+
     CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
-    collectionReference.addSnapshotListener((queryDocumentSnapshots, e) ->
+    collectionReference.addSnapshotListener(executor, (queryDocumentSnapshots, e) ->
     {
-      if (e != null)
-      {
-        System.out.println("failed!!!!!!!!"+e);
+      if (e != null) {
         return;
       }
 
@@ -64,7 +74,9 @@ public class FirestoreClient {
             break;
         }
       }
+      task.setResult(true);
     });
+    return task;
   }
 
   // Encode user proto to base64 for storing in Firestore

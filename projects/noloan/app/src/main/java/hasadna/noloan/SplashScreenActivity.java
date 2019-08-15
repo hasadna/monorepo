@@ -87,9 +87,9 @@ public class SplashScreenActivity extends AppCompatActivity {
   // Get the spam from the Firestore
   private Task<QuerySnapshot> getSpam() {
     FirestoreClient client = new FirestoreClient();
-   // client.setSpamListener();
+   // client.StartListeningSpam();
     Task<QuerySnapshot> task = client.getSpamTask();
-/*
+
     Executor executor = Executors.newSingleThreadExecutor();
     task.addOnCompleteListener(
         executor,
@@ -109,8 +109,8 @@ public class SplashScreenActivity extends AppCompatActivity {
               Log.e("SplashScreen", "Decoding spam failed");
             }
           }
-         // client.setSpamListener();
-        });*/
+         // client.StartListeningSpam();
+        });
     return task;
   }
 
@@ -129,7 +129,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task<QuerySnapshot> spam = getSpam();
+      //Task<QuerySnapshot> spam = getSpam();
+      Task spam = new FirestoreClient().StartListeningSpam().getTask();
       Task<Boolean> permissions = permissionTask.getTask();
       try {
 
