@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 class DataHandler {
-
 //
 //  public static List<Integer> getRouteIds() {
 //    return getRoutes(routesAbsPath).stream().map(Route::getRouteId).collect(Collectors.toList());
@@ -202,14 +201,68 @@ class DataHandler {
 //
 
 
+   public static void saveTrips(Path path, String outputName) {
+        try (FileOutputStream output = new FileOutputStream(outputName)) {
+            for (RailWayProtos.Trips trip : getTrips(path)) {
+                trip.writeDelimitedTo(output);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static List<RailWayProtos.Routes> getRoutes(Path sampleCsv) {
+
+    public static List<RailWayProtos.Trips> getTrips(Path tripsCsv) {
+
+        List<RailWayProtos.Trips> tripsList = new ArrayList<>();
+        try {
+            CSVParser parser =
+                    CSVParser.parse(
+                            tripsCsv,
+                            StandardCharsets.UTF_8,
+                            CSVFormat.DEFAULT.withHeader("id", "train_num", "date" , "valid" , "invalid_reason", "x_week_day_local", "x_hour_local" ,
+                                    "route_id" , "x_avg_delay_arrival" , "x_cache_version" , "x_max2_delay_arrival", "x_before_last_delay_arrival" , "x_last_delay_arrival"));
+
+            boolean isHeader = true;
+            for (CSVRecord record : parser) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+
+                RailWayProtos.Trips.Builder tripBuilder = RailWayProtos.Trips.newBuilder();
+                tripsList.add(
+                        tripBuilder
+                                .setId(Integer.parseInt(record.get("id")))
+                                .setTrainNum(Integer.parseInt(record.get("train_num")))
+                                .setDate(record.get("date"))
+                                .setValid(Boolean.parseBoolean(record.get("valid")))
+                                .setInvalidReason(record.get("invalid_reason"))
+                                .setXWeekDayLocal(record.get("x_week_day_local"))
+                                .setXHourLocal(record.get("x_hour_local"))
+                                .setRouteId(Integer.parseInt(record.get("route_id")))
+                                .setXAvgDelayArrival(record.get("x_avg_delay_arrival"))
+                                .setXCacheVersion(record.get("x_cache_version"))
+                                .setXMax2DelayArrival(record.get("x_max2_delay_arrival"))
+                                .setXBeforeLastDelayArrival(record.get("x_before_last_delay_arrival"))
+                                .setXLastDelayArrival(Integer.parseInt(record.get("setXLastDelayArrival")))   //error
+                                .build());
+            }
+            return tripsList;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public static List<RailWayProtos.Routes> getRoutes(Path routeCsv) {
 
         List<RailWayProtos.Routes> routesList = new ArrayList<>();
         try {
             CSVParser parser =
                     CSVParser.parse(
-                            sampleCsv,
+                            routeCsv,
                             StandardCharsets.UTF_8,
                             CSVFormat.DEFAULT.withHeader("id", "stop_ids"
                             ));
@@ -219,7 +272,6 @@ class DataHandler {
                     isHeader = false;
                     continue;
                 }
-
 
                 RailWayProtos.Routes.Builder routeBuilder = RailWayProtos.Routes.newBuilder();
                 routesList.add(
@@ -238,7 +290,7 @@ class DataHandler {
     public static void saveRoutes(Path path, String outputName) {
         try (FileOutputStream output = new FileOutputStream(outputName)) {
             for (RailWayProtos.Routes route : getRoutes(path)) {
-//                route.writeDelimitedTo(output);
+                route.writeDelimitedTo(output);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -274,15 +326,14 @@ class DataHandler {
 //  static String routesProtoAbsPath;
 
     public static void main(String[] args) {
-
 //    {
 //      routesAbsPath = Paths.get(args[0]);
 //      routesProtoAbsPath = args[1];
-
 //    }
 //        getRoutes(Paths.get(args[0]));
 //        System.out.println(getRoutes(Paths.get(args[0])));
         saveRoutes(Paths.get(args[0]), args[1]);
+        saveTrips(Paths.get(args[2]), args[3]);
 
     }
 }

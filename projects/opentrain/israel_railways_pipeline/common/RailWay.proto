@@ -1,62 +1,62 @@
 syntax = "proto3";
 
 package projects.opentrain.israel_railways_pipeline.common;
-
 option java_package = "projects.opentrain.israel_railways_pipeline.common";
 option java_outer_classname = "RailWayProtos";
 
 message Routes {
-   int32 id = 1;
-   string stop_ids = 2;
+    int32 id = 1;
+    string stop_ids = 2;
 }
 
 
 message Samples {
-   int32 id=1;
-   int32 gtfs_stop_id=2;
-   bool is_source=3;
-   bool is_dest=4;
-   string actual_arrival=5;
-   string exp_arrival=6;
-   string actual_departure=7;
-   string exp_departure=8;
-   string delay_arrival=9;
-   string delay_departure=10;
-   int32 index=11;
-   string filename=12;
-   int32 line_number=13;
-   bool valid=14;
-   string invalid_reason=15;
-   int32 stop_id=16;
-   int32 trip_id=17;
-   string sheet_idx=18;
-   string  actual_departure_fixed=19;
-   string actual_arrival_fixed=20;
-   string ignored_error=21;
+    int32 id = 1;
+    int32 gtfs_stop_id = 2;
+    bool is_source = 3;
+    bool is_dest = 4;
+    string actual_arrival = 5;
+    string exp_arrival = 6;
+    string actual_departure = 7;
+    string exp_departure = 8;
+    string delay_arrival = 9;
+    string delay_departure = 10;
+    int32 index = 11;
+    string filename = 12;
+    int32 line_number = 13;
+    bool valid = 14;
+    string invalid_reason = 15;
+    int32 stop_id = 16;
+    int32 trip_id = 17;
+    string sheet_idx = 18;
+    string actual_departure_fixed = 19;
+    string actual_arrival_fixed = 20;
+    string ignored_error = 21;
 }
 
 message Stops {
-   int32 id = 1;
-   string gtfs_stop_id=2;
-   string english =3;
-   string hebrews =4;
-   string lat=5;
-   string lon=6;
+    int32 id = 1;
+    string gtfs_stop_id = 2;
+    string english = 3;
+    string hebrews = 4;
+    string lat = 5;
+    string lon = 6;
 }
 
 
 message Trips {
-   int32 id = 1;
-   int32 train_num=2;
-   bool valid=3;
-   string invalid_reason=4;
-   string x_week_day_local=5;
-   string x_hour_local=6;
-   int32 route_id=7;
-   string x_avg_delay_arrival=8;
-   string x_cache_version=9;
-   string x_max2_delay_arrival=10;
-   string x_max_delay_arrival=11;
-   string x_before_last_delay_arrival=12;
-   string x_last_delay_arrival=13;
+    int32 id = 1;
+    int32 train_num = 2;
+    string date = 3;
+    bool valid = 4;
+    string invalid_reason = 5;
+    string x_week_day_local = 6;
+    string x_hour_local = 7;
+    int32 route_id = 8;
+    string x_avg_delay_arrival = 9;
+    string x_cache_version = 10;
+    string x_max2_delay_arrival = 11;
+    string x_max_delay_arrival = 12;
+    string x_before_last_delay_arrival = 13;
+    int32 x_last_delay_arrival = 14;
 }
