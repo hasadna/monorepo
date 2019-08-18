@@ -45,18 +45,18 @@ message Stops {
 
 
 message Trips {
-    int32 id = 1;
-    int32 train_num = 2;
+    string id = 1;
+    string train_num = 2;
     string date = 3;
-    bool valid = 4;
+    string valid = 4;
     string invalid_reason = 5;
     string x_week_day_local = 6;
     string x_hour_local = 7;
-    int32 route_id = 8;
+    string route_id = 8;
     string x_avg_delay_arrival = 9;
     string x_cache_version = 10;
     string x_max2_delay_arrival = 11;
     string x_max_delay_arrival = 12;
     string x_before_last_delay_arrival = 13;
-    int32 x_last_delay_arrival = 14;
+    string x_last_delay_arrival = 14;
 }

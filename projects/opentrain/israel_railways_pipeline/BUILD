@@ -24,16 +24,16 @@ genrule(
     name = "open_train",
     srcs = [
         "@israel_railways_data//:routes.csv",
+        "@israel_railways_data//:samples.csv",
+        "@israel_railways_data//:stops.csv",
         "@israel_railways_data//:trips.csv",
-        #        "@israel_railways_data//:samples.csv",
-        #        "@israel_railways_data//:stops.csv",
     ],
     outs = [
         "routes.protobin",
+        "samples.protobin",
+        "stops.protobin",
         "trips.protobin",
-        #        "samples.protobin",
-        #        "stops.protobin",
     ],
-    cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location routes.protobin) $(location @israel_railways_data//:trips.csv) $(location trips.protobin) ",
+    cmd = "$(location //projects/opentrain/israel_railways_pipeline:israel_railways_pipeline) $(location @israel_railways_data//:routes.csv) $(location routes.protobin) $(location @israel_railways_data//:samples.csv) $(location samples.protobin) $(location @israel_railways_data//:stops.csv) $(location stops.protobin) $(location @israel_railways_data//:trips.csv) $(location trips.protobin) ",
     tools = ["//projects/opentrain/israel_railways_pipeline"],
 )
