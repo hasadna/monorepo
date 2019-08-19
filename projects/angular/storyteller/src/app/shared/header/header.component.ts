@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 
-import { HeaderService, AuthService, LoadingService } from '@/core/services';
+import { HeaderService, AuthService, LoadingService, UserService } from '@/core/services';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +14,7 @@ export class HeaderComponent {
   constructor(
     public headerService: HeaderService,
     public authService: AuthService,
+    public userService: UserService,
     public loadingService: LoadingService,
     private router: Router,
   ) {

@@ -23,26 +23,6 @@
     text-decoration: none;
     color: black;
   }
-  >.tracker {
-    >.time {
-      display: flex;
-      align-items: center;
-      border-radius: 21px;
-      border: solid 2px #00b3b1;
-      background: #00b3b1;
-      padding: 3px 19px;
-      >span {
-        font-family: $heebo;
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-      }
-      img {
-        padding-bottom: 4px;
-        margin-right: 10px;
-      }
-    }
-  }
   >.placeholder {
     flex: 1;
   }

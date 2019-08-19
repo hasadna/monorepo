@@ -11,6 +11,7 @@ export class HeaderService {
   routes: Link[] = [
     { label: 'Feed', url: '/feed' },
     { label: 'Time Tracking', url: '/tracking' },
+    { label: 'Stories', url: '/user-stories' },
   ];
 
   toggle(): void {
