@@ -165,7 +165,7 @@ class DataHandler {
                                 .setXCacheVersion(record.get("x_cache_version"))
                                 .setXMax2DelayArrival(record.get("x_max2_delay_arrival"))
                                 .setXBeforeLastDelayArrival(record.get("x_before_last_delay_arrival"))
-                                .setXLastDelayArrival(record.get("setXLastDelayArrival"))   //error
+                                .setXLastDelayArrival(record.get("x_last_delay_arrival"))
                                 .build());
             }
             return tripsList;
@@ -232,9 +232,9 @@ class DataHandler {
 //        getRoutes(Paths.get(args[0]));
 //        System.out.println(getRoutes(Paths.get(args[0])));
         saveRoutes(Paths.get(args[0]), args[1]);
-        saveSamples(Paths.get(args[6]),(args[7]));
+        saveSamples(Paths.get(args[2]),(args[3]));
         saveStops(Paths.get(args[4]), args[5]);
-        saveTrips(Paths.get(args[2]), args[3]);
+        saveTrips(Paths.get(args[6]), args[7]);
 
     }
 }
