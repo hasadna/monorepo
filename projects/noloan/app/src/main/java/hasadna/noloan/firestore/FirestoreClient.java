@@ -6,17 +6,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import javax.annotation.Nullable;
 
 import hasadna.noloan.SpamHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -35,11 +31,6 @@ public class FirestoreClient {
   public void writeMessage(SmsMessage message, String path) {
     FirestoreElement element = encodeMessage(message);
     client.collection(path).add(element);
-  }
-
-  public Task<QuerySnapshot> getSpamTask() {
-    CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
-    return collectionReference.get();
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.

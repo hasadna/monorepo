@@ -4,29 +4,21 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import hasadna.noloan.firestore.FirestoreClient;
-import hasadna.noloan.protobuf.SmsProto;
-import hasadna.noloan.protobuf.SmsProto.SpamList;
 import noloan.R;
 
 // Permission request Based on
@@ -84,36 +76,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
   }
 
-  // Get the spam from the Firestore
-  private Task<QuerySnapshot> getSpam() {
-    FirestoreClient client = new FirestoreClient();
-   // client.StartListeningSpam();
-    Task<QuerySnapshot> task = client.getSpamTask();
-
-    Executor executor = Executors.newSingleThreadExecutor();
-    task.addOnCompleteListener(
-        executor,
-        task1 -> {
-          if (task1.isSuccessful()) {
-            QuerySnapshot snapshot = task1.getResult();
-            try {
-              ArrayList<SmsProto.SmsMessage> list= new ArrayList<>();
-              for(DocumentSnapshot doc : snapshot.getDocuments())
-              {
-               // System.out.println(doc);
-                list.add((SmsProto.SmsMessage) client.decodeMessage(doc.getString("proto"), SmsProto.SmsMessage.newBuilder()));
-              }
-
-              SpamHolder.getInstance().init(list);
-            } catch (InvalidProtocolBufferException e) {
-              Log.e("SplashScreen", "Decoding spam failed");
-            }
-          }
-         // client.StartListeningSpam();
-        });
-    return task;
-  }
-
   // Start the main Activity
   private void startNextActivity() {
     handler.postDelayed(
@@ -129,7 +91,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      //Task<QuerySnapshot> spam = getSpam();
       Task spam = new FirestoreClient().StartListeningSpam().getTask();
       Task<Boolean> permissions = permissionTask.getTask();
       try {
