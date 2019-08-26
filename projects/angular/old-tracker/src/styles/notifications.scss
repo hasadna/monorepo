@@ -1,0 +1,13 @@
+.notification-success {
+  background-color: #37d437;
+  .mat-simple-snackbar {
+    color: black;
+  }
+}
+
+.notification-error {
+  background-color: #e83636;
+  .mat-simple-snackbar {
+    color: black;
+  }
+}

@@ -1,0 +1,55 @@
+@import 'media';
+
+:host {
+  width: 100%;
+}
+.story {
+  display: flex;
+  cursor: pointer;
+  outline: none;
+  >.user {
+    display: flex;
+    justify-content: center;
+    >a {
+      position: relative;
+    }
+  }
+  >.content {
+    flex: 1;
+    >.header {
+      display: flex;
+      >.info {
+        margin-right: 10px;
+        >.author {
+          font-weight: bold;
+          color: #4e4e4e;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        >.time {
+          font-weight: 600;
+          color: #767676;
+          white-space: nowrap;
+        }
+        a {
+          display: inline-block;
+        }
+      }
+    }
+    >.oneliner {
+      font-weight: 600;
+      color: #4e4e4e;
+    }
+    >.screenshot {
+      img {
+        max-width: 100%;
+        cursor: pointer;
+      }
+    }
+  }
+  a {
+    text-decoration: none;
+    color:inherit;
+  }
+}
