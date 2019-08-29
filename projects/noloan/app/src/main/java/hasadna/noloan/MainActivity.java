@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity
     TextView statusTitle = findViewById(R.id.status_lawsuit);
     statusTitle.setText(
         (String.format(getResources().getString(R.string.content_summary), spam.size())));
-
-    FirestoreClient client = new FirestoreClient();
   }
 
   // Reads SMS. If no permissions are granted, exit app.
