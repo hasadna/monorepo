@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity
         item.setTitle("הצג סמס");
       } else {
         item.setTitle("הצג ספאם");
-
       }
     }
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
