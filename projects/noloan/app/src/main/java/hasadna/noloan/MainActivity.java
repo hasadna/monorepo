@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
       if (spamActive) {
         item.setTitle("הצג סמס");
       } else {
-        item.setTitle("הצג ספם");
+        item.setTitle("הצג ספאם");
 
       }
     }
