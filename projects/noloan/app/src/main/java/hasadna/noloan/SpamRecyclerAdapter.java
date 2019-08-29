@@ -21,22 +21,23 @@ public class SpamRecyclerAdapter
   public SpamRecyclerAdapter() {
     spam = SpamHolder.getInstance();
 
-    spam.setSpamListener(new SpamHolder.SpamListener() {
-      @Override
-      public void spamAdded() {
-        notifyItemInserted(spam.getSpam().size());
-      }
+    spam.setSpamListener(
+        new SpamHolder.SpamListener() {
+          @Override
+          public void spamAdded() {
+            notifyItemInserted(spam.getSpam().size());
+          }
 
-      @Override
-      public void spamRemoved() {
-        notifyItemRemoved(spam.getSpam().size());
-      }
+          @Override
+          public void spamRemoved() {
+            notifyItemRemoved(spam.getSpam().size());
+          }
 
-      @Override
-      public void spamModified(int index) {
-        notifyItemChanged(index);
-      }
-    });
+          @Override
+          public void spamModified(int index) {
+            notifyItemChanged(index);
+          }
+        });
   }
 
   @NonNull

@@ -18,7 +18,8 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 public class FirestoreClient {
   public static final String SPAM_COLLECTION_PATH = "noloan/Spam/smss";
 
-  public static final String USER_SUGGEST_COLLECTION = "noloan/user_data/user/<username>/spam_suggestion";
+  public static final String USER_SUGGEST_COLLECTION =
+      "noloan/user_data/user/<username>/spam_suggestion";
 
   private FirebaseFirestore client;
 
@@ -34,37 +35,40 @@ public class FirestoreClient {
   // Start real-time listening to the DB for change, return set the result to true when done.
   public TaskCompletionSource StartListeningSpam() {
     Executor executor = Executors.newSingleThreadExecutor();
-    TaskCompletionSource task = new TaskCompletionSource<> ();
+    TaskCompletionSource task = new TaskCompletionSource<>();
 
     CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
-    collectionReference.addSnapshotListener(executor, (queryDocumentSnapshots, e) ->
-    {
-      if (e != null) {
-        return;
-      }
+    collectionReference.addSnapshotListener(
+        executor,
+        (queryDocumentSnapshots, e) -> {
+          if (e != null) {
+            return;
+          }
 
-      SpamHolder sp = SpamHolder.getInstance();
-      for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
-        SmsMessage sms = null;
-        try {
-          sms = (SmsMessage) decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
-        } catch (InvalidProtocolBufferException e1) {
-          e1.printStackTrace();
-        }
-        switch (dc.getType()) {
-          case ADDED:
-            sp.add(sms);
-            break;
-          case MODIFIED:
-            sp.modified(sms);
-            break;
-          case REMOVED:
-            sp.remove(sms);
-            break;
-        }
-      }
-      task.setResult(true);
-    });
+          SpamHolder sp = SpamHolder.getInstance();
+          for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+            SmsMessage sms = null;
+            try {
+              sms =
+                  (SmsMessage)
+                      decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+            } catch (InvalidProtocolBufferException e1) {
+              e1.printStackTrace();
+            }
+            switch (dc.getType()) {
+              case ADDED:
+                sp.add(sms);
+                break;
+              case MODIFIED:
+                sp.modified(sms);
+                break;
+              case REMOVED:
+                sp.remove(sms);
+                break;
+            }
+          }
+          task.setResult(true);
+        });
     return task;
   }
 

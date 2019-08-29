@@ -43,17 +43,14 @@ public class SpamHolder {
     int index = spam.indexOf(sms);
     spam.set(index, sms);
 
-    if (listener != null)
-      listener.spamModified(index);
+    if (listener != null) listener.spamModified(index);
   }
 
   public void remove(SmsMessage sms) {
     spam.remove(sms);
 
-    if (listener != null)
-      listener.spamRemoved();
+    if (listener != null) listener.spamRemoved();
   }
-
 
   public void setSpamListener(SpamListener listener) {
     this.listener = listener;
