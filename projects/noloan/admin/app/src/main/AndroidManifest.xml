@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="noloan">
+    package="noloan"> //TODO change that
 
     <uses-permission android:name="android.permission.READ_SMS" />
     // For writing lawsuit Pdf

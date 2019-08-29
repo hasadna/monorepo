@@ -1,6 +1,5 @@
 package hasadna.noloan.firestore;
 
-// TODO need to be deleted
 // For storing proto type to Firestore
 public class FirestoreElement {
 
