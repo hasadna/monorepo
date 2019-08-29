@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +17,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,9 +34,8 @@ import java.util.TimeZone;
 
 import hasadna.noloan.lawsuit.fragments.LawsuitClaimFragment;
 import hasadna.noloan.protobuf.CourtProto.Court;
-import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
-
+import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class LawsuitActivity extends AppCompatActivity {
