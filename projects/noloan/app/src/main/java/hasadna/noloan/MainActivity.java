@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         (String.format(getResources().getString(R.string.content_summary), spam.size())));
 
     FirestoreClient client = new FirestoreClient();
-    //client.StartListeningSpam();
+    // client.StartListeningSpam();
   }
 
   // Reads SMS. If no permissions are granted, exit app.
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity
         item.setTitle("הצג סמס");
       } else {
         item.setTitle("הצג ספם");
-
       }
     }
     DrawerLayout drawer = findViewById(R.id.drawer_layout);

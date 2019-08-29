@@ -73,7 +73,7 @@ public class SmsRecyclerAdapter
       buttonSmsToLawsuit.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
+            client.writeMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
             Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
           });
     }
