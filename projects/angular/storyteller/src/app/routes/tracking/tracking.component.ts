@@ -10,6 +10,9 @@ import {
   Timer,
 } from '@/core/services';
 
+// If two tracks have pause between themselves less that the interval, they are shown as one.
+const MAX_PAUSE_INTERVAL: number = 5 * 60 * 1000; // 5 min
+
 @Component({
   selector: 'page-tracking',
   templateUrl: './tracking.component.html',
@@ -35,7 +38,7 @@ export class TrackingComponent implements OnDestroy {
         });
 
         // Tracks are saved each minute automatically.
-        // To not show 9000 short tracks, combine several the tracks to one.
+        // To not show 9000 short tracks, combine the several tracks to one.
         this.tracks = [];
         let startMs;
         let storyDurationMs: number = 0;
@@ -47,8 +50,7 @@ export class TrackingComponent implements OnDestroy {
           if (!startMs) {
             startMs = track.getStartedMs();
           }
-          const breakTime: number = 5 * 60 * 1000; // 5 min
-          if (nextTrack && nextTrack.getStartedMs() - track.getEndedMs() < breakTime) {
+          if (nextTrack && nextTrack.getStartedMs() - track.getEndedMs() < MAX_PAUSE_INTERVAL) {
             return;
           }
           this.addTrack(startMs, track.getEndedMs());
