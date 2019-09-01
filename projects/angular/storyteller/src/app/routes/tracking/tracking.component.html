@@ -1,3 +1,22 @@
 <div class="page" *ngIf="!loadingService.isLoading">
-  <span>Time range to display</span>
+  <div class="tracking">
+    <div class="title">
+      <span>Time range to display</span>
+    </div>
+    <div *ngIf="!userService.isStoryListLoading">
+      <mat-form-field class="mat-user-stories">
+        <mat-select [formControl]="storySelect">
+          <mat-option *ngFor="let story of userService.storyList" [value]="story">
+            {{ story.getOneliner() }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="total-time" *ngIf="storyDurationTime">
+      Selected range total time: {{ storyDurationTime }}
+    </div>
+    <div class="tracks">
+      <div class="track" *ngFor="let track of tracks">{{ track }}</div>
+    </div>
+  </div>
 </div>

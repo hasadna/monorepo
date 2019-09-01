@@ -1,0 +1,10 @@
+<div class="page" *ngIf="!loadingService.isLoading">
+  <span>Your stories</span> (click to delete)
+  <div class="stories" *ngIf="!userService.isStoryListLoading">
+    <div
+      class="story"
+      *ngFor="let story of userService.storyList"
+      (click)="deleteStory(story)"
+    >{{ story.getOneliner() }}</div>
+  </div>
+</div>
