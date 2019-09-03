@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import noloan.R;
+import hasadna.noloan.admin.app.R;
 
 public class AboutActivity extends AppCompatActivity {
 

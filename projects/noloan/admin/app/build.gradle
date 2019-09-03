@@ -5,7 +5,7 @@ apply plugin: 'com.google.protobuf'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "hasadna.noloan" //TODO change this
+        applicationId "hasadna.noloan.admin.app"
         // Paths.get() require API 26 (There's a TO-DO to fix that)
         minSdkVersion 26
         targetSdkVersion 28

@@ -9,23 +9,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import hasadna.noloan.admin.app.firestore.FirestoreClient;
-import hasadna.noloan.protobuf.SmsProto.SpamList;
-import noloan.R;
+import hasadna.noloan.admin.app.R;
 
 // Permission request Based on
 // http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
@@ -82,29 +76,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
   }
 
-  // Get the spam from the Firestore
-  private Task<DocumentSnapshot> getSpam() {
-    FirestoreClient client = new FirestoreClient();
-    Executor executor = Executors.newSingleThreadExecutor();
-    Task<DocumentSnapshot> task = client.getSpamTask();
-    task.addOnCompleteListener(
-        executor,
-        task1 -> {
-          if (task1.isSuccessful()) {
-            DocumentSnapshot snapshot = task1.getResult();
-            try {
-              SpamList spam =
-                  (SpamList)
-                      client.decodeMessage(snapshot.getString("proto"), SpamList.newBuilder());
-              SpamHolder.getInstance().setSpam(spam.getSmsList());
-            } catch (InvalidProtocolBufferException e) {
-              Log.e("SplashScreen", "Decoding spam failed");
-            }
-          }
-        });
-    return task;
-  }
-
   // Start the main Activity
   private void startNextActivity() {
     handler.postDelayed(
@@ -120,7 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task<DocumentSnapshot> spam = getSpam();
+      Task spam = new FirestoreClient().StartListeningSpam().getTask();
       Task<Boolean> permissions = permissionTask.getTask();
       try {
 

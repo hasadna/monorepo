@@ -1,6 +1,5 @@
 package hasadna.noloan.admin.app;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,26 +7,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import hasadna.noloan.admin.app.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
-import noloan.R;
 
-public class SmsRecyclerAdapter
-    extends RecyclerView.Adapter<SmsRecyclerAdapter.RecyclerViewHolder> {
+public class RecyclerAdapter
+    extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
-  List<SmsMessage> messages;
+  SpamHolder spam;
 
-  public SmsRecyclerAdapter(List<SmsMessage> messages) {
-    if (messages.size() == 0) {
-      this.messages = new ArrayList<>();
-      SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      this.messages.add(noMessage);
-    } else {
-      this.messages = messages;
-    }
+  public RecyclerAdapter() {
+    spam = SpamHolder.getInstance();
+
+    spam.setSpamListener(
+        new SpamHolder.SpamListener() {
+          @Override
+          public void spamAdded() {
+            notifyItemInserted(spam.getSpam().size());
+          }
+
+          @Override
+          public void spamRemoved() {
+            notifyItemRemoved(spam.getSpam().size());
+          }
+
+          @Override
+          public void spamModified(int index) {
+            notifyItemChanged(index);
+          }
+        });
   }
 
   @NonNull
@@ -39,31 +48,36 @@ public class SmsRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(messages.get(i));
+    recyclerViewHolder.bind(spam.getSpam().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return messages.size();
+    return spam.getSpam().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView from, content, receivedAt;
-    Button buttonSmsToLawsuit;
+    Button buttonAccept;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
       from = itemView.findViewById(R.id.received_from);
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
-      buttonSmsToLawsuit = itemView.findViewById(R.id.button_smsToLawsuit);
+      buttonAccept = itemView.findViewById(R.id.button_accept);
     }
 
     public void bind(SmsMessage sms) {
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
+      buttonAccept.setOnClickListener(view -> {
+        FirestoreClient client = new FirestoreClient();
+        client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
+        Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
+      });
     }
   }
 }
