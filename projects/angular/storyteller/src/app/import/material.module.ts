@@ -6,6 +6,8 @@ import {
   MatProgressSpinnerModule,
   MatDialogModule,
   MatSnackBarModule,
+  MatSelectModule,
+  MatAutocompleteModule,
 } from '@angular/material';
 
 const MaterialImports = [
@@ -15,6 +17,8 @@ const MaterialImports = [
   MatProgressSpinnerModule,
   MatDialogModule,
   MatSnackBarModule,
+  MatSelectModule,
+  MatAutocompleteModule,
 ];
 
 @NgModule({

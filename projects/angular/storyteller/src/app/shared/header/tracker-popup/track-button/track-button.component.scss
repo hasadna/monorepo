@@ -1,0 +1,18 @@
+.track-button {
+  width: 64px;
+  height: 45px;
+  border-radius: 14px;
+  background-color: #00b3b1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+.disabled {
+  background: #b8b8b8;
+  cursor: default;
+}
+.tracking {
+  background: white;
+}

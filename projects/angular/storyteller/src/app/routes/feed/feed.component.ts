@@ -7,7 +7,7 @@ import {
   StoryService,
   LoadingService,
   FirestoryService,
-  AuthService,
+  UserService,
 } from '@/core/services';
 
 @Component({
@@ -23,7 +23,7 @@ export class FeedComponent implements OnDestroy {
     private storyService: StoryService,
     public loadingService: LoadingService,
     private firestoryService: FirestoryService,
-    private authService: AuthService,
+    private userService: UserService,
   ) {
     this.loadingService.isLoading = true;
     this.loadReviewerConfig();
@@ -46,7 +46,7 @@ export class FeedComponent implements OnDestroy {
   }
 
   loadReviewerConfig(): void {
-    this.configSub = this.authService.onloadReviewerConfig().subscribe(reviewerConfig => {
+    this.configSub = this.userService.onloadReviewerConfig().subscribe(reviewerConfig => {
       this.loadStories(reviewerConfig.getUserList());
     });
   }

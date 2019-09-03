@@ -8,7 +8,7 @@ import {
   StoryService,
   LoadingService,
   FirestoryService,
-  AuthService,
+  UserService,
 } from '@/core/services';
 import { EasyStory } from '@/core/interfaces';
 
@@ -32,7 +32,7 @@ export class UserInfoComponent implements OnDestroy {
     private notificationService: NotificationService,
     public loadingService: LoadingService,
     private firestoryService: FirestoryService,
-    private authService: AuthService,
+    private userService: UserService,
   ) {
     this.routeSub = this.activatedRoute.params.subscribe(routeParams => {
       this.loadingService.isLoading = true;
@@ -42,7 +42,7 @@ export class UserInfoComponent implements OnDestroy {
   }
 
   loadReviewerConfig(email: string): void {
-    this.configSub = this.authService.onloadReviewerConfig().subscribe(reviewerConfig => {
+    this.configSub = this.userService.onloadReviewerConfig().subscribe(reviewerConfig => {
       this.user = this.storyService.getUser(email, reviewerConfig);
       if (!this.user) {
         this.crash('User not found');
