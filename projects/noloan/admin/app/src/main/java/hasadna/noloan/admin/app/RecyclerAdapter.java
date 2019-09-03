@@ -1,5 +1,7 @@
 package hasadna.noloan.admin.app;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,22 +21,23 @@ public class RecyclerAdapter
 
   public RecyclerAdapter() {
     spam = SpamHolder.getInstance();
+    Handler handler = new Handler(Looper.getMainLooper());
 
     spam.setSpamListener(
         new SpamHolder.SpamListener() {
           @Override
           public void spamAdded() {
-            notifyItemInserted(spam.getSpam().size());
+            handler.post(() -> notifyItemInserted(spam.getSpam().size()));
           }
 
           @Override
           public void spamRemoved() {
-            notifyItemRemoved(spam.getSpam().size());
+            handler.post(() -> notifyItemRemoved(spam.getSpam().size()));
           }
 
           @Override
           public void spamModified(int index) {
-            notifyItemChanged(index);
+            handler.post(() -> notifyItemChanged(index));
           }
         });
   }

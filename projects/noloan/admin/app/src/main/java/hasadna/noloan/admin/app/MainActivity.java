@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity
 
   private DrawerLayout drawerLayout;
 
-  private RecyclerAdapter adapter;
   private RecyclerView recycler;
 
   @Override

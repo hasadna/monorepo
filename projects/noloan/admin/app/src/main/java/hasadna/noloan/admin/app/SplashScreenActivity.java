@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import hasadna.noloan.admin.app.firestore.FirestoreClient;
-import hasadna.noloan.admin.app.R;
 
 // Permission request Based on
 // http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
