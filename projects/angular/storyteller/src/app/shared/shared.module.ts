@@ -6,7 +6,13 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '@/import';
 import { StoryComponent } from './story';
-import { HeaderComponent, NavPopupComponent, AuthComponent } from './header';
+import {
+  HeaderComponent,
+  NavPopupComponent,
+  AuthComponent,
+  TrackerPopupComponent,
+  TrackButtonComponent,
+} from './header';
 import { LoadingComponent } from './loading';
 import { StoriesComponent } from './stories';
 import { AvatarComponent } from './avatar';
@@ -33,6 +39,8 @@ const ExportModules = [
     ...ExportDeclarations,
     NavPopupComponent,
     AuthComponent,
+    TrackerPopupComponent,
+    TrackButtonComponent,
   ],
   exports: [
     ...ExportDeclarations,

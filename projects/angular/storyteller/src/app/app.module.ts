@@ -8,6 +8,7 @@ import {
   LoginComponent,
   MomentComponent,
   TrackingComponent,
+  UserStoriesComponent,
 } from '@/routes';
 import { LibraryModule } from 'common/module';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +25,7 @@ import { SharedModule } from './shared';
     LoginComponent,
     MomentComponent,
     TrackingComponent,
+    UserStoriesComponent,
   ],
   imports: [
     BrowserModule,

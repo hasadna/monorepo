@@ -8,6 +8,7 @@ import {
   LoginComponent,
   MomentComponent,
   TrackingComponent,
+  UserStoriesComponent,
 } from '@/routes';
 import { AuthGuard } from '@/core/services';
 
@@ -21,6 +22,7 @@ const appRoutes: Routes = [
       { path: 'info/:email', component: UserInfoComponent },
       { path: 'moment/:email/:storyId/:momentId', component: MomentComponent },
       { path: 'tracking', component: TrackingComponent },
+      { path: 'user-stories', component: UserStoriesComponent },
     ],
   },
   { path: '**', component: LoginComponent },

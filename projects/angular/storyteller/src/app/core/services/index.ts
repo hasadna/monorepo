@@ -8,3 +8,5 @@ export * from './loading.service';
 export * from './scroll.service';
 export * from './header.service';
 export * from './firestory.service';
+export * from './tracker.service';
+export * from './user.service';

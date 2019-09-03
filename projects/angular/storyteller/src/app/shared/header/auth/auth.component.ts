@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { User } from '@/core/proto';
-import { HeaderService, AuthService } from '@/core/services';
+import { HeaderService, AuthService, UserService } from '@/core/services';
 
 @Component({
   selector: 'app-auth',
@@ -15,8 +15,9 @@ export class AuthComponent {
   constructor(
     private headerService: HeaderService,
     public authService: AuthService,
+    public userService: UserService,
   ) {
-    this.user = authService.user;
+    this.user = userService.user;
   }
 
   toggle(): void {

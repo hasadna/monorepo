@@ -3,9 +3,11 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { randstr64 } from 'rndmjs';
 
-import { Story, Moment, ReviewerConfig } from '@/core/proto';
+import { Story, Moment, ReviewerConfig, Track } from '@/core/proto';
 import { EncodingService } from 'common/services';
+import { AuthService } from './auth.service';
 
 interface FirebaseElement {
   proto: string;
@@ -19,6 +21,7 @@ export class FirebaseService {
     private db: AngularFirestore,
     private encodingService: EncodingService,
     private storage: AngularFireStorage,
+    private authService: AuthService,
   ) {
     this.reviewerConfig = this.db.collection('reviewer');
   }
@@ -101,5 +104,56 @@ export class FirebaseService {
     return this.storage
       .ref('storyteller/' + filename)
       .getDownloadURL();
+  }
+
+  createStory(story: Story): Observable<string> {
+    story.setAuthor(this.authService.email);
+    story.setId(randstr64(12));
+    story.setStartedMs(Date.now());
+    return new Observable(observer => {
+      this.db.collection(`/storyteller/data/user/${this.authService.email}/story`)
+        .doc(story.getId())
+        .set({
+          proto: this.encodingService.encodeUint8ArrayToBase64String(story.serializeBinary()),
+        })
+        .then(() => observer.next(story.getId()))
+        .catch(() => observer.error());
+    });
+  }
+
+  removeStory(story: Story): Observable<void> {
+    return new Observable(observer => {
+      this.db.collection(`/storyteller/data/user/${story.getAuthor()}/story`)
+        .doc(story.getId())
+        .delete()
+        .then(() => observer.next())
+        .catch(() => observer.error());
+    });
+  }
+
+  addTrack(track: Track): Observable<string> {
+    track.setId(randstr64(20));
+    const email: string = this.authService.email;
+    return new Observable(observer => {
+      this.db.collection(`/storyteller/data/user/${email}/story/${track.getStoryId()}/track`)
+        .doc(track.getId())
+        .set({
+          proto: this.encodingService.encodeUint8ArrayToBase64String(track.serializeBinary()),
+        })
+        .then(() => observer.next())
+        .catch(() => observer.error());
+    });
+  }
+
+  getTracks(storyId: string): Observable<Track[]> {
+    const email: string = this.authService.email;
+    return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/track`)
+      .snapshotChanges()
+      .pipe(
+        map(action => action.map(a => {
+          const firebaseElement = a.payload.doc.data() as FirebaseElement;
+          return Track.deserializeBinary(this.getBinary(firebaseElement));
+        })),
+      );
   }
 }

@@ -8,7 +8,7 @@ import {
   NotificationService,
   StoryService,
   LoadingService,
-  AuthService,
+  UserService,
 } from '@/core/services';
 import { EasyStory } from '@/core/interfaces';
 
@@ -30,7 +30,7 @@ export class MomentComponent implements OnDestroy {
     private storyService: StoryService,
     private notificationService: NotificationService,
     public loadingService: LoadingService,
-    private authService: AuthService,
+    private userService: UserService,
   ) {
     this.loadingService.isLoading = true;
     const email: string = this.activatedRoute.snapshot.params['email'];
@@ -64,7 +64,7 @@ export class MomentComponent implements OnDestroy {
   }
 
   loadReviewerConfig(email: string): void {
-    this.configSub = this.authService.onloadReviewerConfig().subscribe(reviewerConfig => {
+    this.configSub = this.userService.onloadReviewerConfig().subscribe(reviewerConfig => {
       const user: User = this.storyService.getUser(email, reviewerConfig);
       if (!user) {
         this.crash('Invalid user');

@@ -1,0 +1,12 @@
+@media only screen and (max-width: $lg) {
+  .popup {
+    left: 10px;
+    width: 480px;
+  }
+}
+@media only screen and (min-width: $lg + 1) {
+  .popup {
+    left: none;
+    width: 630px;
+  }
+}

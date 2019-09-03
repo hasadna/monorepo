@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import {
   FirebaseService,
@@ -11,6 +12,8 @@ import {
   ScrollService,
   HeaderService,
   FirestoryService,
+  TreackerService,
+  UserService,
 } from './services';
 
 @NgModule({
@@ -25,6 +28,9 @@ import {
     ScrollService,
     HeaderService,
     FirestoryService,
+    TreackerService,
+    UserService,
+    CookieService,
   ],
 })
 export class CoreModule { }

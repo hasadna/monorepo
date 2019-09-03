@@ -1,0 +1,165 @@
+@import 'styles/variables';
+@import './media';
+
+@mixin option-test() {
+  font-size: 16px;
+  color: #4e4e4e;
+  font-family: $default-font;
+}
+.tracker {
+  >.time {
+    display: flex;
+    align-items: center;
+    border-radius: 21px;
+    padding: 3px 19px;
+    cursor: pointer;
+    border: solid 2px #00b3b1;
+    >span {
+      font-family: $heebo;
+      font-size: 20px;
+      font-weight: bold;
+      user-select: none;
+    }
+    img {
+      min-width: 20px;
+      padding-bottom: 4px;
+      margin-right: 10px;
+    }
+  }
+  >.time-tracking {
+    background: #00b3b1;
+    >span {
+      color: white;
+    }
+  }
+  >.time-stoped {
+    background: white;
+    >span {
+      color: #00b3b1;
+    }
+  }
+  >.popup {
+    position: absolute;
+    z-index: 2;
+    margin-top: 11px;
+    background: #eff6f7;
+    padding: 30px;
+    border-radius: 11px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border: solid 1px #979797;
+    box-sizing: border-box;
+    >.track {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      >.session {
+        flex: 1;
+        margin-left: 17px;
+        font-size: 22px;
+        font-weight: 800;
+        color: white;
+      }
+      >.total-story {
+        font-weight: bold;
+        font-size: 16px;
+        color: #4e4e4e;
+        >.time {
+          font-size: 22px;
+        }
+        >.time-holder {
+          padding-right: 19px;
+        }
+      }
+    }
+    >.story {
+      margin-top: 30px;
+      background: white;
+      padding: 12px;
+      border-radius: 11px;
+      border: solid 1px #979797;
+      input {
+        @include option-test();
+        padding: 0;
+        outline: none;
+        border: none;
+        width: 100%;
+        &::placeholder {
+          color: #b8b8b8;
+        }
+      }
+    }
+  }
+  >.popup-tracking {
+    background: #80dedd;
+  }
+  >.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
+}
+::ng-deep {
+  .mat-clock {
+    .mat-form-field-infix {
+      width: 60px;
+      .mat-select-value-text {
+        >span {
+          @include option-test();
+          font-weight: bold;
+        }
+        &:hover {
+          background: #dddddd;
+        }
+      }
+    }
+    .mat-form-field-wrapper {
+      padding: 0;
+      .mat-form-field-flex {
+        .mat-form-field-infix {
+          padding: 0;
+          border: 0;
+          line-height: normal;
+        }
+      }
+    }
+    .mat-select {
+      .mat-select-trigger {
+        width: 100%;
+        height: 18px;
+      }
+      .mat-select-arrow-wrapper {
+        display: none;
+      }
+    }
+    .mat-form-field-underline {
+      display: none;
+    }
+  }
+  .mat-autocomplete-panel {
+    .mat-option {
+      @include option-test();
+      .new-story {
+        border-radius: 11px;
+        border: solid 1px #979797;
+        background: #d8d8d8;
+        padding: 2px 10px;
+        line-height: normal;
+        display: inline-block;
+      }
+    }
+  }
+  .mat-select-panel {
+    .clock-option {
+      line-height: normal !important;
+      height: 33px !important;
+      span {
+        @include option-test();
+        font-weight: bold;
+        line-height: normal !important;
+      }
+    }
+  }
+}
