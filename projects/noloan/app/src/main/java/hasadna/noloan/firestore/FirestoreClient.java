@@ -66,7 +66,7 @@ public class FirestoreClient {
                 break;
             }
           }
-          task.setResult(true);
+          task.trySetResult(true);
         });
     return task;
   }
