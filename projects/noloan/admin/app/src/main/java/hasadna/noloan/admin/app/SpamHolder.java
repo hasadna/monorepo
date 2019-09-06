@@ -47,9 +47,10 @@ public class SpamHolder {
   }
 
   public void remove(SmsMessage sms) {
+    int index = spam.indexOf(sms);
     spam.remove(sms);
 
-    if (listener != null) listener.spamRemoved();
+    if (listener != null) listener.spamRemoved(index);
   }
 
   public void setSpamListener(SpamListener listener) {
@@ -59,7 +60,7 @@ public class SpamHolder {
   public interface SpamListener {
     void spamAdded();
 
-    void spamRemoved();
+    void spamRemoved(int index);
 
     void spamModified(int index);
   }

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,14 @@ public class RecyclerAdapter
           }
 
           @Override
-          public void spamRemoved() {
-            handler.post(() -> notifyItemRemoved(spam.getSpam().size()));
+          public void spamRemoved(int index) {
+            Log.d("Adapter", "deleted");
+            handler.post(() ->
+            {
+              notifyItemRemoved(index);
+              notifyItemRangeChanged(index, spam.getSpam().size());
+            });
+
           }
 
           @Override
@@ -79,6 +86,7 @@ public class RecyclerAdapter
       buttonAccept.setOnClickListener(view -> {
         FirestoreClient client = new FirestoreClient();
         client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
+        client.deleteMessage(sms);
         Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
       });
     }

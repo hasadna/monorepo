@@ -9,6 +9,7 @@ message SmsMessage {
     string sender = 1;
     string body = 2;
     string receivedAt = 3;
+    string ID = 4;
 }
 
 message SpamList {

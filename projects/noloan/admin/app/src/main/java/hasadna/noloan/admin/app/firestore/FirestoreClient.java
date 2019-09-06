@@ -1,6 +1,7 @@
 package hasadna.noloan.admin.app.firestore;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,6 +32,18 @@ public class FirestoreClient {
     client.collection(path).add(element);
   }
 
+  public void deleteMessage(SmsMessage sms) {
+    //Log.d("BLAAAAA","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "+sms.getID());
+    client.collection(USER_SUGGEST_COLLECTION).document(sms.getID()).delete().
+        addOnSuccessListener(aVoid -> {
+          Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! success");
+        })
+        .addOnFailureListener(e -> {
+          Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! failed");
+
+        });
+  }
+
   // Start real-time listening to the DB for change, return set the result to true when done.
   public TaskCompletionSource StartListeningSpam() {
     Executor executor = Executors.newSingleThreadExecutor();
@@ -51,6 +64,7 @@ public class FirestoreClient {
               sms =
                   (SmsMessage)
                       decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setID(dc.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
@@ -79,7 +93,7 @@ public class FirestoreClient {
     return new FirestoreElement(base64BinaryString);
   }
 
-  public MessageLite decodeMessage(String message, MessageLite.Builder builder)
+  private MessageLite decodeMessage(String message, MessageLite.Builder builder)
       throws InvalidProtocolBufferException {
     byte[] messageBytes = Base64.decode(message, Base64.DEFAULT);
     return builder.build().getParserForType().parseFrom(messageBytes);
