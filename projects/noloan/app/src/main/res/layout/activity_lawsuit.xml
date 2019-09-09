@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="hasadna.noloan.lawsuit.LawsuitActivity">
 
+    <include
+        android:id="@+id/toolbar_content"
+        layout="@layout/toolbar"
+        android:gravity="center"
+        android:textAlignment="center" />
+
 <hasadna.noloan.lawsuit.LawsuitViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"

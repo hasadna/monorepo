@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import java.util.Calendar;
 
 import hasadna.noloan.lawsuit.LawsuitActivity;
@@ -24,7 +24,6 @@ public class LawsuitFormFragment extends Fragment {
   DatePickerDialog datePickerDialog;
   Calendar calendar;
   Button confirmForm;
-  TextView selectCourt;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -39,18 +38,13 @@ public class LawsuitFormFragment extends Fragment {
         (ViewGroup) inflater.inflate(R.layout.lawsuit_fragment_form, container, false);
 
     receivedDate = rootView.findViewById(R.id.EditText_receivedSpamDate);
-    selectCourt = rootView.findViewById(R.id.textView_selectCourt_FormFragment);
     confirmForm = rootView.findViewById(R.id.button_formFragment_next);
 
     // If court was already selected, display its name
     receivedDate.setText(lawsuitActivity.selectedSmsSpam.getReceivedAt());
     receivedDate.setOnClickListener(v -> displayDatePicker());
-    if (lawsuitActivity.selectedCourt != null) {
-      selectCourt.setText("בית המשפט לתביעות קטנות - " + lawsuitActivity.selectedCourt.getName());
-    }
-    selectCourt.setOnClickListener(v -> lawsuitActivity.displayCourtPicker(this));
-
-    // Create PDF and proceed to SummaryFragment
+    // Create PDF and proceed to SummaryFragment (Get file's path with:
+    // LawsuitActivity.getAbsFilename())
     confirmForm.setOnClickListener(
         v -> {
           createLawsuitProto();
@@ -85,30 +79,24 @@ public class LawsuitFormFragment extends Fragment {
         Lawsuit.newBuilder()
             // User
             .setFirstName(
-                ((EditText) getView().findViewById(R.id.userPrivateName)).getText().toString())
+                ((EditText) getView().findViewById(R.id.userFirstName)).getText().toString())
             .setLastName(
                 ((EditText) getView().findViewById(R.id.userLastName)).getText().toString())
             .setUserId(((EditText) getView().findViewById(R.id.userID)).getText().toString())
             .setUserAddress(
                 ((EditText) getView().findViewById(R.id.userAddress)).getText().toString())
             .setUserPhone(((EditText) getView().findViewById(R.id.userPhone)).getText().toString())
-            .setUserFax(((EditText) getView().findViewById(R.id.userFax)).getText().toString())
 
             // Company
             .setCompanyName(
-                ((EditText) getView().findViewById(R.id.EditText_companyName)).getText().toString())
-            .setCompanyId(
-                ((EditText) getView().findViewById(R.id.EditText_companyId)).getText().toString())
+                ((EditText) getView().findViewById(R.id.companyName)).getText().toString())
+            .setCompanyId(((EditText) getView().findViewById(R.id.companyId)).getText().toString())
             .setCompanyAddress(
-                ((EditText) getView().findViewById(R.id.EditText_companyAddress))
-                    .getText()
-                    .toString())
+                ((EditText) getView().findViewById(R.id.companyAddress)).getText().toString())
             .setCompanyPhone(
-                ((EditText) getView().findViewById(R.id.EditText_companyPhone))
-                    .getText()
-                    .toString())
+                ((EditText) getView().findViewById(R.id.companyPhone)).getText().toString())
             .setCompanyFax(
-                ((EditText) getView().findViewById(R.id.EditText_companyFax)).getText().toString())
+                ((EditText) getView().findViewById(R.id.companyFax)).getText().toString())
 
             // General
             .setDateReceived(
