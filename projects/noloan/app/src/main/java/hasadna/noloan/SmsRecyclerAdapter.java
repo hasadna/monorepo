@@ -94,14 +94,6 @@ public class SmsRecyclerAdapter
       // DATA.
       buttonCreateSmsLawsuit.setOnClickListener(
           view -> {
-            // Suggest Spam
-            /**
-             * FirestoreClient client = new FirestoreClient(); client.writeMessage(sms,
-             * FirestoreClient.USER_SUGGEST_COLLECTION); Toast.makeText(view.getContext(),
-             * "suggested", Toast.LENGTH_SHORT).show();*
-             */
-
-            // Go to lawsuit form
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             intentToLawsuitForm.putExtra("from", sms.getSender());
@@ -111,4 +103,3 @@ public class SmsRecyclerAdapter
     }
   }
 }
-
