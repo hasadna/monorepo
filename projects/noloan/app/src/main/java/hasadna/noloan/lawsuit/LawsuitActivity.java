@@ -1,23 +1,22 @@
 package hasadna.noloan.lawsuit;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-import hasadna.noloan.lawsuit.fragments.LawsuitClaimFragment;
 import hasadna.noloan.protobuf.CourtProto.Court;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -43,11 +41,12 @@ public class LawsuitActivity extends AppCompatActivity {
   private static final String TAG = "LawsuitFormFragment";
   private final int STORAGE_PERMISSION_CODE = 1;
   private boolean permissionGranted = false;
-
+  private String absFilename;
   public Lawsuit lawsuitProto;
   public SmsMessage selectedSmsSpam;
-  public Court selectedCourt;
-  String absFilename;
+
+  public Toolbar toolbar;
+  public TextView toolbarTitle;
 
   ArrayList<Court> courtList = null;
   public LawsuitViewPager viewPager;
@@ -73,7 +72,20 @@ public class LawsuitActivity extends AppCompatActivity {
 
     checkPermissions();
 
-    // Hold data of current lawsuit, set lawsuitProto values from form fields in FormFragment
+    // Toolbar
+    AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
+    toolbar = toolbarContent.findViewById(R.id.toolbar);
+    toolbar.setTitle(R.string.toolbar_title_lawsuitForm_text);
+    setSupportActionBar(toolbar);
+    toolbarTitle = toolbarContent.findViewById(R.id.toolbar_title);
+    toolbarTitle.setText(toolbar.getTitle());
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setDisplayShowTitleEnabled(false);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setDisplayShowHomeEnabled(true);
+    toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+    // Create lawsuitProto of the current lawsuit, from the FormFragment fields
     lawsuitProto = Lawsuit.newBuilder().buildPartial();
     selectedSmsSpam =
         SmsMessage.newBuilder()
@@ -86,13 +98,32 @@ public class LawsuitActivity extends AppCompatActivity {
     DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
     DATE_TIME_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
 
-    courtList = initCourts();
-    courtBuilder = new AlertDialog.Builder(LawsuitActivity.this);
-
+    // Navigate between fragments
     viewPager = findViewById(R.id.pager);
     PagerAdapter pagerAdapter = new LawsuitFragmentAdapter(getSupportFragmentManager());
     viewPager.setAdapter(pagerAdapter);
     viewPager.setPagingEnabled(false);
+    // Change toolbar title
+    viewPager.addOnPageChangeListener(
+        new ViewPager.OnPageChangeListener() {
+          @Override
+          public void onPageSelected(int i) {
+            switch (i) {
+              case 0:
+                toolbarTitle.setText(R.string.toolbar_title_lawsuitForm_text);
+                break;
+              case 1:
+                toolbarTitle.setText(R.string.toolbar_title_lawsuitSummary_text);
+                break;
+            }
+          }
+
+          @Override
+          public void onPageScrolled(int i, float v, int i1) {}
+
+          @Override
+          public void onPageScrollStateChanged(int i) {}
+        });
   }
 
   // TODO: Split usage of checkPermission from createOutputDir. Perhaps make as a Thread waiting for
@@ -114,7 +145,6 @@ public class LawsuitActivity extends AppCompatActivity {
       else {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
             this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
           new AlertDialog.Builder(this)
               .setTitle("Permission needed")
               .setMessage("File access permission is needed for creating lawsuit PDF.")
@@ -134,7 +164,6 @@ public class LawsuitActivity extends AppCompatActivity {
                   })
               .create()
               .show();
-
         } else {
           ActivityCompat.requestPermissions(
               this,
@@ -157,7 +186,8 @@ public class LawsuitActivity extends AppCompatActivity {
         permissionGranted = true;
         createOutputDir();
       } else {
-        Toast.makeText(this, "Permission is needed to create PDF.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "נדרשת הרשאה על מנת ליצור את קובץ כתב התביעה", Toast.LENGTH_LONG)
+            .show();
       }
     }
   }
@@ -176,26 +206,6 @@ public class LawsuitActivity extends AppCompatActivity {
     }
   }
 
-  // TODO: Change courtHouses to prototxt
-  public ArrayList<Court> initCourts() {
-    ArrayList<Court> courts = new ArrayList<>(28);
-    String[] courtList = getResources().getStringArray(R.array.courts_detailed);
-    String[] courtDetail;
-
-    for (int i = 0; i < courtList.length; i++) {
-      courtDetail = courtList[i].split("\\|");
-      Court court =
-          Court.newBuilder()
-              .setName(courtDetail[0])
-              .setAddress(courtDetail[1])
-              .setFax(courtDetail[2])
-              .setWebsite(courtDetail[3])
-              .build();
-      courts.add(court);
-    }
-    return courts;
-  }
-
   // Save PDF to device's external storage
   public void createPdf() {
     if (permissionGranted) {
@@ -209,8 +219,7 @@ public class LawsuitActivity extends AppCompatActivity {
       // Add SMS to attachments page
       template +=
           String.format(getString(R.string.list_item_from), selectedSmsSpam.getSender()) + "\n";
-      template +=
-          String.format(getString(R.string.list_item_date), selectedSmsSpam.getReceivedAt()) + "\n";
+      template += selectedSmsSpam.getReceivedAt() + "\n";
       template +=
           String.format(getString(R.string.list_item_body), selectedSmsSpam.getBody()) + "\n";
 
@@ -261,7 +270,11 @@ public class LawsuitActivity extends AppCompatActivity {
                   Environment.getExternalStorageDirectory().getPath(),
                   getString(R.string.app_name),
                   getString(R.string.output_folder_name),
-                  (DATE_TIME_FORMATTER.format(new Date()) + ".pdf"))
+                  ("לא רוצה הלוואה - כתב תביעה "
+                      + lawsuitProto.getCompanyName()
+                      + " ("
+                      + DATE_TIME_FORMATTER.format(new Date())
+                      + ").pdf"))
               .toString();
       try {
         document.writeTo(new FileOutputStream(new File(absFilename)));
@@ -295,7 +308,6 @@ public class LawsuitActivity extends AppCompatActivity {
     lawsuit = lawsuit.replace("<userId>", lawsuitProto.getUserId());
     lawsuit = lawsuit.replace("<userAddress>", lawsuitProto.getUserAddress());
     lawsuit = lawsuit.replace("<userPhone>", lawsuitProto.getUserPhone());
-    lawsuit = lawsuit.replace("<userFax>", lawsuitProto.getUserFax());
 
     // Company
     lawsuit = lawsuit.replace("<companyName>", lawsuitProto.getCompanyName());
@@ -319,51 +331,9 @@ public class LawsuitActivity extends AppCompatActivity {
     return lawsuit;
   }
 
-  // Pops a share dialog
-  public void sharePdf() {
-    if (new File(absFilename).exists()) {
-      Uri uri =
-          FileProvider.getUriForFile(
-              this, getPackageName() + ".fileprovider", new File(absFilename));
-      Intent shareIntent = new Intent();
-      shareIntent.setAction(Intent.ACTION_SEND);
-      shareIntent.setType("application/pdf");
-      shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-      startActivity(Intent.createChooser(shareIntent, "Share via"));
-    } else {
-      Log.w(TAG, "Could not share pdf, file doesn't exists.\nabsFilename: " + absFilename);
-    }
-  }
-
-  // Choose court from 2 fragments: FormFragment / ClaimFragment
-  public void displayCourtPicker(Fragment fragment) {
-    String[] courtNames = new String[28];
-
-    int index = 0;
-    for (Court court : courtList) {
-      courtNames[index++] = court.getName();
-    }
-    courtBuilder.setTitle("בחירת בית משפט");
-    courtBuilder.setItems(
-        courtNames,
-        (dialog, which) -> {
-          selectedCourt = courtList.get(which);
-
-          // FormFragment / ClaimFragment
-          if (LawsuitClaimFragment.class.isInstance(fragment)) {
-            ((TextView) (findViewById(R.id.textView_ClaimFragment_courtName)))
-                .setText("בית המשפט לתביעות קטנות - " + selectedCourt.getName());
-            ((TextView) (findViewById(R.id.textView_ClaimFragment_courtAddress)))
-                .setText(selectedCourt.getAddress());
-            ((TextView) (findViewById(R.id.textView_ClaimFragment_courtFax)))
-                .setText(selectedCourt.getFax());
-          } else {
-            ((TextView) findViewById(R.id.textView_selectCourt_FormFragment))
-                .setText("בית המשפט לתביעות קטנות - " + selectedCourt.getName());
-          }
-          selectedCourt = courtList.get(which);
-        });
-    courtBuilder.show();
+  // Return absFilename of PDF created
+  public String getAbsFilename() {
+    return this.absFilename;
   }
 
   @Override

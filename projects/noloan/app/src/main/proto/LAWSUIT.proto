@@ -14,22 +14,18 @@ message Lawsuit {
     string userId = 3;
     string userAddress = 4;
     string userPhone = 5;
-    string userFax = 6;
 
-    string companyName = 7;
-    string companyId = 8;
-    string companyAddress = 9;
-    string companyPhone = 10;
-    string companyFax = 11;
+    string companyName = 6;
+    string companyId = 7;
+    string companyAddress = 8;
+    string companyPhone = 9;
+    string companyFax = 10;
 
-    string dateReceived = 12;
-    string claimAmount = 13;
-    bool sentHaser = 14;
-    bool moreThanFiveClaims = 15;
+    string dateReceived = 11;
+    string claimAmount = 12;
+    bool sentHaser = 13;
+    bool moreThanFiveClaims = 14;
 
-    SmsMessage smsMessage = 16;
+    SmsMessage smsMessage = 15;
 
 }
-
-
-

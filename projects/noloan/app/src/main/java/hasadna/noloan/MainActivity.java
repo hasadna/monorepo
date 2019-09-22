@@ -1,7 +1,6 @@
 package hasadna.noloan;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -27,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
     Toolbar toolbar = toolbarContent.findViewById(R.id.toolbar);
+    toolbar.setTitle(R.string.toolbar_title_mainActivity_text);
     setSupportActionBar(toolbar);
     TextView toolbarTitle = toolbarContent.findViewById(R.id.toolbar_title);
     toolbarTitle.setText(toolbar.getTitle());
@@ -88,9 +87,8 @@ public class MainActivity extends AppCompatActivity
     spamActive = false;
     recycler.setAdapter(smsAdapter);
     recycler.setLayoutManager(new LinearLayoutManager(this));
-    TextView statusTitle = findViewById(R.id.status_lawsuit);
-    statusTitle.setText(
-        (String.format(getResources().getString(R.string.content_summary), spam.size())));
+    TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
+    statusTitle.setText(String.valueOf(messages.size()));
   }
 
   // Reads SMS. If no permissions are granted, exit app.

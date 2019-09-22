@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import hasadna.noloan.lawsuit.fragments.LawsuitClaimFragment;
 import hasadna.noloan.lawsuit.fragments.LawsuitFormFragment;
 import hasadna.noloan.lawsuit.fragments.LawsuitSummaryFragment;
 
@@ -25,16 +24,13 @@ public class LawsuitFragmentAdapter extends FragmentPagerAdapter {
       case 1:
         fragment = new LawsuitSummaryFragment();
         break;
-      case 2:
-        fragment = new LawsuitClaimFragment();
-        break;
     }
     return fragment;
   }
 
   @Override
   public int getCount() {
-    return 3;
+    return 2;
   }
 }
 
