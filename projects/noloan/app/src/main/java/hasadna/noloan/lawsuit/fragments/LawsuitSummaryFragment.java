@@ -186,7 +186,6 @@ public class LawsuitSummaryFragment extends Fragment {
 
   // Choose court alert dialog
   public void displayCourtPicker() {
-
     // List courts
     String[] courtNames = new String[28];
     int index = 0;
