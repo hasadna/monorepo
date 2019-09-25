@@ -1,24 +1,20 @@
 package hasadna.noloan.lawsuit.fragments;
 
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -58,9 +54,18 @@ public class LawsuitFormFragment extends Fragment {
     scrollView = rootView.findViewById(R.id.ScrollView_formFragment);
 
     // Validate user id number
-    userId.setOnFocusChangeListener(
-        (v, hasFocus) -> {
-          validateIdNumber(userId.getText().toString());
+    userId.addTextChangedListener(
+        new TextWatcher() {
+          @Override
+          public void afterTextChanged(Editable s) {
+            validateIdNumber(userId.getText().toString());
+          }
+
+          @Override
+          public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+          @Override
+          public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
     // Display court's detail in TextViews
