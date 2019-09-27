@@ -12,7 +12,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.SpamHolder;
+import hasadna.noloan.DBMessagesHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -32,11 +32,12 @@ public class FirestoreClient {
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningSpam() {
+  public TaskCompletionSource StartListeningToMessages(String path) {
+
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
 
-    CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
+    CollectionReference collectionReference = client.collection(path);
     collectionReference.addSnapshotListener(
         executor,
         (queryDocumentSnapshots, e) -> {
@@ -44,7 +45,7 @@ public class FirestoreClient {
             return;
           }
 
-          SpamHolder sp = SpamHolder.getInstance();
+          DBMessagesHolder messagesHolder = DBMessagesHolder.getInstance();
           for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
@@ -54,18 +55,36 @@ public class FirestoreClient {
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
-            switch (dc.getType()) {
-              case ADDED:
-                sp.add(sms);
-                break;
-              case MODIFIED:
-                sp.modified(sms);
-                break;
-              case REMOVED:
-                sp.remove(sms);
-                break;
+            // Spam list
+            if (path.equals(SPAM_COLLECTION_PATH)) {
+              switch (dc.getType()) {
+                case ADDED:
+                  messagesHolder.addSpam(sms);
+                  break;
+                case MODIFIED:
+                  messagesHolder.spamModified(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.spamRemove(sms);
+                  break;
+              }
+            }
+            // Suggestions list
+            else {
+              switch (dc.getType()) {
+                case ADDED:
+                  messagesHolder.addSuggestion(sms);
+                  break;
+                case MODIFIED:
+                  messagesHolder.suggestionsModified(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.suggestionRemove(sms);
+                  break;
+              }
             }
           }
+
           task.trySetResult(true);
         });
     return task;

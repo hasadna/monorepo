@@ -25,11 +25,11 @@
         <activity
             android:name="hasadna.noloan.lawsuit.LawsuitActivity"
             android:exported="true"
-            android:parentActivityName="hasadna.noloan.MainActivity"
+            android:parentActivityName="hasadna.noloan.mainactivity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="hasadna.noloan.MainActivity"
+            android:name="hasadna.noloan.mainactivity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -44,7 +44,7 @@
 
         <activity
             android:name="hasadna.noloan.AboutActivity"
-            android:parentActivityName="hasadna.noloan.MainActivity"
+            android:parentActivityName="hasadna.noloan.mainactivity.MainActivity"
             android:label="@string/title_about"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>

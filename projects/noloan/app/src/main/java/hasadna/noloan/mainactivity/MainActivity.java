@@ -1,4 +1,4 @@
-package hasadna.noloan;
+package hasadna.noloan.mainactivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,13 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,18 +26,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hasadna.noloan.AboutActivity;
+import hasadna.noloan.DBMessagesHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener,
+        InboxFragment.OnFragmentInteractionListener,
+        SpamFragment.OnFragmentInteractionListener {
+
   private static final String TAG = "MainActivity";
 
   private DrawerLayout drawerLayout;
-
-  private SpamRecyclerAdapter spamAdapter;
-  private SmsRecyclerAdapter smsAdapter;
-  private RecyclerView recycler;
   private boolean spamActive;
 
   @Override
@@ -73,26 +74,43 @@ public class MainActivity extends AppCompatActivity
 
     // Reading Sms and spams
     List<SmsMessage> messages = readSmsFromDevice();
-    List<SmsMessage> spam = SpamHolder.getInstance().getSpam();
+    List<SmsMessage> spam = DBMessagesHolder.getInstance().getSpam();
+    List<SmsMessage> suggestedSpam = DBMessagesHolder.getInstance().getSuggestions();
 
     // Create a list of the intersection between the two lists, messages and spam
     // Based on https://www.baeldung.com/java-lists-intersection
-    List<SmsMessage> results =
+    List<SmsMessage> spamAndInbox =
         messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
+    List<SmsMessage> suggestionsAndInbox =
+        messages.stream().distinct().filter(suggestedSpam::contains).collect(Collectors.toList());
+
+    // Status title
+    TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
+    statusTitle.setText(String.valueOf(messages.size()));
+
+    // ViewPager
+    ViewPager viewPager = findViewById(R.id.viewPager);
+    // RTL swiping (Along with recyclerView.setRotationY(180) in fragments)
+    viewPager.setRotationY(180);
+    MainActivityPagerAdapter pagerAdapter =
+        new MainActivityPagerAdapter(getSupportFragmentManager(), this);
+    viewPager.setAdapter(pagerAdapter);
+    TabLayout tabLayout = findViewById(R.id.TabLayout);
+    tabLayout.setupWithViewPager(viewPager);
+    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, messages.size()));
 
     // Filling the recycler
-    recycler = findViewById(R.id.recycler_view);
+    /* recycler = findViewById(R.id.recycler_view);
     spamAdapter = new SpamRecyclerAdapter();
     smsAdapter = new SmsRecyclerAdapter(messages);
     spamActive = false;
     recycler.setAdapter(smsAdapter);
-    recycler.setLayoutManager(new LinearLayoutManager(this));
-    TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
-    statusTitle.setText(String.valueOf(messages.size()));
+    recycler.setLayoutManager(new LinearLayoutManager(this));*/
+
   }
 
   // Reads SMS. If no permissions are granted, exit app.
-  private ArrayList<SmsMessage> readSmsFromDevice() {
+  ArrayList<SmsMessage> readSmsFromDevice() {
     // Check for permission reading sms
     int permissionStatus = checkSelfPermission(Manifest.permission.READ_SMS);
 
@@ -107,7 +125,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   // Get a list of all SMS messages in the inbox.
-  private ArrayList<SmsMessage> getSmsList() {
+  ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
     Cursor cursor =
         getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
@@ -137,7 +155,7 @@ public class MainActivity extends AppCompatActivity
     if (id == R.id.nav_about) {
       openAbout();
     } else if (id == R.id.nav_change) {
-      changeAdapter();
+      // changeAdapter();
       if (spamActive) {
         item.setTitle("הצג סמס");
       } else {
@@ -152,14 +170,19 @@ public class MainActivity extends AppCompatActivity
   private void openAbout() {
     AboutActivity.startActivity(this);
   }
+  /*
 
-  public void changeAdapter() {
-    if (spamActive) {
-      recycler.setAdapter(smsAdapter);
-    } else {
-      recycler.setAdapter(spamAdapter);
+    public void changeAdapter() {
+      if (spamActive) {
+        recycler.setAdapter(smsAdapter);
+      } else {
+        recycler.setAdapter(spamAdapter);
+      }
+      spamActive = !spamActive;
     }
-    spamActive = !spamActive;
-  }
+  */
+
+  @Override
+  public void onFragmentInteraction(Uri uri) {}
 }
 

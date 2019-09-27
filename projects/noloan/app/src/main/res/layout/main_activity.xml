@@ -37,15 +37,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/TabLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="#F0F0F0"
-                        android:clipToPadding="false"
-                        android:paddingBottom="10dp"
-                        android:scrollbars="vertical" />
+                        android:layout_height="wrap_content"
+                        android:layoutDirection="rtl">
+
+                        <android.support.design.widget.TabItem
+                            android:id="@+id/TabItem_spam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/spamFragment_title" />
+
+                        <android.support.design.widget.TabItem
+                            android:id="@+id/TabItem_inbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inboxFragment_title" />
+
+                    </android.support.design.widget.TabLayout>
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                    </android.support.v4.view.ViewPager>
+
+
 
                 </LinearLayout>
 
