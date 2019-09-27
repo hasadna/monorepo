@@ -69,7 +69,7 @@ public class RecyclerAdapter
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView from, content, receivedAt;
-    Button buttonAccept;
+    Button buttonAccept,buttonDelete;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -77,6 +77,7 @@ public class RecyclerAdapter
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
       buttonAccept = itemView.findViewById(R.id.button_accept);
+      buttonDelete = itemView.findViewById(R.id.button_delete);
     }
 
     public void bind(SmsMessage sms) {
@@ -86,8 +87,13 @@ public class RecyclerAdapter
       buttonAccept.setOnClickListener(view -> {
         FirestoreClient client = new FirestoreClient();
         client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-        client.deleteMessage(sms);
+        client.deleteMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
         Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
+      });
+      buttonDelete.setOnClickListener(view -> {
+        FirestoreClient client = new FirestoreClient();
+        client.deleteMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
+        Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
       });
     }
   }

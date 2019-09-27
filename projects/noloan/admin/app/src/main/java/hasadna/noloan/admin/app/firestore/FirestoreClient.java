@@ -32,15 +32,13 @@ public class FirestoreClient {
     client.collection(path).add(element);
   }
 
-  public void deleteMessage(SmsMessage sms) {
-    //Log.d("BLAAAAA","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "+sms.getID());
-    client.collection(USER_SUGGEST_COLLECTION).document(sms.getID()).delete().
+  public void deleteMessage(SmsMessage sms, String path) {
+    client.collection(path).document(sms.getID()).delete().
         addOnSuccessListener(aVoid -> {
           Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! success");
         })
         .addOnFailureListener(e -> {
           Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! failed");
-
         });
   }
 

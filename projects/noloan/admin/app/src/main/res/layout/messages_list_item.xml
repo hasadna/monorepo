@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/card_view"
@@ -51,15 +52,36 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/received_from"
-            style="@style/ListFrom"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:ellipsize="end"
-            android:gravity="right"
-            android:singleLine="true" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_delete"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary"
+                android:includeFontPadding="false"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:text="מחק"
+                android:textColor="@color/colorGreyBackground" />
+
+            <TextView
+                android:id="@+id/received_from"
+                style="@style/ListFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:singleLine="true" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/content"
