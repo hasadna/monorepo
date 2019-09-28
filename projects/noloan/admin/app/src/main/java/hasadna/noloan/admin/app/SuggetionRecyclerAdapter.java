@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,69 +14,63 @@ import android.widget.Toast;
 import hasadna.noloan.admin.app.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-public class RecyclerAdapter
-    extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
+public class SuggetionRecyclerAdapter
+        extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
-  SpamHolder spam;
+  DBMessagesHolder DbMessages;
 
-  public RecyclerAdapter() {
-    spam = SpamHolder.getInstance();
+  public SuggetionRecyclerAdapter() {
+    DbMessages = DBMessagesHolder.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
-    spam.setSpamListener(
-        new SpamHolder.SpamListener() {
-          @Override
-          public void spamAdded() {
-            handler.post(() -> notifyItemInserted(spam.getSpam().size()));
-          }
+    DbMessages.setSpamListener(
+            new DBMessagesHolder.MessagesListener() {
+              @Override
+              public void messageAdded() {
+                handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));
+              }
 
-          @Override
-          public void spamRemoved(int index) {
-            Log.d("Adapter", "deleted");
-            handler.post(() ->
-            {
-              notifyItemRemoved(index);
-              notifyItemRangeChanged(index, spam.getSpam().size());
+              @Override
+              public void messageRemoved() {
+                handler.post(() -> notifyItemRemoved(DbMessages.getSuggestions().size()));
+              }
+
+              @Override
+              public void messageModified(int index) {
+                handler.post(() -> notifyItemChanged(index));
+              }
             });
-
-          }
-
-          @Override
-          public void spamModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
-          }
-        });
   }
 
   @NonNull
   @Override
   public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
     LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-    return new RecyclerViewHolder(inflater.inflate(R.layout.messages_list_item, viewGroup, false));
+    return new RecyclerViewHolder(inflater.inflate(R.layout.suggestion_list_item, viewGroup, false));
   }
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(spam.getSpam().get(i));
+    recyclerViewHolder.bind(DbMessages.getSuggestions().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return spam.getSpam().size();
+    return DbMessages.getSuggestions().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView from, content, receivedAt;
-    Button buttonAccept,buttonDelete;
+    Button buttonAccept, buttonDelete;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
-      from = itemView.findViewById(R.id.received_from);
-      content = itemView.findViewById(R.id.content);
-      receivedAt = itemView.findViewById(R.id.receivedAt);
-      buttonAccept = itemView.findViewById(R.id.button_accept);
-      buttonDelete = itemView.findViewById(R.id.button_delete);
+      from = itemView.findViewById(R.id.suggetions_received_from);
+      content = itemView.findViewById(R.id.suggetions_content);
+      receivedAt = itemView.findViewById(R.id.suggetions_receivedAt);
+      buttonAccept = itemView.findViewById(R.id.suggetions_button_accept);
+      buttonDelete = itemView.findViewById(R.id.suggetions_button_delete);
     }
 
     public void bind(SmsMessage sms) {
@@ -87,12 +80,12 @@ public class RecyclerAdapter
       buttonAccept.setOnClickListener(view -> {
         FirestoreClient client = new FirestoreClient();
         client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-        client.deleteMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
+        client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
         Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
       });
       buttonDelete.setOnClickListener(view -> {
         FirestoreClient client = new FirestoreClient();
-        client.deleteMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
+        client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
         Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
       });
     }

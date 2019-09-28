@@ -3,7 +3,9 @@ package hasadna.noloan.admin.app;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -52,11 +54,16 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    // Filling the recycler
-    recycler = findViewById(R.id.recycler_view);
-    RecyclerAdapter adapter = new RecyclerAdapter();
-    recycler.setAdapter(adapter);
-    recycler.setLayoutManager(new LinearLayoutManager(this));
+    ViewPager viewPager = findViewById(R.id.viewPager);
+    // RTL swiping (Along with recyclerView.setRotationY(180) in fragments)
+    viewPager.setRotationY(180);
+    MainActivityPageAdapter pageAdapter =
+            new MainActivityPageAdapter(getSupportFragmentManager());
+    pageAdapter.addFragment(new SpamFragment(),"spam");
+    pageAdapter.addFragment(new SuggetionsFragment(),"suggestions");
+    viewPager.setAdapter(pageAdapter);
+    TabLayout tabLayout = findViewById(R.id.TabLayout);
+    tabLayout.setupWithViewPager(viewPager);
   }
 
   // Handle navigation view item clicks here.
