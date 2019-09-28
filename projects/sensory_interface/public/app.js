@@ -16,6 +16,7 @@ function processData() {
         document.getElementById("tableContainer").removeChild(oldTable);
     }
     document.getElementById("tableContainer").appendChild(table);
+    addOnClickSoundToTable();
 }
 
 function fillRow(values, currentTr) {
@@ -25,4 +26,41 @@ function fillRow(values, currentTr) {
         td.appendChild(document.createTextNode(myValue));
         currentTr.appendChild(td);
     }
+}
+
+function addOnClickSoundToTable() {
+    let element;
+    for (element of document.getElementsByTagName("td")) {
+        element.addEventListener("click", startSoundPlayback);
+    }
+}
+
+function startSoundPlayback() {
+    let context = new AudioContext();
+    let request = new XMLHttpRequest();
+    request.open("get", "beep_digital.mp3", true);
+    request.responseType = "arraybuffer";
+    request.onload = function () {
+        let data = request.response;
+        audioRooting(context, data);
+    };
+    request.send();
+}
+
+function audioRooting(context, data) {
+    let source = context.createBufferSource();
+    context.decodeAudioData(data, function (buffer) {
+        source.buffer = buffer;
+        source.connect(context.destination);
+        playSound(context, source);
+    });
+}
+
+function playSound(context, source) {
+    source.start(context.currentTime);
+}
+
+//currently, this function is not used, we may need it in the future though.
+function stopSoundPlayback(context, source) {
+    source.stop(context.currentTime);
 }
