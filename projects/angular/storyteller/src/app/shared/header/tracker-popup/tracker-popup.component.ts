@@ -1,15 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 import { Story } from '@/core/proto';
 import {
-  HeaderService,
-  TreackerService,
+  TrackerService,
   UserService,
   FirebaseService,
-  AuthService,
 } from '@/core/services';
 import { ClockService } from './clock.service';
 
@@ -19,62 +16,20 @@ import { ClockService } from './clock.service';
   styleUrls: ['./tracker-popup.component.scss'],
   providers: [ClockService],
 })
-export class TrackerPopupComponent implements OnDestroy {
+export class TrackerPopupComponent {
   isHidden: boolean = true;
-  storySelect = new FormControl();
-  onelinerList: string[] = [];
-  storySub = new Subscription();
   clockList: string[];
   sinceTime = new FormControl();
 
   constructor(
-    public headerService: HeaderService,
     public userService: UserService,
-    public treackerService: TreackerService,
-    private firebaseService: FirebaseService,
-    private authService: AuthService,
+    public trackerService: TrackerService,
     private cookieService: CookieService,
     private clockService: ClockService,
+    private firebaseService: FirebaseService,
   ) {
     this.initSinceTime();
-
     this.clockList = this.clockService.generateClockList();
-
-    if (this.treackerService.selectedStory) {
-      this.storySelect.setValue(
-        this.treackerService.selectedStory.getOneliner(),
-        { emitEvent: false },
-      );
-    }
-    this.storySub = this.firebaseService.getStoryList(this.authService.email).subscribe(() => {
-      this.updateOnelinerList();
-      // Check if selected story has deleted
-      if (this.treackerService.selectedStory) {
-        const idList: string[] = this.userService.storyList.map(story => story.getId());
-        if (!idList.includes(this.treackerService.selectedStory.getId())) {
-          // Looks like selected story was deleted. Unselect it
-          this.treackerService.selectedStory = undefined;
-          this.treackerService.stop();
-          this.storySelect.setValue('', { emitEvent: false });
-          this.updateOnelinerList();
-        }
-      }
-    });
-    // When story is selected by UI
-    this.storySelect.valueChanges.subscribe((oneliner: string) => {
-      // Stop tracking and make the story selected in service
-      this.treackerService.stop();
-      this.updateOnelinerList();
-      this.treackerService.selectedStory = undefined;
-      if (oneliner) {
-        for (const story of this.userService.storyList) {
-          if (story.getOneliner() === oneliner) {
-            this.treackerService.selectStory(story);
-            break;
-          }
-        }
-      }
-    });
   }
 
   initSinceTime(): void {
@@ -84,42 +39,34 @@ export class TrackerPopupComponent implements OnDestroy {
       sinceTimeCookie = '0:00';
     }
     this.sinceTime.setValue(sinceTimeCookie, { emitEvent: false });
-    this.treackerService.sinceTime = sinceTimeCookie;
+    this.trackerService.sinceTime = sinceTimeCookie;
 
     // When sinceTime is changed
     this.sinceTime.valueChanges.subscribe((sinceTime: string) => {
-      this.treackerService.sinceTime = sinceTime;
-      this.cookieService.set('sinceTime', sinceTime);
+      this.trackerService.sinceTime = sinceTime;
+      this.cookieService.set('sinceTime', sinceTime, 3000); // Keep the cookie for 3000 days
 
       // Recount tracking
-      this.treackerService.displayTotalTimer();
-      if (this.treackerService.selectedStory) {
-        this.treackerService.selectStory(this.treackerService.selectedStory);
+      this.trackerService.displayTotalTimer();
+      if (this.trackerService.selectedStory) {
+        this.trackerService.selectStory(this.trackerService.selectedStory);
       }
     });
   }
 
-  updateOnelinerList(): void {
-    // Show last 10 options, which include user input
-    let storyList: Story[] = this.userService.storyList.slice();
-    storyList.sort((a, b) => {
-      return Math.sign(b.getStartedMs() - a.getStartedMs());
-    });
-    if (this.storySelect.value) {
-      storyList = storyList.filter(story =>
-        story.getOneliner().toLowerCase().includes(this.storySelect.value.toLowerCase()),
-      );
-    }
-    storyList = storyList.slice(0, Math.min(10, storyList.length));
-    this.onelinerList = storyList.map(story => story.getOneliner());
+  storySelectValueChanges(): void {
+    // Stop tracking and make the story selected in service
+    this.trackerService.stop();
+    this.trackerService.selectedStory = undefined;
   }
 
-  createNewStory(): void {
-    const story = new Story();
-    story.setOneliner(this.storySelect.value);
+  storySelected(story: Story): void {
+    this.trackerService.selectStory(story);
+  }
+
+  createNewStory(story: Story): void {
     this.firebaseService.createStory(story).subscribe(() => {
-      this.treackerService.selectStory(story);
-      this.updateOnelinerList();
+      this.trackerService.selectStory(story);
     });
   }
 
@@ -129,9 +76,5 @@ export class TrackerPopupComponent implements OnDestroy {
 
   close(): void {
     this.isHidden = true;
-  }
-
-  ngOnDestroy() {
-    this.storySub.unsubscribe();
   }
 }
