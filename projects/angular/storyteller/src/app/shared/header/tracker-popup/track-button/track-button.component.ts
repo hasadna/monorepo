@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { TreackerService } from '@/core/services';
+import { TrackerService } from '@/core/services';
 
 @Component({
   selector: 'track-button',
@@ -8,14 +8,14 @@ import { TreackerService } from '@/core/services';
   styleUrls: ['./track-button.component.scss'],
 })
 export class TrackButtonComponent {
-  constructor(public treackerService: TreackerService) { }
+  constructor(public trackerService: TrackerService) { }
 
   click(): void {
-    if (this.treackerService.selectedStory) {
-      if (!this.treackerService.isTracking) {
-        this.treackerService.pressStart();
+    if (this.trackerService.selectedStory) {
+      if (!this.trackerService.isTracking) {
+        this.trackerService.pressStart();
       } else {
-        this.treackerService.pressStop();
+        this.trackerService.pressStop();
       }
     }
   }

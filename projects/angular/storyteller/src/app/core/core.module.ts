@@ -12,7 +12,7 @@ import {
   ScrollService,
   HeaderService,
   FirestoryService,
-  TreackerService,
+  TrackerService,
   UserService,
 } from './services';
 
@@ -28,7 +28,7 @@ import {
     ScrollService,
     HeaderService,
     FirestoryService,
-    TreackerService,
+    TrackerService,
     UserService,
     CookieService,
   ],
