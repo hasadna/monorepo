@@ -43,9 +43,7 @@ export class TrackingComponent implements OnDestroy {
   storySelected(story: Story): void {
     this.isTrackingLoading = true;
     this.trackSub = this.firebaseService.getTracks(story.getId()).subscribe(tracks => {
-      tracks.sort((a, b) => {
-        return Math.sign(a.getEndedMs() - b.getEndedMs());
-      });
+      tracks.sort((a, b) => a.getEndedMs() - b.getEndedMs());
 
       // Tracks are saved each minute automatically.
       // To not show 9000 short tracks, combine the several tracks to one.
