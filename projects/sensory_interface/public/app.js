@@ -1,6 +1,6 @@
-// initialize the Audio context stuf here when the page loads.
+// initialize Audio context on page load.
 let AudioContext = window.webkitAudioContext || window.AudioContext;
-let context = new AudioContext();
+let audioContext = new AudioContext();
 
 function processData() {
     let input = document.getElementById("textInput").value;
@@ -40,33 +40,33 @@ function addOnClickSoundToTable() {
 }
 
 function startSoundPlayback() {
-    if (context.state == "suspended") {
-        context.resume();
+    if (audioContext.state == "suspended") {
+        audioContext.resume();
     }
     let request = new XMLHttpRequest();
-    request.open("get", "beep_digital.mp3", true);
+    request.open("get", "assets/beep_digital.mp3", true);
     request.responseType = "arraybuffer";
     request.onload = function () {
         let data = request.response;
-        audioRooting(data);
+        playSoundFromData(data);
     };
     request.send();
 }
 
-function audioRooting(data) {
-    let source = context.createBufferSource();
-    context.decodeAudioData(data, function (buffer) {
+function playSoundFromData(data) {
+    let source = audioContext.createBufferSource();
+    audioContext.decodeAudioData(data, function (buffer) {
         source.buffer = buffer;
-        source.connect(context.destination);
-        playSound(source);
+        source.connect(audioContext.destination);
+        playSoundFromBufferSource(source);
     });
 }
 
-function playSound(source) {
-    source.start(context.currentTime);
+function playSoundFromBufferSource(source) {
+    source.start(audioContext.currentTime);
 }
 
-//currently, this function is not used, we may need it in the future though.
+// Currently, this function is not used, we may need it in the future though.
 function stopSoundPlayback(source) {
-    source.stop(context.currentTime);
+    source.stop(audioContext.currentTime);
 }
