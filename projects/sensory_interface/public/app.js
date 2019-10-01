@@ -1,3 +1,7 @@
+// initialize Audio context on page load.
+let AudioContext = window.webkitAudioContext || window.AudioContext;
+let audioContext = new AudioContext();
+
 function processData() {
     let input = document.getElementById("textInput").value;
     let lines = input.split("\n");
@@ -16,6 +20,7 @@ function processData() {
         document.getElementById("tableContainer").removeChild(oldTable);
     }
     document.getElementById("tableContainer").appendChild(table);
+    addOnClickSoundToTable();
 }
 
 function fillRow(values, currentTr) {
@@ -25,4 +30,43 @@ function fillRow(values, currentTr) {
         td.appendChild(document.createTextNode(myValue));
         currentTr.appendChild(td);
     }
+}
+
+function addOnClickSoundToTable() {
+    let element;
+    for (element of document.getElementsByTagName("td")) {
+        element.addEventListener("click", startSoundPlayback);
+    }
+}
+
+function startSoundPlayback() {
+    if (audioContext.state == "suspended") {
+        audioContext.resume();
+    }
+    let request = new XMLHttpRequest();
+    request.open("get", "assets/beep_digital.mp3", true);
+    request.responseType = "arraybuffer";
+    request.onload = function () {
+        let data = request.response;
+        playSoundFromData(data);
+    };
+    request.send();
+}
+
+function playSoundFromData(data) {
+    let source = audioContext.createBufferSource();
+    audioContext.decodeAudioData(data, function (buffer) {
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        playSoundFromBufferSource(source);
+    });
+}
+
+function playSoundFromBufferSource(source) {
+    source.start(audioContext.currentTime);
+}
+
+// Currently, this function is not used, we may need it in the future though.
+function stopSoundPlayback(source) {
+    source.stop(audioContext.currentTime);
 }
