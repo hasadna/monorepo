@@ -1,3 +1,7 @@
+// initialize the Audio context stuf here when the page loads.
+let AudioContext = window.webkitAudioContext || window.AudioContext;
+let context = new AudioContext();
+
 function processData() {
     let input = document.getElementById("textInput").value;
     let lines = input.split("\n");
@@ -36,31 +40,33 @@ function addOnClickSoundToTable() {
 }
 
 function startSoundPlayback() {
-    let context = new AudioContext();
+    if (context.state == "suspended") {
+        context.resume();
+    }
     let request = new XMLHttpRequest();
     request.open("get", "beep_digital.mp3", true);
     request.responseType = "arraybuffer";
     request.onload = function () {
         let data = request.response;
-        audioRooting(context, data);
+        audioRooting(data);
     };
     request.send();
 }
 
-function audioRooting(context, data) {
+function audioRooting(data) {
     let source = context.createBufferSource();
     context.decodeAudioData(data, function (buffer) {
         source.buffer = buffer;
         source.connect(context.destination);
-        playSound(context, source);
+        playSound(source);
     });
 }
 
-function playSound(context, source) {
+function playSound(source) {
     source.start(context.currentTime);
 }
 
 //currently, this function is not used, we may need it in the future though.
-function stopSoundPlayback(context, source) {
+function stopSoundPlayback(source) {
     source.stop(context.currentTime);
 }
