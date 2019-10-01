@@ -13,6 +13,7 @@ import {
   TrackerPopupComponent,
   TrackButtonComponent,
 } from './header';
+import { StorySelectComponent } from './story-select';
 import { LoadingComponent } from './loading';
 import { StoriesComponent } from './stories';
 import { AvatarComponent } from './avatar';
@@ -23,6 +24,7 @@ const ExportDeclarations = [
   LoadingComponent,
   StoriesComponent,
   AvatarComponent,
+  StorySelectComponent,
 ];
 const ExportModules = [
   RouterModule,

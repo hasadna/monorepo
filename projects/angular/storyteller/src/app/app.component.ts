@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AuthService, TreackerService, UserService } from '@/core/services';
+import { AuthService, TrackerService, UserService } from '@/core/services';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { AuthService, TreackerService, UserService } from '@/core/services';
 export class AppComponent {
   constructor(
     public authService: AuthService,
-    public treackerService: TreackerService,
+    public trackerService: TrackerService,
     public userService: UserService,
   ) { }
 }
