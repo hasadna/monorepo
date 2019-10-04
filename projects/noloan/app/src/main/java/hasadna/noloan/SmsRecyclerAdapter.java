@@ -93,7 +93,7 @@ public class SmsRecyclerAdapter
         Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
       }
 
-      // Click on a suggestions message, from there (with message's details) move to the
+      // Click on a message, from there (with message's details) move to the
       // lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.

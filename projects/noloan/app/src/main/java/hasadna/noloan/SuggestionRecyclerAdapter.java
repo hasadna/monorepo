@@ -94,8 +94,7 @@ public class SuggestionRecyclerAdapter
             intentToLawsuitForm.putExtra("body", sms.getBody());
             view.getContext().startActivity(intentToLawsuitForm);
           });
-      /*
-       ** Commented until Remove suggestion / spam functions will be done*/
+
       buttonRemoveSuggestion.setOnClickListener(
           v -> {
             // TODO: Add a counter to the suggested spam and apply the remove only if there's 1

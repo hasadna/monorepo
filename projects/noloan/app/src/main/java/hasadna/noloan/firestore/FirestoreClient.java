@@ -55,19 +55,19 @@ public class FirestoreClient {
           }
 
           DbMessages messagesHolder = DbMessages.getInstance();
-          for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+          for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
               sms =
                   (SmsMessage)
-                      decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
-              sms = sms.toBuilder().setID(dc.getDocument().getId()).build();
+                      decodeMessage(documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
             // Spam list
             if (path.equals(SPAM_COLLECTION_PATH)) {
-              switch (dc.getType()) {
+              switch (documentChange.getType()) {
                 case ADDED:
                   messagesHolder.addSpam(sms);
                   break;
@@ -81,7 +81,7 @@ public class FirestoreClient {
             }
             // Suggestions list
             else {
-              switch (dc.getType()) {
+              switch (documentChange.getType()) {
                 case ADDED:
                   messagesHolder.addSuggestion(sms);
                   break;

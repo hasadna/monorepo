@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity
 
   private DrawerLayout drawerLayout;
   private boolean spamActive;
-  private List<SmsMessage> inboxMessages;
-  private List<SmsMessage> suggestionsMessages;
-  private List<SmsMessage> spamMessages;
+  private List<SmsMessage> inbox;
+  private List<SmsMessage> suggestions;
+  private List<SmsMessage> spams;
   TabLayout tabLayout;
 
   @Override
@@ -77,28 +77,28 @@ public class MainActivity extends AppCompatActivity
     navigationView.setNavigationItemSelectedListener(this);
 
     // Reading Sms and spams
-    inboxMessages = readSmsFromDevice();
-    suggestionsMessages = DbMessages.getInstance().getSuggestions();
-    spamMessages = DbMessages.getInstance().getSpam();
+    inbox = readSmsFromDevice();
+    suggestions = DbMessages.getInstance().getSuggestions();
+    spams = DbMessages.getInstance().getSpam();
 
     // Create a list of the intersection between the two lists, messages and spam
     // Based on https://www.baeldung.com/java-lists-intersection
     List<SmsMessage> spamAndInbox =
-        inboxMessages
+        inbox
             .stream()
             .distinct()
-            .filter(spamMessages::contains)
+            .filter(spams::contains)
             .collect(Collectors.toList());
     List<SmsMessage> suggestionsAndInbox =
-        inboxMessages
+        inbox
             .stream()
             .distinct()
-            .filter(suggestionsMessages::contains)
+            .filter(suggestions::contains)
             .collect(Collectors.toList());
 
     // Status title
     TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
-    statusTitle.setText(String.valueOf(suggestionsMessages.size()));
+    statusTitle.setText(String.valueOf(suggestions.size()));
 
     // ViewPager
     ViewPager viewPager = findViewById(R.id.viewPager);
@@ -173,10 +173,10 @@ public class MainActivity extends AppCompatActivity
   // Update the number of messages in the title - Called from recyclerViewer adapters when list
   // changes
   public void updateTabTitles() {
-    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inboxMessages.size()));
+    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inbox.size()));
     tabLayout
         .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, suggestionsMessages.size()));
+        .setText(getString(R.string.spamFragment_title, suggestions.size()));
   }
 
   private void openAbout() {
