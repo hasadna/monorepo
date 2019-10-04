@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
   private List<SmsMessage> suggestions;
   private List<SmsMessage> spams;
   TabLayout tabLayout;
+  TextView statusTitle;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +98,7 @@ public class MainActivity extends AppCompatActivity
             .collect(Collectors.toList());
 
     // Status title
-    TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
-    statusTitle.setText(String.valueOf(suggestions.size()));
+    statusTitle = findViewById(R.id.textView_numberOfMessages);
 
     // ViewPager
     ViewPager viewPager = findViewById(R.id.viewPager);
@@ -173,6 +173,10 @@ public class MainActivity extends AppCompatActivity
   // Update the number of messages in the title - Called from recyclerViewer adapters when list
   // changes
   public void updateTabTitles() {
+    // Main title
+    statusTitle.setText(String.valueOf(suggestions.size()));
+
+    // Tab's titles
     tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inbox.size()));
     tabLayout
         .getTabAt(1)

@@ -55,11 +55,12 @@ public class DbMessages {
   }
 
   public void spamRemove(SmsMessage spam) {
+    int index = suggestions.indexOf(spam);
+
     this.spam.remove(spam);
 
-    if (spamListener != null) spamListener.messageRemoved();
+    if (spamListener != null) spamListener.messageRemoved(index);
   }
-
   public void addSuggestion(SmsMessage suggestedSpam) {
     suggestions.add(suggestedSpam);
 
@@ -76,9 +77,11 @@ public class DbMessages {
   }
 
   public void suggestionRemove(SmsMessage suggestedSpam) {
+    int index = suggestions.indexOf(spam);
+
     suggestions.remove(suggestedSpam);
 
-    if (suggestionsListener != null) suggestionsListener.messageRemoved();
+    if (suggestionsListener != null) suggestionsListener.messageRemoved(index);
   }
 
   public void setSpamListener(MessagesListener spamListener) {
@@ -92,7 +95,7 @@ public class DbMessages {
   public interface MessagesListener {
     void messageAdded();
 
-    void messageRemoved();
+    void messageRemoved(int index);
 
     void messageModified(int index);
   }

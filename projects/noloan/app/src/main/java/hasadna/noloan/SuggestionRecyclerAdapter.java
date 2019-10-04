@@ -33,8 +33,8 @@ public class SuggestionRecyclerAdapter
           }
 
           @Override
-          public void messageRemoved() {
-            handler.post(() -> notifyItemRemoved(suggestions.getSuggestions().size()));
+          public void messageRemoved(int index) {
+            handler.post(()-> notifyItemRemoved(index));
           }
 
           @Override

@@ -32,8 +32,8 @@ public class SpamRecyclerAdapter
           }
 
           @Override
-          public void messageRemoved() {
-            handler.post(() -> notifyItemRemoved(spam.getSpam().size()));
+          public void messageRemoved(int index) {
+            handler.post(()-> notifyItemRemoved(index));
           }
 
           @Override
