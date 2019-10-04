@@ -55,7 +55,7 @@ public class DbMessages {
   }
 
   public void spamRemove(SmsMessage spam) {
-    int index = suggestions.indexOf(spam);
+    int index = this.spam.indexOf(spam);
 
     this.spam.remove(spam);
 
@@ -77,7 +77,7 @@ public class DbMessages {
   }
 
   public void suggestionRemove(SmsMessage suggestedSpam) {
-    int index = suggestions.indexOf(spam);
+    int index = suggestions.indexOf(suggestedSpam);
 
     suggestions.remove(suggestedSpam);
 
