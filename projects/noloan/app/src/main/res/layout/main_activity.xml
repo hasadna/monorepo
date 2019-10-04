@@ -41,17 +41,20 @@
                         android:id="@+id/TabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:tabMaxWidth="0dp"
+                        app:tabGravity="fill"
+                        app:tabMode="fixed"
                         android:layoutDirection="rtl">
 
                         <android.support.design.widget.TabItem
                             android:id="@+id/TabItem_spam"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/spamFragment_title" />
 
                         <android.support.design.widget.TabItem
                             android:id="@+id/TabItem_inbox"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/inboxFragment_title" />
 

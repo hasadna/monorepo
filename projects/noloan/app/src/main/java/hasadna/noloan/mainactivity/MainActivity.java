@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import hasadna.noloan.AboutActivity;
 import hasadna.noloan.DbMessages;
@@ -82,12 +81,17 @@ public class MainActivity extends AppCompatActivity
     suggestions = DbMessages.getInstance().getSuggestions();
     spams = DbMessages.getInstance().getSpam();
 
-    // Create a list of the intersection between the two lists, messages and spam
-    // Based on https://www.baeldung.com/java-lists-intersection
-    List<SmsMessage> spamAndInbox =
-        inbox.stream().distinct().filter(spams::contains).collect(Collectors.toList());
-    List<SmsMessage> suggestionsAndInbox =
-        inbox.stream().distinct().filter(suggestions::contains).collect(Collectors.toList());
+    /**
+     * At the moment all spams/suggestions messages received from the DB are displayed to the user
+     * TODO: Intersect spams/suggestions with user's inbox messages, display only the relevant
+     * messages that are in the inbox.
+     *
+     * <p>// Create a list of the intersection between the two lists, messages and spam // Based on
+     * https://www.baeldung.com/java-lists-intersection List<SmsMessage> spamAndInbox =
+     * inbox.stream().distinct().filter(spams::contains).collect(Collectors.toList());
+     * List<SmsMessage> suggestionsAndInbox =
+     * inbox.stream().distinct().filter(suggestions::contains).collect(Collectors.toList());
+     */
 
     // Status title
     statusTitle = findViewById(R.id.textView_numberOfMessages);
@@ -101,7 +105,8 @@ public class MainActivity extends AppCompatActivity
     viewPager.setAdapter(pagerAdapter);
     tabLayout = findViewById(R.id.TabLayout);
     tabLayout.setupWithViewPager(viewPager);
-    updateTabTitles();
+
+    updateTitles();
   }
 
   // Reads SMS. If no permissions are granted, exit app.
@@ -149,14 +154,8 @@ public class MainActivity extends AppCompatActivity
     int id = item.getItemId();
     if (id == R.id.nav_about) {
       openAbout();
-    } else if (id == R.id.nav_change) {
-      // changeAdapter();
-      if (spamActive) {
-        item.setTitle("הצג סמס");
-      } else {
-        item.setTitle("הצג ספאם");
-      }
     }
+
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
     return true;
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
   // Update the number of messages in the title - Called from recyclerViewer adapters when list
   // changes
-  public void updateTabTitles() {
+  public void updateTitles() {
     // Main title
     statusTitle.setText(String.valueOf(suggestions.size()));
 

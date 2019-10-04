@@ -48,12 +48,12 @@ public class SpamFragment extends Fragment {
 
           @Override
           public void onItemRangeInserted(int positionStart, int itemCount) {
-            ((MainActivity) getActivity()).updateTabTitles();
+            ((MainActivity) getActivity()).updateTitles();
           }
 
           @Override
           public void onItemRangeRemoved(int positionStart, int itemCount) {
-            ((MainActivity) getActivity()).updateTabTitles();
+            ((MainActivity) getActivity()).updateTitles();
           }
         });
 
