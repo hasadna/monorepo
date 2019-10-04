@@ -16,27 +16,23 @@ import noloan.R;
 
 public class SpamFragment extends Fragment {
 
-  private OnFragmentInteractionListener mListener;
+  private OnFragmentInteractionListener fragmentInteractionListener;
   private RecyclerView recyclerView;
   private SuggestionRecyclerAdapter suggestionAdapter;
   private Button buttonRemoveSuggestion;
+  private Button createLawsuit;
 
   public SpamFragment() {
     // Required empty public constructor
   }
 
-  // TODO: Rename and change types and number of parameters
   public static InboxFragment newInstance() {
-    InboxFragment fragment = new InboxFragment();
-    Bundle args = new Bundle();
-    fragment.setArguments(args);
-    return fragment;
+    return new InboxFragment();
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    //    List<SmsProto.SmsMessage> messages = ((MainActivity)getActivity()).readSmsFromDevice();
     suggestionAdapter = new SuggestionRecyclerAdapter();
   }
 
@@ -47,12 +43,22 @@ public class SpamFragment extends Fragment {
 
     recyclerView = rootView.findViewById(R.id.RecyclerView_spamMessages);
     recyclerView.setRotationY(180);
+    suggestionAdapter.registerAdapterDataObserver(
+        new RecyclerView.AdapterDataObserver() {
+
+          @Override
+          public void onItemRangeInserted(int positionStart, int itemCount) {
+            ((MainActivity) getActivity()).updateTabTitles();
+          }
+
+          @Override
+          public void onItemRangeRemoved(int positionStart, int itemCount) {
+            ((MainActivity) getActivity()).updateTabTitles();
+          }
+        });
 
     recyclerView.setAdapter(suggestionAdapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-    buttonRemoveSuggestion = rootView.findViewById(R.id.Button_removeSuggestion);
-    //    buttonRemoveSuggestion.setOnClickListener(v -> );
 
     return rootView;
   }
@@ -61,7 +67,7 @@ public class SpamFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
+      fragmentInteractionListener = (OnFragmentInteractionListener) context;
     } else {
       throw new RuntimeException(
           context.toString() + " must implement OnFragmentInteractionListener");
@@ -71,20 +77,10 @@ public class SpamFragment extends Fragment {
   @Override
   public void onDetach() {
     super.onDetach();
-    mListener = null;
+    fragmentInteractionListener = null;
   }
 
-  /**
-   * This interface must be implemented by activities that contain this fragment to allow an
-   * interaction in this fragment to be communicated to the activity and potentially other fragments
-   * contained in that activity.
-   *
-   * <p>See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating with
-   * Other Fragments</a> for more information.
-   */
   public interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
     void onFragmentInteraction(Uri uri);
   }
 }

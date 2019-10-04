@@ -18,14 +18,14 @@ import noloan.R;
 public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  DBMessagesHolder spam;
+  DbMessages spam;
 
   public SpamRecyclerAdapter() {
-    spam = DBMessagesHolder.getInstance();
+    spam = DbMessages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
     spam.setSpamListener(
-        new DBMessagesHolder.MessagesListener() {
+        new DbMessages.MessagesListener() {
           @Override
           public void messageAdded() {
             handler.post(() -> notifyItemInserted(spam.getSpam().size()));
@@ -77,7 +77,7 @@ public class SpamRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
-      // Click on a suggestions message, from there (with message's details) move to the
+      // Click on a message, from there (with message's details) move to the
       // lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.

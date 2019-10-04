@@ -108,7 +108,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/button_rectangle_rounded_blue_filled"
             android:fontFamily="@font/heebo_medium"
-            android:text="@string/list_item_button_addSpam_text"
+            android:text="@string/list_item_button_removeSpam_text"
             android:textColor="@color/colorWhiteBackground"
             android:textSize="16sp"
             card_view:layout_constraintBottom_toBottomOf="parent"

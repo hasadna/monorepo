@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.DBMessagesHolder;
+import hasadna.noloan.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity
 
   private DrawerLayout drawerLayout;
   private boolean spamActive;
+  private List<SmsMessage> inboxMessages;
+  private List<SmsMessage> suggestionsMessages;
+  private List<SmsMessage> spamMessages;
+  TabLayout tabLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,20 +77,28 @@ public class MainActivity extends AppCompatActivity
     navigationView.setNavigationItemSelectedListener(this);
 
     // Reading Sms and spams
-    List<SmsMessage> messages = readSmsFromDevice();
-    List<SmsMessage> spam = DBMessagesHolder.getInstance().getSpam();
-    List<SmsMessage> suggestedSpam = DBMessagesHolder.getInstance().getSuggestions();
+    inboxMessages = readSmsFromDevice();
+    suggestionsMessages = DbMessages.getInstance().getSuggestions();
+    spamMessages = DbMessages.getInstance().getSpam();
 
     // Create a list of the intersection between the two lists, messages and spam
     // Based on https://www.baeldung.com/java-lists-intersection
     List<SmsMessage> spamAndInbox =
-        messages.stream().distinct().filter(spam::contains).collect(Collectors.toList());
+        inboxMessages
+            .stream()
+            .distinct()
+            .filter(spamMessages::contains)
+            .collect(Collectors.toList());
     List<SmsMessage> suggestionsAndInbox =
-        messages.stream().distinct().filter(suggestedSpam::contains).collect(Collectors.toList());
+        inboxMessages
+            .stream()
+            .distinct()
+            .filter(suggestionsMessages::contains)
+            .collect(Collectors.toList());
 
     // Status title
     TextView statusTitle = findViewById(R.id.textView_numberOfMessages);
-    statusTitle.setText(String.valueOf(messages.size()));
+    statusTitle.setText(String.valueOf(suggestionsMessages.size()));
 
     // ViewPager
     ViewPager viewPager = findViewById(R.id.viewPager);
@@ -95,18 +107,9 @@ public class MainActivity extends AppCompatActivity
     MainActivityPagerAdapter pagerAdapter =
         new MainActivityPagerAdapter(getSupportFragmentManager(), this);
     viewPager.setAdapter(pagerAdapter);
-    TabLayout tabLayout = findViewById(R.id.TabLayout);
+    tabLayout = findViewById(R.id.TabLayout);
     tabLayout.setupWithViewPager(viewPager);
-    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, messages.size()));
-
-    // Filling the recycler
-    /* recycler = findViewById(R.id.recycler_view);
-    spamAdapter = new SpamRecyclerAdapter();
-    smsAdapter = new SmsRecyclerAdapter(messages);
-    spamActive = false;
-    recycler.setAdapter(smsAdapter);
-    recycler.setLayoutManager(new LinearLayoutManager(this));*/
-
+    updateTabTitles();
   }
 
   // Reads SMS. If no permissions are granted, exit app.
@@ -167,20 +170,18 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
+  // Update the number of messages in the title - Called from recyclerViewer adapters when list
+  // changes
+  public void updateTabTitles() {
+    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inboxMessages.size()));
+    tabLayout
+        .getTabAt(1)
+        .setText(getString(R.string.spamFragment_title, suggestionsMessages.size()));
+  }
+
   private void openAbout() {
     AboutActivity.startActivity(this);
   }
-  /*
-
-    public void changeAdapter() {
-      if (spamActive) {
-        recycler.setAdapter(smsAdapter);
-      } else {
-        recycler.setAdapter(spamAdapter);
-      }
-      spamActive = !spamActive;
-    }
-  */
 
   @Override
   public void onFragmentInteraction(Uri uri) {}

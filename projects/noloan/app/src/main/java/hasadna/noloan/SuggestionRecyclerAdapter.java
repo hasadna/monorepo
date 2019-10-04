@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.lawsuit.LawsuitActivity;
@@ -20,14 +19,14 @@ import noloan.R;
 public class SuggestionRecyclerAdapter
     extends RecyclerView.Adapter<SuggestionRecyclerAdapter.RecyclerViewHolder> {
 
-  DBMessagesHolder suggestions;
+  DbMessages suggestions;
 
   public SuggestionRecyclerAdapter() {
-    suggestions = DBMessagesHolder.getInstance();
+    suggestions = DbMessages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
     suggestions.setSuggestionsListener(
-        new DBMessagesHolder.MessagesListener() {
+        new DbMessages.MessagesListener() {
           @Override
           public void messageAdded() {
             handler.post(() -> notifyItemInserted(suggestions.getSuggestions().size()));
@@ -74,7 +73,7 @@ public class SuggestionRecyclerAdapter
       from = itemView.findViewById(R.id.received_from);
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
-      buttonCreateLawsuit = itemView.findViewById(R.id.button_smsToLawsuit);
+      buttonCreateLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
       buttonRemoveSuggestion = itemView.findViewById(R.id.Button_removeSuggestion);
     }
 
@@ -82,27 +81,28 @@ public class SuggestionRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
-      // Click on a suggestions message, from there (with message's details) move to the
+      // Click on a message, from there (with message's details) move to the
       // lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
-      /*
-      ** Commented until Remove suggestion / spam functions will be done
-      buttonCreateLawsuit.setOnClickListener(
-                   view -> {
-                     Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
-                     intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
-                     intentToLawsuitForm.putExtra("from", sms.getSender());
-                     intentToLawsuitForm.putExtra("body", sms.getBody());
-                     view.getContext().startActivity(intentToLawsuitForm);
-                   });*/
 
-      /*buttonRemoveSuggestion.setOnClickListener(v -> {
-        // TODO: Add a counter to the suggested spam and apply the remove only if there's 1 suggestion
-        FirestoreClient client = new FirestoreClient();
-        client.writeMessage(sms,FirestoreClient.USER_SUGGEST_COLLECTION);
-        Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
-      });*/
+      buttonCreateLawsuit.setOnClickListener(
+          view -> {
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
+            intentToLawsuitForm.putExtra("from", sms.getSender());
+            intentToLawsuitForm.putExtra("body", sms.getBody());
+            view.getContext().startActivity(intentToLawsuitForm);
+          });
+      /*
+       ** Commented until Remove suggestion / spam functions will be done*/
+      buttonRemoveSuggestion.setOnClickListener(
+          v -> {
+            // TODO: Add a counter to the suggested spam and apply the remove only if there's 1
+            // suggestion
+            FirestoreClient client = new FirestoreClient();
+            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+          });
     }
   }
 }

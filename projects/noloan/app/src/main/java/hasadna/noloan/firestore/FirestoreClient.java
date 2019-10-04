@@ -12,7 +12,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.DBMessagesHolder;
+import hasadna.noloan.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -31,6 +31,15 @@ public class FirestoreClient {
     client.collection(path).add(element);
   }
 
+  public void deleteMessage(SmsMessage sms, String path) {
+    client
+        .collection(path)
+        .document(sms.getID())
+        .delete()
+        .addOnSuccessListener(aVoid -> {})
+        .addOnFailureListener(e -> {});
+  }
+
   // Start real-time listening to the DB for change, return set the result to true when done.
   public TaskCompletionSource StartListeningToMessages(String path) {
 
@@ -45,13 +54,14 @@ public class FirestoreClient {
             return;
           }
 
-          DBMessagesHolder messagesHolder = DBMessagesHolder.getInstance();
+          DbMessages messagesHolder = DbMessages.getInstance();
           for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
               sms =
                   (SmsMessage)
                       decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setID(dc.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }

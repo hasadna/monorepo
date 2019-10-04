@@ -8,7 +8,7 @@
 
     <string name="toolbar_title_mainActivity_text">בדיקת הודעות</string>
     <string name="toolbar_title_lawsuitForm_text">פרטי התביעה</string>
-    <string name="toolbar_title_lawsuitSummary_text">הגשת <ה></ה>תביעה</string>
+    <string name="toolbar_title_lawsuitSummary_text">הגשת תביעה</string>
 
     <string name="title_about">אודות</string>
     <string name="title_summary">סיכום סטטוס</string>
@@ -19,11 +19,13 @@
     <string name="about_information">האפליקציה מוצאת הודעות ספאם.</string>
     <string name="list_item_button_createLawsuit_text">יצירת כתב תביעה</string>
     <string name="list_item_button_addSpam_text">הוספה למאגר</string>
+    <string name="list_item_button_removeSpam_text">ביטול ספאם</string>
+
     <string name="list_item_textView_spam_counter">%1$s סימנו כ-spam</string>
 
     // MainActivity Fragments
     <string name="inboxFragment_title">כל ההודעות (%1$d)</string>
-    <string name="spamFragment_title">ספאם</string>
+    <string name="spamFragment_title">ספאם (%1$d)</string>
 
     // Lawsuit - Form fragment
     <string name="formFragment_title_text">פרטי התביעה</string>
@@ -59,13 +61,6 @@
     <string name="summaryFragment_claimOnline_button_toWebSite_text">כניסה</string>
     <string name="summaryFragment_claimFaxAddress_title_text">הגשה בדואר / בפקס</string>
     <string name="summaryFragment_button_chooseCourt_text">בחירת בית משפט</string>
-
-    // Lawsuit - Claim fragment
-    <string name="claimFragment_claimOnline_description_text">הגשה מקוונת מתבצעת דרך אתר הרשות השופטת \"נט המשפט\" וללא עלות נוספת למעט האגרה המשולמת בגין הגשת תביעה קטנה.</string>
-    <string name="claimFragment_claimOnline_button_toWebSite_text">כניסה</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
 
