@@ -63,6 +63,7 @@ public class FirestoreClient {
                   sms =
                           (SmsMessage)
                                   decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+                  sms = sms.toBuilder().setID(dc.getDocument().getId()).build();
                 } catch (InvalidProtocolBufferException e1) {
                   e1.printStackTrace();
                 }

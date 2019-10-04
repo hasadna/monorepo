@@ -20,6 +20,7 @@ public class SpamRecyclerAdapter
   DBMessagesHolder DbMessages;
 
   public SpamRecyclerAdapter() {
+
     DbMessages = DBMessagesHolder.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
@@ -31,8 +32,8 @@ public class SpamRecyclerAdapter
               }
 
               @Override
-              public void messageRemoved() {
-                handler.post(() -> notifyItemRemoved(DbMessages.getSpam().size()));
+              public void messageRemoved(int index) {
+                handler.post(()-> notifyItemRemoved(index));
               }
 
               @Override

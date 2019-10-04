@@ -23,7 +23,7 @@ public class SuggetionRecyclerAdapter
     DbMessages = DBMessagesHolder.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setSpamListener(
+    DbMessages.setSuggestionsListener(
             new DBMessagesHolder.MessagesListener() {
               @Override
               public void messageAdded() {
@@ -31,8 +31,8 @@ public class SuggetionRecyclerAdapter
               }
 
               @Override
-              public void messageRemoved() {
-                handler.post(() -> notifyItemRemoved(DbMessages.getSuggestions().size()));
+              public void messageRemoved(int index) {
+                handler.post(() -> notifyItemRemoved(index));
               }
 
               @Override

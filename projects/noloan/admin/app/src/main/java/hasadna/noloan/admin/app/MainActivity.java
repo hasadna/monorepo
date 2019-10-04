@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity
 
   private DrawerLayout drawerLayout;
 
-  private RecyclerView recycler;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -59,8 +57,8 @@ public class MainActivity extends AppCompatActivity
     viewPager.setRotationY(180);
     MainActivityPageAdapter pageAdapter =
             new MainActivityPageAdapter(getSupportFragmentManager());
-    pageAdapter.addFragment(new SpamFragment(),"spam");
     pageAdapter.addFragment(new SuggetionsFragment(),"suggestions");
+    pageAdapter.addFragment(new SpamFragment(),"spam");
     viewPager.setAdapter(pageAdapter);
     TabLayout tabLayout = findViewById(R.id.TabLayout);
     tabLayout.setupWithViewPager(viewPager);

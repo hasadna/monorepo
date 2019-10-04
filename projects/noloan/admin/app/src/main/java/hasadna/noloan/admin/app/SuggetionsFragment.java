@@ -24,9 +24,9 @@ public class SuggetionsFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.spam_fregment, container, false);
+    ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.suggestion_fregment, container, false);
 
-    RecyclerView recyclerView = rootView.findViewById(R.id.spam_recycler);
+    RecyclerView recyclerView = rootView.findViewById(R.id.suggetion_recycler);
     recyclerView.setRotationY(180);
 
     recyclerView.setAdapter(recyclerAdapter);
