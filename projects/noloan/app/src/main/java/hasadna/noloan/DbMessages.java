@@ -61,6 +61,7 @@ public class DbMessages {
 
     if (spamListener != null) spamListener.messageRemoved(index);
   }
+
   public void addSuggestion(SmsMessage suggestedSpam) {
     suggestions.add(suggestedSpam);
 

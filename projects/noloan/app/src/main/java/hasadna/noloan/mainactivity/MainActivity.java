@@ -85,17 +85,9 @@ public class MainActivity extends AppCompatActivity
     // Create a list of the intersection between the two lists, messages and spam
     // Based on https://www.baeldung.com/java-lists-intersection
     List<SmsMessage> spamAndInbox =
-        inbox
-            .stream()
-            .distinct()
-            .filter(spams::contains)
-            .collect(Collectors.toList());
+        inbox.stream().distinct().filter(spams::contains).collect(Collectors.toList());
     List<SmsMessage> suggestionsAndInbox =
-        inbox
-            .stream()
-            .distinct()
-            .filter(suggestions::contains)
-            .collect(Collectors.toList());
+        inbox.stream().distinct().filter(suggestions::contains).collect(Collectors.toList());
 
     // Status title
     statusTitle = findViewById(R.id.textView_numberOfMessages);
@@ -178,9 +170,7 @@ public class MainActivity extends AppCompatActivity
 
     // Tab's titles
     tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inbox.size()));
-    tabLayout
-        .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, suggestions.size()));
+    tabLayout.getTabAt(1).setText(getString(R.string.spamFragment_title, suggestions.size()));
   }
 
   private void openAbout() {
