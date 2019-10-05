@@ -1,12 +1,16 @@
 // initialize Audio context on page load.
 let AudioContext = window.webkitAudioContext || window.AudioContext;
 let audioContext = new AudioContext();
+let source = null;
+// A variable which holds the current table cell under the touch point.
+let currentCellUnderTouchPoint;
 
 function processData() {
     let input = document.getElementById("textInput").value;
     let lines = input.split("\n");
     let table = document.createElement("table");
     table.style.width = "100%";
+    table.style.height = "70%";
     table.setAttribute("border", "1");
     let line;
     for (line of lines) {
@@ -20,23 +24,34 @@ function processData() {
         document.getElementById("tableContainer").removeChild(oldTable);
     }
     document.getElementById("tableContainer").appendChild(table);
-    addOnClickSoundToTable();
+    addOnClickAndTouchSoundToTable();
 }
 
 function fillRow(values, currentTr) {
     let myValue;
     for (myValue of values) {
-        let td = document.createElement("td");
+        let td = document.createElement("TD");
         td.appendChild(document.createTextNode(myValue));
         currentTr.appendChild(td);
     }
 }
 
-function addOnClickSoundToTable() {
+function addOnClickAndTouchSoundToTable() {
     let element;
     for (element of document.getElementsByTagName("td")) {
-        element.addEventListener("click", startSoundPlayback);
+        element.addEventListener("click", startSoundPlaybackOnClick);
+        element.addEventListener("touchstart", startSoundPlaybackOnClick);
+        element.addEventListener("touchmove", onCellChange);
+        element.addEventListener("touchleave", stopSoundPlayback);
+        element.addEventListener("touchcancel", stopSoundPlayback);
     }
+}
+
+function startSoundPlaybackOnClick(event) {
+    currentCellUnderTouchPoint = event.currentTarget;
+    let valueCalledOn = event.currentTarget.firstChild.data;
+    event.preventDefault();
+    startSoundPlayback();
 }
 
 function startSoundPlayback() {
@@ -54,19 +69,43 @@ function startSoundPlayback() {
 }
 
 function playSoundFromData(data) {
-    let source = audioContext.createBufferSource();
+    source = audioContext.createBufferSource();
     audioContext.decodeAudioData(data, function (buffer) {
         source.buffer = buffer;
         source.connect(audioContext.destination);
-        playSoundFromBufferSource(source);
+        playSoundFromBufferSource();
     });
 }
 
-function playSoundFromBufferSource(source) {
+function playSoundFromBufferSource() {
     source.start(audioContext.currentTime);
 }
 
-// Currently, this function is not used, we may need it in the future though.
-function stopSoundPlayback(source) {
+function stopSoundPlayback(event) {
+    event.preventDefault();
     source.stop(audioContext.currentTime);
+}
+
+function onCellChange(event) {
+    try {
+        let changedTouch = event.changedTouches[0];
+        let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+        //document.getElementById("log").innerHTML += "touch moved" + "<br>";
+        if (elementUnderTouch == currentCellUnderTouchPoint) {
+            //document.getElementById("log").innerHTML += "still in the same cell" + "<br>";
+            return;
+        }
+        if (elementUnderTouch == null || elementUnderTouch.tagName != "TD") {
+            //document.getElementById("log").innerHTML += "out of a table cell" + "<br>";
+            return;
+        }
+        currentCellUnderTouchPoint = elementUnderTouch;
+        stopSoundPlayback(event);
+        //document.getElementById("log").innerHTML += "stopped sound" + "<br>";
+        startSoundPlayback();
+        //document.getElementById("log").innerHTML += "started sound" + "<br>";
+        event.stopPropagation();
+    } catch (e) {
+        document.getElementById("log").innerHTML += e + "<br>";
+    }
 }
