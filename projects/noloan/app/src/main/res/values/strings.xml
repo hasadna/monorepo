@@ -1,12 +1,14 @@
 <resources>
-    <string name="app_name">לא רוצה הלוואה</string>
 
+    // MainActivity
+    <string name="app_name">לא רוצה הלוואה</string>
+    <string name="output_folder_name">lawsuits</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="toolbar_title_mainActivity_text">בדיקת הודעות</string>
     <string name="toolbar_title_lawsuitForm_text">פרטי התביעה</string>
-    <string name="toolbar_title_lawsuitSummary_text">הגשת <ה></ה>תביעה</string>
+    <string name="toolbar_title_lawsuitSummary_text">הגשת תביעה</string>
 
     <string name="title_about">אודות</string>
     <string name="title_summary">סיכום סטטוס</string>
@@ -15,8 +17,15 @@
     <string name="list_item_date">ב: %1$d ב%2$s %3$d</string>
     <string name="list_item_body">גוף ההודעה:\n\"%1$s\"</string>
     <string name="about_information">האפליקציה מוצאת הודעות ספאם.</string>
-    <string name="list_item_button_text">יצירת כתב תביעה</string>
-    <string name="output_folder_name">lawsuits</string>
+    <string name="list_item_button_createLawsuit_text">יצירת כתב תביעה</string>
+    <string name="list_item_button_addSpam_text">הוספה למאגר</string>
+    <string name="list_item_button_removeSpam_text">ביטול ספאם</string>
+
+    <string name="list_item_textView_spam_counter">%1$s סימנו כ-spam</string>
+
+    // MainActivity Fragments
+    <string name="inboxFragment_title">כל ההודעות (%1$d)</string>
+    <string name="spamFragment_title">ספאם (%1$d)</string>
 
     // Lawsuit - Form fragment
     <string name="formFragment_title_text">פרטי התביעה</string>
@@ -43,22 +52,15 @@
     <string name="summaryFragment_toolbar_title_text">הגשת תביעה</string>
     <string name="summaryFragment_fileParagraph_title_text">קובץ התביעה נוצר בהצלחה</string>
     <string name="summaryFragment_fileParagraph_viewButton_text">לצפיה בקובץ</string>
-
     <string name="summaryFragment_alertDialog_viewTitle">צפייה בכתב התביעה</string>
     <string name="summaryFragment_alertDialog_shareTitle">שיתוף כתב תביעה</string>
-
     <string name="summaryFragment_claimOnline_title_text">הגשה מקוונת</string>
     <string name="summaryFragment_claimOnline_onlineExplanation_text">הגשה מקוונת מתבצעת דרך אתר הרשות השופטת \"נט המשפט\" וללא עלות נוספת למעט האגרה המשולמת בגין הגשת תביעה קטנה.</string>
     <string name="summaryFragment_claimOnline_authExplanation_text">יש להזדהות בעזרת 2 מבין שלושת אמצעי הזיהוי הבאים: תעודת זהות/דרכון ישראלי/כרטיס אשראי.</string>
     <string name="summaryFragment_claimOnline_paymentExplanation_text">אגרה: 50 ש״ח עבור תביעה של עד 5,000 ש״ח</string>
     <string name="summaryFragment_claimOnline_button_toWebSite_text">כניסה</string>
-
     <string name="summaryFragment_claimFaxAddress_title_text">הגשה בדואר / בפקס</string>
     <string name="summaryFragment_button_chooseCourt_text">בחירת בית משפט</string>
-
-    // Lawsuit - Claim fragment
-    <string name="claimFragment_claimOnline_description_text">הגשה מקוונת מתבצעת דרך אתר הרשות השופטת \"נט המשפט\" וללא עלות נוספת למעט האגרה המשולמת בגין הגשת תביעה קטנה.</string>
-    <string name="claimFragment_claimOnline_button_toWebSite_text">כניסה</string>
 
 </resources>
 

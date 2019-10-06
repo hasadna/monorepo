@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import hasadna.noloan.firestore.FirestoreClient;
+import hasadna.noloan.mainactivity.MainActivity;
 import noloan.R;
 
 // Permission request Based on
@@ -86,17 +87,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions and the spam
+  // Main Task to get the permissions, spam and suggestions messages from the DB
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam = new FirestoreClient().StartListeningSpam().getTask();
+      Task spam =
+          new FirestoreClient()
+              .StartListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH)
+              .getTask();
+      Task suggestions =
+          new FirestoreClient()
+              .StartListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION)
+              .getTask();
+
       Task<Boolean> permissions = permissionTask.getTask();
       try {
 
         Tasks.await(permissions);
         Tasks.await(spam);
+        Tasks.await(suggestions);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }
