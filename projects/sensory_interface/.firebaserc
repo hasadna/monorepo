@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "sensory-interface-dev"
+    "default": "sensory-interface-dev",
+    "production": "sensory-interface-prod"
   }
 }
