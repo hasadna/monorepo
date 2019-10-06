@@ -72,9 +72,6 @@ public class FirestoreClient {
                 case ADDED:
                   messagesHolder.addSpam(sms);
                   break;
-                case MODIFIED:
-                  messagesHolder.spamModified(sms);
-                  break;
                 case REMOVED:
                   messagesHolder.spamRemove(sms);
                   break;
@@ -85,9 +82,6 @@ public class FirestoreClient {
               switch (documentChange.getType()) {
                 case ADDED:
                   messagesHolder.addSuggestion(sms);
-                  break;
-                case MODIFIED:
-                  messagesHolder.suggestionsModified(sms);
                   break;
                 case REMOVED:
                   messagesHolder.suggestionRemove(sms);

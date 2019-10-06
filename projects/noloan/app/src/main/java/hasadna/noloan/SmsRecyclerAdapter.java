@@ -60,7 +60,7 @@ public class SmsRecyclerAdapter
 
     TextView from, content, receivedAt;
     Button buttonCreateSmsLawsuit;
-    Button buttonAddSpam;
+    Button buttonSuggestSpam;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -68,7 +68,7 @@ public class SmsRecyclerAdapter
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
       buttonCreateSmsLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
-      buttonAddSpam = itemView.findViewById(R.id.Button_removeSuggestion);
+      buttonSuggestSpam = itemView.findViewById(R.id.Button_removeSuggestion);
     }
 
     public void bind(SmsMessage sms) {
@@ -93,8 +93,7 @@ public class SmsRecyclerAdapter
         Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
       }
 
-      // Click on a message, from there (with message's details) move to the
-      // lawsuitPdfActivity
+      // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
       buttonCreateSmsLawsuit.setOnClickListener(
@@ -106,7 +105,7 @@ public class SmsRecyclerAdapter
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonAddSpam.setOnClickListener(
+      buttonSuggestSpam.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
             client.writeMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);

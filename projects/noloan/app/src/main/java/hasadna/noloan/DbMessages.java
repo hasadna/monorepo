@@ -5,7 +5,7 @@ import java.util.List;
 
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-// Simple singleton to hold the suggestions list
+// Simple singleton to hold the spam and suggestions lists
 public class DbMessages {
   private static DbMessages instance;
   private List<SmsMessage> spam;
@@ -47,19 +47,13 @@ public class DbMessages {
     }
   }
 
-  public void spamModified(SmsMessage spam) {
-    int index = this.spam.indexOf(spam);
-    this.spam.set(index, spam);
-
-    if (spamListener != null) spamListener.messageModified(index);
-  }
-
   public void spamRemove(SmsMessage spam) {
     int index = this.spam.indexOf(spam);
-
     this.spam.remove(spam);
 
-    if (spamListener != null) spamListener.messageRemoved(index);
+    if (spamListener != null) {
+      spamListener.messageRemoved(index);
+    }
   }
 
   public void addSuggestion(SmsMessage suggestedSpam) {
@@ -70,19 +64,13 @@ public class DbMessages {
     }
   }
 
-  public void suggestionsModified(SmsMessage suggestedSpam) {
-    int index = suggestions.indexOf(suggestedSpam);
-    suggestions.set(index, suggestedSpam);
-
-    if (suggestionsListener != null) suggestionsListener.messageModified(index);
-  }
-
   public void suggestionRemove(SmsMessage suggestedSpam) {
     int index = suggestions.indexOf(suggestedSpam);
-
     suggestions.remove(suggestedSpam);
 
-    if (suggestionsListener != null) suggestionsListener.messageRemoved(index);
+    if (suggestionsListener != null) {
+      suggestionsListener.messageRemoved(index);
+    }
   }
 
   public void setSpamListener(MessagesListener spamListener) {
@@ -94,11 +82,10 @@ public class DbMessages {
   }
 
   public interface MessagesListener {
+
     void messageAdded();
 
     void messageRemoved(int index);
-
-    void messageModified(int index);
   }
 }
 

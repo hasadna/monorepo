@@ -36,11 +36,6 @@ public class SuggestionRecyclerAdapter
           public void messageRemoved(int index) {
             handler.post(() -> notifyItemRemoved(index));
           }
-
-          @Override
-          public void messageModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
-          }
         });
   }
 
@@ -81,8 +76,7 @@ public class SuggestionRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
-      // Click on a message, from there (with message's details) move to the
-      // lawsuitPdfActivity
+      // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
 
