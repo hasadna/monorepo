@@ -11,6 +11,3 @@ message Court {
     string fax= 3;
     string website=4;
 }
-
-
-
