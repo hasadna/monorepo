@@ -2,11 +2,13 @@
 let AudioContext = window.webkitAudioContext || window.AudioContext;
 let audioContext = new AudioContext();
 let oscillator = null;
-//let source = null;
+// This variable is not used currently.
+let source = null;
 // A variable which holds the current table cell under the touch point.
-let currentCellUnderTouchPoint;
+let currentCellUnderTouchPoint = null;
 // A variable for the timeout.
 let timeOut = null;
+
 function processData() {
     let input = document.getElementById("textInput").value;
     let lines = input.split("\n");
@@ -72,7 +74,10 @@ function startSoundPlayback(valueCalledOn) {
     timeOut = setTimeout(() => {
         stopSoundPlayback(event);
     }, 1000);
-    /*
+}
+
+// This function is not used currently.
+function playAudioFile() {
     let request = new XMLHttpRequest();
     request.open("get", "assets/beep_digital.mp3", true);
     request.responseType = "arraybuffer";
@@ -81,10 +86,9 @@ function startSoundPlayback(valueCalledOn) {
         playSoundFromData(data);
     };
     request.send();
-    */
 }
 
-/*
+// This function is not used currently.
 function playSoundFromData(data) {
     source = audioContext.createBufferSource();
     audioContext.decodeAudioData(data, function (buffer) {
@@ -94,10 +98,10 @@ function playSoundFromData(data) {
     });
 }
 
+// This function is not used currently.
 function playSoundFromBufferSource() {
     source.start(audioContext.currentTime);
 }
-*/
 
 function stopSoundPlayback(event) {
     try {
@@ -114,26 +118,17 @@ function stopSoundPlayback(event) {
 }
 
 function onCellChange(event) {
-    try {
-        let changedTouch = event.changedTouches[0];
-        let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-        //document.getElementById("log").innerHTML += "touch moved" + "<br>";
-        if (elementUnderTouch == currentCellUnderTouchPoint) {
-            //document.getElementById("log").innerHTML += "still in the same cell" + "<br>";
-            return;
-        }
-        if (elementUnderTouch == null || elementUnderTouch.tagName != "TD") {
-            //document.getElementById("log").innerHTML += "out of a table cell" + "<br>";
-            return;
-        }
-        currentCellUnderTouchPoint = elementUnderTouch;
-        stopSoundPlayback(event);
-        //document.getElementById("log").innerHTML += "stopped sound" + "<br>";
-        let valueCalledOn = elementUnderTouch.firstChild.data;
-        startSoundPlayback(valueCalledOn);
-        //document.getElementById("log").innerHTML += "started sound" + "<br>";
-        event.stopPropagation();
-    } catch (e) {
-        document.getElementById("log").innerHTML += e + "<br>";
+    let changedTouch = event.changedTouches[0];
+    let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+    if (elementUnderTouch == currentCellUnderTouchPoint) {
+        return;
     }
+    if (elementUnderTouch == null || elementUnderTouch.tagName != "TD") {
+        return;
+    }
+    currentCellUnderTouchPoint = elementUnderTouch;
+    stopSoundPlayback(event);
+    let valueCalledOn = elementUnderTouch.firstChild.data;
+    startSoundPlayback(valueCalledOn);
+    event.stopPropagation();
 }
