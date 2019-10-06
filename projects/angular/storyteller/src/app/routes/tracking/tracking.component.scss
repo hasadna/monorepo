@@ -2,9 +2,17 @@
   >.tracking {
     padding: 0 20px;
     >.title {
+      margin-bottom: 13px;
       span {
         font-weight: 600;
       }
+    }
+    >.range {
+      margin-bottom: 50px;
+    }
+    >.story-select {
+      max-width: 625px;
+      margin-bottom: 45px;
     }
     >.total-time {
       font-size: 20px;
@@ -12,12 +20,31 @@
       color: #00b3b1;
       margin-bottom: 21px;
     }
-  }
-}
-::ng-deep {
-  .mat-user-stories {
-    .mat-form-field-infix {
-      width: 300px;
+    >.tracks {
+      padding-left: 15px;
+      >.row {
+        display: flex;
+        font-size: 17px;
+        color: #4e4e4e;
+        >.start-date {
+          width: 70px;
+        }
+        >.start-time {
+          width: 55px;
+        }
+        >.dash {
+          width: 20px;
+        }
+        >.end-time {
+          width: 55px;
+        }
+        >.end-date {
+          width: 100px;
+        }
+        >.total-time {
+          font-weight: 600;
+        }
+      }
     }
   }
 }

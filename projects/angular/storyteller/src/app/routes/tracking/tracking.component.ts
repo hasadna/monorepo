@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 import { Story, Track } from '@/core/proto';
 import {
@@ -9,6 +9,13 @@ import {
   FirebaseService,
   Timer,
 } from '@/core/services';
+
+interface TrackRow {
+  startMs: number;
+  endMs: number;
+  totalTime: string;
+  isDayCrossed: boolean; // If date when track is started doesn't equal date when track is ended
+}
 
 // If two tracks have pause between themselves less that the interval, they are shown as one.
 const MAX_PAUSE_INTERVAL: number = 5 * 60 * 1000; // 5 min
@@ -20,10 +27,10 @@ const MAX_PAUSE_INTERVAL: number = 5 * 60 * 1000; // 5 min
 })
 export class TrackingComponent implements OnDestroy {
   selectedStory: Story;
-  storySelect = new FormControl();
-  tracks: string[] = [];
+  trackRows: TrackRow[] = [];
   storyDurationTime: string;
   trackSub = new Subscription();
+  isTrackingLoading: boolean = false;
 
   constructor(
     public loadingService: LoadingService,
@@ -31,44 +38,53 @@ export class TrackingComponent implements OnDestroy {
     private firebaseService: FirebaseService,
   ) {
     this.loadingService.isLoading = false;
-    this.storySelect.valueChanges.subscribe((story: Story) => {
-      this.trackSub = this.firebaseService.getTracks(story.getId()).subscribe(tracks => {
-        tracks.sort((a, b) => {
-          return Math.sign(a.getEndedMs() - b.getEndedMs());
-        });
+  }
 
-        // Tracks are saved each minute automatically.
-        // To not show 9000 short tracks, combine the several tracks to one.
-        this.tracks = [];
-        let startMs;
-        let storyDurationMs: number = 0;
-        tracks.forEach((track, i) => {
-          const trackDurationMs: number = track.getEndedMs() - track.getStartedMs();
-          storyDurationMs += trackDurationMs;
+  storySelected(story: Story): void {
+    this.isTrackingLoading = true;
+    this.trackSub = this.firebaseService.getTracks(story.getId()).subscribe(tracks => {
+      tracks.sort((a, b) => a.getEndedMs() - b.getEndedMs());
 
-          const nextTrack: Track = tracks[i + 1];
-          if (!startMs) {
-            startMs = track.getStartedMs();
-          }
-          if (nextTrack && nextTrack.getStartedMs() - track.getEndedMs() < MAX_PAUSE_INTERVAL) {
-            return;
-          }
-          this.addTrack(startMs, track.getEndedMs());
-          startMs = undefined;
-        });
-        this.storyDurationTime = Timer.timestampToTime(storyDurationMs);
-        this.tracks.reverse();
+      // Tracks are saved each minute automatically.
+      // To not show 9000 short tracks, combine the several tracks to one.
+      this.trackRows = [];
+      let startMs;
+      let storyDurationMs: number = 0;
+      tracks.forEach((track, i) => {
+        const trackDurationMs: number = track.getEndedMs() - track.getStartedMs();
+        storyDurationMs += trackDurationMs;
+
+        const nextTrack: Track = tracks[i + 1];
+        if (!startMs) {
+          startMs = track.getStartedMs();
+        }
+        if (nextTrack && nextTrack.getStartedMs() - track.getEndedMs() < MAX_PAUSE_INTERVAL) {
+          return;
+        }
+        this.addTrack(startMs, track.getEndedMs());
+        startMs = undefined;
       });
+      this.storyDurationTime = Timer.timestampToTime(storyDurationMs, false);
+      this.trackRows.reverse();
+      this.isTrackingLoading = false;
     });
   }
 
   addTrack(startMs: number, endMs: number): void {
-    let trackString: string = '';
-    const startDate = new Date(startMs);
-    trackString += startDate.getDate() + '.' + startDate.getMonth();
-    trackString += ', ' + Timer.timestampToTime(startMs, false);
-    trackString += ' - ' + Timer.timestampToTime(endMs, false);
-    this.tracks.push(trackString);
+    const datePipe = new DatePipe('en-US');
+    this.trackRows.push({
+      startMs: startMs,
+      endMs: endMs,
+      totalTime: Timer.timestampToTime(endMs - startMs, false),
+      isDayCrossed: datePipe.transform(startMs, 'MMM d') !== datePipe.transform(endMs, 'MMM d'),
+    });
+  }
+
+  createNewStory(story: Story): void {
+    this.isTrackingLoading = true;
+    this.firebaseService.createStory(story).subscribe(() => {
+      this.storySelected(story);
+    });
   }
 
   ngOnDestroy() {

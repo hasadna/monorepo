@@ -56,7 +56,7 @@ export class Timer {
 }
 
 @Injectable()
-export class TreackerService {
+export class TrackerService {
   isTracking: boolean = false;
   isStoryTracksLoading: boolean = false;
   isStoriesTracksLoading: boolean = true;

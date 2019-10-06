@@ -1,0 +1,20 @@
+@import 'styles/variables';
+
+.component {
+  background: white;
+  padding: 12px;
+  border-radius: 11px;
+  border: solid 1px #979797;
+  input {
+    font-size: 16px;
+    color: #4e4e4e;
+    font-family: $default-font;
+    padding: 0;
+    outline: none;
+    border: none;
+    width: 100%;
+    &::placeholder {
+      color: #b8b8b8;
+    }
+  }
+}

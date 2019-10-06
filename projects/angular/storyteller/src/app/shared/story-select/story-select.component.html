@@ -1,0 +1,22 @@
+<div class="component">
+  <input
+    type="text"
+    placeholder="Oneliner"
+    matInput
+    [formControl]="storySelect"
+    [matAutocomplete]="auto"
+    spellcheck=false
+  >
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option
+      [value]="storySelect.value"
+      (click)="createNewStory(storySelect.value)"
+      *ngIf="storySelect.value && !onelinerList.includes(storySelect.value)"
+    >
+      <div class="new-story">Create new story "{{ storySelect.value }}"</div>
+    </mat-option>
+    <mat-option *ngFor="let oneliner of onelinerList" [value]="oneliner">
+      {{ oneliner }}
+    </mat-option>
+  </mat-autocomplete>
+</div>
