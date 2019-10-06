@@ -35,11 +35,6 @@ public class SpamRecyclerAdapter
           public void messageRemoved(int index) {
             handler.post(() -> notifyItemRemoved(index));
           }
-
-          @Override
-          public void messageModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
-          }
         });
   }
 
