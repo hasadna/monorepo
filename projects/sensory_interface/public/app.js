@@ -1,10 +1,12 @@
 // initialize Audio context on page load.
 let AudioContext = window.webkitAudioContext || window.AudioContext;
 let audioContext = new AudioContext();
-let source = null;
+let oscillator = null;
+//let source = null;
 // A variable which holds the current table cell under the touch point.
 let currentCellUnderTouchPoint;
-
+// A variable for the timeout.
+let timeOut = null;
 function processData() {
     let input = document.getElementById("textInput").value;
     let lines = input.split("\n");
@@ -49,15 +51,28 @@ function addOnClickAndTouchSoundToTable() {
 
 function startSoundPlaybackOnClick(event) {
     currentCellUnderTouchPoint = event.currentTarget;
-    let valueCalledOn = event.currentTarget.firstChild.data;
     event.preventDefault();
-    startSoundPlayback();
+    stopSoundPlayback(event);
+    let valueCalledOn = event.currentTarget.firstChild.data;
+    startSoundPlayback(valueCalledOn);
 }
 
-function startSoundPlayback() {
+function startSoundPlayback(valueCalledOn) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
+    oscillator = audioContext.createOscillator();
+    const MAX_FREQUENCY = 1000;
+    const MIN_FReQUENCY = 100;
+    const MAX_VALUE = 10;
+    let frequency = MIN_FReQUENCY + valueCalledOn * (MAX_FREQUENCY - MIN_FReQUENCY) / MAX_VALUE;
+    oscillator.frequency.value = frequency;
+    oscillator.connect(audioContext.destination);
+    oscillator.start(audioContext.currentTime);
+    timeOut = setTimeout(() => {
+        stopSoundPlayback(event);
+    }, 1000);
+    /*
     let request = new XMLHttpRequest();
     request.open("get", "assets/beep_digital.mp3", true);
     request.responseType = "arraybuffer";
@@ -66,8 +81,10 @@ function startSoundPlayback() {
         playSoundFromData(data);
     };
     request.send();
+    */
 }
 
+/*
 function playSoundFromData(data) {
     source = audioContext.createBufferSource();
     audioContext.decodeAudioData(data, function (buffer) {
@@ -80,10 +97,20 @@ function playSoundFromData(data) {
 function playSoundFromBufferSource() {
     source.start(audioContext.currentTime);
 }
+*/
 
 function stopSoundPlayback(event) {
-    event.preventDefault();
-    source.stop(audioContext.currentTime);
+    try {
+        if (oscillator != null) {
+            oscillator.stop(audioContext.currentTime);
+            event.preventDefault();
+        }
+        if (timeOut != null) {
+            window.clearTimeout(timeOut);
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 function onCellChange(event) {
@@ -102,7 +129,8 @@ function onCellChange(event) {
         currentCellUnderTouchPoint = elementUnderTouch;
         stopSoundPlayback(event);
         //document.getElementById("log").innerHTML += "stopped sound" + "<br>";
-        startSoundPlayback();
+        let valueCalledOn = elementUnderTouch.firstChild.data;
+        startSoundPlayback(valueCalledOn);
         //document.getElementById("log").innerHTML += "started sound" + "<br>";
         event.stopPropagation();
     } catch (e) {
