@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -58,13 +60,15 @@ public class SmsRecyclerAdapter
 
     TextView from, content, receivedAt;
     Button buttonCreateSmsLawsuit;
+    Button buttonSuggestSpam;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
       from = itemView.findViewById(R.id.received_from);
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
-      buttonCreateSmsLawsuit = itemView.findViewById(R.id.button_createLawsuit);
+      buttonCreateSmsLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
+      buttonSuggestSpam = itemView.findViewById(R.id.Button_removeSuggestion);
     }
 
     public void bind(SmsMessage sms) {
@@ -89,7 +93,7 @@ public class SmsRecyclerAdapter
         Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
       }
 
-      // Click on a spam message, from there (with message's details) move to the lawsuitPdfActivity
+      // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
       buttonCreateSmsLawsuit.setOnClickListener(
@@ -99,6 +103,13 @@ public class SmsRecyclerAdapter
             intentToLawsuitForm.putExtra("from", sms.getSender());
             intentToLawsuitForm.putExtra("body", sms.getBody());
             view.getContext().startActivity(intentToLawsuitForm);
+          });
+
+      buttonSuggestSpam.setOnClickListener(
+          view -> {
+            FirestoreClient client = new FirestoreClient();
+            client.writeMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
           });
     }
   }

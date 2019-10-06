@@ -9,6 +9,8 @@ message SmsMessage {
     string sender = 1;
     string body = 2;
     string receivedAt = 3;
+    string id = 4;
+    int32  counter = 5;
 }
 
 message SpamList {

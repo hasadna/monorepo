@@ -12,7 +12,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.SpamHolder;
+import hasadna.noloan.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -31,12 +31,22 @@ public class FirestoreClient {
     client.collection(path).add(element);
   }
 
+  public void deleteMessage(SmsMessage sms, String path) {
+    client
+        .collection(path)
+        .document(sms.getId())
+        .delete()
+        .addOnSuccessListener(aVoid -> {})
+        .addOnFailureListener(e -> {});
+  }
+
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningSpam() {
+  public TaskCompletionSource StartListeningToMessages(String path) {
+
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
 
-    CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
+    CollectionReference collectionReference = client.collection(path);
     collectionReference.addSnapshotListener(
         executor,
         (queryDocumentSnapshots, e) -> {
@@ -44,28 +54,42 @@ public class FirestoreClient {
             return;
           }
 
-          SpamHolder sp = SpamHolder.getInstance();
-          for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+          DbMessages messagesHolder = DbMessages.getInstance();
+          for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
               sms =
                   (SmsMessage)
-                      decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+                      decodeMessage(
+                          documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setId(documentChange.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
-            switch (dc.getType()) {
-              case ADDED:
-                sp.add(sms);
-                break;
-              case MODIFIED:
-                sp.modified(sms);
-                break;
-              case REMOVED:
-                sp.remove(sms);
-                break;
+            // Spam list
+            if (path.equals(SPAM_COLLECTION_PATH)) {
+              switch (documentChange.getType()) {
+                case ADDED:
+                  messagesHolder.addSpam(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.spamRemove(sms);
+                  break;
+              }
+            }
+            // Suggestions list
+            else {
+              switch (documentChange.getType()) {
+                case ADDED:
+                  messagesHolder.addSuggestion(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.suggestionRemove(sms);
+                  break;
+              }
             }
           }
+
           task.trySetResult(true);
         });
     return task;
