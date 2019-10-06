@@ -4,9 +4,7 @@ let audioContext = new AudioContext();
 let oscillator = null;
 // This variable is not used currently.
 let source = null;
-// A variable which holds the current table cell under the touch point.
 let currentCellUnderTouchPoint = null;
-// A variable for the timeout.
 let timeOut = null;
 
 function processData() {
@@ -34,7 +32,7 @@ function processData() {
 function fillRow(values, currentTr) {
     let myValue;
     for (myValue of values) {
-        let td = document.createElement("TD");
+        let td = document.createElement("td");
         td.appendChild(document.createTextNode(myValue));
         currentTr.appendChild(td);
     }
@@ -55,19 +53,19 @@ function startSoundPlaybackOnClick(event) {
     currentCellUnderTouchPoint = event.currentTarget;
     event.preventDefault();
     stopSoundPlayback(event);
-    let valueCalledOn = event.currentTarget.firstChild.data;
-    startSoundPlayback(valueCalledOn);
+    let selectedValue = event.currentTarget.firstChild.data;
+    startSoundPlayback(selectedValue);
 }
 
-function startSoundPlayback(valueCalledOn) {
+function startSoundPlayback(selectedValue) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
     oscillator = audioContext.createOscillator();
     const MAX_FREQUENCY = 1000;
-    const MIN_FReQUENCY = 100;
+    const MIN_FREQUENCY = 100;
     const MAX_VALUE = 10;
-    let frequency = MIN_FReQUENCY + valueCalledOn * (MAX_FREQUENCY - MIN_FReQUENCY) / MAX_VALUE;
+    let frequency = MIN_FREQUENCY + selectedValue * (MAX_FREQUENCY - MIN_FREQUENCY) / MAX_VALUE;
     oscillator.frequency.value = frequency;
     oscillator.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
@@ -118,6 +116,7 @@ function stopSoundPlayback(event) {
 }
 
 function onCellChange(event) {
+    // Get the first changed touch point. We surely have one because we are listening to touchmove event, and surely a touch point have changed since the last event.
     let changedTouch = event.changedTouches[0];
     let elementUnderTouch = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
     if (elementUnderTouch == currentCellUnderTouchPoint) {
@@ -128,7 +127,7 @@ function onCellChange(event) {
     }
     currentCellUnderTouchPoint = elementUnderTouch;
     stopSoundPlayback(event);
-    let valueCalledOn = elementUnderTouch.firstChild.data;
-    startSoundPlayback(valueCalledOn);
+    let selectedValue = elementUnderTouch.firstChild.data;
+    startSoundPlayback(selectedValue);
     event.stopPropagation();
 }
