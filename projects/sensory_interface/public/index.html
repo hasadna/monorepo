@@ -7,8 +7,17 @@
 </head>
 
 <body>
+    <h2>Sensory interface</h2>
+    Inter data:<br>
     <textarea id="textInput">1	2	3
 4	5	6</textarea>
+    <br>
+    Minimum value:<br>
+    <input type="range" name="Minimum value" id="minValue" min="-100" max="100" value="1">
+    <br>
+    Maximum value:<br>
+    <input type="range" name="Maximum value" id="maxValue" min="-100" max="100" value="6">
+    <br><br>
     <button onclick="processData()">process </button>
     <br>
     <div id="tableContainer"></div>
