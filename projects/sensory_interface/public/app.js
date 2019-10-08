@@ -66,7 +66,7 @@ function startSoundPlayback(selectedValue) {
     const MIN_FREQUENCY = 100;
     let minValue = document.getElementById("minValue").value;
     let maxValue = document.getElementById("maxValue").value;
-    let frequency = MIN_FREQUENCY + (selectedValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY) / (maxValue - minValue);
+    let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
     oscillator.frequency.value = frequency;
     oscillator.connect(audioContext.destination);
     oscillator.start(audioContext.currentTime);
