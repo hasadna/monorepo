@@ -157,6 +157,7 @@ function onRadioChange(radio) {
     } else {
         minValuePicker.disabled = false;
         maxValuePicker.disabled = false;
+        document.getElementById("updateButton").disabled = false;
     }
 }
 
