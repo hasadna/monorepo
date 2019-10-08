@@ -70,9 +70,9 @@ function startSoundPlayback(selectedValue) {
     const MIN_FREQUENCY = 100;
     let minValue = document.getElementById("minValue").value;
     let maxValue = document.getElementById("maxValue").value;
-    maxValue = parseInt(maxValue);
-    minValue = parseInt(minValue);
-    selectedValue = parseInt(selectedValue);
+    maxValue = parseFloat(maxValue);
+    minValue = parseFloat(minValue);
+    selectedValue = parseFloat(selectedValue);
     if (selectedValue > maxValue) {
         selectedValue = maxValue;
     }
