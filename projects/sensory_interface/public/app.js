@@ -158,10 +158,10 @@ function onRadioChange(radio) {
         minValuePicker.disabled = false;
         maxValuePicker.disabled = false;
     }
-    findMinAndMaxValues();
 }
 
 function findMinAndMaxValues() {
+    // TODO: Add a method to parse the input data to a array of arrays for example, so it can be used here and in processData().
     let input = document.getElementById("dataInput").value;
     let maxValue = -Infinity;
     let minValue = Infinity;
