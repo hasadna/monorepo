@@ -3,24 +3,60 @@
 <title> Sensory interface </title>
 
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="app.js"></script>
 </head>
 
 <body>
-    <h2>Sensory interface</h2>
-    Inter data:<br>
-    <textarea id="textInput">1	2	3
+    <div class="container-fluid">
+        <h2>Sensory interface</h2>
+
+        <h3>Data</h3>
+        Data in tab-delimited CSV format:<br>
+        <textarea id="textInput">1	2	3
 4	5	6</textarea>
-    <br>
-    Minimum value:<br>
-    <input type="number" name="Minimum value" id="minValue" min="-100" max="100" value="1">
-    <br>
-    Maximum value:<br>
-    <input type="number" name="Maximum value" id="maxValue" min="-100" max="100" value="6">
-    <br><br>
-    <button onclick="processData()">process </button>
-    <br>
-    <div id="tableContainer"></div>
+        <br>
+        <button onclick="processData()">Process</button>
+        <br>
+        <br>
+        <h3>Options</h3>
+
+        Value range:<br>
+        <div class="container-fluid">
+            Values outside the range are truncated. For example, if the range is [1,10], a value of 12 is expressed as
+            10.<br>
+            <input type="radio" name="value_range" value="auto" checked>Auto<br>
+            <input type="radio" name="value_range" value="manual">Manual<br>
+            Min value:
+            <input type="number" name="Minimum value" id="minValue" value="" disabled>
+            <br>
+            Max value:
+            <input type="number" name="Maximum value" id="maxValue" value="" disabled>
+
+            <br>
+        </div>
+        <div style="display: none;" aria-hidden="true">
+            Sounds:
+            <select>
+                <option value="synthetic">Synthetic sound waves</option>
+                <option value="piano">Piano</option>
+                <option value="opera">Opera singer</option>
+                <option value="lalala">Lalala</option>
+                <option value="motorcycle">Motorcycle</option>
+                <option value="laughter">People laughing</option>
+                <option value="farts">Farts</option>
+                <option value="arnold">Arnold</option>
+            </select>
+            <br>
+        </div>
+        <br>
+        <button onclick="processData()">Update</button>
+        <br>
+        <br>
+
+        <div id="tableContainer"></div>
+    </div>
 </body>
 
 </html>
