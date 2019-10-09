@@ -8,7 +8,8 @@ let currentCellUnderTouchPoint = null;
 let timeOut = null;
 
 function processData() {
-    let input = document.getElementById("textInput").value;
+    document.getElementById("updateButton").disabled = false;
+    let input = document.getElementById("dataInput").value;
     let lines = input.split("\n");
     let table = document.createElement("table");
     table.style.width = "100%";
@@ -27,6 +28,9 @@ function processData() {
     }
     document.getElementById("tableContainer").appendChild(table);
     addOnClickAndTouchSoundToTable();
+    if (document.getElementById("autoOption").checked) {
+        findMinAndMaxValues();
+    }
 }
 
 function fillRow(values, currentTr) {
@@ -66,6 +70,15 @@ function startSoundPlayback(selectedValue) {
     const MIN_FREQUENCY = 100;
     let minValue = document.getElementById("minValue").value;
     let maxValue = document.getElementById("maxValue").value;
+    maxValue = parseFloat(maxValue);
+    minValue = parseFloat(minValue);
+    selectedValue = parseFloat(selectedValue);
+    if (selectedValue > maxValue) {
+        selectedValue = maxValue;
+    }
+    if (selectedValue < minValue) {
+        selectedValue = minValue;
+    }
     let frequency = MIN_FREQUENCY + (selectedValue - minValue) / (maxValue - minValue) * (MAX_FREQUENCY - MIN_FREQUENCY);
     oscillator.frequency.value = frequency;
     oscillator.connect(audioContext.destination);
@@ -106,10 +119,12 @@ function stopSoundPlayback(event) {
     try {
         if (oscillator != null) {
             oscillator.stop(audioContext.currentTime);
-            event.preventDefault();
         }
         if (timeOut != null) {
             window.clearTimeout(timeOut);
+        }
+        if (event != undefined) {
+            event.preventDefault();
         }
     } catch (e) {
         console.log(e);
@@ -131,4 +146,40 @@ function onCellChange(event) {
     let selectedValue = elementUnderTouch.firstChild.data;
     startSoundPlayback(selectedValue);
     event.stopPropagation();
+}
+
+function onRadioChange(radio) {
+    let minValuePicker = document.getElementById("minValue");
+    let maxValuePicker = document.getElementById("maxValue");
+    if (radio.value == "auto") {
+        minValuePicker.disabled = true;
+        maxValuePicker.disabled = true;
+    } else {
+        minValuePicker.disabled = false;
+        maxValuePicker.disabled = false;
+        document.getElementById("updateButton").disabled = false;
+    }
+}
+
+function findMinAndMaxValues() {
+    // TODO: Add a method to parse the input data to a array of arrays for example, so it can be used here and in processData().
+    let input = document.getElementById("dataInput").value;
+    let maxValue = -Infinity;
+    let minValue = Infinity;
+    let lines = input.split("\n");
+    let line;
+    for (line of lines) {
+        let values = line.split("\t");
+        let value;
+        for (value of values) {
+            if (value > maxValue) {
+                maxValue = value;
+            }
+            if (value < minValue) {
+                minValue = value;
+            }
+        }
+    }
+    document.getElementById("maxValue").value = maxValue;
+    document.getElementById("minValue").value = minValue;
 }
