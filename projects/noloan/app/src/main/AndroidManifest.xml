@@ -3,7 +3,6 @@
     package="noloan">
 
     <uses-permission android:name="android.permission.READ_SMS" />
-    // For writing lawsuit Pdf
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application

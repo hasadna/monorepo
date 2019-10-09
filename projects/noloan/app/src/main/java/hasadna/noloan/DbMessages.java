@@ -3,16 +3,16 @@ package hasadna.noloan;
 import java.util.ArrayList;
 import java.util.List;
 
+import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-// Simple singleton to hold the spam and suggestions lists
+// Simple singleton to hold the messages from the db
 public class DbMessages {
   private static DbMessages instance;
-  private List<SmsMessage> spam;
-  private List<SmsMessage> suggestions;
+  private List<SmsMessage> messages;
 
-  MessagesListener spamListener;
-  MessagesListener suggestionsListener;
+  FirestoreClient firestoreClient;
+  MessagesListener messagesListener;
 
   public static DbMessages getInstance() {
     if (instance == null) {
@@ -22,70 +22,110 @@ public class DbMessages {
   }
 
   public DbMessages() {
-    spam = new ArrayList<>();
-    suggestions = new ArrayList<>();
+    messages = new ArrayList<>();
+    firestoreClient = new FirestoreClient();
   }
 
-  public void init(List<SmsMessage> spam, List<SmsMessage> suggestions) {
-    this.spam = spam;
-    this.suggestions = suggestions;
+  public void init(List<SmsMessage> messages) {
+    this.messages = messages;
   }
 
-  public List<SmsMessage> getSpam() {
-    return spam;
+  public List<SmsMessage> getMessages() {
+    return messages;
   }
 
-  public List<SmsMessage> getSuggestions() {
-    return suggestions;
-  }
+  // Checks if message had already been suggested. Updates counter / Adds a new suggestion
+  public void suggestMessage(SmsMessage sms){
 
-  public void addSpam(SmsMessage spam) {
-    this.spam.add(spam);
+    // Search if message was already suggested -> Modify counter (+1)
+    SmsMessage message = searchSuggestions(sms.getBody(),sms.getSender());
+    if(message != null){
+      int index  = messages.indexOf(message);
+      SmsMessage newMessage = message.toBuilder().setCounter(message.getCounter()+1).build();
+      firestoreClient.modifyMessage(message,newMessage);
+      modifyMessage(newMessage);
+      if(messagesListener!=null){
+        messagesListener.messageModified(index);
+      }
+    }
 
-    if (spamListener != null) {
-      spamListener.messageAdded();
+    // Add new suggestion
+    else{
+      firestoreClient.writeMessage(sms.toBuilder().setCounter(sms.getCounter()+1).build());
     }
   }
 
-  public void spamRemove(SmsMessage spam) {
-    int index = this.spam.indexOf(spam);
-    this.spam.remove(spam);
+  public void undoSuggestion(SmsMessage sms){
 
-    if (spamListener != null) {
-      spamListener.messageRemoved(index);
+    // If other people suggested this message as well - Modify message with a new counter (-1)
+    if(sms.getCounter()>1){
+      SmsMessage newMessage = sms.toBuilder().setCounter(sms.getCounter()-1).build();
+      firestoreClient.modifyMessage(sms,newMessage);
+      modifyMessage(newMessage);
+      if(messagesListener!=null){
+        messagesListener.messageModified(messages.indexOf(sms));
+      }
+    }
+
+    // In case the user is the only one suggested this spam - Remove suggestion
+    else{
+      removeMessage(sms);
     }
   }
 
-  public void addSuggestion(SmsMessage suggestedSpam) {
-    suggestions.add(suggestedSpam);
+  public SmsMessage searchSuggestions(String body, String sender){
+    SmsMessage sms = null;
+    for (SmsMessage message: messages) {
+      if(message.getBody().contentEquals(body) && message.getSender().contentEquals(sender)){
+        sms = message;
+      }
+    }
 
-    if (suggestionsListener != null) {
-      suggestionsListener.messageAdded();
+    return sms;
+  }
+
+  //region Functions used by db Listeners when list changes
+  public void addMessage(SmsMessage smsMessage) {
+    messages.add(smsMessage);
+    if (messagesListener != null) {
+      messagesListener.messageAdded();
     }
   }
 
-  public void suggestionRemove(SmsMessage suggestedSpam) {
-    int index = suggestions.indexOf(suggestedSpam);
-    suggestions.remove(suggestedSpam);
-
-    if (suggestionsListener != null) {
-      suggestionsListener.messageRemoved(index);
+  public void removeMessage(SmsMessage smsMessage) {
+    int index = messages.indexOf(smsMessage);
+    messages.remove(smsMessage);
+    firestoreClient.deleteMessage(smsMessage);
+    if (messagesListener != null) {
+      messagesListener.messageRemoved(index);
     }
   }
 
-  public void setSpamListener(MessagesListener spamListener) {
-    this.spamListener = spamListener;
-  }
+  public void modifyMessage(SmsMessage newMessage) {
+    // Find the index of the message that will be modified (By its ID)
+    int index=0;
+    for(SmsMessage message: messages){
+      if(message.getId().contentEquals(newMessage.getId())){
+        index = messages.indexOf(message);
+        }
+    }
 
-  public void setSuggestionsListener(MessagesListener suggestionsListener) {
-    this.suggestionsListener = suggestionsListener;
+    // Modify message & notify Listeners
+    messages.set(index, newMessage);
+    if (messagesListener != null) messagesListener.messageModified(index);
+  }
+  //endregion
+
+  public void setMessagesListener(MessagesListener messagesListener) {
+    this.messagesListener = messagesListener;
   }
 
   public interface MessagesListener {
 
     void messageAdded();
 
+    void messageModified(int index);
+
     void messageRemoved(int index);
   }
 }
-
