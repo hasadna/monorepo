@@ -97,10 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
 
-      Task messages =
-          new FirestoreClient()
-              .StartListeningToMessages()
-              .getTask();
+      Task messages = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {

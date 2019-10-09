@@ -35,48 +35,48 @@ public class DbMessages {
   }
 
   // Checks if message had already been suggested. Updates counter / Adds a new suggestion
-  public void suggestMessage(SmsMessage sms){
+  public void suggestMessage(SmsMessage sms) {
 
     // Search if message was already suggested -> Modify counter (+1)
-    SmsMessage message = searchSuggestions(sms.getBody(),sms.getSender());
-    if(message != null){
-      int index  = messages.indexOf(message);
-      SmsMessage newMessage = message.toBuilder().setCounter(message.getCounter()+1).build();
-      firestoreClient.modifyMessage(message,newMessage);
+    SmsMessage message = searchSuggestions(sms.getBody(), sms.getSender());
+    if (message != null) {
+      int index = messages.indexOf(message);
+      SmsMessage newMessage = message.toBuilder().setCounter(message.getCounter() + 1).build();
+      firestoreClient.modifyMessage(message, newMessage);
       modifyMessage(newMessage);
-      if(messagesListener!=null){
+      if (messagesListener != null) {
         messagesListener.messageModified(index);
       }
     }
 
     // Add new suggestion
-    else{
-      firestoreClient.writeMessage(sms.toBuilder().setCounter(sms.getCounter()+1).build());
+    else {
+      firestoreClient.writeMessage(sms.toBuilder().setCounter(sms.getCounter() + 1).build());
     }
   }
 
-  public void undoSuggestion(SmsMessage sms){
+  public void undoSuggestion(SmsMessage sms) {
 
     // If other people suggested this message as well - Modify message with a new counter (-1)
-    if(sms.getCounter()>1){
-      SmsMessage newMessage = sms.toBuilder().setCounter(sms.getCounter()-1).build();
-      firestoreClient.modifyMessage(sms,newMessage);
+    if (sms.getCounter() > 1) {
+      SmsMessage newMessage = sms.toBuilder().setCounter(sms.getCounter() - 1).build();
+      firestoreClient.modifyMessage(sms, newMessage);
       modifyMessage(newMessage);
-      if(messagesListener!=null){
+      if (messagesListener != null) {
         messagesListener.messageModified(messages.indexOf(sms));
       }
     }
 
     // In case the user is the only one suggested this spam - Remove suggestion
-    else{
+    else {
       removeMessage(sms);
     }
   }
 
-  public SmsMessage searchSuggestions(String body, String sender){
+  public SmsMessage searchSuggestions(String body, String sender) {
     SmsMessage sms = null;
-    for (SmsMessage message: messages) {
-      if(message.getBody().contentEquals(body) && message.getSender().contentEquals(sender)){
+    for (SmsMessage message : messages) {
+      if (message.getBody().contentEquals(body) && message.getSender().contentEquals(sender)) {
         sms = message;
       }
     }
@@ -84,7 +84,7 @@ public class DbMessages {
     return sms;
   }
 
-  //region Functions used by db Listeners when list changes
+  // region Functions used by db Listeners when list changes
   public void addMessage(SmsMessage smsMessage) {
     messages.add(smsMessage);
     if (messagesListener != null) {
@@ -103,18 +103,18 @@ public class DbMessages {
 
   public void modifyMessage(SmsMessage newMessage) {
     // Find the index of the message that will be modified (By its ID)
-    int index=0;
-    for(SmsMessage message: messages){
-      if(message.getId().contentEquals(newMessage.getId())){
+    int index = 0;
+    for (SmsMessage message : messages) {
+      if (message.getId().contentEquals(newMessage.getId())) {
         index = messages.indexOf(message);
-        }
+      }
     }
 
     // Modify message & notify Listeners
     messages.set(index, newMessage);
     if (messagesListener != null) messagesListener.messageModified(index);
   }
-  //endregion
+  // endregion
 
   public void setMessagesListener(MessagesListener messagesListener) {
     this.messagesListener = messagesListener;
@@ -129,3 +129,4 @@ public class DbMessages {
     void messageRemoved(int index);
   }
 }
+

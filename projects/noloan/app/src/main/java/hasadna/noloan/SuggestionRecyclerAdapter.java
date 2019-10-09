@@ -33,7 +33,7 @@ public class SuggestionRecyclerAdapter
 
           @Override
           public void messageModified(int index) {
-              handler.post(() -> notifyItemChanged(index));
+            handler.post(() -> notifyItemChanged(index));
           }
 
           @Override
@@ -67,7 +67,6 @@ public class SuggestionRecyclerAdapter
     Button buttonCreateLawsuit;
     Button buttonRemoveSuggestion;
 
-
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
       from = itemView.findViewById(R.id.received_from);
@@ -82,7 +81,10 @@ public class SuggestionRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
-      counter.setText(itemView.getResources().getString(R.string.list_item_textView_spam_counter,sms.getCounter()));
+      counter.setText(
+          itemView
+              .getResources()
+              .getString(R.string.list_item_textView_spam_counter, sms.getCounter()));
 
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other

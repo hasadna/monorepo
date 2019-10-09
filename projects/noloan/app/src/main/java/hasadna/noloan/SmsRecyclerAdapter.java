@@ -80,8 +80,15 @@ public class SmsRecyclerAdapter
       Date receivedDate;
 
       // Search if message was suggested by others -> update counter
-      if(DbMessages.getInstance().searchSuggestions(sms.getBody(),sms.getSender()) != null){
-        counter.setText(itemView.getResources().getString(R.string.list_item_textView_spam_counter,DbMessages.getInstance().searchSuggestions(sms.getBody(),sms.getSender()).getCounter()));
+      if (DbMessages.getInstance().searchSuggestions(sms.getBody(), sms.getSender()) != null) {
+        counter.setText(
+            itemView
+                .getResources()
+                .getString(
+                    R.string.list_item_textView_spam_counter,
+                    DbMessages.getInstance()
+                        .searchSuggestions(sms.getBody(), sms.getSender())
+                        .getCounter()));
       }
 
       // Localize Hebrew date format

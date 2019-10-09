@@ -34,10 +34,11 @@ public class FirestoreClient {
     client.collection(MESSAGES_COLLECTION_PATH).add(element);
   }
 
-  public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage){
-    DocumentReference ref = client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
-    ref.update("proto",encodeMessage(newMessage).getProto());
-}
+  public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
+    DocumentReference ref =
+        client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
+    ref.update("proto", encodeMessage(newMessage).getProto());
+  }
 
   public void deleteMessage(SmsMessage sms) {
     client
@@ -46,7 +47,6 @@ public class FirestoreClient {
         .delete()
         .addOnSuccessListener(aVoid -> {})
         .addOnFailureListener(e -> {});
-
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
@@ -78,19 +78,19 @@ public class FirestoreClient {
               e1.printStackTrace();
             }
 
-          // Update the change
-              switch (documentChange.getType()) {
-                case ADDED:
-                  dbMessages.addMessage(sms);
-                  break;
-                case MODIFIED:
-                  dbMessages.modifyMessage(sms);
-                  break;
-                case REMOVED:
-                  dbMessages.removeMessage(sms);
-                  break;
-              }
+            // Update the change
+            switch (documentChange.getType()) {
+              case ADDED:
+                dbMessages.addMessage(sms);
+                break;
+              case MODIFIED:
+                dbMessages.modifyMessage(sms);
+                break;
+              case REMOVED:
+                dbMessages.removeMessage(sms);
+                break;
             }
+          }
 
           task.trySetResult(true);
         });
