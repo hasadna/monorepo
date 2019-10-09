@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity
   private DrawerLayout drawerLayout;
   private boolean spamActive;
   private List<SmsMessage> inbox;
-  private List<SmsMessage> suggestions;
-  private List<SmsMessage> spams;
+  private List<SmsMessage> dbMessages;
   TabLayout tabLayout;
   TextView statusTitle;
 
@@ -78,19 +77,18 @@ public class MainActivity extends AppCompatActivity
 
     // Reading Sms and spams
     inbox = readSmsFromDevice();
-    suggestions = DbMessages.getInstance().getSuggestions();
-    spams = DbMessages.getInstance().getSpam();
+    dbMessages = DbMessages.getInstance().getMessages();
 
     /**
-     * At the moment all spams/suggestions messages received from the DB are displayed to the user
-     * TODO: Intersect spams/suggestions with user's inbox messages, display only the relevant
+     * At the moment all spams/dbMessages messages received from the DB are displayed to the user
+     * TODO: Intersect spams/dbMessages with user's inbox messages, display only the relevant
      * messages that are in the inbox.
      *
      * <p>// Create a list of the intersection between the two lists, messages and spam // Based on
      * https://www.baeldung.com/java-lists-intersection List<SmsMessage> spamAndInbox =
      * inbox.stream().distinct().filter(spams::contains).collect(Collectors.toList());
      * List<SmsMessage> suggestionsAndInbox =
-     * inbox.stream().distinct().filter(suggestions::contains).collect(Collectors.toList());
+     * inbox.stream().distinct().filter(dbMessages::contains).collect(Collectors.toList());
      */
 
     // Status title
@@ -165,11 +163,11 @@ public class MainActivity extends AppCompatActivity
   // changes
   public void updateTitles() {
     // Main title
-    statusTitle.setText(String.valueOf(suggestions.size()));
+    statusTitle.setText(String.valueOf(dbMessages.size()));
 
     // Tab's titles
     tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inbox.size()));
-    tabLayout.getTabAt(1).setText(getString(R.string.spamFragment_title, suggestions.size()));
+    tabLayout.getTabAt(1).setText(getString(R.string.spamFragment_title, dbMessages.size()));
   }
 
   private void openAbout() {

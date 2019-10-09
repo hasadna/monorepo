@@ -21,7 +21,7 @@
     <string name="list_item_button_addSpam_text">הוספה למאגר</string>
     <string name="list_item_button_removeSpam_text">ביטול ספאם</string>
 
-    <string name="list_item_textView_spam_counter">%1$s סימנו כ-spam</string>
+    <string name="list_item_textView_spam_counter">%1$d סימנו כ-spam</string>
 
     // MainActivity Fragments
     <string name="inboxFragment_title">כל ההודעות (%1$d)</string>
