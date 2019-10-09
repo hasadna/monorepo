@@ -31,6 +31,7 @@ function processData() {
     if (document.getElementById("autoOption").checked) {
         findMinAndMaxValues();
     }
+    updateURL();
 }
 
 function fillRow(values, currentTr) {
@@ -172,6 +173,7 @@ function findMinAndMaxValues() {
         let values = line.split("\t");
         let value;
         for (value of values) {
+            value = parseFloat(value);
             if (value > maxValue) {
                 maxValue = value;
             }
@@ -182,4 +184,28 @@ function findMinAndMaxValues() {
     }
     document.getElementById("maxValue").value = maxValue;
     document.getElementById("minValue").value = minValue;
+}
+
+function updateURL() {
+    let input = document.getElementById("dataInput").value;
+    let URLDataPart = "data=" + input;
+    URLDataPart = encodeURIComponent(URLDataPart);
+    window.history.pushState({
+        state: "examining data"
+    },
+        "",
+        "/index.html?" + URLDataPart);
+}
+
+function getDataFromURL() {
+    let URL = window.location.href;
+    URL = decodeURIComponent(URL);
+    let dataPosition = URL.indexOf("data=");
+    if (dataPosition == -1) {
+        return;
+    }
+    dataPosition += 5;
+    let input = URL.substring(dataPosition);
+    document.getElementById("dataInput").value = input;
+    processData();
 }
