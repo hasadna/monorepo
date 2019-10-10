@@ -188,24 +188,21 @@ function findMinAndMaxValues() {
 
 function updateURL() {
     let input = document.getElementById("dataInput").value;
-    let URLDataPart = "data=" + input;
-    URLDataPart = encodeURIComponent(URLDataPart);
+    input = encodeURIComponent(input);
     window.history.pushState({
         state: "examining data"
     },
         "",
-        "/index.html?" + URLDataPart);
+        "/index.html?data=" + input);
 }
 
 function getDataFromURL() {
-    let URL = window.location.href;
-    URL = decodeURIComponent(URL);
-    let dataPosition = URL.indexOf("data=");
-    if (dataPosition == -1) {
+    let url = new URL(window.location.href);
+    let params = url.searchParams;
+    if (params.has("data") == false) {
         return;
     }
-    dataPosition += 5;
-    let input = URL.substring(dataPosition);
+    let input = params.get("data");
     document.getElementById("dataInput").value = input;
     processData();
 }
