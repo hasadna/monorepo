@@ -17,14 +17,14 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 public class SuggetionRecyclerAdapter
         extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
-  DBMessagesHolder DbMessages;
+  DbMessagesHolder DbMessages;
 
   public SuggetionRecyclerAdapter() {
-    DbMessages = DBMessagesHolder.getInstance();
+    DbMessages = DbMessagesHolder.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
     DbMessages.setSuggestionsListener(
-            new DBMessagesHolder.MessagesListener() {
+            new DbMessagesHolder.MessagesListener() {
               @Override
               public void messageAdded() {
                 handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));

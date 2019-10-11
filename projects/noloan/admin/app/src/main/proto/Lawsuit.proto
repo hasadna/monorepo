@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package hasadna.noloan;
 
-import "COURT.proto";
-import "SMS.proto";
+import "Court.proto";
+import "Sms.proto";
 
 option java_package = "hasadna.noloan.protobuf";
 option java_outer_classname = "LawsuitProto";
@@ -28,8 +28,4 @@ message Lawsuit {
     bool moreThanFiveClaims = 15;
 
     SmsMessage smsMessage = 16;
-
 }
-
-
-

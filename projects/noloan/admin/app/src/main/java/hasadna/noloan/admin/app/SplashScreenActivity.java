@@ -90,8 +90,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam = new FirestoreClient().StartListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH).getTask();
-      Task Suggestions = new FirestoreClient().StartListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION).getTask();
+      Task spam = new FirestoreClient().startListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH).getTask();
+      Task Suggestions = new FirestoreClient().startListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION).getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
@@ -107,7 +107,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             () ->
                 Toast.makeText(
                         getApplicationContext(),
-                        "This App require SMS reading To work",
+                        "This App require SMS reading To work->This app requires permission to read SMSs",
                         Toast.LENGTH_SHORT)
                     .show());
         finishAndRemoveTask();

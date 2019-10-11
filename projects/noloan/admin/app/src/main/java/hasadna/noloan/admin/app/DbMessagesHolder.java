@@ -6,22 +6,22 @@ import java.util.List;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 // Simple singleton to hold the suggestions list
-public class DBMessagesHolder {
-  private static DBMessagesHolder instance;
+public class DbMessagesHolder {
+  private static DbMessagesHolder instance;
   private List<SmsMessage> spam;
   private List<SmsMessage> suggestions;
 
   MessagesListener spamListener;
   MessagesListener suggestionsListener;
 
-  public static DBMessagesHolder getInstance() {
+  public static DbMessagesHolder getInstance() {
     if (instance == null) {
-      instance = new DBMessagesHolder();
+      instance = new DbMessagesHolder();
     }
     return instance;
   }
 
-  public DBMessagesHolder() {
+  public DbMessagesHolder() {
     spam = new ArrayList<>();
     suggestions = new ArrayList<>();
   }

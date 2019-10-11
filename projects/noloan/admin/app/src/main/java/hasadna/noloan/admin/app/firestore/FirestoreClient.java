@@ -13,7 +13,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.admin.app.DBMessagesHolder;
+import hasadna.noloan.admin.app.DbMessagesHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -43,7 +43,7 @@ public class FirestoreClient {
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningToMessages(String path) {
+  public TaskCompletionSource startListeningToMessages(String path) {
 
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
@@ -56,20 +56,20 @@ public class FirestoreClient {
                 return;
               }
 
-              DBMessagesHolder messagesHolder = DBMessagesHolder.getInstance();
-              for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+              DbMessagesHolder messagesHolder = DbMessagesHolder.getInstance();
+              for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
                 SmsMessage sms = null;
                 try {
                   sms =
                           (SmsMessage)
-                                  decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
-                  sms = sms.toBuilder().setID(dc.getDocument().getId()).build();
+                                  decodeMessage(documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
+                  sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
                 } catch (InvalidProtocolBufferException e1) {
                   e1.printStackTrace();
                 }
                 // Spam list
                 if (path.equals(SPAM_COLLECTION_PATH)) {
-                  switch (dc.getType()) {
+                  switch (documentChange.getType()) {
                     case ADDED:
                       messagesHolder.addSpam(sms);
                       break;
@@ -83,7 +83,7 @@ public class FirestoreClient {
                 }
                 // Suggestions list
                 else {
-                  switch (dc.getType()) {
+                  switch (documentChange.getType()) {
                     case ADDED:
                       messagesHolder.addSuggestion(sms);
                       break;

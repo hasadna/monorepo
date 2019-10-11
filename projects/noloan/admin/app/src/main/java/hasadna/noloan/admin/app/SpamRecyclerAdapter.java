@@ -17,15 +17,15 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 public class SpamRecyclerAdapter
         extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  DBMessagesHolder DbMessages;
+  DbMessagesHolder DbMessages;
 
   public SpamRecyclerAdapter() {
 
-    DbMessages = DBMessagesHolder.getInstance();
+    DbMessages = DbMessagesHolder.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
     DbMessages.setSpamListener(
-            new DBMessagesHolder.MessagesListener() {
+            new DbMessagesHolder.MessagesListener() {
               @Override
               public void messageAdded() {
                 handler.post(() -> notifyItemInserted(DbMessages.getSpam().size()));
