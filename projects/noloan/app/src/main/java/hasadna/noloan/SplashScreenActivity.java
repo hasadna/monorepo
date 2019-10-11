@@ -14,9 +14,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-/*import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;*/
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -97,12 +94,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
 
-      Task messages = new FirestoreClient().StartListeningToMessages().getTask();
+      Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
         Tasks.await(permissions);
-        Tasks.await(messages);
+        Tasks.await(messagesTask);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }

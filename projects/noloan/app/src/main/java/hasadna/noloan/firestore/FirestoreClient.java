@@ -18,9 +18,8 @@ import hasadna.noloan.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
-  public static final String MESSAGES_COLLECTION_PATH = "noloan/spam/sms";
 
-  public static final String MESSAGES_COLLEdCTION_PATH = "noloan/spam/suggestion";
+  public static final String MESSAGES_COLLECTION_PATH = "noloan/spam/sms";
 
   private FirebaseFirestore client;
 

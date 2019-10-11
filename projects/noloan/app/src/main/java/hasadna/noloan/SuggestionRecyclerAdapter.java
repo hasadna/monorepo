@@ -18,17 +18,17 @@ import noloan.R;
 public class SuggestionRecyclerAdapter
     extends RecyclerView.Adapter<SuggestionRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessages dbSuggestions;
+  DbMessages dbMessages;
 
   public SuggestionRecyclerAdapter() {
-    dbSuggestions = DbMessages.getInstance();
+    dbMessages = DbMessages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
-    dbSuggestions.setMessagesListener(
+    dbMessages.setMessagesListener(
         new DbMessages.MessagesListener() {
           @Override
           public void messageAdded() {
-            handler.post(() -> notifyItemInserted(dbSuggestions.getMessages().size()));
+            handler.post(() -> notifyItemInserted(dbMessages.getMessages().size()));
           }
 
           @Override
@@ -53,12 +53,12 @@ public class SuggestionRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(dbSuggestions.getMessages().get(i));
+    recyclerViewHolder.bind(dbMessages.getMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return dbSuggestions.getMessages().size();
+    return dbMessages.getMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +100,7 @@ public class SuggestionRecyclerAdapter
 
       buttonRemoveSuggestion.setOnClickListener(
           v -> {
-            dbSuggestions.undoSuggestion(sms);
+            dbMessages.undoSuggestion(sms);
           });
     }
   }

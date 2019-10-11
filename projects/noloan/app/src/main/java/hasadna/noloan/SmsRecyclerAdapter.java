@@ -80,14 +80,15 @@ public class SmsRecyclerAdapter
       Date receivedDate;
 
       // Search if message was suggested by others -> update counter
-      if (DbMessages.getInstance().searchSuggestions(sms.getBody(), sms.getSender()) != null) {
+      if (DbMessages.getInstance().searchMessage(sms) != -1) {
         counter.setText(
             itemView
                 .getResources()
                 .getString(
                     R.string.list_item_textView_spam_counter,
                     DbMessages.getInstance()
-                        .searchSuggestions(sms.getBody(), sms.getSender())
+                        .getMessages()
+                        .get(DbMessages.getInstance().searchMessage(sms))
                         .getCounter()));
       }
 
