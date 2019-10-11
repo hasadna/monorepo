@@ -29,6 +29,7 @@ public class SplashScreenActivity extends AppCompatActivity {
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
   final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
+  private static final String TAG = "SplashScreenActivity";
 
   Handler handler;
 
@@ -87,26 +88,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions, spam and suggestions messages from the DB
+  // Main Task to get the permissions and messages from the DB
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam =
-          new FirestoreClient()
-              .StartListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH)
-              .getTask();
-      Task suggestions =
-          new FirestoreClient()
-              .StartListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION)
-              .getTask();
+
+      Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
-
         Tasks.await(permissions);
-        Tasks.await(spam);
-        Tasks.await(suggestions);
+        Tasks.await(messagesTask);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }

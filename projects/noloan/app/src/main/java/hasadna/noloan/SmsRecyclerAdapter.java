@@ -58,7 +58,7 @@ public class SmsRecyclerAdapter
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-    TextView from, content, receivedAt;
+    TextView from, content, receivedAt, counter;
     Button buttonCreateSmsLawsuit;
     Button buttonSuggestSpam;
 
@@ -67,6 +67,7 @@ public class SmsRecyclerAdapter
       from = itemView.findViewById(R.id.received_from);
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
+      counter = itemView.findViewById(R.id.textView_suggestCounter);
       buttonCreateSmsLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
       buttonSuggestSpam = itemView.findViewById(R.id.Button_removeSuggestion);
     }
@@ -77,6 +78,19 @@ public class SmsRecyclerAdapter
       content.setText(sms.getBody());
       Calendar calendar = Calendar.getInstance();
       Date receivedDate;
+
+      // Search if message was suggested by others -> update counter
+      if (DbMessages.getInstance().searchMessage(sms) != -1) {
+        counter.setText(
+            itemView
+                .getResources()
+                .getString(
+                    R.string.list_item_textView_spam_counter,
+                    DbMessages.getInstance()
+                        .getMessages()
+                        .get(DbMessages.getInstance().searchMessage(sms))
+                        .getCounter()));
+      }
 
       // Localize Hebrew date format
       Locale local = new Locale("he");
@@ -107,8 +121,7 @@ public class SmsRecyclerAdapter
 
       buttonSuggestSpam.setOnClickListener(
           view -> {
-            FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            DbMessages.getInstance().suggestMessage(sms);
             Toast.makeText(view.getContext(), "suggested", Toast.LENGTH_SHORT).show();
           });
     }

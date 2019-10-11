@@ -11,6 +11,7 @@ message SmsMessage {
     string receivedAt = 3;
     string id = 4;
     int32  counter = 5;
+    bool approved = 6;
 }
 
 message SpamList {

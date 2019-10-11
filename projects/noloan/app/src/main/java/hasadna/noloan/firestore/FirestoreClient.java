@@ -5,6 +5,8 @@ import android.util.Base64;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
@@ -16,9 +18,8 @@ import hasadna.noloan.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
-  public static final String SPAM_COLLECTION_PATH = "noloan/spam/sms";
 
-  public static final String USER_SUGGEST_COLLECTION = "noloan/spam/suggestion";
+  public static final String MESSAGES_COLLECTION_PATH = "noloan/spam/sms";
 
   private FirebaseFirestore client;
 
@@ -26,14 +27,21 @@ public class FirestoreClient {
     client = FirebaseFirestore.getInstance();
   }
 
-  public void writeMessage(SmsMessage message, String path) {
+  public void writeMessage(SmsMessage message) {
+
     FirestoreElement element = encodeMessage(message);
-    client.collection(path).add(element);
+    client.collection(MESSAGES_COLLECTION_PATH).add(element);
   }
 
-  public void deleteMessage(SmsMessage sms, String path) {
+  public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
+    DocumentReference ref =
+        client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
+    ref.update("proto", encodeMessage(newMessage).getProto());
+  }
+
+  public void deleteMessage(SmsMessage sms) {
     client
-        .collection(path)
+        .collection(MESSAGES_COLLECTION_PATH)
         .document(sms.getId())
         .delete()
         .addOnSuccessListener(aVoid -> {})
@@ -41,12 +49,12 @@ public class FirestoreClient {
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningToMessages(String path) {
+  public TaskCompletionSource StartListeningToMessages() {
 
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
 
-    CollectionReference collectionReference = client.collection(path);
+    CollectionReference collectionReference = client.collection(MESSAGES_COLLECTION_PATH);
     collectionReference.addSnapshotListener(
         executor,
         (queryDocumentSnapshots, e) -> {
@@ -54,7 +62,9 @@ public class FirestoreClient {
             return;
           }
 
-          DbMessages messagesHolder = DbMessages.getInstance();
+          DbMessages dbMessages = DbMessages.getInstance();
+
+          // Get the message that changed
           for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
@@ -66,27 +76,18 @@ public class FirestoreClient {
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
-            // Spam list
-            if (path.equals(SPAM_COLLECTION_PATH)) {
-              switch (documentChange.getType()) {
-                case ADDED:
-                  messagesHolder.addSpam(sms);
-                  break;
-                case REMOVED:
-                  messagesHolder.spamRemove(sms);
-                  break;
-              }
-            }
-            // Suggestions list
-            else {
-              switch (documentChange.getType()) {
-                case ADDED:
-                  messagesHolder.addSuggestion(sms);
-                  break;
-                case REMOVED:
-                  messagesHolder.suggestionRemove(sms);
-                  break;
-              }
+
+            // Update the change
+            switch (documentChange.getType()) {
+              case ADDED:
+                dbMessages.addMessage(sms);
+                break;
+              case MODIFIED:
+                dbMessages.modifyMessage(sms);
+                break;
+              case REMOVED:
+                dbMessages.removeMessage(sms);
+                break;
             }
           }
 
