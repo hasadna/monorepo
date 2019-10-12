@@ -9,60 +9,128 @@ let timeOut = null;
 
 function processData() {
     document.getElementById("updateButton").disabled = false;
-    let input = document.getElementById("dataInput").value;
-    let lines = input.split("\n");
-    let table = document.createElement("table");
-    table.style.width = "100%";
-    table.style.height = "70%";
-    table.setAttribute("border", "1");
-    let line;
-    for (line of lines) {
-        let tr = document.createElement("tr");
-        let values = line.split("\t");
-        fillRow(values, tr);
-        table.appendChild(tr);
+    let grid = createGrid();
+    let oldGrid = document.getElementById("tableContainer").firstChild;
+    if (oldGrid != null) {
+        document.getElementById("tableContainer").removeChild(oldGrid);
     }
-    let oldTable = document.getElementById("tableContainer").firstChild;
-    if (oldTable != null) {
-        document.getElementById("tableContainer").removeChild(oldTable);
-    }
-    document.getElementById("tableContainer").appendChild(table);
-    addOnClickAndTouchSoundToTable();
+    document.getElementById("tableContainer").appendChild(grid);
+    addOnClickAndOnTouchSoundToGrid();
+    addNavigationToGrid();
     if (document.getElementById("autoOption").checked) {
         findMinAndMaxValues();
     }
     updateURL();
 }
 
-function fillRow(values, currentTr) {
-    let myValue;
-    for (myValue of values) {
-        let td = document.createElement("td");
-        td.appendChild(document.createTextNode(myValue));
-        currentTr.appendChild(td);
+function createGrid() {
+    let input = document.getElementById("dataInput").value;
+    let lines = input.split("\n");
+    let grid = document.createElement("div");
+    grid.setAttribute("role", "grid");
+    grid.setAttribute("aria-readonly", "true");
+    grid.style.width = "100%";
+    grid.style.height = "70%";
+    let line;
+    for (line of lines) {
+        let gridRow = document.createElement("div");
+        gridRow.setAttribute("role", "row");
+        let values = line.split("\t");
+        let value;
+        for (value of values) {
+            let gridCell = document.createElement("div");
+            gridCell.setAttribute("role", "gridcell");
+            gridCell.appendChild(document.createTextNode(value));
+            gridCell.setAttribute("aria-readonly", "true");
+            gridRow.appendChild(gridCell);
+        }
+        grid.appendChild(gridRow);
     }
+    return grid;
 }
 
-function addOnClickAndTouchSoundToTable() {
+function addOnClickAndOnTouchSoundToGrid() {
     let element;
-    for (element of document.getElementsByTagName("td")) {
-        element.addEventListener("click", startSoundPlaybackOnClick);
-        element.addEventListener("touchstart", startSoundPlaybackOnClick);
+    for (element of document.querySelectorAll("div[role='gridcell']")) {
+        element.addEventListener("click", startSoundPlayback);
+        element.addEventListener("touchstart", startSoundPlayback);
         element.addEventListener("touchmove", onCellChange);
         element.addEventListener("touchleave", stopSoundPlayback);
         element.addEventListener("touchcancel", stopSoundPlayback);
+        element.addEventListener("focus", startSoundPlayback);
     }
 }
 
-function startSoundPlaybackOnClick(event) {
+function addNavigationToGrid() {
+    let firstElement = true;
+    let gridCell;
+    for (gridCell of document.querySelectorAll("div[role='gridcell']")) {
+        if (firstElement == true) {
+            gridCell.setAttribute("tabindex", "0");
+            firstElement = false;
+        } else {
+            gridCell.setAttribute("tabindex", "-1");
+        }
+        gridCell.addEventListener("keydown", navigateGrid);
+    }
+}
+
+function navigateGrid(event) {
+    const keyName = event.key;
+    let currentCell = event.currentTarget;
+    let newFocussedCell = null;
+    switch (keyName) {
+        case "ArrowDown":
+            if (currentCell.parentNode.nextSibling != null) {
+                let index = getChildIndex(currentCell);
+                newFocussedCell = currentCell.parentNode.nextSibling.childNodes[index];
+            }
+            break;
+        case "ArrowUp":
+            if (currentCell.parentNode.previousSibling != null) {
+                let index = getChildIndex(currentCell);
+                newFocussedCell = currentCell.parentNode.previousSibling.childNodes[index];
+            }
+        break;
+        case "ArrowLeft":
+            newFocussedCell = currentCell.previousSibling;
+            break;
+        case "ArrowRight":
+            newFocussedCell = currentCell.nextSibling;
+            break;
+        case "Home":
+            newFocussedCell = currentCell.parentNode.firstChild;
+            break;
+        case "End":
+            newFocussedCell = currentCell.parentNode.lastChild;
+            break;
+        // TODO: add PageUp/Down keys
+        default:
+            return;
+    }
+    if (newFocussedCell != null) {
+        newFocussedCell.focus();
+    }
+}
+
+function getChildIndex(currentChild) {
+    let index = 0;
+    while (currentChild.previousSibling) {
+        index++;
+        currentChild = currentChild.previousSibling;
+    }
+    return index;
+}
+
+function startSoundPlayback(event) {
     currentCellUnderTouchPoint = event.currentTarget;
     event.preventDefault();
     stopSoundPlayback(event);
     let selectedValue = event.currentTarget.firstChild.data;
-    startSoundPlayback(selectedValue);
+    playSound(selectedValue);
 }
 
-function startSoundPlayback(selectedValue) {
+function playSound(selectedValue) {
     if (audioContext.state == "suspended") {
         audioContext.resume();
     }
@@ -139,13 +207,13 @@ function onCellChange(event) {
     if (elementUnderTouch == currentCellUnderTouchPoint) {
         return;
     }
-    if (elementUnderTouch == null || elementUnderTouch.tagName != "TD") {
+    if (elementUnderTouch == null || elementUnderTouch.getAttribute("role") != "gridcell") {
         return;
     }
     currentCellUnderTouchPoint = elementUnderTouch;
     stopSoundPlayback(event);
     let selectedValue = elementUnderTouch.firstChild.data;
-    startSoundPlayback(selectedValue);
+    playSound(selectedValue);
     event.stopPropagation();
 }
 
