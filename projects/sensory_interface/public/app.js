@@ -31,15 +31,18 @@ function createGrid() {
     grid.setAttribute("aria-readonly", "true");
     grid.style.width = "100%";
     grid.style.height = "70%";
+    grid.className = "table";
     let line;
     for (line of lines) {
         let gridRow = document.createElement("div");
         gridRow.setAttribute("role", "row");
+        gridRow.className = "row";
         let values = line.split("\t");
         let value;
         for (value of values) {
             let gridCell = document.createElement("div");
             gridCell.setAttribute("role", "gridcell");
+            gridCell.className = "cell";
             gridCell.appendChild(document.createTextNode(value));
             gridCell.setAttribute("aria-readonly", "true");
             gridRow.appendChild(gridCell);
