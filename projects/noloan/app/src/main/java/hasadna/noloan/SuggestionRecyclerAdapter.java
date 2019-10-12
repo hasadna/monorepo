@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -19,17 +18,22 @@ import noloan.R;
 public class SuggestionRecyclerAdapter
     extends RecyclerView.Adapter<SuggestionRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessages suggestions;
+  DbMessages dbMessages;
 
   public SuggestionRecyclerAdapter() {
-    suggestions = DbMessages.getInstance();
+    dbMessages = DbMessages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
-    suggestions.setSuggestionsListener(
+    dbMessages.setMessagesListener(
         new DbMessages.MessagesListener() {
           @Override
           public void messageAdded() {
-            handler.post(() -> notifyItemInserted(suggestions.getSuggestions().size()));
+            handler.post(() -> notifyItemInserted(dbMessages.getMessages().size()));
+          }
+
+          @Override
+          public void messageModified(int index) {
+            handler.post(() -> notifyItemChanged(index));
           }
 
           @Override
@@ -49,17 +53,17 @@ public class SuggestionRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(suggestions.getSuggestions().get(i));
+    recyclerViewHolder.bind(dbMessages.getMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return suggestions.getSuggestions().size();
+    return dbMessages.getMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-    TextView from, content, receivedAt;
+    TextView from, content, receivedAt, counter;
     Button buttonCreateLawsuit;
     Button buttonRemoveSuggestion;
 
@@ -70,16 +74,21 @@ public class SuggestionRecyclerAdapter
       receivedAt = itemView.findViewById(R.id.receivedAt);
       buttonCreateLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
       buttonRemoveSuggestion = itemView.findViewById(R.id.Button_removeSuggestion);
+      counter = itemView.findViewById(R.id.textView_suggestCounter);
     }
 
     public void bind(SmsMessage sms) {
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
+      counter.setText(
+          itemView
+              .getResources()
+              .getString(R.string.list_item_textView_spam_counter, sms.getCounter()));
+
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
-
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
@@ -91,10 +100,7 @@ public class SuggestionRecyclerAdapter
 
       buttonRemoveSuggestion.setOnClickListener(
           v -> {
-            // TODO: Add a counter to the suggested spam and apply the remove only if there's 1
-            // suggestion
-            FirestoreClient client = new FirestoreClient();
-            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            dbMessages.undoSuggestion(sms);
           });
     }
   }
