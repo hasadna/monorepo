@@ -10,3 +10,8 @@ div.cell {
   display: table-cell;
   border: 1px solid #ccc;
 }
+
+div.cell:focus {
+  background-color: #ffff4d;
+  border: 1px solid #0099ff;
+}
