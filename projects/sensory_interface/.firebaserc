@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "sensory-interface-dev",
-    "production": "sensory-interface-prod"
-  }
-}
