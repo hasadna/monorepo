@@ -107,7 +107,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             () ->
                 Toast.makeText(
                         getApplicationContext(),
-                        "This App require SMS reading To work->This app requires permission to read SMSs",
+                        "This app requires permission to read SMSs",
                         Toast.LENGTH_SHORT)
                     .show());
         finishAndRemoveTask();

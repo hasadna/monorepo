@@ -2,6 +2,7 @@ package hasadna.noloan.admin.app.firestore;
 
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
@@ -17,6 +18,7 @@ import hasadna.noloan.admin.app.DbMessagesHolder;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
+
   public static final String SPAM_COLLECTION_PATH = "noloan/spam/sms";
 
   public static final String USER_SUGGEST_COLLECTION = "noloan/spam/suggestion";
@@ -33,12 +35,9 @@ public class FirestoreClient {
   }
 
   public void deleteMessage(SmsMessage sms, String path) {
-    client.collection(path).document(sms.getID()).delete().
-        addOnSuccessListener(aVoid -> {
-          Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! success");
-        })
+    client.collection(path).document(sms.getID()).delete()
         .addOnFailureListener(e -> {
-          Log.d("BLAAAAA","!!!!!!!!!!!!!!!!! failed");
+          Log.d("FirestoreClient","deletion failed");
         });
   }
 
