@@ -1,6 +1,12 @@
 package hasadna.noloan;
 
+import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +22,10 @@ public class DbMessages {
   private List<SmsMessage> messages;
 
   FirestoreClient firestoreClient;
-  MessagesListener messagesListener;
+
+  FirebaseUser firebaseUser;
+  FirebaseAuth firebaseAuth;
+  ArrayList<MessagesListener> messagesListeners;
 
   public static DbMessages getInstance() {
     if (instance == null) {
@@ -28,6 +37,19 @@ public class DbMessages {
   public DbMessages() {
     messages = new ArrayList<>();
     firestoreClient = new FirestoreClient();
+    firebaseAuth = FirebaseAuth.getInstance();
+
+    firebaseAuth
+        .signInAnonymously()
+        .addOnCompleteListener(
+            task -> {
+              if (task.isSuccessful()) {
+                firebaseUser = firebaseAuth.getCurrentUser();
+              } else {
+                Log.w(TAG, "signInAnonymously:failure", task.getException());
+              }
+            });
+    messagesListeners = new ArrayList<>();
   }
 
   public void init(List<SmsMessage> messages) {
@@ -40,45 +62,67 @@ public class DbMessages {
 
   // Checks if message had already been suggested. Updates counter / Adds a new suggestion
   public void suggestMessage(SmsMessage smsMessage) {
-
-    // Search if message was already suggested -> Modify counter (+1)
+    // Case: Message was already suggested by others but not by this user
+    // 1. Add user as a "suggester"
     int index = searchMessage(smsMessage);
-    if (index != -1) {
+    if ((index != -1) && !messages.get(index).getSuggestersList().contains(firebaseUser.getUid())) {
       SmsMessage newMessage =
-          messages.get(index).toBuilder().setCounter(messages.get(index).getCounter() + 1).build();
+          messages
+              .get(index)
+              .toBuilder()
+              .addSuggesters(firebaseUser.getUid())
+              .setId(messages.get(index).getId())
+              .build();
       firestoreClient.modifyMessage(messages.get(index), newMessage);
       modifyMessage(newMessage);
-      if (messagesListener != null) {
-        messagesListener.messageModified(index);
-      }
+
+      // Notify
+      notifyListeners(messages.indexOf(newMessage), newMessage, Type.MODIFIED);
+
     }
-    // Add new suggestion
-    else {
+    // Case New suggestion
+    else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage.toBuilder().setCounter(smsMessage.getCounter() + 1).build());
+          smsMessage.toBuilder().addSuggesters(firebaseUser.getUid()).build());
     }
   }
 
   public void undoSuggestion(SmsMessage smsMessage) {
 
-    // If other people suggested this message as well - Modify message with a new counter (-1)
-    if (smsMessage.getCounter() > 1) {
-      SmsMessage newMessage =
-          smsMessage.toBuilder().setCounter(smsMessage.getCounter() - 1).build();
-      firestoreClient.modifyMessage(smsMessage, newMessage);
-      modifyMessage(newMessage);
-      if (messagesListener != null) {
-        messagesListener.messageModified(messages.indexOf(smsMessage));
-      }
-    }
+    // Check if user is part of the "suggesters" of this spam message
+    if (smsMessage.getSuggestersList().contains(firebaseUser.getUid())) {
 
-    // In case the user is the only one suggested this spam - Remove suggestion
-    else {
-      removeMessage(smsMessage);
+      // Case: Other people had suggested this spam as well, update just the counter (-1)
+      if (smsMessage.getSuggestersCount() > 1) {
+        // 1. Create new suggesters list
+        List<String> newSuggesters = new ArrayList<>(smsMessage.getSuggestersList());
+        newSuggesters.remove(firebaseUser.getUid());
+        // 2. Update the counter and build modified message
+        SmsMessage newMessage =
+            SmsMessage.newBuilder()
+                .addAllSuggesters(newSuggesters)
+                .setId(smsMessage.getId())
+                .setReceivedAt(smsMessage.getReceivedAt())
+                .setSender(smsMessage.getSender())
+                .setBody(smsMessage.getBody())
+                .setApproved(smsMessage.getApproved())
+                .build();
+
+        firestoreClient.modifyMessage(smsMessage, newMessage);
+        modifyMessage(newMessage);
+
+        // Notify
+        notifyListeners(messages.indexOf(newMessage), newMessage, Type.MODIFIED);
+      }
+      // Case: User is the only one suggested this spam
+      else {
+        removeMessage(smsMessage);
+        notifyListeners(messages.indexOf(smsMessage), smsMessage, Type.REMOVED);
+      }
     }
   }
 
-  // Search for message with same body & sender. If none found, return -1
+  // Search by message's sender & body. If no message found, return -1
   public int searchMessage(SmsMessage smsMessage) {
     for (int i = 0; i < messages.size(); i++) {
       if (messages.get(i).getBody().contentEquals(smsMessage.getBody())
@@ -99,22 +143,36 @@ public class DbMessages {
     return -1;
   }
 
-  // region Functions used by db Listeners when list changes
+  public FirebaseUser getFirebaseUser() {
+    return firebaseUser;
+  }
+
+  // Receive changes from the db (called from FirestoreClient)
+  public void updateChange(SmsMessage smsMessage, Type type) {
+    switch (type) {
+      case ADDED:
+        addMessage(smsMessage);
+        break;
+      case MODIFIED:
+        modifyMessage(smsMessage);
+        break;
+      case REMOVED:
+        removeMessage(smsMessage);
+        break;
+    }
+  }
+
   public void addMessage(SmsMessage smsMessage) {
     messages.add(smsMessage);
-    if (messagesListener != null) {
-      messagesListener.messageAdded();
-    }
+    notifyListeners(getIndexById(smsMessage), smsMessage, Type.ADDED);
   }
 
   public void removeMessage(SmsMessage smsMessage) {
     int index = getIndexById(smsMessage);
     if (index != -1) {
-      messages.remove(smsMessage);
+      messages.remove(index);
       firestoreClient.deleteMessage(smsMessage);
-      if (messagesListener != null) {
-        messagesListener.messageRemoved(index);
-      }
+      notifyListeners(index, smsMessage, Type.REMOVED);
     } else {
       Log.e(
           TAG,
@@ -124,27 +182,50 @@ public class DbMessages {
   }
 
   public void modifyMessage(SmsMessage newMessage) {
-    // Find the existing message in the list - modify
-    if (getIndexById(newMessage) != -1) {
-      messages.set(getIndexById(newMessage), newMessage);
-      if (messagesListener != null) {
-        messagesListener.messageModified(getIndexById(newMessage));
-      }
+    int index = getIndexById(newMessage);
+    if (index != -1) {
+      messages.set(index, newMessage);
+      notifyListeners(index, newMessage, Type.MODIFIED);
+    } else {
+      Log.e(
+          TAG,
+          "Attempt to modify message but message not found.\n Message id: "
+              + newMessage.getId()
+              + "\nBody: "
+              + newMessage.getBody()
+              + "\nSender: "
+              + newMessage.getSender());
     }
   }
-  // endregion
 
   public void setMessagesListener(MessagesListener messagesListener) {
-    this.messagesListener = messagesListener;
+    this.messagesListeners.add(messagesListener);
+  }
+
+  public void notifyListeners(int index, SmsMessage smsMessage, Type type) {
+    for (MessagesListener listener : messagesListeners) {
+      switch (type) {
+        case ADDED:
+          listener.messageAdded(smsMessage);
+          break;
+        case MODIFIED:
+          listener.messageModified(index);
+          break;
+        case REMOVED:
+          listener.messageRemoved(index, smsMessage);
+          break;
+      }
+    }
   }
 
   public interface MessagesListener {
 
-    void messageAdded();
+    void messageAdded(SmsMessage newMessage);
 
     void messageModified(int index);
 
-    void messageRemoved(int index);
+    // SmsMessage parameter is passed for cases the index already had been removed from the db list
+    void messageRemoved(int index, SmsMessage smsMessage);
   }
 }
 

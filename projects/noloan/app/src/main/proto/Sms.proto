@@ -10,8 +10,10 @@ message SmsMessage {
     string body = 2;
     string receivedAt = 3;
     string id = 4;
-    int32  counter = 5;
     bool approved = 6;
+
+    // List of Firestore user IDs that have suggested this message as spam.
+    repeated string suggesters = 7;
 }
 
 message SpamList {

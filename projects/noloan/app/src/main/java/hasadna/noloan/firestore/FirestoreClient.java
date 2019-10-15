@@ -1,8 +1,12 @@
 package hasadna.noloan.firestore;
 
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -15,6 +19,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import hasadna.noloan.DbMessages;
+import hasadna.noloan.mainactivity.InboxFragment;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -23,20 +28,21 @@ public class FirestoreClient {
 
   private FirebaseFirestore client;
 
+  private InboxFragment inboxFragment;
+
   public FirestoreClient() {
     client = FirebaseFirestore.getInstance();
   }
 
   public void writeMessage(SmsMessage message) {
-
     FirestoreElement element = encodeMessage(message);
     client.collection(MESSAGES_COLLECTION_PATH).add(element);
   }
 
   public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
-    DocumentReference ref =
+    DocumentReference documentReference =
         client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
-    ref.update("proto", encodeMessage(newMessage).getProto());
+    documentReference.update("proto", encodeMessage(newMessage).getProto());
   }
 
   public void deleteMessage(SmsMessage sms) {
@@ -77,20 +83,8 @@ public class FirestoreClient {
               e1.printStackTrace();
             }
 
-            // Update the change
-            switch (documentChange.getType()) {
-              case ADDED:
-                dbMessages.addMessage(sms);
-                break;
-              case MODIFIED:
-                dbMessages.modifyMessage(sms);
-                break;
-              case REMOVED:
-                dbMessages.removeMessage(sms);
-                break;
-            }
+            dbMessages.updateChange(sms, documentChange.getType());
           }
-
           task.trySetResult(true);
         });
     return task;

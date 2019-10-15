@@ -15,19 +15,20 @@ import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
-public class SuggestionRecyclerAdapter
-    extends RecyclerView.Adapter<SuggestionRecyclerAdapter.RecyclerViewHolder> {
+public class SpamRecyclerAdapter
+    extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
   DbMessages dbMessages;
 
-  public SuggestionRecyclerAdapter() {
+  public SpamRecyclerAdapter() {
     dbMessages = DbMessages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
+    // Listen to db messages
     dbMessages.setMessagesListener(
         new DbMessages.MessagesListener() {
           @Override
-          public void messageAdded() {
+          public void messageAdded(SmsMessage newMessage) {
             handler.post(() -> notifyItemInserted(dbMessages.getMessages().size()));
           }
 
@@ -37,7 +38,7 @@ public class SuggestionRecyclerAdapter
           }
 
           @Override
-          public void messageRemoved(int index) {
+          public void messageRemoved(int index, SmsMessage smsMessage) {
             handler.post(() -> notifyItemRemoved(index));
           }
         });
@@ -47,8 +48,7 @@ public class SuggestionRecyclerAdapter
   @Override
   public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
     LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-    return new RecyclerViewHolder(
-        inflater.inflate(R.layout.suggestion_list_item, viewGroup, false));
+    return new RecyclerViewHolder(inflater.inflate(R.layout.spam_list_item, viewGroup, false));
   }
 
   @Override
@@ -65,7 +65,8 @@ public class SuggestionRecyclerAdapter
 
     TextView from, content, receivedAt, counter;
     Button buttonCreateLawsuit;
-    Button buttonRemoveSuggestion;
+    Button buttonUndoSuggestion;
+    Button buttonAddSuggestion;
 
     public RecyclerViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -73,7 +74,8 @@ public class SuggestionRecyclerAdapter
       content = itemView.findViewById(R.id.content);
       receivedAt = itemView.findViewById(R.id.receivedAt);
       buttonCreateLawsuit = itemView.findViewById(R.id.Button_createLawsuit);
-      buttonRemoveSuggestion = itemView.findViewById(R.id.Button_removeSuggestion);
+      buttonUndoSuggestion = itemView.findViewById(R.id.Button_undoSuggestion);
+      buttonAddSuggestion = itemView.findViewById(R.id.Button_addSuggestion);
       counter = itemView.findViewById(R.id.textView_suggestCounter);
     }
 
@@ -84,7 +86,7 @@ public class SuggestionRecyclerAdapter
       counter.setText(
           itemView
               .getResources()
-              .getString(R.string.list_item_textView_spam_counter, sms.getCounter()));
+              .getString(R.string.list_item_textView_spam_counter, sms.getSuggestersCount()));
 
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
@@ -98,10 +100,29 @@ public class SuggestionRecyclerAdapter
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonRemoveSuggestion.setOnClickListener(
+      // If user is had suggested this spam - Toggle "Undo suggestion" / Add suggestion options.
+      toggleUndoButton(sms);
+
+      buttonUndoSuggestion.setOnClickListener(
           v -> {
             dbMessages.undoSuggestion(sms);
           });
+
+      buttonAddSuggestion.setOnClickListener(
+          view -> {
+            DbMessages.getInstance().suggestMessage(sms);
+          });
+    }
+
+    // Displays the "Undo suggestion" button, in case user had suggested this message.
+    public void toggleUndoButton(SmsMessage smsMessage) {
+      if (smsMessage.getSuggestersList().contains(DbMessages.getInstance().firebaseUser.getUid())) {
+        buttonAddSuggestion.setVisibility(View.INVISIBLE);
+        buttonUndoSuggestion.setVisibility((View.VISIBLE));
+      } else {
+        buttonAddSuggestion.setVisibility(View.VISIBLE);
+        buttonUndoSuggestion.setVisibility((View.INVISIBLE));
+      }
     }
   }
 }
