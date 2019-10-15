@@ -12,6 +12,7 @@ message SmsMessage {
     string id = 4;
     int32  counter = 5;
     bool approved = 6;
+    repeated string suggesters = 7;
 }
 
 message SpamList {

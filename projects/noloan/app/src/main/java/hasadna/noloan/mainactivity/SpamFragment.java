@@ -11,16 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import hasadna.noloan.SuggestionRecyclerAdapter;
+import hasadna.noloan.SpamRecyclerAdapter;
 import noloan.R;
 
 public class SpamFragment extends Fragment {
 
   private OnFragmentInteractionListener fragmentInteractionListener;
   private RecyclerView recyclerView;
-  private SuggestionRecyclerAdapter suggestionAdapter;
-  private Button buttonRemoveSuggestion;
-  private Button createLawsuit;
+  private SpamRecyclerAdapter spamRecyclerAdapter;
 
   public SpamFragment() {
     // Required empty public constructor
@@ -33,7 +31,7 @@ public class SpamFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    suggestionAdapter = new SuggestionRecyclerAdapter();
+    spamRecyclerAdapter = new SpamRecyclerAdapter();
   }
 
   @Override
@@ -43,9 +41,8 @@ public class SpamFragment extends Fragment {
 
     recyclerView = rootView.findViewById(R.id.RecyclerView_spamMessages);
     recyclerView.setRotationY(180);
-    suggestionAdapter.registerAdapterDataObserver(
+    spamRecyclerAdapter.registerAdapterDataObserver(
         new RecyclerView.AdapterDataObserver() {
-
           @Override
           public void onItemRangeInserted(int positionStart, int itemCount) {
             ((MainActivity) getActivity()).updateTitles();
@@ -57,7 +54,7 @@ public class SpamFragment extends Fragment {
           }
         });
 
-    recyclerView.setAdapter(suggestionAdapter);
+    recyclerView.setAdapter(spamRecyclerAdapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     return rootView;

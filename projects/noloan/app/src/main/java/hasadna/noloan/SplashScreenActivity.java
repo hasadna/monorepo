@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.mainactivity.MainActivity;
