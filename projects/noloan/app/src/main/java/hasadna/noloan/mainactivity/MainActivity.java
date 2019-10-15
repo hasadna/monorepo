@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -20,12 +19,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,9 +37,6 @@ public class MainActivity extends AppCompatActivity
 
   private static final String TAG = "MainActivity";
 
-  private FirebaseAuth firebaseAuth;
-  static FirebaseUser firebaseUser;
-
   private DrawerLayout drawerLayout;
   private boolean spamActive;
   private List<SmsMessage> inbox;
@@ -58,22 +48,6 @@ public class MainActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main_activity);
-
-    // Firebase authentication
-    firebaseAuth = FirebaseAuth.getInstance();
-    if (firebaseAuth.getCurrentUser() != null) {
-      firebaseAuth
-          .signInAnonymously()
-          .addOnCompleteListener(
-              this,
-              task -> {
-                if (task.isSuccessful()) {
-                  firebaseUser = firebaseAuth.getCurrentUser();
-                } else {
-                  Log.w(TAG, "signInAnonymously:failure", task.getException());
-                }
-              });
-    }
 
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);

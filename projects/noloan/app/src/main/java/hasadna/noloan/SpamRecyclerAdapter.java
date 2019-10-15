@@ -86,7 +86,7 @@ public class SpamRecyclerAdapter
       counter.setText(
           itemView
               .getResources()
-              .getString(R.string.list_item_textView_spam_counter, sms.getCounter()));
+              .getString(R.string.list_item_textView_spam_counter, sms.getSuggestersCount()));
 
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other

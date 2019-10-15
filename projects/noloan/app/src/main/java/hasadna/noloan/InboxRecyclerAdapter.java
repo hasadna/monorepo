@@ -99,7 +99,7 @@ public class InboxRecyclerAdapter
                     DbMessages.getInstance()
                         .getMessages()
                         .get(DbMessages.getInstance().searchMessage(sms))
-                        .getCounter()));
+                        .getSuggestersCount()));
 
         // Toggle undo button
         if (DbMessages.getInstance()

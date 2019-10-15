@@ -21,8 +21,6 @@ public class DbMessages {
   private static DbMessages instance;
   private List<SmsMessage> messages;
 
-  private RecyclerView inboxRecyclerView;
-
   FirestoreClient firestoreClient;
 
   FirebaseUser firebaseUser;
@@ -73,8 +71,6 @@ public class DbMessages {
               .get(index)
               .toBuilder()
               .addSuggesters(firebaseUser.getUid())
-              // 2. Update counter
-              .setCounter(messages.get(index).getCounter() + 1)
               .setId(messages.get(index).getId())
               .build();
       firestoreClient.modifyMessage(messages.get(index), newMessage);
@@ -87,11 +83,7 @@ public class DbMessages {
     // Case New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage
-              .toBuilder()
-              .setCounter(smsMessage.getCounter() + 1)
-              .addSuggesters(firebaseUser.getUid())
-              .build());
+          smsMessage.toBuilder().addSuggesters(firebaseUser.getUid()).build());
     }
   }
 
@@ -101,7 +93,7 @@ public class DbMessages {
     if (smsMessage.getSuggestersList().contains(firebaseUser.getUid())) {
 
       // Case: Other people had suggested this spam as well, update just the counter (-1)
-      if (smsMessage.getCounter() > 1) {
+      if (smsMessage.getSuggestersCount() > 1) {
         // 1. Create new suggesters list
         List<String> newSuggesters = new ArrayList<>(smsMessage.getSuggestersList());
         newSuggesters.remove(firebaseUser.getUid());
@@ -109,7 +101,6 @@ public class DbMessages {
         SmsMessage newMessage =
             SmsMessage.newBuilder()
                 .addAllSuggesters(newSuggesters)
-                .setCounter(smsMessage.getCounter() - 1)
                 .setId(smsMessage.getId())
                 .setReceivedAt(smsMessage.getReceivedAt())
                 .setSender(smsMessage.getSender())
@@ -182,6 +173,11 @@ public class DbMessages {
       messages.remove(index);
       firestoreClient.deleteMessage(smsMessage);
       notifyListeners(index, smsMessage, Type.REMOVED);
+    } else {
+      Log.e(
+          TAG,
+          "Attempt to remove message by its ID, but message not found\nmessage id: "
+              + smsMessage.getId());
     }
   }
 
@@ -190,6 +186,15 @@ public class DbMessages {
     if (index != -1) {
       messages.set(index, newMessage);
       notifyListeners(index, newMessage, Type.MODIFIED);
+    } else {
+      Log.e(
+          TAG,
+          "Attempt to modify message but message not found.\n Message id: "
+              + newMessage.getId()
+              + "\nBody: "
+              + newMessage.getBody()
+              + "\nSender: "
+              + newMessage.getSender());
     }
   }
 
