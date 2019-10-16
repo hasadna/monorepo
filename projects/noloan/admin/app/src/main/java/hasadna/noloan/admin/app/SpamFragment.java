@@ -18,11 +18,13 @@ public class SpamFragment extends Fragment {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     spamRecyclerAdapter = new SpamRecyclerAdapter();
-
   }
 
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
 
     ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.spam_fregment, container, false);
 
@@ -35,3 +37,4 @@ public class SpamFragment extends Fragment {
     return rootView;
   }
 }
+

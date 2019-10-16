@@ -18,13 +18,16 @@ public class SuggetionsFragment extends Fragment {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     recyclerAdapter = new SuggetionRecyclerAdapter();
-
   }
 
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
 
-    ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.suggestion_fregment, container, false);
+    ViewGroup rootView =
+        (ViewGroup) inflater.inflate(R.layout.suggestion_fregment, container, false);
 
     RecyclerView recyclerView = rootView.findViewById(R.id.suggetion_recycler);
     recyclerView.setRotationY(180);
@@ -35,3 +38,4 @@ public class SuggetionsFragment extends Fragment {
     return rootView;
   }
 }
+

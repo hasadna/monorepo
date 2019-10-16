@@ -55,10 +55,9 @@ public class MainActivity extends AppCompatActivity
     ViewPager viewPager = findViewById(R.id.viewPager);
     // RTL swiping (Along with recyclerView.setRotationY(180) in fragments)
     viewPager.setRotationY(180);
-    MainActivityPageAdapter pageAdapter =
-            new MainActivityPageAdapter(getSupportFragmentManager());
-    pageAdapter.addFragment(new SuggetionsFragment(),"suggestions");
-    pageAdapter.addFragment(new SpamFragment(),"spam");
+    MainActivityPageAdapter pageAdapter = new MainActivityPageAdapter(getSupportFragmentManager());
+    pageAdapter.addFragment(new SuggetionsFragment(), "suggestions");
+    pageAdapter.addFragment(new SpamFragment(), "spam");
     viewPager.setAdapter(pageAdapter);
     TabLayout tabLayout = findViewById(R.id.TabLayout);
     tabLayout.setupWithViewPager(viewPager);

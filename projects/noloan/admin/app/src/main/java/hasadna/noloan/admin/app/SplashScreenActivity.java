@@ -90,8 +90,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam = new FirestoreClient().startListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH).getTask();
-      Task Suggestions = new FirestoreClient().startListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION).getTask();
+      Task spam =
+          new FirestoreClient()
+              .startListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH)
+              .getTask();
+      Task Suggestions =
+          new FirestoreClient()
+              .startListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION)
+              .getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {

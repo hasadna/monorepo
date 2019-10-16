@@ -11,7 +11,7 @@ import java.util.List;
 public class MainActivityPageAdapter extends FragmentPagerAdapter {
 
   private List<Fragment> fragments;
-  private List<String > titles;
+  private List<String> titles;
 
   public MainActivityPageAdapter(FragmentManager fm) {
     super(fm);
@@ -19,8 +19,7 @@ public class MainActivityPageAdapter extends FragmentPagerAdapter {
     titles = new ArrayList<>();
   }
 
-  public void addFragment(Fragment fragment, String title)
-  {
+  public void addFragment(Fragment fragment, String title) {
     fragments.add(fragment);
     titles.add(title);
   }
@@ -41,3 +40,4 @@ public class MainActivityPageAdapter extends FragmentPagerAdapter {
     return fragments.size();
   }
 }
+

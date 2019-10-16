@@ -35,10 +35,14 @@ public class FirestoreClient {
   }
 
   public void deleteMessage(SmsMessage sms, String path) {
-    client.collection(path).document(sms.getID()).delete()
-        .addOnFailureListener(e -> {
-          Log.d("FirestoreClient","deletion failed");
-        });
+    client
+        .collection(path)
+        .document(sms.getID())
+        .delete()
+        .addOnFailureListener(
+            e -> {
+              Log.d("FirestoreClient", "deletion failed");
+            });
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
@@ -49,55 +53,56 @@ public class FirestoreClient {
 
     CollectionReference collectionReference = client.collection(path);
     collectionReference.addSnapshotListener(
-            executor,
-            (queryDocumentSnapshots, e) -> {
-              if (e != null) {
-                return;
-              }
+        executor,
+        (queryDocumentSnapshots, e) -> {
+          if (e != null) {
+            return;
+          }
 
-              DbMessagesHolder messagesHolder = DbMessagesHolder.getInstance();
-              for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
-                SmsMessage sms = null;
-                try {
-                  sms =
-                          (SmsMessage)
-                                  decodeMessage(documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
-                  sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
-                } catch (InvalidProtocolBufferException e1) {
-                  e1.printStackTrace();
-                }
-                // Spam list
-                if (path.equals(SPAM_COLLECTION_PATH)) {
-                  switch (documentChange.getType()) {
-                    case ADDED:
-                      messagesHolder.addSpam(sms);
-                      break;
-                    case MODIFIED:
-                      messagesHolder.spamModified(sms);
-                      break;
-                    case REMOVED:
-                      messagesHolder.spamRemove(sms);
-                      break;
-                  }
-                }
-                // Suggestions list
-                else {
-                  switch (documentChange.getType()) {
-                    case ADDED:
-                      messagesHolder.addSuggestion(sms);
-                      break;
-                    case MODIFIED:
-                      messagesHolder.suggestionsModified(sms);
-                      break;
-                    case REMOVED:
-                      messagesHolder.suggestionRemove(sms);
-                      break;
-                  }
-                }
+          DbMessagesHolder messagesHolder = DbMessagesHolder.getInstance();
+          for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
+            SmsMessage sms = null;
+            try {
+              sms =
+                  (SmsMessage)
+                      decodeMessage(
+                          documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
+            } catch (InvalidProtocolBufferException e1) {
+              e1.printStackTrace();
+            }
+            // Spam list
+            if (path.equals(SPAM_COLLECTION_PATH)) {
+              switch (documentChange.getType()) {
+                case ADDED:
+                  messagesHolder.addSpam(sms);
+                  break;
+                case MODIFIED:
+                  messagesHolder.spamModified(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.spamRemove(sms);
+                  break;
               }
+            }
+            // Suggestions list
+            else {
+              switch (documentChange.getType()) {
+                case ADDED:
+                  messagesHolder.addSuggestion(sms);
+                  break;
+                case MODIFIED:
+                  messagesHolder.suggestionsModified(sms);
+                  break;
+                case REMOVED:
+                  messagesHolder.suggestionRemove(sms);
+                  break;
+              }
+            }
+          }
 
-              task.trySetResult(true);
-            });
+          task.trySetResult(true);
+        });
     return task;
   }
 

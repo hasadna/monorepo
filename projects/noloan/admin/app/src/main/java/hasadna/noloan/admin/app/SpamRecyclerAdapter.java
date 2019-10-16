@@ -15,7 +15,7 @@ import hasadna.noloan.admin.app.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SpamRecyclerAdapter
-        extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
+    extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
   DbMessagesHolder DbMessages;
 
@@ -25,22 +25,22 @@ public class SpamRecyclerAdapter
     Handler handler = new Handler(Looper.getMainLooper());
 
     DbMessages.setSpamListener(
-            new DbMessagesHolder.MessagesListener() {
-              @Override
-              public void messageAdded() {
-                handler.post(() -> notifyItemInserted(DbMessages.getSpam().size()));
-              }
+        new DbMessagesHolder.MessagesListener() {
+          @Override
+          public void messageAdded() {
+            handler.post(() -> notifyItemInserted(DbMessages.getSpam().size()));
+          }
 
-              @Override
-              public void messageRemoved(int index) {
-                handler.post(()-> notifyItemRemoved(index));
-              }
+          @Override
+          public void messageRemoved(int index) {
+            handler.post(() -> notifyItemRemoved(index));
+          }
 
-              @Override
-              public void messageModified(int index) {
-                handler.post(() -> notifyItemChanged(index));
-              }
-            });
+          @Override
+          public void messageModified(int index) {
+            handler.post(() -> notifyItemChanged(index));
+          }
+        });
   }
 
   @NonNull
@@ -78,11 +78,12 @@ public class SpamRecyclerAdapter
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
 
-      buttonDelete.setOnClickListener(view -> {
-        FirestoreClient client = new FirestoreClient();
-        client.deleteMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-        Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
-      });
+      buttonDelete.setOnClickListener(
+          view -> {
+            FirestoreClient client = new FirestoreClient();
+            client.deleteMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
+            Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
+          });
     }
   }
 }

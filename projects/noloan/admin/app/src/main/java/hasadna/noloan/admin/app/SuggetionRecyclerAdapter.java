@@ -15,7 +15,7 @@ import hasadna.noloan.admin.app.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SuggetionRecyclerAdapter
-        extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
+    extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
   DbMessagesHolder DbMessages;
 
@@ -24,29 +24,30 @@ public class SuggetionRecyclerAdapter
     Handler handler = new Handler(Looper.getMainLooper());
 
     DbMessages.setSuggestionsListener(
-            new DbMessagesHolder.MessagesListener() {
-              @Override
-              public void messageAdded() {
-                handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));
-              }
+        new DbMessagesHolder.MessagesListener() {
+          @Override
+          public void messageAdded() {
+            handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));
+          }
 
-              @Override
-              public void messageRemoved(int index) {
-                handler.post(() -> notifyItemRemoved(index));
-              }
+          @Override
+          public void messageRemoved(int index) {
+            handler.post(() -> notifyItemRemoved(index));
+          }
 
-              @Override
-              public void messageModified(int index) {
-                handler.post(() -> notifyItemChanged(index));
-              }
-            });
+          @Override
+          public void messageModified(int index) {
+            handler.post(() -> notifyItemChanged(index));
+          }
+        });
   }
 
   @NonNull
   @Override
   public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
     LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-    return new RecyclerViewHolder(inflater.inflate(R.layout.suggestion_list_item, viewGroup, false));
+    return new RecyclerViewHolder(
+        inflater.inflate(R.layout.suggestion_list_item, viewGroup, false));
   }
 
   @Override
@@ -77,17 +78,19 @@ public class SuggetionRecyclerAdapter
       from.setText(sms.getSender());
       content.setText(sms.getBody());
       receivedAt.setText(sms.getReceivedAt());
-      buttonAccept.setOnClickListener(view -> {
-        FirestoreClient client = new FirestoreClient();
-        client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-        client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
-        Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
-      });
-      buttonDelete.setOnClickListener(view -> {
-        FirestoreClient client = new FirestoreClient();
-        client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
-        Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
-      });
+      buttonAccept.setOnClickListener(
+          view -> {
+            FirestoreClient client = new FirestoreClient();
+            client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
+            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
+          });
+      buttonDelete.setOnClickListener(
+          view -> {
+            FirestoreClient client = new FirestoreClient();
+            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
+          });
     }
   }
 }
