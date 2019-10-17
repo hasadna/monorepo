@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    card_view:cardCornerRadius="2dp"
+    android:elevation="1dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="8dp"
+        android:layoutDirection="ltr"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/suggetions_button_accept"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary"
+                android:includeFontPadding="false"
+                android:onClick="fillLawsuitForm"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:text="@string/list_item_button_text"
+                android:textColor="@color/colorGreyBackground" />
+
+            <TextView
+                android:id="@+id/suggetions_receivedAt"
+                style="@style/ListDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/suggetions_button_delete"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary"
+                android:includeFontPadding="false"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
+                android:text="מחק"
+                android:textColor="@color/colorGreyBackground" />
+
+            <TextView
+                android:id="@+id/suggetions_received_from"
+                style="@style/ListFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/suggetions_content"
+            style="@style/ListContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
