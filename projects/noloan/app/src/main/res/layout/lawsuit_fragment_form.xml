@@ -6,106 +6,141 @@
     android:layout_height="match_parent"
     tools:context=".LawsuitFormFragment">
 
-
     <LinearLayout
         android:id="@+id/LinearLayout_formFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/TextView_formTitle"
-            style="@style/LawsuitFragmentTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/formFragment_title_text" />
-        <!--
-        <TextView
-            android:id="@+id/textView_firstFragment_description"
-            style="@style/LawsuitFragmentDescription"
-            android:text="@string/firstFragment_description_text" />-->
+        <include
+            android:id="@+id/toolbar_content"
+            layout="@layout/toolbar"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <ScrollView
             android:id="@+id/ScrollView_formFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/LinearLayout_formContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical"
+                android:paddingLeft="28dp"
+                android:paddingTop="13dp"
+                android:paddingRight="17dp"
                 android:textAlignment="center">
 
                 <LinearLayout
                     android:id="@+id/LinearLayout_userDetails"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="5dp"
                     android:gravity="right"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TextView_userDetails_title"
-                        style="@style/LawsuitFormFragmentSubTitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="פרטים אישיים" />
+                        android:layout_marginTop="13dp"
+                        android:layout_marginRight="3dp"
+                        android:fontFamily="@font/heebo_medium"
+                        android:includeFontPadding="false"
+                        android:text="@string/formFragment_personalDetails_title_text"
+                        android:textColor="@color/colorTextGrey1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/userPrivateName"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_privateName_hint"
-                        android:inputType="textPersonName" />
+                        android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/userLastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_lastName_hint"
-                        android:inputType="textPersonName" />
+                        <EditText
+                            android:id="@+id/EditText_userFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_firstName_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/userID"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_userId_hint"
-                        android:inputType="number" />
+                        android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/userAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_address_hint"
-                        android:inputType="textPersonName" />
+                        <EditText
+                            android:id="@+id/EditText_userLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_lastName_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/userPhone"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="right"
-                        android:hint="@string/formFragment_phoneNumber_hint"
-                        android:inputType="phone" />
+                        android:layout_height="match_parent"
+                        android:gravity="right">
 
-                    <EditText
-                        android:id="@+id/userFax"
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/EditText_userID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_userId_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textView_idValidationError"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:text="* מספר תעודת זהות אינו תקין"
+                            android:textColor="#D20C34"
+                            android:textSize="10sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="right"
-                        android:hint="@string/formFragment_faxNumber_hint"
-                        android:inputType="phone" />
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/EditText_userAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_address_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/userPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_phoneNumber_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
@@ -113,60 +148,97 @@
                     android:id="@+id/LinearLayout_companyDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="right"
-                    android:orientation="vertical"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="667dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TextView_companyDetails_title"
-                        style="@style/LawsuitFormFragmentSubTitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/formFragment_companyDetails_title_text" />
+                        android:layout_marginTop="13dp"
+                        android:layout_marginRight="3dp"
+                        android:fontFamily="@font/heebo_medium"
+                        android:includeFontPadding="false"
+                        android:text="@string/formFragment_companyDetails_title_text"
+                        android:textColor="@color/colorTextGrey1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/EditText_companyName"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_companyName_hint"
-                        android:inputType="textPersonName" />
+                        android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/EditText_companyId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_companyId_hint"
-                        android:inputType="number" />
+                        <EditText
+                            android:id="@+id/EditText_companyName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_companyName_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/EditText_companyAddress"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/formFragment_address_hint"
-                        android:inputType="textPersonName" />
+                        android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/EditText_companyPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="right"
-                        android:hint="@string/formFragment_phoneNumber_hint"
-                        android:inputType="phone" />
+                        <EditText
+                            android:id="@+id/EditText_companyId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_companyId_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/EditText_companyFax"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="right"
-                        android:hint="@string/formFragment_faxNumber_hint"
-                        android:inputType="phone" />
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/EditText_companyAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_address_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/EditText_companyPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_phoneNumber_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/EditText_companyFax"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_faxNumber_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
@@ -174,87 +246,100 @@
                     android:id="@+id/LinearLayout_claimDetails"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
                     android:gravity="right"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TextView_claimDetails_title"
-                        style="@style/LawsuitFormFragmentSubTitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginRight="3dp"
+                        android:fontFamily="@font/heebo_medium"
+                        android:includeFontPadding="false"
                         android:text="@string/formFragment_claimDetails_title_text"
-                        tools:layout_editor_absoluteX="8dp"
-                        tools:layout_editor_absoluteY="8dp" />
+                        android:textColor="@color/colorTextGrey1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/EditText_receivedSpamDate"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="@string/formFragment_spamDate_hint"
-                        android:inputType="date" />
+                        android:layout_height="match_parent">
 
-                    <EditText
-                        android:id="@+id/EditText_claimAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="right"
-                        android:hint="@string/formFragment_claimAmount_hint"
-                        android:inputType="number|textCapWords"
-                        android:text="1000" />
+                        <EditText
+                            android:id="@+id/EditText_receivedSpamDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:focusable="false"
+                            android:hint="@string/formFragment_spamDate_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="date"
+                            android:layoutDirection="rtl"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/textView"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/formFragment_claimValue_explanation_text" />
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:id="@+id/EditText_claimAmount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:hint="@string/formFragment_claimAmount_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="number|textCapWords"
+                            android:layoutDirection="rtl"
+                            android:text="1000"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <CheckBox
-                        android:id="@+id/checkBox_sentHaser"
+                        android:id="@+id/CheckBox_sentHaser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:imeOptions="actionNext"
                         android:layoutDirection="rtl"
-                        android:text="@string/formFragment_sentHaser_hint" />
+                        android:paddingRight="5dp"
+                        android:text="@string/formFragment_sentHaser_hint"
+                        android:textColor="@color/colorHint"
+                        android:textSize="16sp" />
 
                     <CheckBox
-                        android:id="@+id/checkbox_fiveLawsuits"
+                        android:id="@+id/CheckBox_fiveLawsuits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:imeOptions="actionNext"
                         android:layoutDirection="rtl"
-                        android:text="@string/formFragment_fiveLawsuits_hint" />
-
-                    <TextView
-                        android:id="@+id/textView_selectCourt_FormFragment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginVertical="8dp"
-                        android:text="@string/formFragment_button_chooseCourt_text"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="17dp" />
-
+                        android:paddingRight="5dp"
+                        android:text="@string/formFragment_fiveLawsuits_hint"
+                        android:textColor="#9B9B9B"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button_formFragment_next"
-                    style="@style/DefaultButton"
+                    android:id="@+id/Button_formFragment_next"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="36dp"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="19dp"
+                    android:background="@drawable/button_rectangle_rounded_blue_filled"
+                    android:fontFamily="@font/heebo_medium"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="14dp"
+                    android:paddingBottom="5dp"
                     android:text="@string/formFragment_button_next_text"
-
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="652dp" />
-
-
+                    android:textColor="@color/colorWhiteBackground"
+                    android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
-
-
-
     </LinearLayout>
-
 </FrameLayout>

@@ -1,10 +1,16 @@
 package hasadna.noloan.firestore;
 
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
@@ -12,31 +18,49 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.SpamHolder;
+import hasadna.noloan.DbMessages;
+import hasadna.noloan.mainactivity.InboxFragment;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
-  public static final String SPAM_COLLECTION_PATH = "noloan/spam/sms";
 
-  public static final String USER_SUGGEST_COLLECTION = "noloan/spam/suggestion";
+  public static final String MESSAGES_COLLECTION_PATH = "noloan/spam/sms";
 
   private FirebaseFirestore client;
+
+  private InboxFragment inboxFragment;
 
   public FirestoreClient() {
     client = FirebaseFirestore.getInstance();
   }
 
-  public void writeMessage(SmsMessage message, String path) {
+  public void writeMessage(SmsMessage message) {
     FirestoreElement element = encodeMessage(message);
-    client.collection(path).add(element);
+    client.collection(MESSAGES_COLLECTION_PATH).add(element);
+  }
+
+  public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
+    DocumentReference documentReference =
+        client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
+    documentReference.update("proto", encodeMessage(newMessage).getProto());
+  }
+
+  public void deleteMessage(SmsMessage sms) {
+    client
+        .collection(MESSAGES_COLLECTION_PATH)
+        .document(sms.getId())
+        .delete()
+        .addOnSuccessListener(aVoid -> {})
+        .addOnFailureListener(e -> {});
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningSpam() {
+  public TaskCompletionSource StartListeningToMessages() {
+
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
 
-    CollectionReference collectionReference = client.collection(SPAM_COLLECTION_PATH);
+    CollectionReference collectionReference = client.collection(MESSAGES_COLLECTION_PATH);
     collectionReference.addSnapshotListener(
         executor,
         (queryDocumentSnapshots, e) -> {
@@ -44,29 +68,24 @@ public class FirestoreClient {
             return;
           }
 
-          SpamHolder sp = SpamHolder.getInstance();
-          for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+          DbMessages dbMessages = DbMessages.getInstance();
+
+          // Get the message that changed
+          for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
             SmsMessage sms = null;
             try {
               sms =
                   (SmsMessage)
-                      decodeMessage(dc.getDocument().getString("proto"), SmsMessage.newBuilder());
+                      decodeMessage(
+                          documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
+              sms = sms.toBuilder().setId(documentChange.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
-            switch (dc.getType()) {
-              case ADDED:
-                sp.add(sms);
-                break;
-              case MODIFIED:
-                sp.modified(sms);
-                break;
-              case REMOVED:
-                sp.remove(sms);
-                break;
-            }
+
+            dbMessages.updateChange(sms, documentChange.getType());
           }
-          task.setResult(true);
+          task.trySetResult(true);
         });
     return task;
   }

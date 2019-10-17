@@ -1,74 +1,58 @@
-<div class="tracker" *ngIf="!treackerService.isStoriesTracksLoading">
+<div class="tracker" *ngIf="!trackerService.isStoriesTracksLoading">
   <div
     class="time"
     [ngClass]="{
-      'time-tracking': treackerService.isTracking,
-      'time-stoped': !treackerService.isTracking
+      'time-tracking': trackerService.isTracking,
+      'time-stoped': !trackerService.isTracking
     }"
     (click)="open()"
   >
-    <img src="/assets/ic-time.svg" *ngIf="treackerService.isTracking">
-    <img src="/assets/ic-time-stop.svg" *ngIf="!treackerService.isTracking">
-    <span>{{ treackerService.totalTimer.time }}</span>
+    <img src="/assets/ic-time.svg" *ngIf="trackerService.isTracking">
+    <img src="/assets/ic-time-stop.svg" *ngIf="!trackerService.isTracking">
+    <span>{{ trackerService.totalTimer.time }}</span>
   </div>
   <div
     class="popup"
-    [ngClass]="{ 'popup-tracking': treackerService.isTracking }"
+    [ngClass]="{ 'popup-tracking': trackerService.isTracking }"
     *ngIf="!isHidden"
   >
-    <ng-container *ngIf="!userService.isStoryListLoading && !treackerService.isStoryTracksLoading">
+    <ng-container *ngIf="!userService.isStoryListLoading && !trackerService.isStoryTracksLoading">
       <div class="track">
         <track-button></track-button>
         <div class="session">
-          <span *ngIf="treackerService.isTracking">
-            {{ treackerService.sessionTimer.time }}
+          <span *ngIf="trackerService.isTracking">
+            {{ trackerService.sessionTimer.time }}
           </span>
         </div>
         <div class="total-story">
           <span class="time">
-            {{ treackerService.storyTimer.timeWithoutSeconds }}
+            {{ trackerService.storyTimer.timeWithoutSeconds }}
           </span>
           <span> hours since </span>
-          <mat-form-field class="mat-clock" *ngIf="!treackerService.isTracking">
+          <mat-form-field class="mat-clock" *ngIf="!trackerService.isTracking">
             <mat-select [formControl]="sinceTime">
               <mat-option class="clock-option" *ngFor="let clock of clockList" [value]="clock">
                 {{ clock }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <span class="time-holder" *ngIf="treackerService.isTracking">
-            {{ treackerService.sinceTime }}
+          <span class="time-holder" *ngIf="trackerService.isTracking">
+            {{ trackerService.sinceTime }}
           </span>
         </div>
       </div>
-      <div class="story">
-        <input
-          type="text"
-          placeholder="Oneliner"
-          matInput
-          [formControl]="storySelect"
-          [matAutocomplete]="auto"
-          spellcheck=false
-        >
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            [value]="storySelect.value"
-            (click)="createNewStory()"
-            *ngIf="storySelect.value && !onelinerList.includes(storySelect.value)"
-          >
-            <div class="new-story">Create new story "{{ storySelect.value }}"</div>
-          </mat-option>
-          <mat-option *ngFor="let oneliner of onelinerList" [value]="oneliner">
-            {{ oneliner }}
-          </mat-option>
-        </mat-autocomplete>
-      </div>
+      <story-select
+        [story]="trackerService.selectedStory"
+        (selectStory)="storySelected($event)"
+        (valueChanges)="storySelectValueChanges()"
+        (createStory)="createNewStory($event)"
+      ></story-select>
     </ng-container>
     <mat-spinner
       [diameter]="50"
-      *ngIf="userService.isStoryListLoading || treackerService.isStoryTracksLoading"
+      *ngIf="userService.isStoryListLoading || trackerService.isStoryTracksLoading"
     ></mat-spinner>
   </div>
   <div class="popup-overlay" (click)="close()" *ngIf="!isHidden"></div>
 </div>
-<mat-spinner [diameter]="40" *ngIf="treackerService.isStoriesTracksLoading"></mat-spinner>
+<mat-spinner [diameter]="40" *ngIf="trackerService.isStoriesTracksLoading"></mat-spinner>

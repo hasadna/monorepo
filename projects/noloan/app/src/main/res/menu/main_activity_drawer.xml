@@ -7,7 +7,4 @@
         android:id="@+id/nav_about"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/title_about" />
-    <item
-        android:id="@+id/nav_change "
-        android:title="הצג ספאם" />
 </menu>

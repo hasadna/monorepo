@@ -14,11 +14,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 import hasadna.noloan.firestore.FirestoreClient;
+import hasadna.noloan.mainactivity.MainActivity;
 import noloan.R;
 
 // Permission request Based on
@@ -28,6 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
   final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
+  private static final String TAG = "SplashScreenActivity";
 
   Handler handler;
 
@@ -86,17 +90,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions and the spam
+  // Main Task to get the permissions and messages from the DB
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam = new FirestoreClient().StartListeningSpam().getTask();
+
+      Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
+
       Task<Boolean> permissions = permissionTask.getTask();
       try {
-
         Tasks.await(permissions);
-        Tasks.await(spam);
+        Tasks.await(messagesTask);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }
