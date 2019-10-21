@@ -1,5 +1,8 @@
 <resources>
 
+    // SharedPreferences path for lawsuits. Use with: getPackageName() + lawsuits_sharedPreferences_path
+    <string name="lawsuits_sharedPreferences_path">lawsuits</string>
+
     // MainActivity
     <string name="app_name">לא רוצה הלוואה</string>
     <string name="output_folder_name">lawsuits</string>
@@ -63,5 +66,4 @@
     <string name="summaryFragment_button_chooseCourt_text">בחירת בית משפט</string>
 
 </resources>
-
 

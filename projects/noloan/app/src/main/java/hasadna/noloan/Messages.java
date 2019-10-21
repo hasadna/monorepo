@@ -1,7 +1,6 @@
 package hasadna.noloan;
 
-import android.os.Message;
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,28 +13,25 @@ import java.util.List;
 import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-// Simple singleton to hold the messages from the db
-public class DbMessages {
-  private static final String TAG = "DbMessages";
+// Simple singleton to hold messages from the db, messages from the inbox
+public class Messages {
+  private static final String TAG = "Messages";
 
-  private static DbMessages instance;
-  private List<SmsMessage> messages;
+  private static Messages instance;
+  private List<SmsMessage> dbMessages;
 
-  FirestoreClient firestoreClient;
+  private List<SmsMessage> inboxMessages;
+  private ArrayList<MessagesListener> messagesListeners;
 
-  FirebaseUser firebaseUser;
-  FirebaseAuth firebaseAuth;
-  ArrayList<MessagesListener> messagesListeners;
+  private FirestoreClient firestoreClient;
+  private FirebaseUser firebaseUser;
+  private FirebaseAuth firebaseAuth;
 
-  public static DbMessages getInstance() {
-    if (instance == null) {
-      instance = new DbMessages();
-    }
-    return instance;
-  }
+  Context context;
 
-  public DbMessages() {
-    messages = new ArrayList<>();
+  public Messages() {
+    dbMessages = new ArrayList<>();
+    inboxMessages = new ArrayList<>();
     firestoreClient = new FirestoreClient();
     firebaseAuth = FirebaseAuth.getInstance();
 
@@ -52,35 +48,35 @@ public class DbMessages {
     messagesListeners = new ArrayList<>();
   }
 
-  public void init(List<SmsMessage> messages) {
-    this.messages = messages;
-  }
-
-  public List<SmsMessage> getMessages() {
-    return messages;
+  public static Messages getInstance() {
+    if (instance == null) {
+      instance = new Messages();
+    }
+    return instance;
   }
 
   // Checks if message had already been suggested. Updates counter / Adds a new suggestion
   public void suggestMessage(SmsMessage smsMessage) {
     // Case: Message was already suggested by others but not by this user
     // 1. Add user as a "suggester"
-    int index = searchMessage(smsMessage);
-    if ((index != -1) && !messages.get(index).getSuggestersList().contains(firebaseUser.getUid())) {
+    int index = searchDbMessage(smsMessage);
+    if ((index != -1)
+        && !dbMessages.get(index).getSuggestersList().contains(firebaseUser.getUid())) {
       SmsMessage newMessage =
-          messages
+          dbMessages
               .get(index)
               .toBuilder()
               .addSuggesters(firebaseUser.getUid())
-              .setId(messages.get(index).getId())
+              .setId(dbMessages.get(index).getId())
               .build();
-      firestoreClient.modifyMessage(messages.get(index), newMessage);
+      firestoreClient.modifyMessage(dbMessages.get(index), newMessage);
       modifyMessage(newMessage);
 
       // Notify
-      notifyListeners(messages.indexOf(newMessage), newMessage, Type.MODIFIED);
+      notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
 
     }
-    // Case New suggestion
+    // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
           smsMessage.toBuilder().addSuggesters(firebaseUser.getUid()).build());
@@ -112,21 +108,32 @@ public class DbMessages {
         modifyMessage(newMessage);
 
         // Notify
-        notifyListeners(messages.indexOf(newMessage), newMessage, Type.MODIFIED);
+        notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
       }
       // Case: User is the only one suggested this spam
       else {
         removeMessage(smsMessage);
-        notifyListeners(messages.indexOf(smsMessage), smsMessage, Type.REMOVED);
+        notifyListeners(dbMessages.indexOf(smsMessage), smsMessage, Type.REMOVED);
       }
     }
   }
 
-  // Search by message's sender & body. If no message found, return -1
-  public int searchMessage(SmsMessage smsMessage) {
-    for (int i = 0; i < messages.size(); i++) {
-      if (messages.get(i).getBody().contentEquals(smsMessage.getBody())
-          && messages.get(i).getSender().contentEquals(smsMessage.getSender())) {
+  // Search message by sender & body. If no message found, return -1
+  public int searchDbMessage(SmsMessage smsMessage) {
+    for (int i = 0; i < dbMessages.size(); i++) {
+      if (dbMessages.get(i).getBody().contentEquals(smsMessage.getBody())
+          && dbMessages.get(i).getSender().contentEquals(smsMessage.getSender())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  // Search message by sender & body. If no message found, return -1
+  public int searchInboxMessage(SmsMessage smsMessage) {
+    for (int i = 0; i < inboxMessages.size(); i++) {
+      if (inboxMessages.get(i).getBody().contentEquals(smsMessage.getBody())
+          && inboxMessages.get(i).getSender().contentEquals(smsMessage.getSender())) {
         return i;
       }
     }
@@ -134,17 +141,13 @@ public class DbMessages {
   }
 
   // Return -1 if no message found
-  public int getIndexById(SmsMessage smsMessage) {
-    for (int i = 0; i < messages.size(); i++) {
-      if (messages.get(i).getId().contentEquals(smsMessage.getId())) {
+  public int getDbIndexById(SmsMessage smsMessage) {
+    for (int i = 0; i < dbMessages.size(); i++) {
+      if (dbMessages.get(i).getId().contentEquals(smsMessage.getId())) {
         return i;
       }
     }
     return -1;
-  }
-
-  public FirebaseUser getFirebaseUser() {
-    return firebaseUser;
   }
 
   // Receive changes from the db (called from FirestoreClient)
@@ -163,28 +166,37 @@ public class DbMessages {
   }
 
   public void addMessage(SmsMessage smsMessage) {
-    messages.add(smsMessage);
-    notifyListeners(getIndexById(smsMessage), smsMessage, Type.ADDED);
+
+    if (searchInboxMessage(smsMessage) != -1) {
+      smsMessage =
+          smsMessage
+              .toBuilder()
+              .setReceivedAt(inboxMessages.get(searchInboxMessage(smsMessage)).getReceivedAt())
+              .build();
+    }
+    dbMessages.add(smsMessage);
+
+    notifyListeners(getDbIndexById(smsMessage), smsMessage, Type.ADDED);
   }
 
   public void removeMessage(SmsMessage smsMessage) {
-    int index = getIndexById(smsMessage);
+    int index = getDbIndexById(smsMessage);
     if (index != -1) {
-      messages.remove(index);
+      dbMessages.remove(index);
       firestoreClient.deleteMessage(smsMessage);
       notifyListeners(index, smsMessage, Type.REMOVED);
     } else {
-      Log.e(
+      Log.w(
           TAG,
-          "Attempt to remove message by its ID, but message not found\nmessage id: "
+          "Attempt to remove message by its ID, but message not found. This might come from inbox trying to find a similiar spam in the db.\nmessage id: "
               + smsMessage.getId());
     }
   }
 
   public void modifyMessage(SmsMessage newMessage) {
-    int index = getIndexById(newMessage);
+    int index = getDbIndexById(newMessage);
     if (index != -1) {
-      messages.set(index, newMessage);
+      dbMessages.set(index, newMessage);
       notifyListeners(index, newMessage, Type.MODIFIED);
     } else {
       Log.e(
@@ -216,6 +228,26 @@ public class DbMessages {
           break;
       }
     }
+  }
+
+  public FirebaseUser getFirebaseUser() {
+    return firebaseUser;
+  }
+
+  public List<SmsMessage> getDbMessages() {
+    return dbMessages;
+  }
+
+  public List<SmsMessage> getInboxMessages() {
+    return inboxMessages;
+  }
+
+  public void setInboxMessages(List<SmsMessage> inboxMessages) {
+    this.inboxMessages = inboxMessages;
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
   }
 
   public interface MessagesListener {

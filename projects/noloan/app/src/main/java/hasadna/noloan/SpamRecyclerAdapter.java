@@ -1,15 +1,23 @@
 package hasadna.noloan;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -17,19 +25,20 @@ import noloan.R;
 
 public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
+  private static final String TAG = "SpamRecyclerAdapter";
 
-  DbMessages dbMessages;
+  Messages messages;
 
   public SpamRecyclerAdapter() {
-    dbMessages = DbMessages.getInstance();
+    messages = Messages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
     // Listen to db messages
-    dbMessages.setMessagesListener(
-        new DbMessages.MessagesListener() {
+    messages.setMessagesListener(
+        new Messages.MessagesListener() {
           @Override
           public void messageAdded(SmsMessage newMessage) {
-            handler.post(() -> notifyItemInserted(dbMessages.getMessages().size()));
+            handler.post(() -> notifyItemInserted(messages.getDbMessages().size()));
           }
 
           @Override
@@ -53,12 +62,12 @@ public class SpamRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(dbMessages.getMessages().get(i));
+    recyclerViewHolder.bind(messages.getDbMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return dbMessages.getMessages().size();
+    return messages.getDbMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -82,7 +91,22 @@ public class SpamRecyclerAdapter
     public void bind(SmsMessage sms) {
       from.setText(sms.getSender());
       content.setText(sms.getBody());
-      receivedAt.setText(sms.getReceivedAt());
+
+      // Set received date to Hebrew format
+      try {
+        Calendar calendar = Calendar.getInstance();
+        Locale local = new Locale("he");
+        calendar.setTime(new SimpleDateFormat("dd/M/yyyy", local).parse(sms.getReceivedAt()));
+        receivedAt.setText(
+            String.format(
+                itemView.getContext().getString(R.string.list_item_date),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, local),
+                calendar.get(Calendar.YEAR)));
+      } catch (ParseException e) {
+        Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
+      }
+
       counter.setText(
           itemView
               .getResources()
@@ -94,9 +118,12 @@ public class SpamRecyclerAdapter
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            // TODO: Pass the whole SmsMessage.proto object to the intent.
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             intentToLawsuitForm.putExtra("from", sms.getSender());
             intentToLawsuitForm.putExtra("body", sms.getBody());
+            intentToLawsuitForm.putExtra("id", sms.getId());
+
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
@@ -105,18 +132,20 @@ public class SpamRecyclerAdapter
 
       buttonUndoSuggestion.setOnClickListener(
           v -> {
-            dbMessages.undoSuggestion(sms);
+            messages.undoSuggestion(sms);
           });
 
       buttonAddSuggestion.setOnClickListener(
           view -> {
-            DbMessages.getInstance().suggestMessage(sms);
+            Messages.getInstance().suggestMessage(sms);
           });
     }
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
     public void toggleUndoButton(SmsMessage smsMessage) {
-      if (smsMessage.getSuggestersList().contains(DbMessages.getInstance().firebaseUser.getUid())) {
+      if (smsMessage
+          .getSuggestersList()
+          .contains(Messages.getInstance().getFirebaseUser().getUid())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {

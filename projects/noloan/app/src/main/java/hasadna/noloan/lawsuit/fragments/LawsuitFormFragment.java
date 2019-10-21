@@ -68,8 +68,7 @@ public class LawsuitFormFragment extends Fragment {
           public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
-    // Display court's detail in TextViews
-    receivedDate.setText(lawsuitActivity.selectedSmsSpam.getReceivedAt());
+    receivedDate.setText(lawsuitActivity.spamMessage.getReceivedAt());
     receivedDate.setOnClickListener(v -> displayDatePicker());
 
     // Proceed to next fragment only if form is validated (user's id number)
@@ -79,6 +78,7 @@ public class LawsuitFormFragment extends Fragment {
             // Create PDF and proceed to SummaryFragment (Get file's path with:
             // LawsuitActivity.getAbsFilename())
             createLawsuitProto();
+            lawsuitActivity.updateSharedPreferences();
             lawsuitActivity.createPdf();
             lawsuitActivity.viewPager.setCurrentItem(1, false);
           } else {
@@ -91,6 +91,56 @@ public class LawsuitFormFragment extends Fragment {
         });
 
     return rootView;
+  }
+
+  @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    updatePreviousFormValues();
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    createLawsuitProto();
+    lawsuitActivity.updateSharedPreferences();
+  }
+
+  private void updatePreviousFormValues() {
+
+    // User
+    ((EditText) getView().findViewById(R.id.EditText_userFirstName))
+        .setText(lawsuitActivity.lawsuitProto.getFirstName());
+    ((EditText) getView().findViewById(R.id.EditText_userLastName))
+        .setText(lawsuitActivity.lawsuitProto.getLastName());
+    ((EditText) getView().findViewById(R.id.EditText_userID))
+        .setText(lawsuitActivity.lawsuitProto.getUserId());
+    ((EditText) getView().findViewById(R.id.EditText_userAddress))
+        .setText(lawsuitActivity.lawsuitProto.getUserAddress());
+    ((EditText) getView().findViewById(R.id.EditText_userPhone))
+        .setText(lawsuitActivity.lawsuitProto.getUserPhone());
+
+    // Company
+    ((EditText) getView().findViewById(R.id.EditText_companyName))
+        .setText(lawsuitActivity.lawsuitProto.getCompanyName());
+    ((EditText) getView().findViewById(R.id.EditText_companyId))
+        .setText(lawsuitActivity.lawsuitProto.getCompanyId());
+    ((EditText) getView().findViewById(R.id.EditText_companyAddress))
+        .setText(lawsuitActivity.lawsuitProto.getCompanyAddress());
+    ((EditText) getView().findViewById(R.id.EditText_companyPhone))
+        .setText(lawsuitActivity.lawsuitProto.getCompanyPhone());
+    ((EditText) getView().findViewById(R.id.EditText_companyFax))
+        .setText(lawsuitActivity.lawsuitProto.getCompanyFax());
+
+    // General
+    ((EditText) getView().findViewById(R.id.EditText_receivedSpamDate))
+        .setText(lawsuitActivity.lawsuitProto.getDateReceived());
+    ((EditText) getView().findViewById(R.id.EditText_claimAmount))
+        .setText(lawsuitActivity.lawsuitProto.getClaimAmount());
+    ((CheckBox) getView().findViewById(R.id.CheckBox_sentHaser))
+        .setChecked(lawsuitActivity.lawsuitProto.getSentHaser());
+    ((CheckBox) getView().findViewById(R.id.CheckBox_fiveLawsuits))
+        .setChecked(lawsuitActivity.lawsuitProto.getMoreThanFiveClaims());
   }
 
   // Pops a calendar dialog when clicking on date fields
@@ -114,7 +164,10 @@ public class LawsuitFormFragment extends Fragment {
   // Update LawsuitProto with form's fields
   private void createLawsuitProto() {
     lawsuitActivity.lawsuitProto =
-        Lawsuit.newBuilder()
+        lawsuitActivity
+            .lawsuitProto
+            .toBuilder()
+
             // User
             .setFirstName(
                 ((EditText) getView().findViewById(R.id.EditText_userFirstName))
@@ -128,7 +181,8 @@ public class LawsuitFormFragment extends Fragment {
                 ((EditText) getView().findViewById(R.id.EditText_userID)).getText().toString())
             .setUserAddress(
                 ((EditText) getView().findViewById(R.id.EditText_userAddress)).getText().toString())
-            .setUserPhone(((EditText) getView().findViewById(R.id.userPhone)).getText().toString())
+            .setUserPhone(
+                ((EditText) getView().findViewById(R.id.EditText_userPhone)).getText().toString())
 
             // Company
             .setCompanyName(

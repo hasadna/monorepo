@@ -25,16 +25,11 @@ import noloan.R;
 public class InboxRecyclerAdapter
     extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "InboxRecyclerAdapter";
-  List<SmsMessage> messages;
-  RecyclerViewHolder recyclerViewHolder;
 
-  public InboxRecyclerAdapter(List<SmsMessage> messages) {
-    if (messages.size() == 0) {
-      this.messages = new ArrayList<>();
+  public InboxRecyclerAdapter() {
+    if (Messages.getInstance().getInboxMessages().size() == 0) {
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      this.messages.add(noMessage);
-    } else {
-      this.messages = messages;
+      Messages.getInstance().getInboxMessages().add(noMessage);
     }
   }
 
@@ -45,25 +40,14 @@ public class InboxRecyclerAdapter
     return new RecyclerViewHolder(inflater.inflate(R.layout.inbox_list_item, viewGroup, false));
   }
 
-  // Search message by Body and Sender. Return -1 of no message found
-  public int searchMessage(SmsMessage smsMessage) {
-    for (int i = 0; i < messages.size(); i++) {
-      if (messages.get(i).getBody().contentEquals(smsMessage.getBody())
-          && messages.get(i).getSender().contentEquals(smsMessage.getSender())) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(messages.get(i));
+    recyclerViewHolder.bind(Messages.getInstance().getInboxMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return messages.size();
+    return Messages.getInstance().getInboxMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -90,32 +74,32 @@ public class InboxRecyclerAdapter
       content.setText(sms.getBody());
 
       // Search if message was suggested / user suggested: update counter / add undo button
-      if (DbMessages.getInstance().searchMessage(sms) != -1) {
+      if (Messages.getInstance().searchDbMessage(sms) != -1) {
         counter.setText(
             itemView
                 .getResources()
                 .getString(
                     R.string.list_item_textView_spam_counter,
-                    DbMessages.getInstance()
-                        .getMessages()
-                        .get(DbMessages.getInstance().searchMessage(sms))
+                    Messages.getInstance()
+                        .getDbMessages()
+                        .get(Messages.getInstance().searchDbMessage(sms))
                         .getSuggestersCount()));
 
         // Toggle undo button
-        if (DbMessages.getInstance()
-            .getMessages()
-            .get(DbMessages.getInstance().searchMessage((sms)))
+        if (Messages.getInstance()
+            .getDbMessages()
+            .get(Messages.getInstance().searchDbMessage(sms))
             .getSuggestersList()
-            .contains(DbMessages.getInstance().getFirebaseUser().getUid())) {
+            .contains(Messages.getInstance().getFirebaseUser().getUid())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(
               view ->
-                  DbMessages.getInstance()
+                  Messages.getInstance()
                       .undoSuggestion(
-                          DbMessages.getInstance()
-                              .getMessages()
-                              .get(DbMessages.getInstance().searchMessage((sms)))));
+                          Messages.getInstance()
+                              .getDbMessages()
+                              .get(Messages.getInstance().searchDbMessage((sms)))));
         } else {
           buttonAddSuggestion.setVisibility(View.VISIBLE);
           buttonUndoSuggestion.setVisibility((View.INVISIBLE));
@@ -129,13 +113,11 @@ public class InboxRecyclerAdapter
         buttonUndoSuggestion.setVisibility((View.INVISIBLE));
       }
 
-      // Localize Hebrew date format
-      Calendar calendar = Calendar.getInstance();
-      Date receivedDate;
-      Locale local = new Locale("he");
+      // Set received date to Hebrew format
       try {
-        receivedDate = new SimpleDateFormat("dd/M/yyyy", local).parse(sms.getReceivedAt());
-        calendar.setTime(receivedDate);
+        Calendar calendar = Calendar.getInstance();
+        Locale local = new Locale("he");
+        calendar.setTime(new SimpleDateFormat("dd/M/yyyy", local).parse(sms.getReceivedAt()));
         receivedAt.setText(
             String.format(
                 itemView.getContext().getString(R.string.list_item_date),
@@ -152,14 +134,23 @@ public class InboxRecyclerAdapter
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            // TODO: Pass the whole SmsMessage.proto object to the intent.
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             intentToLawsuitForm.putExtra("from", sms.getSender());
             intentToLawsuitForm.putExtra("body", sms.getBody());
+            intentToLawsuitForm.putExtra("id", sms.getId());
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonAddSuggestion.setOnClickListener(view -> DbMessages.getInstance().suggestMessage(sms));
+      buttonAddSuggestion.setOnClickListener(view -> Messages.getInstance().suggestMessage(sms));
     }
   }
 }
+
+/**
+ * // Search message by Body and Sender. Return -1 of no message found public int
+ * searchMessage(SmsMessage smsMessage) { for (int i = 0; i < messages.size(); i++) { if
+ * (messages.get(i).getBody().contentEquals(smsMessage.getBody()) &&
+ * messages.get(i).getSender().contentEquals(smsMessage.getSender())) { return i; } } return -1; }*
+ */
 
