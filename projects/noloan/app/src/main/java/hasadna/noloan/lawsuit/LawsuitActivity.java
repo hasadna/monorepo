@@ -89,8 +89,6 @@ public class LawsuitActivity extends AppCompatActivity {
     actionBar.setDisplayShowHomeEnabled(true);
     toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-    // Create lawsuitProto of the current lawsuit, from the FormFragment fields
-
     spamMessage =
         SmsMessage.newBuilder()
             .setSender(getIntent().getExtras().getString("from"))
