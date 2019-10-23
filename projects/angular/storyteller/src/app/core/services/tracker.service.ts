@@ -47,7 +47,9 @@ export class Timer {
     }
 
     const date: Date = new Date(ms);
-    let time: string = Math.floor(date.getUTCHours()) + ':' + getZero(date.getMinutes());
+    const hours: number = Math.floor(ms / (1000 * 60 * 60));
+    const minutes: string = getZero(date.getMinutes());
+    let time: string = hours + ':' + minutes;
     if (isSecond) {
       time += ':' + getZero(date.getSeconds());
     }
