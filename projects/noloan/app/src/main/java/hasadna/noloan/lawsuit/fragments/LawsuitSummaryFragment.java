@@ -21,7 +21,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-import hasadna.noloan.AppSharedPreferences;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.CourtProto;
 import noloan.R;
@@ -75,13 +74,13 @@ public class LawsuitSummaryFragment extends Fragment {
           Intent intent = new Intent(Intent.ACTION_VIEW, uri);
           startActivity(intent);
         });
+
+    // Display details for sending via fax / mail
     selectCourt = rootView.findViewById(R.id.button_selectCourt);
     selectCourt.setOnClickListener(v -> displayCourtPicker());
     courtAddress = rootView.findViewById(R.id.textView_courtAddress);
     courtFax = rootView.findViewById(R.id.textView_courtFax);
 
-    // Show court's details
-    updateCourtViews();
     return rootView;
   }
 
@@ -205,26 +204,14 @@ public class LawsuitSummaryFragment extends Fragment {
     courtBuilder.setItems(
         courtNames,
         (dialog, which) -> {
-          // Add selected court to the lawsuit's sharedPreferences
-          lawsuitActivity.lawsuitProto =
-              lawsuitActivity.lawsuitProto.toBuilder().setCourt(courtList.get(which)).build();
-          AppSharedPreferences.updateSharedPreferences(
-              lawsuitActivity.lawsuitProto.getSmsMessage());
-          updateCourtViews();
+          selectedCourt = courtList.get(which);
+          selectCourt.setText("בית המשפט לתביעות קטנות - " + selectedCourt.getName());
+          courtAddress.setText("כתובת:" + selectedCourt.getAddress());
+          courtFax.setText("פקס:" + selectedCourt.getFax());
+          courtAddress.setVisibility(TextView.VISIBLE);
+          courtFax.setVisibility(TextView.VISIBLE);
         });
     courtBuilder.show();
-  }
-
-  // Displays court's name, address and fax number in views
-  public void updateCourtViews() {
-    if (lawsuitActivity.lawsuitProto.hasCourt()) {
-      selectCourt.setText(
-          "בית המשפט לתביעות קטנות - " + lawsuitActivity.lawsuitProto.getCourt().getName());
-      courtAddress.setText("כתובת:" + lawsuitActivity.lawsuitProto.getCourt().getAddress());
-      courtFax.setText("פקס:" + lawsuitActivity.lawsuitProto.getCourt().getFax());
-      courtAddress.setVisibility(TextView.VISIBLE);
-      courtFax.setVisibility(TextView.VISIBLE);
-    }
   }
 }
 

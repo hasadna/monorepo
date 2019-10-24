@@ -1,6 +1,7 @@
 package hasadna.noloan.lawsuit;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +18,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import hasadna.noloan.AppSharedPreferences;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
@@ -44,6 +46,7 @@ public class LawsuitActivity extends AppCompatActivity {
   private String absFilename;
   public SmsMessage spamMessage;
   public Lawsuit lawsuitProto;
+  public String sharedPreferencesKey;
 
   public Toolbar toolbar;
   public TextView toolbarTitle;
@@ -83,6 +86,8 @@ public class LawsuitActivity extends AppCompatActivity {
     actionBar.setDisplayShowHomeEnabled(true);
     toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
+    // Create lawsuitProto of the current lawsuit, from the FormFragment fields
+
     spamMessage =
         SmsMessage.newBuilder()
             .setSender(getIntent().getExtras().getString("from"))
@@ -91,9 +96,14 @@ public class LawsuitActivity extends AppCompatActivity {
             .setId(getIntent().getExtras().getString("id"))
             .build();
 
+    sharedPreferencesKey =
+        String.valueOf(
+            (spamMessage.getSender() + spamMessage.getBody() + spamMessage.getReceivedAt())
+                .hashCode());
+
     // Get previous lawsuit details
-    if (AppSharedPreferences.getSharedPreferencesLawsuit(spamMessage) != null) {
-      lawsuitProto = AppSharedPreferences.getSharedPreferencesLawsuit(spamMessage);
+    if (getSharedPreferencesLawsuitProto() != null) {
+      lawsuitProto = getSharedPreferencesLawsuitProto();
     } else {
       lawsuitProto =
           Lawsuit.newBuilder()
@@ -101,7 +111,7 @@ public class LawsuitActivity extends AppCompatActivity {
               .setDateReceived(spamMessage.getReceivedAt())
               .setClaimAmount("1000")
               .buildPartial();
-      AppSharedPreferences.updateSharedPreferences(lawsuitProto.getSmsMessage());
+      updateSharedPreferences();
     }
 
     // Used for dates in the lawsuit form
@@ -354,6 +364,40 @@ public class LawsuitActivity extends AppCompatActivity {
       // Otherwise, select the previous step.
       viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
     }
+  }
+
+  public void updateSharedPreferences() {
+    SharedPreferences.Editor editor =
+        getSharedPreferences(
+                getApplication().getPackageName() + R.string.lawsuits_sharedPreferences_path,
+                MODE_PRIVATE)
+            .edit();
+    editor.putString(
+        sharedPreferencesKey,
+        Base64.encodeToString(this.lawsuitProto.toByteArray(), Base64.DEFAULT));
+    editor.apply();
+  }
+
+  public Lawsuit getSharedPreferencesLawsuitProto() {
+
+    // Check if this previous lawsuit exists in the sharedPreferences
+    if (!getSharedPreferences(
+            getPackageName() + R.string.lawsuits_sharedPreferences_path, MODE_PRIVATE)
+        .getString(sharedPreferencesKey, "Key not found")
+        .contentEquals("Key not found")) {
+      byte[] messageBytes =
+          Base64.decode(
+              getSharedPreferences(
+                      getPackageName() + R.string.lawsuits_sharedPreferences_path, MODE_PRIVATE)
+                  .getString(sharedPreferencesKey, "Key not found"),
+              Base64.DEFAULT);
+      try {
+        return Lawsuit.newBuilder().build().getParserForType().parseFrom(messageBytes);
+      } catch (Exception e) {
+        Log.e(TAG, "Error parsing Lawsuit.Proto from the sharedPreferences\n" + e.getMessage());
+      }
+    }
+    return null;
   }
 }
 
