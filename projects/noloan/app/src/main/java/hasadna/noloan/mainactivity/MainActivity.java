@@ -23,10 +23,9 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.Messages;
+import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.main_activity);
 
     // Read inbox messages
-    Messages.getInstance().setInboxMessages(readSmsFromDevice());
+    SmsMessages.get().setInboxMessages(readSmsFromDevice());
 
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
@@ -160,18 +159,16 @@ public class MainActivity extends AppCompatActivity
   // changes
   public void updateTitles() {
     // Main title
-    statusTitle.setText(String.valueOf(Messages.getInstance().getDbMessages().size()));
+    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
 
     // Tab's titles
     tabLayout
         .getTabAt(0)
         .setText(
-            getString(
-                R.string.inboxFragment_title, Messages.getInstance().getInboxMessages().size()));
+            getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
     tabLayout
         .getTabAt(1)
-        .setText(
-            getString(R.string.spamFragment_title, Messages.getInstance().getDbMessages().size()));
+        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
   }
 
   private void openAbout() {

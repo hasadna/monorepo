@@ -91,7 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions and messages from the DB
+  // Main Task to get the permissions and smsMessages from the DB
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {

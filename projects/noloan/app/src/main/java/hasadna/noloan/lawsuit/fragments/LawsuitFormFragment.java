@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import hasadna.noloan.AppSharedPreferences;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import noloan.R;
@@ -78,7 +79,8 @@ public class LawsuitFormFragment extends Fragment {
             // Create PDF and proceed to SummaryFragment (Get file's path with:
             // LawsuitActivity.getAbsFilename())
             createLawsuitProto();
-            lawsuitActivity.updateSharedPreferences();
+            AppSharedPreferences.updateSharedPreferences(
+                lawsuitActivity.lawsuitProto.getSmsMessage());
             lawsuitActivity.createPdf();
             lawsuitActivity.viewPager.setCurrentItem(1, false);
           } else {
@@ -103,11 +105,10 @@ public class LawsuitFormFragment extends Fragment {
   public void onPause() {
     super.onPause();
     createLawsuitProto();
-    lawsuitActivity.updateSharedPreferences();
+    AppSharedPreferences.updateSharedPreferences(lawsuitActivity.lawsuitProto.getSmsMessage());
   }
 
   private void updatePreviousFormValues() {
-
     // User
     ((EditText) getView().findViewById(R.id.EditText_userFirstName))
         .setText(lawsuitActivity.lawsuitProto.getFirstName());

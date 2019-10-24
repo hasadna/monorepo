@@ -13,7 +13,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.Messages;
+import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -60,7 +60,7 @@ public class FirestoreClient {
             return;
           }
 
-          Messages messages = Messages.getInstance();
+          SmsMessages smsMessages = SmsMessages.get();
 
           // Get the message that changed
           for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
@@ -75,7 +75,7 @@ public class FirestoreClient {
               e1.printStackTrace();
             }
 
-            messages.updateChange(sms, documentChange.getType());
+            smsMessages.updateChange(sms, documentChange.getType());
           }
           task.trySetResult(true);
         });

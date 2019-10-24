@@ -1,6 +1,5 @@
 package hasadna.noloan;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,11 +12,11 @@ import java.util.List;
 import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-// Simple singleton to hold messages from the db, messages from the inbox
-public class Messages {
-  private static final String TAG = "Messages";
+// Simple singleton to hold smsMessages from the db, smsMessages from the inbox
+public class SmsMessages {
+  private static final String TAG = "SmsMessages";
 
-  private static Messages instance;
+  private static SmsMessages instance;
   private List<SmsMessage> dbMessages;
 
   private List<SmsMessage> inboxMessages;
@@ -27,9 +26,7 @@ public class Messages {
   private FirebaseUser firebaseUser;
   private FirebaseAuth firebaseAuth;
 
-  Context context;
-
-  public Messages() {
+  public SmsMessages() {
     dbMessages = new ArrayList<>();
     inboxMessages = new ArrayList<>();
     firestoreClient = new FirestoreClient();
@@ -48,9 +45,10 @@ public class Messages {
     messagesListeners = new ArrayList<>();
   }
 
-  public static Messages getInstance() {
+  // Gets the singleton instance of SmsMessages
+  public static SmsMessages get() {
     if (instance == null) {
-      instance = new Messages();
+      instance = new SmsMessages();
     }
     return instance;
   }
@@ -84,7 +82,6 @@ public class Messages {
   }
 
   public void undoSuggestion(SmsMessage smsMessage) {
-
     // Check if user is part of the "suggesters" of this spam message
     if (smsMessage.getSuggestersList().contains(firebaseUser.getUid())) {
 
@@ -118,11 +115,10 @@ public class Messages {
     }
   }
 
-  // Search message by sender & body. If no message found, return -1
-  public int searchDbMessage(SmsMessage smsMessage) {
-    for (int i = 0; i < dbMessages.size(); i++) {
-      if (dbMessages.get(i).getBody().contentEquals(smsMessage.getBody())
-          && dbMessages.get(i).getSender().contentEquals(smsMessage.getSender())) {
+  private int searchMessage(SmsMessage smsMessage, List<SmsMessage> list) {
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getBody().contentEquals(smsMessage.getBody())
+          && list.get(i).getSender().contentEquals(smsMessage.getSender())) {
         return i;
       }
     }
@@ -130,14 +126,13 @@ public class Messages {
   }
 
   // Search message by sender & body. If no message found, return -1
+  public int searchDbMessage(SmsMessage smsMessage) {
+    return searchMessage(smsMessage, dbMessages);
+  }
+
+  // Search message by sender & body. If no message found, return -1
   public int searchInboxMessage(SmsMessage smsMessage) {
-    for (int i = 0; i < inboxMessages.size(); i++) {
-      if (inboxMessages.get(i).getBody().contentEquals(smsMessage.getBody())
-          && inboxMessages.get(i).getSender().contentEquals(smsMessage.getSender())) {
-        return i;
-      }
-    }
-    return -1;
+    return searchMessage(smsMessage, inboxMessages);
   }
 
   // Return -1 if no message found
@@ -166,7 +161,11 @@ public class Messages {
   }
 
   public void addMessage(SmsMessage smsMessage) {
-
+    // If spam arrives from the db - Set the received date as of the date the user had received it
+    // TODO: Spams in the DB have 1 field for received date, though they are suggested by multiple
+    // users which might have received the same spam - at different dates. Think wheather or not
+    // this is the right representaion of a spam in the DB - Perhaps have received date field in the
+    // DB be as a list of received dates.
     if (searchInboxMessage(smsMessage) != -1) {
       smsMessage =
           smsMessage
@@ -244,10 +243,6 @@ public class Messages {
 
   public void setInboxMessages(List<SmsMessage> inboxMessages) {
     this.inboxMessages = inboxMessages;
-  }
-
-  public void setContext(Context context) {
-    this.context = context;
   }
 
   public interface MessagesListener {

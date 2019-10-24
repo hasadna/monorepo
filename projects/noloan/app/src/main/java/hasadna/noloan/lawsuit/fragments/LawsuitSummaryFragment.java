@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import hasadna.noloan.AppSharedPreferences;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.CourtProto;
 import noloan.R;
@@ -74,7 +75,6 @@ public class LawsuitSummaryFragment extends Fragment {
           Intent intent = new Intent(Intent.ACTION_VIEW, uri);
           startActivity(intent);
         });
-
     selectCourt = rootView.findViewById(R.id.button_selectCourt);
     selectCourt.setOnClickListener(v -> displayCourtPicker());
     courtAddress = rootView.findViewById(R.id.textView_courtAddress);
@@ -208,7 +208,8 @@ public class LawsuitSummaryFragment extends Fragment {
           // Add selected court to the lawsuit's sharedPreferences
           lawsuitActivity.lawsuitProto =
               lawsuitActivity.lawsuitProto.toBuilder().setCourt(courtList.get(which)).build();
-          lawsuitActivity.updateSharedPreferences();
+          AppSharedPreferences.updateSharedPreferences(
+              lawsuitActivity.lawsuitProto.getSmsMessage());
           updateCourtViews();
         });
     courtBuilder.show();

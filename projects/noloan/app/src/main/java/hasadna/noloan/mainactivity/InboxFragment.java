@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hasadna.noloan.Messages;
+import hasadna.noloan.SmsMessages;
 import hasadna.noloan.InboxRecyclerAdapter;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -36,25 +36,25 @@ public class InboxFragment extends Fragment {
 
     // If new spams added to the DB - Check if the spams exists in user's inbox, if so update the
     // counter of suggesters
-    Messages.getInstance()
+    SmsMessages.get()
         .setMessagesListener(
-            new Messages.MessagesListener() {
+            new SmsMessages.MessagesListener() {
               @Override
               public void messageAdded(SmsMessage smsMessage) {
                 // Check if user has this message in the inbox
-                if (Messages.getInstance().searchInboxMessage(smsMessage) != -1) {
+                if (SmsMessages.get().searchInboxMessage(smsMessage) != -1) {
                   getActivity()
                       .runOnUiThread(
                           () ->
                               inboxRecyclerAdapter.notifyItemChanged(
-                                  Messages.getInstance().searchInboxMessage(smsMessage)));
+                                  SmsMessages.get().searchInboxMessage(smsMessage)));
                 }
               }
 
               @Override
               public void messageModified(int index) {
-                if (Messages.getInstance()
-                        .searchInboxMessage(Messages.getInstance().getDbMessages().get(index))
+                if (SmsMessages.get()
+                        .searchInboxMessage(SmsMessages.get().getDbMessages().get(index))
                     != -1) {
                   getActivity().runOnUiThread(() -> inboxRecyclerAdapter.notifyItemChanged(index));
                 }
@@ -62,12 +62,12 @@ public class InboxFragment extends Fragment {
 
               @Override
               public void messageRemoved(int index, SmsMessage smsMessage) {
-                if (Messages.getInstance().searchInboxMessage(smsMessage) != -1) {
+                if (SmsMessages.get().searchInboxMessage(smsMessage) != -1) {
                   getActivity()
                       .runOnUiThread(
                           () ->
                               inboxRecyclerAdapter.notifyItemChanged(
-                                  Messages.getInstance().searchInboxMessage(smsMessage)));
+                                  SmsMessages.get().searchInboxMessage(smsMessage)));
                 }
               }
             });

@@ -1,11 +1,9 @@
 package hasadna.noloan;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,30 +25,28 @@ public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "SpamRecyclerAdapter";
 
-  Messages messages;
-
   public SpamRecyclerAdapter() {
-    messages = Messages.getInstance();
     Handler handler = new Handler(Looper.myLooper());
 
-    // Listen to db messages
-    messages.setMessagesListener(
-        new Messages.MessagesListener() {
-          @Override
-          public void messageAdded(SmsMessage newMessage) {
-            handler.post(() -> notifyItemInserted(messages.getDbMessages().size()));
-          }
+    // Listen to db smsMessages
+    SmsMessages.get()
+        .setMessagesListener(
+            new SmsMessages.MessagesListener() {
+              @Override
+              public void messageAdded(SmsMessage newMessage) {
+                handler.post(() -> notifyItemInserted(SmsMessages.get().getDbMessages().size()));
+              }
 
-          @Override
-          public void messageModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
-          }
+              @Override
+              public void messageModified(int index) {
+                handler.post(() -> notifyItemChanged(index));
+              }
 
-          @Override
-          public void messageRemoved(int index, SmsMessage smsMessage) {
-            handler.post(() -> notifyItemRemoved(index));
-          }
-        });
+              @Override
+              public void messageRemoved(int index, SmsMessage smsMessage) {
+                handler.post(() -> notifyItemRemoved(index));
+              }
+            });
   }
 
   @NonNull
@@ -62,12 +58,12 @@ public class SpamRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(messages.getDbMessages().get(i));
+    recyclerViewHolder.bind(SmsMessages.get().getDbMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return messages.getDbMessages().size();
+    return SmsMessages.get().getDbMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -118,7 +114,8 @@ public class SpamRecyclerAdapter
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
-            // TODO: Pass the whole SmsMessage.proto object to the intent.
+            // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
+            // fields.
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             intentToLawsuitForm.putExtra("from", sms.getSender());
             intentToLawsuitForm.putExtra("body", sms.getBody());
@@ -132,20 +129,18 @@ public class SpamRecyclerAdapter
 
       buttonUndoSuggestion.setOnClickListener(
           v -> {
-            messages.undoSuggestion(sms);
+            SmsMessages.get().undoSuggestion(sms);
           });
 
       buttonAddSuggestion.setOnClickListener(
           view -> {
-            Messages.getInstance().suggestMessage(sms);
+            SmsMessages.get().suggestMessage(sms);
           });
     }
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
     public void toggleUndoButton(SmsMessage smsMessage) {
-      if (smsMessage
-          .getSuggestersList()
-          .contains(Messages.getInstance().getFirebaseUser().getUid())) {
+      if (smsMessage.getSuggestersList().contains(SmsMessages.get().getFirebaseUser().getUid())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {

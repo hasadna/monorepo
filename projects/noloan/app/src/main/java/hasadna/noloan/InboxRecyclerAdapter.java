@@ -12,10 +12,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import hasadna.noloan.lawsuit.LawsuitActivity;
@@ -27,9 +24,9 @@ public class InboxRecyclerAdapter
   private static final String TAG = "InboxRecyclerAdapter";
 
   public InboxRecyclerAdapter() {
-    if (Messages.getInstance().getInboxMessages().size() == 0) {
+    if (SmsMessages.get().getInboxMessages().size() == 0) {
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      Messages.getInstance().getInboxMessages().add(noMessage);
+      SmsMessages.get().getInboxMessages().add(noMessage);
     }
   }
 
@@ -42,12 +39,12 @@ public class InboxRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(Messages.getInstance().getInboxMessages().get(i));
+    recyclerViewHolder.bind(SmsMessages.get().getInboxMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return Messages.getInstance().getInboxMessages().size();
+    return SmsMessages.get().getInboxMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -74,32 +71,32 @@ public class InboxRecyclerAdapter
       content.setText(sms.getBody());
 
       // Search if message was suggested / user suggested: update counter / add undo button
-      if (Messages.getInstance().searchDbMessage(sms) != -1) {
+      if (SmsMessages.get().searchDbMessage(sms) != -1) {
         counter.setText(
             itemView
                 .getResources()
                 .getString(
                     R.string.list_item_textView_spam_counter,
-                    Messages.getInstance()
+                    SmsMessages.get()
                         .getDbMessages()
-                        .get(Messages.getInstance().searchDbMessage(sms))
+                        .get(SmsMessages.get().searchDbMessage(sms))
                         .getSuggestersCount()));
 
         // Toggle undo button
-        if (Messages.getInstance()
+        if (SmsMessages.get()
             .getDbMessages()
-            .get(Messages.getInstance().searchDbMessage(sms))
+            .get(SmsMessages.get().searchDbMessage(sms))
             .getSuggestersList()
-            .contains(Messages.getInstance().getFirebaseUser().getUid())) {
+            .contains(SmsMessages.get().getFirebaseUser().getUid())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(
               view ->
-                  Messages.getInstance()
+                  SmsMessages.get()
                       .undoSuggestion(
-                          Messages.getInstance()
+                          SmsMessages.get()
                               .getDbMessages()
-                              .get(Messages.getInstance().searchDbMessage((sms)))));
+                              .get(SmsMessages.get().searchDbMessage((sms)))));
         } else {
           buttonAddSuggestion.setVisibility(View.VISIBLE);
           buttonUndoSuggestion.setVisibility((View.INVISIBLE));
@@ -134,7 +131,8 @@ public class InboxRecyclerAdapter
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
-            // TODO: Pass the whole SmsMessage.proto object to the intent.
+            // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
+            // fields.
             intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
             intentToLawsuitForm.putExtra("from", sms.getSender());
             intentToLawsuitForm.putExtra("body", sms.getBody());
@@ -142,15 +140,8 @@ public class InboxRecyclerAdapter
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonAddSuggestion.setOnClickListener(view -> Messages.getInstance().suggestMessage(sms));
+      buttonAddSuggestion.setOnClickListener(view -> SmsMessages.get().suggestMessage(sms));
     }
   }
 }
-
-/**
- * // Search message by Body and Sender. Return -1 of no message found public int
- * searchMessage(SmsMessage smsMessage) { for (int i = 0; i < messages.size(); i++) { if
- * (messages.get(i).getBody().contentEquals(smsMessage.getBody()) &&
- * messages.get(i).getSender().contentEquals(smsMessage.getSender())) { return i; } } return -1; }*
- */
 
