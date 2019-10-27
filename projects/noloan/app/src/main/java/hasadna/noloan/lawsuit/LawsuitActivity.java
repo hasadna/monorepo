@@ -1,6 +1,7 @@
 package hasadna.noloan.lawsuit;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +18,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +30,12 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-import hasadna.noloan.protobuf.CourtProto.Court;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
+
 import noloan.R;
 
 public class LawsuitActivity extends AppCompatActivity {
@@ -42,15 +44,14 @@ public class LawsuitActivity extends AppCompatActivity {
   private final int STORAGE_PERMISSION_CODE = 1;
   private boolean permissionGranted = false;
   private String absFilename;
+  public SmsMessage spamMessage;
   public Lawsuit lawsuitProto;
-  public SmsMessage selectedSmsSpam;
+  public String sharedPreferencesKey;
 
   public Toolbar toolbar;
   public TextView toolbarTitle;
 
-  ArrayList<Court> courtList = null;
   public LawsuitViewPager viewPager;
-  AlertDialog.Builder courtBuilder;
 
   // Formats
   static final String TIME_ZONE = "Asia/Jerusalem";
@@ -86,13 +87,32 @@ public class LawsuitActivity extends AppCompatActivity {
     toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
     // Create lawsuitProto of the current lawsuit, from the FormFragment fields
-    lawsuitProto = Lawsuit.newBuilder().buildPartial();
-    selectedSmsSpam =
+
+    spamMessage =
         SmsMessage.newBuilder()
             .setSender(getIntent().getExtras().getString("from"))
             .setBody(getIntent().getExtras().getString("body"))
             .setReceivedAt(getIntent().getExtras().getString("receivedAt"))
+            .setId(getIntent().getExtras().getString("id"))
             .build();
+
+    sharedPreferencesKey =
+        String.valueOf(
+            (spamMessage.getSender() + spamMessage.getBody() + spamMessage.getReceivedAt())
+                .hashCode());
+
+    // Get previous lawsuit details
+    if (getSharedPreferencesLawsuitProto() != null) {
+      lawsuitProto = getSharedPreferencesLawsuitProto();
+    } else {
+      lawsuitProto =
+          Lawsuit.newBuilder()
+              .setSmsMessage(spamMessage)
+              .setDateReceived(spamMessage.getReceivedAt())
+              .setClaimAmount("1000")
+              .buildPartial();
+      updateSharedPreferences();
+    }
 
     // Used for dates in the lawsuit form
     DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
@@ -217,11 +237,9 @@ public class LawsuitActivity extends AppCompatActivity {
       }
 
       // Add SMS to attachments page
-      template +=
-          String.format(getString(R.string.list_item_from), selectedSmsSpam.getSender()) + "\n";
-      template += selectedSmsSpam.getReceivedAt() + "\n";
-      template +=
-          String.format(getString(R.string.list_item_body), selectedSmsSpam.getBody()) + "\n";
+      template += String.format(getString(R.string.list_item_from), spamMessage.getSender()) + "\n";
+      template += spamMessage.getReceivedAt() + "\n";
+      template += String.format(getString(R.string.list_item_body), spamMessage.getBody()) + "\n";
 
       PdfDocument document = new PdfDocument();
 
@@ -325,7 +343,7 @@ public class LawsuitActivity extends AppCompatActivity {
         lawsuit.replace(
             "<moreThanFiveLawsuits>",
             lawsuitProto.getMoreThanFiveClaims() ? moreThanFiveLawsuits : lessThanFiveLawsuits);
-    lawsuit = lawsuit.replace("<receivedSpamDate>", selectedSmsSpam.getReceivedAt());
+    lawsuit = lawsuit.replace("<receivedSpamDate>", spamMessage.getReceivedAt());
     lawsuit = lawsuit.replace("<currentDate>", DATE_FORMATTER.format(new Date()));
     lawsuit = lawsuit.replace("<undefined>", "");
     return lawsuit;
@@ -346,6 +364,40 @@ public class LawsuitActivity extends AppCompatActivity {
       // Otherwise, select the previous step.
       viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
     }
+  }
+
+  public void updateSharedPreferences() {
+    SharedPreferences.Editor editor =
+        getSharedPreferences(
+                getApplication().getPackageName() + R.string.lawsuits_sharedPreferences_path,
+                MODE_PRIVATE)
+            .edit();
+    editor.putString(
+        sharedPreferencesKey,
+        Base64.encodeToString(this.lawsuitProto.toByteArray(), Base64.DEFAULT));
+    editor.apply();
+  }
+
+  public Lawsuit getSharedPreferencesLawsuitProto() {
+
+    // Check if this previous lawsuit exists in the sharedPreferences
+    if (!getSharedPreferences(
+            getPackageName() + R.string.lawsuits_sharedPreferences_path, MODE_PRIVATE)
+        .getString(sharedPreferencesKey, "Key not found")
+        .contentEquals("Key not found")) {
+      byte[] messageBytes =
+          Base64.decode(
+              getSharedPreferences(
+                      getPackageName() + R.string.lawsuits_sharedPreferences_path, MODE_PRIVATE)
+                  .getString(sharedPreferencesKey, "Key not found"),
+              Base64.DEFAULT);
+      try {
+        return Lawsuit.newBuilder().build().getParserForType().parseFrom(messageBytes);
+      } catch (Exception e) {
+        Log.e(TAG, "Error parsing Lawsuit.Proto from the sharedPreferences\n" + e.getMessage());
+      }
+    }
+    return null;
   }
 }
 

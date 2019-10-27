@@ -1,16 +1,11 @@
 package hasadna.noloan.firestore;
 
-import android.support.v4.app.FragmentManager;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
@@ -18,8 +13,7 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.DbMessages;
-import hasadna.noloan.mainactivity.InboxFragment;
+import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -27,8 +21,6 @@ public class FirestoreClient {
   public static final String MESSAGES_COLLECTION_PATH = "noloan/spam/sms";
 
   private FirebaseFirestore client;
-
-  private InboxFragment inboxFragment;
 
   public FirestoreClient() {
     client = FirebaseFirestore.getInstance();
@@ -68,7 +60,7 @@ public class FirestoreClient {
             return;
           }
 
-          DbMessages dbMessages = DbMessages.getInstance();
+          SmsMessages smsMessages = SmsMessages.get();
 
           // Get the message that changed
           for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
@@ -83,15 +75,15 @@ public class FirestoreClient {
               e1.printStackTrace();
             }
 
-            dbMessages.updateChange(sms, documentChange.getType());
+            smsMessages.updateChange(sms, documentChange.getType());
           }
           task.trySetResult(true);
         });
     return task;
   }
 
-  // Encode user proto to base64 for storing in Firestore
-  private FirestoreElement encodeMessage(SmsMessage message) {
+  // Encode proto to base64 for storing in Firestore
+  public FirestoreElement encodeMessage(SmsMessage message) {
     byte[] protoBytes = message.toByteArray();
     String base64BinaryString = Base64.encodeToString(protoBytes, Base64.DEFAULT);
     return new FirestoreElement(base64BinaryString);

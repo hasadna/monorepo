@@ -27,4 +27,5 @@ message Lawsuit {
     bool moreThanFiveClaims = 14;
 
     SmsMessage smsMessage = 15;
+    Court court = 16;
 }

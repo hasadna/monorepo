@@ -23,10 +23,9 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.DbMessages;
+import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -38,9 +37,6 @@ public class MainActivity extends AppCompatActivity
   private static final String TAG = "MainActivity";
 
   private DrawerLayout drawerLayout;
-  private boolean spamActive;
-  private List<SmsMessage> inbox;
-  private List<SmsMessage> dbMessages;
   TabLayout tabLayout;
   TextView statusTitle;
 
@@ -48,6 +44,9 @@ public class MainActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main_activity);
+
+    // Read inbox messages
+    SmsMessages.get().setInboxMessages(readSmsFromDevice());
 
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
@@ -75,14 +74,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    // Reading Sms and spams
-    inbox = readSmsFromDevice();
-    dbMessages = DbMessages.getInstance().getMessages();
-
     /**
-     * At the moment all spams/dbMessages messages received from the DB are displayed to the user
-     * TODO: Intersect spams/dbMessages with user's inbox messages, display only the relevant
-     * messages that are in the inbox.
+     * At the moment all spams/dbMessages received from the DB are displayed to the user TODO:
+     * Intersect spams/dbMessages with user's inbox messages, display only the relevant messages
+     * that are in the inbox.
      *
      * <p>// Create a list of the intersection between the two lists, messages and spam // Based on
      * https://www.baeldung.com/java-lists-intersection List<SmsMessage> spamAndInbox =
@@ -138,6 +133,7 @@ public class MainActivity extends AppCompatActivity
                     new SimpleDateFormat("dd/M/yyyy")
                         .format(new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")))))
                 .build();
+
         smsList.add(sms);
       } while (cursor.moveToNext());
     }
@@ -163,11 +159,16 @@ public class MainActivity extends AppCompatActivity
   // changes
   public void updateTitles() {
     // Main title
-    statusTitle.setText(String.valueOf(dbMessages.size()));
+    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
 
     // Tab's titles
-    tabLayout.getTabAt(0).setText(getString(R.string.inboxFragment_title, inbox.size()));
-    tabLayout.getTabAt(1).setText(getString(R.string.spamFragment_title, dbMessages.size()));
+    tabLayout
+        .getTabAt(0)
+        .setText(
+            getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+    tabLayout
+        .getTabAt(1)
+        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
   }
 
   private void openAbout() {

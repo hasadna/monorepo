@@ -2,6 +2,7 @@ package hasadna.noloan;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -90,12 +91,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions and messages from the DB
+  // Main Task to get the permissions and smsMessages from the DB
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-
       Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
