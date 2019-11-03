@@ -1,4 +1,4 @@
-package hasadna.noloan;
+package hasadna.noloan.admin.app;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,9 +18,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import hasadna.noloan.firestore.FirestoreClient;
-import hasadna.noloan.mainactivity.MainActivity;
-import noloan.R;
+import hasadna.noloan.admin.app.firestore.FirestoreClient;
 
 // Permission request Based on
 // http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
@@ -29,7 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
   final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
-  private static final String TAG = "SplashScreenActivity";
 
   Handler handler;
 
@@ -88,17 +85,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         SPLASH_TIME_MS);
   }
 
-  // Main Task to get the permissions and smsMessages from the DB
+  // Main Task to get the permissions and the spam
   private class SplashTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
+      Task spam =
+          new FirestoreClient()
+              .startListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH)
+              .getTask();
+      Task Suggestions =
+          new FirestoreClient()
+              .startListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION)
+              .getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
+
         Tasks.await(permissions);
-        Tasks.await(messagesTask);
+        Tasks.await(spam);
+        Tasks.await(Suggestions);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }
@@ -107,7 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             () ->
                 Toast.makeText(
                         getApplicationContext(),
-                        "This App require SMS reading To work",
+                        "This app requires permission to read SMSs",
                         Toast.LENGTH_SHORT)
                     .show());
         finishAndRemoveTask();

@@ -41,33 +41,12 @@
                         android:id="@+id/TabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:tabMaxWidth="0dp"
-                        app:tabGravity="fill"
-                        app:tabMode="fixed"
-                        android:layoutDirection="rtl">
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/TabItem_spam"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/spamFragment_title" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/TabItem_inbox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/inboxFragment_title" />
-
-                    </com.google.android.material.tabs.TabLayout>
+                        android:layoutDirection="rtl" />
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/viewPager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                    </androidx.viewpager.widget.ViewPager>
-
-
+                        android:layout_height="match_parent" />
 
                 </LinearLayout>
 
