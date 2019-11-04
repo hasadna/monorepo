@@ -2,7 +2,6 @@ package hasadna.noloan.admin.app.firestore;
 
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,7 +36,7 @@ public class FirestoreClient {
   public void deleteMessage(SmsMessage sms, String path) {
     client
         .collection(path)
-        .document(sms.getID())
+        .document(sms.getId())
         .delete()
         .addOnFailureListener(
             e -> {
@@ -67,7 +66,7 @@ public class FirestoreClient {
                   (SmsMessage)
                       decodeMessage(
                           documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
-              sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
+              sms = sms.toBuilder().setId(documentChange.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
