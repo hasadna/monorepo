@@ -67,5 +67,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
     //protobuf
     implementation 'com.google.protobuf:protobuf-lite:3.0.1'
+    implementation project(path: ':proto')
 }
 

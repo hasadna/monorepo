@@ -37,7 +37,7 @@ public class FirestoreClient {
   public void deleteMessage(SmsMessage sms, String path) {
     client
         .collection(path)
-        .document(sms.getID())
+        .document(sms.getId())
         .delete()
         .addOnFailureListener(
             e -> {
@@ -67,7 +67,7 @@ public class FirestoreClient {
                   (SmsMessage)
                       decodeMessage(
                           documentChange.getDocument().getString("proto"), SmsMessage.newBuilder());
-              sms = sms.toBuilder().setID(documentChange.getDocument().getId()).build();
+              sms = sms.toBuilder().setId(documentChange.getDocument().getId()).build();
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
