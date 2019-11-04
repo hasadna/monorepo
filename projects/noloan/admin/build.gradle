@@ -27,31 +27,6 @@ android {
     }
 }
 
-sourceSets {
-    main.java.srcDirs += "${protobuf.generatedFilesBaseDir}/main/javalite"
-}
-
-protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.0.0'
-    }
-    plugins {
-        javalite {
-            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                remove java
-            }
-            task.plugins {
-                javalite {}
-            }
-        }
-    }
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -65,8 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.5'
     //multidex
     implementation 'androidx.multidex:multidex:2.0.0'
-    //protobuf
-    implementation 'com.google.protobuf:protobuf-lite:3.0.1'
+
     implementation project(path: ':proto')
 }
 
