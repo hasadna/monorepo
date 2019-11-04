@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -21,7 +21,7 @@
                 android:id="@+id/toolbar_content"
                 layout="@layout/toolbar" />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -37,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <android.support.design.widget.TabLayout
+                    <com.google.android.material.tabs.TabLayout
                         android:id="@+id/TabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -46,36 +46,36 @@
                         app:tabMode="fixed"
                         android:layoutDirection="rtl">
 
-                        <android.support.design.widget.TabItem
+                        <com.google.android.material.tabs.TabItem
                             android:id="@+id/TabItem_spam"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/spamFragment_title" />
 
-                        <android.support.design.widget.TabItem
+                        <com.google.android.material.tabs.TabItem
                             android:id="@+id/TabItem_inbox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/inboxFragment_title" />
 
-                    </android.support.design.widget.TabLayout>
+                    </com.google.android.material.tabs.TabLayout>
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/viewPager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" >
 
-                    </android.support.v4.view.ViewPager>
+                    </androidx.viewpager.widget.ViewPager>
 
 
 
                 </LinearLayout>
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <android.support.design.widget.NavigationView
+        <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -84,6 +84,6 @@
             android:layoutDirection="rtl"
             app:menu="@menu/main_activity_drawer" />
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

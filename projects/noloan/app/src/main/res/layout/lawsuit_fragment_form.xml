@@ -54,7 +54,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -67,9 +67,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -82,14 +82,14 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="right">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/EditText_userID"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -109,10 +109,10 @@
                             android:textColor="#D20C34"
                             android:textSize="10sp"
                             android:visibility="gone" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -125,9 +125,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -140,7 +140,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="phone"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -165,7 +165,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -178,9 +178,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -193,9 +193,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -208,9 +208,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -223,9 +223,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="phone"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -238,7 +238,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="phone"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -263,7 +263,7 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -278,9 +278,9 @@
                             android:inputType="date"
                             android:layoutDirection="rtl"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -295,7 +295,7 @@
                             android:layoutDirection="rtl"
                             android:text="1000"
                             android:textSize="16sp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <CheckBox
                         android:id="@+id/CheckBox_sentHaser"
