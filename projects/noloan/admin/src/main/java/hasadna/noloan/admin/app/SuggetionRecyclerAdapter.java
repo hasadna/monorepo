@@ -2,8 +2,11 @@ package hasadna.noloan.admin.app;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,33 +14,88 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hasadna.noloan.admin.app.firestore.FirestoreClient;
+import java.util.ArrayList;
+
+import hasadna.noloan.firebase.DbMessages;
+import hasadna.noloan.firebase.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SuggetionRecyclerAdapter
     extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessagesHolder DbMessages;
+  DbMessages dbMessages;
+
+  ArrayList<SmsMessage> messages;
 
   public SuggetionRecyclerAdapter() {
-    DbMessages = DbMessagesHolder.getInstance();
+    dbMessages = dbMessages.getInstance();
+    messages = new ArrayList<>();
+
+    ArrayList<SmsMessage> list = dbMessages.getMessages();
+    for (int i = 0; i < list.size(); i++) {
+      SmsMessage message = list.get(i);
+      if (!message.getApproved()) {
+        Log.d("!!!!!!!!!!!!!!!!!!", "bla");
+        this.messages.add(message);
+      }
+    }
+
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setSuggestionsListener(
-        new DbMessagesHolder.MessagesListener() {
+    dbMessages.addMessagesListener(
+        new DbMessages.MessagesListener() {
           @Override
-          public void messageAdded() {
-            handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));
-          }
-
-          @Override
-          public void messageRemoved(int index) {
-            handler.post(() -> notifyItemRemoved(index));
+          public void messageAdded(SmsMessage smsMessage) {
+            if (!smsMessage.getApproved()) {
+              messages.add(smsMessage);
+              handler.post(() -> notifyItemInserted(messages.size()));
+            }
           }
 
           @Override
           public void messageModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
+            SmsMessage smsMessage = dbMessages.getMessages().get(index);
+            if (!smsMessage.getApproved()) {
+              int i = messages.indexOf(smsMessage);
+              // already in the list
+              if (i != -1) {
+                messages.remove(i);
+                messages.add(i, smsMessage);
+                handler.post(() -> notifyItemChanged(i));
+              } else // new approved
+              {
+                messages.add(smsMessage);
+                handler.post(() -> notifyItemInserted(messages.size()));
+              }
+            }
+            else {
+              int i;
+              for(i = 0; i< messages.size();i++)
+              {
+                if(messages.get(i).getId().equals(smsMessage.getId()))
+                {
+                  break;
+                }
+              }
+              Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!",i+"");
+              if (i != -1)
+              {
+                messages.remove(i);
+                int finalI = i; // to use i in the lambda it need to be final.
+                handler.post(() -> notifyItemChanged(finalI));
+              }
+            }
+          }
+
+          @Override
+          public void messageRemoved(int index, SmsMessage smsMessage) {
+            if (!smsMessage.getApproved()) {
+              int i = messages.indexOf(smsMessage);
+              if (i != -1) {
+                messages.remove(smsMessage);
+                handler.post(() -> notifyItemRemoved(i));
+              }
+            }
           }
         });
   }
@@ -52,12 +110,12 @@ public class SuggetionRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(DbMessages.getSuggestions().get(i));
+    recyclerViewHolder.bind(messages.get(i));
   }
 
   @Override
   public int getItemCount() {
-    return DbMessages.getSuggestions().size();
+    return messages.size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -81,14 +139,18 @@ public class SuggetionRecyclerAdapter
       buttonAccept.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+
+            SmsMessage aprroved = sms.toBuilder().setApproved(true).build();
+            Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", aprroved.getApproved() + "");
+            client.modifyMessage(sms, aprroved);
+
+            //client.writeMessage(sms);
             Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
           });
       buttonDelete.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            client.deleteMessage(sms);
             Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
           });
     }

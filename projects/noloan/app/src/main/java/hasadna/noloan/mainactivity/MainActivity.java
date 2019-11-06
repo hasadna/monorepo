@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.SmsMessages;
+import hasadna.noloan.firebase.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
   private DrawerLayout drawerLayout;
   TabLayout tabLayout;
   TextView statusTitle;
+  ArrayList<SmsMessage> inbox;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.main_activity);
 
     // Read inbox messages
-    SmsMessages.get().setInboxMessages(readSmsFromDevice());
+    inbox = readSmsFromDevice();
 
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    /**
+    /*
      * At the moment all spams/dbMessages received from the DB are displayed to the user TODO:
      * Intersect spams/dbMessages with user's inbox messages, display only the relevant messages
      * that are in the inbox.
@@ -93,8 +94,11 @@ public class MainActivity extends AppCompatActivity
     ViewPager viewPager = findViewById(R.id.viewPager);
     // RTL swiping (Along with recyclerView.setRotationY(180) in fragments)
     viewPager.setRotationY(180);
-    MainActivityPagerAdapter pagerAdapter =
-        new MainActivityPagerAdapter(getSupportFragmentManager(), this);
+    InboxFragment inboxFragment = new InboxFragment(inbox);
+    SpamFragment spamFragment = new SpamFragment();
+    MainActivityPagerAdapter pagerAdapter =new MainActivityPagerAdapter(getSupportFragmentManager());
+    pagerAdapter.addFragment(inboxFragment,getString(R.string.inboxFragment_title) );
+    pagerAdapter.addFragment(spamFragment,getString(R.string.spamFragment_title));
     viewPager.setAdapter(pagerAdapter);
     tabLayout = findViewById(R.id.TabLayout);
     tabLayout.setupWithViewPager(viewPager);
@@ -159,16 +163,16 @@ public class MainActivity extends AppCompatActivity
   // changes
   public void updateTitles() {
     // Main title
-    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
+    statusTitle.setText(String.valueOf(DbMessages.getInstance().getMessages().size()));
 
     // Tab's titles
     tabLayout
         .getTabAt(0)
         .setText(
-            getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+            getString(R.string.inboxFragment_title, inbox.size()));
     tabLayout
         .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
+        .setText(getString(R.string.spamFragment_title, DbMessages.getInstance().getMessages().size()));
   }
 
   private void openAbout() {

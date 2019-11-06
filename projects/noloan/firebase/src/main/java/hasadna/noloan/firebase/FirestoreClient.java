@@ -1,6 +1,7 @@
-package hasadna.noloan.firestore;
+package hasadna.noloan.firebase;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
@@ -13,7 +14,6 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {
@@ -32,6 +32,7 @@ public class FirestoreClient {
   }
 
   public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
+    Log.d("!!!!!!!!!!!!!!!!!!!!",oldMessage.getApproved() +"    "+newMessage.getApproved());
     DocumentReference documentReference =
         client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
     documentReference.update("proto", encodeMessage(newMessage).getProto());
@@ -47,7 +48,7 @@ public class FirestoreClient {
   }
 
   // Start real-time listening to the DB for change, return set the result to true when done.
-  public TaskCompletionSource StartListeningToMessages() {
+  public TaskCompletionSource startListeningToMessages() {
 
     Executor executor = Executors.newSingleThreadExecutor();
     TaskCompletionSource task = new TaskCompletionSource<>();
@@ -60,7 +61,7 @@ public class FirestoreClient {
             return;
           }
 
-          SmsMessages smsMessages = SmsMessages.get();
+          DbMessages dbMessages = DbMessages.getInstance();
 
           // Get the message that changed
           for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
@@ -75,7 +76,17 @@ public class FirestoreClient {
               e1.printStackTrace();
             }
 
-            smsMessages.updateChange(sms, documentChange.getType());
+            switch (documentChange.getType()) {
+              case ADDED:
+                dbMessages.addMessage(sms);
+                break;
+              case MODIFIED:
+                dbMessages.modifyMessage(sms);
+                break;
+              case REMOVED:
+                dbMessages.removeMessage(sms);
+                break;
+            }
           }
           task.trySetResult(true);
         });

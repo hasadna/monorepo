@@ -18,7 +18,8 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import hasadna.noloan.firestore.FirestoreClient;
+import hasadna.noloan.firebase.FirebaseAuthentication;
+import hasadna.noloan.firebase.FirestoreClient;
 import hasadna.noloan.mainactivity.MainActivity;
 import noloan.R;
 
@@ -93,7 +94,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
+      FirebaseAuthentication.getInstance().signinAnonymusly();
+      Task messagesTask = new FirestoreClient().startListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
