@@ -32,23 +32,12 @@ public class DbMessages {
 
   // Search messages by sender & body. Return -1 if no message found
   public int findBySms(SmsMessage smsMessage) {
-    for (int i = 0; i < messages.size(); i++) {
-      if (messages.get(i).getBody().contentEquals(smsMessage.getBody())
-          && messages.get(i).getSender().contentEquals(smsMessage.getSender())) {
-        return i;
-      }
-    }
-    return -1;
+    return findSmsByBody(smsMessage, messages);
   }
 
   // Return -1 if no message found
   public int findById(SmsMessage smsMessage) {
-    for (int i = 0; i < messages.size(); i++) {
-      if (messages.get(i).getId().contentEquals(smsMessage.getId())) {
-        return i;
-      }
-    }
-    return -1;
+    return findSmsById(smsMessage, messages);
   }
 
   public void addMessage(SmsMessage smsMessage) {
@@ -89,8 +78,8 @@ public class DbMessages {
   public void addMessagesListener(MessagesListener messagesListener) {
     messagesListeners.add(messagesListener);
   }
-  public void removeMessagesListener(MessagesListener messagesListener)
-  {
+
+  public void removeMessagesListener(MessagesListener messagesListener) {
     messagesListeners.remove(messagesListener);
   }
 
@@ -123,5 +112,26 @@ public class DbMessages {
     // SmsMessage parameter is passed for cases the index already had been removed from the db list
     void messageRemoved(int index, SmsMessage smsMessage);
   }
+
+  // static function to search a given list
+  public static int findSmsByBody(SmsMessage sms, ArrayList<SmsMessage> list) {
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getBody().contentEquals(sms.getBody())
+          && list.get(i).getSender().contentEquals(sms.getSender())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public static int findSmsById(SmsMessage sms, ArrayList<SmsMessage> list) {
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getId().contentEquals(sms.getId())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 }
 

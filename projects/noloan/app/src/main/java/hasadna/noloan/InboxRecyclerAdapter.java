@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import hasadna.noloan.firebase.DbMessages;
@@ -48,8 +49,10 @@ public class InboxRecyclerAdapter
       @Override
       public void messageAdded(SmsMessage smsMessage) {
         // Check if user has this message in the inbox
-        int i = messages.indexOf(smsMessage);
+        int i = DbMessages.findSmsByBody(smsMessage, messages);
         if (i != -1) {
+          messages.remove(i);
+          messages.add(i, smsMessage);
           handler.post(() -> notifyItemChanged(i));
         }
       }
@@ -65,9 +68,10 @@ public class InboxRecyclerAdapter
 
       @Override
       public void messageRemoved(int index, SmsMessage smsMessage) {
-        int i = messages.indexOf(smsMessage);
+        int i = DbMessages.findSmsByBody(smsMessage, messages);
         if (i != -1) {
-          handler.post(() -> notifyItemChanged(i));
+          
+        handler.post(() -> notifyItemChanged(i));
         }
       }
     });
