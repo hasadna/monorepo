@@ -60,8 +60,8 @@ public class InboxRecyclerAdapter
       @Override
       public void messageModified(int index) {
         SmsMessage smsMessage = DbMessages.getInstance().getMessages().get(index);
-        if (messages.contains(smsMessage)) {
-          int i = messages.indexOf(smsMessage);
+        int i = DbMessages.findSmsByBody(smsMessage, messages);
+        if (i != -1) {
           handler.post(() -> notifyItemChanged(i));
         }
       }
@@ -70,8 +70,7 @@ public class InboxRecyclerAdapter
       public void messageRemoved(int index, SmsMessage smsMessage) {
         int i = DbMessages.findSmsByBody(smsMessage, messages);
         if (i != -1) {
-          
-        handler.post(() -> notifyItemChanged(i));
+          handler.post(() -> notifyItemChanged(i));
         }
       }
     });
