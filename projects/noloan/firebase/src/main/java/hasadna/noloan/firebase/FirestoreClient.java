@@ -32,7 +32,6 @@ public class FirestoreClient {
   }
 
   public void modifyMessage(SmsMessage oldMessage, SmsMessage newMessage) {
-    Log.d("!!!!!!!!!!!!!!!!!!!!",oldMessage.getApproved() +"    "+newMessage.getApproved());
     DocumentReference documentReference =
         client.collection(MESSAGES_COLLECTION_PATH).document(oldMessage.getId());
     documentReference.update("proto", encodeMessage(newMessage).getProto());

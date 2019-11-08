@@ -23,19 +23,14 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 public class SuggetionRecyclerAdapter
     extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessages dbMessages;
-
   ArrayList<SmsMessage> messages;
 
   public SuggetionRecyclerAdapter() {
-    dbMessages = dbMessages.getInstance();
+    DbMessages dbMessages = DbMessages.getInstance();
     messages = new ArrayList<>();
 
-    ArrayList<SmsMessage> list = dbMessages.getMessages();
-    for (int i = 0; i < list.size(); i++) {
-      SmsMessage message = list.get(i);
+    for (SmsMessage message : dbMessages.getMessages()) {
       if (!message.getApproved()) {
-        Log.d("!!!!!!!!!!!!!!!!!!", "bla");
         this.messages.add(message);
       }
     }
@@ -59,27 +54,21 @@ public class SuggetionRecyclerAdapter
               int i = messages.indexOf(smsMessage);
               // already in the list
               if (i != -1) {
-                messages.remove(i);
-                messages.add(i, smsMessage);
+                messages.set(i, smsMessage);
                 handler.post(() -> notifyItemChanged(i));
               } else // new approved
               {
                 messages.add(smsMessage);
                 handler.post(() -> notifyItemInserted(messages.size()));
               }
-            }
-            else {
+            } else {
               int i;
-              for(i = 0; i< messages.size();i++)
-              {
-                if(messages.get(i).getId().equals(smsMessage.getId()))
-                {
+              for (i = 0; i < messages.size(); i++) {
+                if (messages.get(i).getId().equals(smsMessage.getId())) {
                   break;
                 }
               }
-              Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!",i+"");
-              if (i != -1)
-              {
+              if (i != -1) {
                 messages.remove(i);
                 int finalI = i; // to use i in the lambda it need to be final.
                 handler.post(() -> notifyItemChanged(finalI));
@@ -141,7 +130,6 @@ public class SuggetionRecyclerAdapter
             FirestoreClient client = new FirestoreClient();
 
             SmsMessage aprroved = sms.toBuilder().setApproved(true).build();
-            Log.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", aprroved.getApproved() + "");
             client.modifyMessage(sms, aprroved);
 
             //client.writeMessage(sms);

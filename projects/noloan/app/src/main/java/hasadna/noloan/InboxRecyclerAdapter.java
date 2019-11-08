@@ -18,12 +18,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import hasadna.noloan.firebase.DbMessages;
 import hasadna.noloan.firebase.FirebaseAuthentication;
-import hasadna.noloan.firebase.FirestoreClient;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -49,10 +47,9 @@ public class InboxRecyclerAdapter
       @Override
       public void messageAdded(SmsMessage smsMessage) {
         // Check if user has this message in the inbox
-        int i = DbMessages.findSmsByBody(smsMessage, messages);
+        int i = DbMessages.findSms(smsMessage, messages);
         if (i != -1) {
-          messages.remove(i);
-          messages.add(i, smsMessage);
+          messages.set(i,smsMessage);
           handler.post(() -> notifyItemChanged(i));
         }
       }
@@ -60,7 +57,7 @@ public class InboxRecyclerAdapter
       @Override
       public void messageModified(int index) {
         SmsMessage smsMessage = DbMessages.getInstance().getMessages().get(index);
-        int i = DbMessages.findSmsByBody(smsMessage, messages);
+        int i = DbMessages.findSms(smsMessage, messages);
         if (i != -1) {
           handler.post(() -> notifyItemChanged(i));
         }
@@ -68,7 +65,7 @@ public class InboxRecyclerAdapter
 
       @Override
       public void messageRemoved(int index, SmsMessage smsMessage) {
-        int i = DbMessages.findSmsByBody(smsMessage, messages);
+        int i = DbMessages.findSms(smsMessage, messages);
         if (i != -1) {
           handler.post(() -> notifyItemChanged(i));
         }

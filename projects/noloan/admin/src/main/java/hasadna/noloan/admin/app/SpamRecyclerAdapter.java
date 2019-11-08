@@ -23,62 +23,54 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessages dbMessages;
   ArrayList<SmsMessage> messages;
 
   public SpamRecyclerAdapter() {
 
-    dbMessages = DbMessages.getInstance();
+    DbMessages dbMessages = DbMessages.getInstance();
     messages = new ArrayList<>();
 
-    ArrayList<SmsMessage> list = dbMessages.getMessages();
-    for (int i = 0; i < list.size(); i++) {
-      SmsMessage message = list.get(i);
+    for (SmsMessage message : dbMessages.getMessages()) {
       if (message.getApproved()) {
-        Log.d("!!!!!!!!!!!!!!!!!!", "bla2");
-
         this.messages.add(message);
       }
     }
-
     Handler handler = new Handler(Looper.getMainLooper());
 
-    dbMessages.addMessagesListener(
-        new DbMessages.MessagesListener() {
-          @Override
-          public void messageAdded(SmsMessage smsMessage) {
-            if (smsMessage.getApproved()) {
-              messages.add(smsMessage);
-              handler.post(() -> notifyItemInserted(messages.size()));
-            }
-          }
+    dbMessages.addMessagesListener(new DbMessages.MessagesListener() {
+      @Override
+      public void messageAdded(SmsMessage smsMessage) {
+        if (smsMessage.getApproved()) {
+          messages.add(smsMessage);
+          handler.post(() -> notifyItemInserted(messages.size()));
+        }
+      }
 
-          @Override
-          public void messageModified(int index) {
-            SmsMessage smsMessage = dbMessages.getMessages().get(index);
-            if (smsMessage.getApproved()) {
-              int i = messages.indexOf(smsMessage);
-              if (i != -1) {
-                messages.remove(i);
-                messages.add(i, smsMessage);
-                handler.post(() -> notifyItemChanged(i));
-              }
-              messages.add(smsMessage);
-              handler.post( () -> notifyItemInserted(messages.size()));
-            }
+      @Override
+      public void messageModified(int index) {
+        SmsMessage smsMessage = dbMessages.getMessages().get(index);
+        if (smsMessage.getApproved()) {
+          int i = messages.indexOf(smsMessage);
+          if (i != -1) {
+            messages.set(i, smsMessage);
+            handler.post(() -> notifyItemChanged(i));
           }
+          messages.add(smsMessage);
+          handler.post(() -> notifyItemInserted(messages.size()));
+        }
+      }
 
-          @Override
-          public void messageRemoved(int index, SmsMessage smsMessage) {
-            if (smsMessage.getApproved()) {
-              int i = messages.indexOf(smsMessage);
-              if (i != -1) {
-                messages.remove(smsMessage);
-                handler.post(() -> notifyItemRemoved(i));
-              }
-            }
+      @Override
+      public void messageRemoved(int index, SmsMessage smsMessage) {
+        if (smsMessage.getApproved()) {
+          int i = messages.indexOf(smsMessage);
+          if (i != -1) {
+            messages.remove(smsMessage);
+            handler.post(() -> notifyItemRemoved(i));
           }
-        });
+        }
+      }
+    });
   }
 
   @NonNull

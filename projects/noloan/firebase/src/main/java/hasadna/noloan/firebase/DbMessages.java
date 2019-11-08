@@ -32,7 +32,7 @@ public class DbMessages {
 
   // Search messages by sender & body. Return -1 if no message found
   public int findBySms(SmsMessage smsMessage) {
-    return findSmsByBody(smsMessage, messages);
+    return findSms(smsMessage, messages);
   }
 
   // Return -1 if no message found
@@ -79,9 +79,6 @@ public class DbMessages {
     messagesListeners.add(messagesListener);
   }
 
-  public void removeMessagesListener(MessagesListener messagesListener) {
-    messagesListeners.remove(messagesListener);
-  }
 
   public void notifyListeners(int index, SmsMessage smsMessage, Type type) {
     for (MessagesListener listener : messagesListeners) {
@@ -114,7 +111,7 @@ public class DbMessages {
   }
 
   // static function to search a given list
-  public static int findSmsByBody(SmsMessage sms, ArrayList<SmsMessage> list) {
+  public static int findSms(SmsMessage sms, ArrayList<SmsMessage> list) {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getBody().contentEquals(sms.getBody())
           && list.get(i).getSender().contentEquals(sms.getSender())) {
