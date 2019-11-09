@@ -50,7 +50,7 @@ public class SpamRecyclerAdapter
       public void messageModified(int index) {
         SmsMessage smsMessage = dbMessages.getMessages().get(index);
         if (smsMessage.getApproved()) {
-          int i = messages.indexOf(smsMessage);
+          int i = DbMessages.findSms(smsMessage,messages);
           if (i != -1) {
             messages.set(i, smsMessage);
             handler.post(() -> notifyItemChanged(i));
