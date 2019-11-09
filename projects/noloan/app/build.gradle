@@ -44,5 +44,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0'
 
     implementation project(path: ':proto')
+    implementation project(path: ':firebase')
 }
 

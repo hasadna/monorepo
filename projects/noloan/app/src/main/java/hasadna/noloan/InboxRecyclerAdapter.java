@@ -1,8 +1,12 @@
 package hasadna.noloan;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +16,12 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.firebase.DbMessages;
+import hasadna.noloan.firebase.FirebaseAuthentication;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -23,11 +30,48 @@ public class InboxRecyclerAdapter
     extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "InboxRecyclerAdapter";
 
-  public InboxRecyclerAdapter() {
-    if (SmsMessages.get().getInboxMessages().size() == 0) {
+  ArrayList<SmsMessage> messages;
+
+  public InboxRecyclerAdapter(ArrayList<SmsMessage> inbox) {
+    messages = inbox;
+    if (messages.size() == 0) {
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      SmsMessages.get().getInboxMessages().add(noMessage);
+      messages.add(noMessage);
     }
+    Handler handler = new Handler(Looper.getMainLooper());
+
+    // If new spams added to the DB - Check if the spams exists in user's inbox, if so update the
+    // counter of suggesters
+    DbMessages.getInstance().addMessagesListener(new DbMessages.MessagesListener() {
+
+      @Override
+      public void messageAdded(SmsMessage smsMessage) {
+        // Check if user has this message in the inbox
+        int i = DbMessages.findSms(smsMessage, messages);
+        if (i != -1) {
+          messages.set(i,smsMessage);
+          handler.post(() -> notifyItemChanged(i));
+        }
+      }
+
+      @Override
+      public void messageModified(int index) {
+        SmsMessage smsMessage = DbMessages.getInstance().getMessages().get(index);
+        int i = DbMessages.findSms(smsMessage, messages);
+        if (i != -1) {
+          handler.post(() -> notifyItemChanged(i));
+        }
+      }
+
+      @Override
+      public void messageRemoved(int index, SmsMessage smsMessage) {
+        int i = DbMessages.findSms(smsMessage, messages);
+        if (i != -1) {
+          handler.post(() -> notifyItemChanged(i));
+        }
+      }
+    });
+
   }
 
   @NonNull
@@ -39,12 +83,12 @@ public class InboxRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(SmsMessages.get().getInboxMessages().get(i));
+    recyclerViewHolder.bind(messages.get(i));
   }
 
   @Override
   public int getItemCount() {
-    return SmsMessages.get().getInboxMessages().size();
+    return messages.size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -71,32 +115,21 @@ public class InboxRecyclerAdapter
       content.setText(sms.getBody());
 
       // Search if message was suggested / user suggested: update counter / add undo button
-      if (SmsMessages.get().searchDbMessage(sms) != -1) {
+      DbMessages dbMessages = DbMessages.getInstance();
+      int index = dbMessages.findBySms(sms);
+      if (index != -1) {
+        SmsMessage smsMessage = dbMessages.getMessages().get(index);
         counter.setText(
             itemView
                 .getResources()
                 .getString(
                     R.string.list_item_textView_spam_counter,
-                    SmsMessages.get()
-                        .getDbMessages()
-                        .get(SmsMessages.get().searchDbMessage(sms))
-                        .getSuggestersCount()));
+                    smsMessage.getSuggestersCount()));
 
         // Toggle undo button
-        if (SmsMessages.get()
-            .getDbMessages()
-            .get(SmsMessages.get().searchDbMessage(sms))
-            .getSuggestersList()
-            .contains(SmsMessages.get().getFirebaseUser().getUid())) {
+        if (FirebaseAuthentication.getInstance().containCurrentUser(smsMessage.getSuggestersList())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
-          buttonUndoSuggestion.setOnClickListener(
-              view ->
-                  SmsMessages.get()
-                      .undoSuggestion(
-                          SmsMessages.get()
-                              .getDbMessages()
-                              .get(SmsMessages.get().searchDbMessage((sms)))));
         } else {
           buttonAddSuggestion.setVisibility(View.VISIBLE);
           buttonUndoSuggestion.setVisibility((View.INVISIBLE));
@@ -126,8 +159,6 @@ public class InboxRecyclerAdapter
       }
 
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
-      // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
-      // DATA.
       buttonCreateLawsuit.setOnClickListener(
           view -> {
             Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
@@ -140,8 +171,15 @@ public class InboxRecyclerAdapter
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonAddSuggestion.setOnClickListener(view -> SmsMessages.get().suggestMessage(sms));
+      buttonAddSuggestion.setOnClickListener(view -> {
+        Util.suggestMessage(sms);
+      });
+
+      buttonUndoSuggestion.setOnClickListener(view -> {
+        Util.undoSuggestion(DbMessages.getInstance().getMessages().get(DbMessages.getInstance().findBySms((sms))));
+      });
     }
   }
 }
+
 
