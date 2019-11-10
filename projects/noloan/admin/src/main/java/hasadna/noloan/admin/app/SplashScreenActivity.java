@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -26,7 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
-  final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
+  final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
 
   Handler handler;
 
@@ -112,9 +114,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.post(
             () ->
                 Toast.makeText(
-                        getApplicationContext(),
-                        "This app requires permission to read SMSs",
-                        Toast.LENGTH_SHORT)
+                    getApplicationContext(),
+                    "This app requires permission to read SMSs",
+                    Toast.LENGTH_SHORT)
                     .show());
         finishAndRemoveTask();
       } else {
