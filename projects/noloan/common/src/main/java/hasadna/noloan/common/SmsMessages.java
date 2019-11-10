@@ -42,7 +42,10 @@ public class SmsMessages {
     // 1. Add user as a "suggester"
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
-        && dbMessages.get(index).getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+        && dbMessages
+            .get(index)
+            .getSuggestersList()
+            .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
       SmsMessage newMessage =
           dbMessages
               .get(index)
@@ -60,13 +63,18 @@ public class SmsMessages {
     // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage.toBuilder().addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId()).build());
+          smsMessage
+              .toBuilder()
+              .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
+              .build());
     }
   }
 
   public void undoSuggestion(SmsMessage smsMessage) {
     // Check if user is part of the "suggesters" of this spam message
-    if (smsMessage.getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+    if (smsMessage
+        .getSuggestersList()
+        .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
 
       // Case: Other people had suggested this spam as well, update just the counter (-1)
       if (smsMessage.getSuggestersCount() > 1) {

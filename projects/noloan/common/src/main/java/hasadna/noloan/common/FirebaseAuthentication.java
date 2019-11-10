@@ -33,7 +33,6 @@ public class FirebaseAuthentication {
             });
   }
 
-
   public String getCurrentUserId() {
     return user.getUid();
   }
