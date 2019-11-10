@@ -92,14 +92,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam =
-          new FirestoreClient()
-              .StartListeningToMessages()
-              .getTask();
-      Task Suggestions =
-          new FirestoreClient()
-              .StartListeningToMessages()
-              .getTask();
+      Task spam = new FirestoreClient().StartListeningToMessages().getTask();
+      Task Suggestions = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {
@@ -126,4 +120,3 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
   }
 }
-
