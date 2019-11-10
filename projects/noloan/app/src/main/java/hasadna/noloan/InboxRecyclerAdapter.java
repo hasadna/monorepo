@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import hasadna.noloan.common.FirebaseAuthontication;
+import hasadna.noloan.common.FirebaseAuthentication;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -87,7 +87,7 @@ public class InboxRecyclerAdapter
                         .getSuggestersCount()));
 
         // Toggle undo button
-        if (FirebaseAuthontication.getInstance().containCurrentUserId(SmsMessages.get().getDbMessages().get(SmsMessages.get().searchDbMessage(sms)).getSuggestersList())) {
+        if (SmsMessages.get().getDbMessages().get(SmsMessages.get().searchDbMessage(sms)).getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(

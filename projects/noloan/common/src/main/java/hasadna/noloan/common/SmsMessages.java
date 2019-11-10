@@ -2,8 +2,6 @@ package hasadna.noloan.common;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange.Type;
 
 import java.util.ArrayList;
@@ -45,12 +43,12 @@ public class SmsMessages {
     // 1. Add user as a "suggester"
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
-        && FirebaseAuthontication.getInstance().containCurrentUserId(dbMessages.get(index).getSuggestersList())) {
+        && dbMessages.get(index).getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
       SmsMessage newMessage =
           dbMessages
               .get(index)
               .toBuilder()
-              .addSuggesters(FirebaseAuthontication.getInstance().getCurrentUserId())
+              .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
               .setId(dbMessages.get(index).getId())
               .build();
       firestoreClient.modifyMessage(dbMessages.get(index), newMessage);
@@ -63,19 +61,19 @@ public class SmsMessages {
     // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage.toBuilder().addSuggesters(FirebaseAuthontication.getInstance().getCurrentUserId()).build());
+          smsMessage.toBuilder().addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId()).build());
     }
   }
 
   public void undoSuggestion(SmsMessage smsMessage) {
     // Check if user is part of the "suggesters" of this spam message
-    if (FirebaseAuthontication.getInstance().containCurrentUserId(smsMessage.getSuggestersList())) {
+    if (smsMessage.getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
 
       // Case: Other people had suggested this spam as well, update just the counter (-1)
       if (smsMessage.getSuggestersCount() > 1) {
         // 1. Create new suggesters list
         List<String> newSuggesters = new ArrayList<>(smsMessage.getSuggestersList());
-        newSuggesters.remove(FirebaseAuthontication.getInstance().getCurrentUserId());
+        newSuggesters.remove(FirebaseAuthentication.getInstance().getCurrentUserId());
         // 2. Update the counter and build modified message
         SmsMessage newMessage =
             SmsMessage.newBuilder()

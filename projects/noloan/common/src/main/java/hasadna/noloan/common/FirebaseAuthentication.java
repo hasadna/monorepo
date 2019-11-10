@@ -5,18 +5,17 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.List;
+// Singelton to deal with everything to do with authentication.
+public class FirebaseAuthentication {
+  private static final String TAG = "FirebaseAuthentication";
 
-public class FirebaseAuthontication {
-  private static final String TAG = "FirebaseAuthontication";
-
-  private static FirebaseAuthontication instance;
+  private static FirebaseAuthentication instance;
   private FirebaseUser user;
   private FirebaseAuth auth;
 
-  public static FirebaseAuthontication getInstance() {
+  public static FirebaseAuthentication getInstance() {
     if (instance == null) {
-      instance = new FirebaseAuthontication();
+      instance = new FirebaseAuthentication();
     }
     return instance;
   }
@@ -33,9 +32,6 @@ public class FirebaseAuthontication {
     });
   }
 
-  public boolean containCurrentUserId(List<String> ids) {
-    return ids.contains(user.getUid());
-  }
 
   public String getCurrentUserId() {
     return user.getUid();
