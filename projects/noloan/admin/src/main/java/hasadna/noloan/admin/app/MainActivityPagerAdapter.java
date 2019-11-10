@@ -8,13 +8,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityPageAdapter extends FragmentPagerAdapter {
+public class MainActivityPagerAdapter extends FragmentPagerAdapter {
 
   private List<Fragment> fragments;
   private List<String> titles;
 
-  public MainActivityPageAdapter(FragmentManager fm) {
-    super(fm);
+  public MainActivityPagerAdapter(FragmentManager fragmentManager) {
+    super(fragmentManager);
     fragments = new ArrayList<>();
     titles = new ArrayList<>();
   }
