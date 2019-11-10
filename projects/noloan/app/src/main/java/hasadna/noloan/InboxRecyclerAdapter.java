@@ -1,8 +1,10 @@
 package hasadna.noloan;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.FirebaseAuthontication;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -84,11 +87,7 @@ public class InboxRecyclerAdapter
                         .getSuggestersCount()));
 
         // Toggle undo button
-        if (SmsMessages.get()
-            .getDbMessages()
-            .get(SmsMessages.get().searchDbMessage(sms))
-            .getSuggestersList()
-            .contains(SmsMessages.get().getFirebaseUser().getUid())) {
+        if (FirebaseAuthontication.getInstance().containCurrentUserId(SmsMessages.get().getDbMessages().get(SmsMessages.get().searchDbMessage(sms)).getSuggestersList())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(
