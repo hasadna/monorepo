@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.FirebaseAuthontication;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -88,7 +89,7 @@ public class InboxRecyclerAdapter
             .getDbMessages()
             .get(SmsMessages.get().searchDbMessage(sms))
             .getSuggestersList()
-            .contains(SmsMessages.get().getFirebaseUser().getUid())) {
+            .contains(FirebaseAuthontication.getInstance().getCurrentUserId())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(

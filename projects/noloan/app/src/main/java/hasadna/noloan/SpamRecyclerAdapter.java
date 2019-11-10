@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.FirebaseAuthontication;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -141,7 +142,7 @@ public class SpamRecyclerAdapter
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
     public void toggleUndoButton(SmsMessage smsMessage) {
-      if (smsMessage.getSuggestersList().contains(SmsMessages.get().getFirebaseUser().getUid())) {
+      if (FirebaseAuthontication.getInstance().containCurrentUserId(smsMessage.getSuggestersList())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {
