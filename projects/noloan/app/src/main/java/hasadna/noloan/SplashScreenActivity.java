@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import hasadna.noloan.firestore.FirestoreClient;
+import hasadna.noloan.common.FirestoreClient;
 import hasadna.noloan.mainactivity.MainActivity;
 import noloan.R;
 

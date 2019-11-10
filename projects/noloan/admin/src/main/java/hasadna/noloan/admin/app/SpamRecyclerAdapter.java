@@ -2,8 +2,10 @@ package hasadna.noloan.admin.app;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +13,29 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hasadna.noloan.admin.app.firestore.FirestoreClient;
+import hasadna.noloan.common.FirestoreClient;
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessagesHolder DbMessages;
+  SmsMessages DbMessages;
 
   public SpamRecyclerAdapter() {
 
-    DbMessages = DbMessagesHolder.getInstance();
+    DbMessages = SmsMessages.get();
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setSpamListener(
-        new DbMessagesHolder.MessagesListener() {
+    DbMessages.setMessagesListener(
+        new SmsMessages.MessagesListener() {
           @Override
-          public void messageAdded() {
-            handler.post(() -> notifyItemInserted(DbMessages.getSpam().size()));
+          public void messageAdded(SmsMessage smsMessage) {
+            handler.post(() -> notifyItemInserted(DbMessages.getDbMessages().size()));
           }
 
           @Override
-          public void messageRemoved(int index) {
+          public void messageRemoved(int index, SmsMessage smsMessage) {
             handler.post(() -> notifyItemRemoved(index));
           }
 
@@ -52,12 +55,12 @@ public class SpamRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(DbMessages.getSpam().get(i));
+    recyclerViewHolder.bind(DbMessages.getDbMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return DbMessages.getSpam().size();
+    return DbMessages.getDbMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -81,7 +84,7 @@ public class SpamRecyclerAdapter
       buttonDelete.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.deleteMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
+            client.deleteMessage(sms);
             Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
           });
     }

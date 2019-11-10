@@ -1,4 +1,4 @@
-package hasadna.noloan.firestore;
+package hasadna.noloan.common;
 
 import android.util.Base64;
 
@@ -13,7 +13,6 @@ import com.google.protobuf.MessageLite;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import hasadna.noloan.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class FirestoreClient {

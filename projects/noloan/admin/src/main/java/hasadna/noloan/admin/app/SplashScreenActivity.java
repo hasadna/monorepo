@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -18,7 +20,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import hasadna.noloan.admin.app.firestore.FirestoreClient;
+import hasadna.noloan.common.FirestoreClient;
 
 // Permission request Based on
 // http://pcessflight.com/smart-android-splash-screen-grabbing-permissions/
@@ -90,14 +92,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      Task spam =
-          new FirestoreClient()
-              .startListeningToMessages(FirestoreClient.SPAM_COLLECTION_PATH)
-              .getTask();
-      Task Suggestions =
-          new FirestoreClient()
-              .startListeningToMessages(FirestoreClient.USER_SUGGEST_COLLECTION)
-              .getTask();
+      Task spam = new FirestoreClient().StartListeningToMessages().getTask();
+      Task Suggestions = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
       try {

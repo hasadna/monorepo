@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.SmsMessages;
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 

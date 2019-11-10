@@ -1,4 +1,4 @@
-package hasadna.noloan.admin.app.firestore;
+package hasadna.noloan.common;
 
 // For storing proto type to Firestore
 public class FirestoreElement {
@@ -6,7 +6,6 @@ public class FirestoreElement {
   private String proto;
 
   public FirestoreElement(String proto) {
-
     this.proto = proto;
   }
 
