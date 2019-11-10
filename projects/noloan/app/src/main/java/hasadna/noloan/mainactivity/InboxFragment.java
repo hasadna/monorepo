@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hasadna.noloan.SmsMessages;
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.InboxRecyclerAdapter;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;

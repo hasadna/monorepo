@@ -11,27 +11,28 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hasadna.noloan.admin.app.firestore.FirestoreClient;
+import hasadna.noloan.common.FirestoreClient;
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SuggetionRecyclerAdapter
     extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
 
-  DbMessagesHolder DbMessages;
+  SmsMessages DbMessages;
 
   public SuggetionRecyclerAdapter() {
-    DbMessages = DbMessagesHolder.getInstance();
+    DbMessages = SmsMessages.get();
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setSuggestionsListener(
-        new DbMessagesHolder.MessagesListener() {
+    DbMessages.setMessagesListener(
+        new SmsMessages.MessagesListener() {
           @Override
-          public void messageAdded() {
-            handler.post(() -> notifyItemInserted(DbMessages.getSuggestions().size()));
+          public void messageAdded(SmsMessage smsMessage) {
+            handler.post(() -> notifyItemInserted(DbMessages.getDbMessages().size()));
           }
 
           @Override
-          public void messageRemoved(int index) {
+          public void messageRemoved(int index, SmsMessage smsMessage) {
             handler.post(() -> notifyItemRemoved(index));
           }
 
@@ -52,12 +53,12 @@ public class SuggetionRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(DbMessages.getSuggestions().get(i));
+    recyclerViewHolder.bind(DbMessages.getDbMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return DbMessages.getSuggestions().size();
+    return DbMessages.getDbMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -81,14 +82,14 @@ public class SuggetionRecyclerAdapter
       buttonAccept.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms, FirestoreClient.SPAM_COLLECTION_PATH);
-            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            client.writeMessage(sms);
+            client.deleteMessage(sms);
             Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
           });
       buttonDelete.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.deleteMessage(sms, FirestoreClient.USER_SUGGEST_COLLECTION);
+            client.deleteMessage(sms);
             Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
           });
     }

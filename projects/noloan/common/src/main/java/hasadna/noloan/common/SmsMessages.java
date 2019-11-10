@@ -1,4 +1,4 @@
-package hasadna.noloan;
+package hasadna.noloan.common;
 
 import android.util.Log;
 
@@ -9,12 +9,11 @@ import com.google.firebase.firestore.DocumentChange.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import hasadna.noloan.firestore.FirestoreClient;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 // Simple singleton to hold smsMessages from the db, smsMessages from the inbox
 public class SmsMessages {
-  private static final String TAG = "SmsMessages";
+  private static final String TAG = "hasadna.noloan.common.SmsMessages";
 
   private static SmsMessages instance;
   private List<SmsMessage> dbMessages;
@@ -45,7 +44,7 @@ public class SmsMessages {
     messagesListeners = new ArrayList<>();
   }
 
-  // Gets the singleton instance of SmsMessages
+  // Gets the singleton instance of hasadna.noloan.common.SmsMessages
   public static SmsMessages get() {
     if (instance == null) {
       instance = new SmsMessages();
@@ -146,7 +145,7 @@ public class SmsMessages {
     return -1;
   }
 
-  // Receive changes from the db (called from FirestoreClient)
+  // Receive changes from the db (called from hasadna.noloan.common.FirestoreClient)
   public void updateChange(SmsMessage smsMessage, Type type) {
     switch (type) {
       case ADDED:
