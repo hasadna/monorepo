@@ -21,7 +21,6 @@ public class SmsMessages {
 
   private FirestoreClient firestoreClient;
 
-
   public SmsMessages() {
     dbMessages = new ArrayList<>();
     inboxMessages = new ArrayList<>();
@@ -236,3 +235,4 @@ public class SmsMessages {
     void messageRemoved(int index, SmsMessage smsMessage);
   }
 }
+
