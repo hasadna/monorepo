@@ -144,7 +144,8 @@ public class SpamRecyclerAdapter
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
     public void toggleUndoButton(SmsMessage smsMessage) {
-      if (FirebaseAuthontication.getInstance().containCurrentUserId(smsMessage.getSuggestersList())) {
+      if (FirebaseAuthontication.getInstance()
+          .containCurrentUserId(smsMessage.getSuggestersList())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {

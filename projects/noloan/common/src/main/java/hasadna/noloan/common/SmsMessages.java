@@ -23,7 +23,6 @@ public class SmsMessages {
 
   private FirestoreClient firestoreClient;
 
-
   public SmsMessages() {
     dbMessages = new ArrayList<>();
     inboxMessages = new ArrayList<>();
@@ -45,7 +44,8 @@ public class SmsMessages {
     // 1. Add user as a "suggester"
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
-        && FirebaseAuthontication.getInstance().containCurrentUserId(dbMessages.get(index).getSuggestersList())) {
+        && FirebaseAuthontication.getInstance()
+            .containCurrentUserId(dbMessages.get(index).getSuggestersList())) {
       SmsMessage newMessage =
           dbMessages
               .get(index)
@@ -63,7 +63,10 @@ public class SmsMessages {
     // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage.toBuilder().addSuggesters(FirebaseAuthontication.getInstance().getCurrentUserId()).build());
+          smsMessage
+              .toBuilder()
+              .addSuggesters(FirebaseAuthontication.getInstance().getCurrentUserId())
+              .build());
     }
   }
 
@@ -238,3 +241,4 @@ public class SmsMessages {
     void messageRemoved(int index, SmsMessage smsMessage);
   }
 }
+

@@ -87,7 +87,12 @@ public class InboxRecyclerAdapter
                         .getSuggestersCount()));
 
         // Toggle undo button
-        if (FirebaseAuthontication.getInstance().containCurrentUserId(SmsMessages.get().getDbMessages().get(SmsMessages.get().searchDbMessage(sms)).getSuggestersList())) {
+        if (FirebaseAuthontication.getInstance()
+            .containCurrentUserId(
+                SmsMessages.get()
+                    .getDbMessages()
+                    .get(SmsMessages.get().searchDbMessage(sms))
+                    .getSuggestersList())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(

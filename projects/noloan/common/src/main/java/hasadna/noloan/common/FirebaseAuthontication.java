@@ -23,14 +23,15 @@ public class FirebaseAuthontication {
 
   public void signinAnonymusly() {
     auth = FirebaseAuth.getInstance();
-    auth.signInAnonymously().addOnCompleteListener(task ->
-    {
-      if (task.isSuccessful()) {
-        user = auth.getCurrentUser();
-      } else {
-        Log.w(TAG, "signInAnonymously:failure", task.getException());
-      }
-    });
+    auth.signInAnonymously()
+        .addOnCompleteListener(
+            task -> {
+              if (task.isSuccessful()) {
+                user = auth.getCurrentUser();
+              } else {
+                Log.w(TAG, "signInAnonymously:failure", task.getException());
+              }
+            });
   }
 
   public boolean containCurrentUserId(List<String> ids) {
@@ -41,3 +42,4 @@ public class FirebaseAuthontication {
     return user.getUid();
   }
 }
+
