@@ -14,8 +14,8 @@ public class MainActivityPagerAdapter extends FragmentPagerAdapter {
   private List<Fragment> fragments;
   private List<String> titles;
 
-  public MainActivityPagerAdapter(FragmentManager fm) {
-    super(fm);
+  public MainActivityPagerAdapter(FragmentManager fragmentManager) {
+    super(fragmentManager);
     fragments = new ArrayList<>();
     titles = new ArrayList<>();
   }
