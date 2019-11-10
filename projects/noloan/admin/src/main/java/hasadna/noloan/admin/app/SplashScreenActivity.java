@@ -28,7 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
   static final long SPLASH_TIME_MS = 1000;
   private static final int PERMISSION_REQUEST_CODE = 123;
-  final String[] requiredPermissions = new String[]{Manifest.permission.READ_SMS};
+  final String[] requiredPermissions = new String[] {Manifest.permission.READ_SMS};
 
   Handler handler;
 
