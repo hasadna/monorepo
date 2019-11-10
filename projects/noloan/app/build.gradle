@@ -42,7 +42,7 @@ dependencies {
 
     //multidex
     implementation 'androidx.multidex:multidex:2.0.0'
+    implementation project(path: ':common')
 
-    implementation project(path: ':proto')
 }
 
