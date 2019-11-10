@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         new MainActivityPagerAdapter(getSupportFragmentManager());
     InboxFragment inboxFragment = new InboxFragment();
     SpamFragment spamFragment = new SpamFragment();
-    pagerAdapter.addFragment(inboxFragment,getString(R.string.inboxFragment_title));
+    pagerAdapter.addFragment(inboxFragment, getString(R.string.inboxFragment_title));
     pagerAdapter.addFragment(spamFragment, getString(R.string.spamFragment_title));
     viewPager.setAdapter(pagerAdapter);
     tabLayout = findViewById(R.id.TabLayout);
