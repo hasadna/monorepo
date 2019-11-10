@@ -108,9 +108,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.post(
             () ->
                 Toast.makeText(
-                    getApplicationContext(),
-                    "This app requires permission to read SMSs",
-                    Toast.LENGTH_SHORT)
+                        getApplicationContext(),
+                        "This app requires permission to read SMSs",
+                        Toast.LENGTH_SHORT)
                     .show());
         finishAndRemoveTask();
       } else {
@@ -120,3 +120,4 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
   }
 }
+
