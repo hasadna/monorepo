@@ -2,8 +2,6 @@ package hasadna.noloan.common;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange.Type;
 
 import java.util.ArrayList;
@@ -22,25 +20,11 @@ public class SmsMessages {
   private ArrayList<MessagesListener> messagesListeners;
 
   private FirestoreClient firestoreClient;
-  private FirebaseUser firebaseUser;
-  private FirebaseAuth firebaseAuth;
 
   public SmsMessages() {
     dbMessages = new ArrayList<>();
     inboxMessages = new ArrayList<>();
     firestoreClient = new FirestoreClient();
-    firebaseAuth = FirebaseAuth.getInstance();
-
-    firebaseAuth
-        .signInAnonymously()
-        .addOnCompleteListener(
-            task -> {
-              if (task.isSuccessful()) {
-                firebaseUser = firebaseAuth.getCurrentUser();
-              } else {
-                Log.w(TAG, "signInAnonymously:failure", task.getException());
-              }
-            });
     messagesListeners = new ArrayList<>();
   }
 
@@ -58,12 +42,15 @@ public class SmsMessages {
     // 1. Add user as a "suggester"
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
-        && !dbMessages.get(index).getSuggestersList().contains(firebaseUser.getUid())) {
+        && dbMessages
+            .get(index)
+            .getSuggestersList()
+            .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
       SmsMessage newMessage =
           dbMessages
               .get(index)
               .toBuilder()
-              .addSuggesters(firebaseUser.getUid())
+              .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
               .setId(dbMessages.get(index).getId())
               .build();
       firestoreClient.modifyMessage(dbMessages.get(index), newMessage);
@@ -76,19 +63,24 @@ public class SmsMessages {
     // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
-          smsMessage.toBuilder().addSuggesters(firebaseUser.getUid()).build());
+          smsMessage
+              .toBuilder()
+              .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
+              .build());
     }
   }
 
   public void undoSuggestion(SmsMessage smsMessage) {
     // Check if user is part of the "suggesters" of this spam message
-    if (smsMessage.getSuggestersList().contains(firebaseUser.getUid())) {
+    if (smsMessage
+        .getSuggestersList()
+        .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
 
       // Case: Other people had suggested this spam as well, update just the counter (-1)
       if (smsMessage.getSuggestersCount() > 1) {
         // 1. Create new suggesters list
         List<String> newSuggesters = new ArrayList<>(smsMessage.getSuggestersList());
-        newSuggesters.remove(firebaseUser.getUid());
+        newSuggesters.remove(FirebaseAuthentication.getInstance().getCurrentUserId());
         // 2. Update the counter and build modified message
         SmsMessage newMessage =
             SmsMessage.newBuilder()
@@ -227,10 +219,6 @@ public class SmsMessages {
           break;
       }
     }
-  }
-
-  public FirebaseUser getFirebaseUser() {
-    return firebaseUser;
   }
 
   public List<SmsMessage> getDbMessages() {

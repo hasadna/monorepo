@@ -3,8 +3,10 @@ package hasadna.noloan;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.FirebaseAuthentication;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
@@ -141,7 +144,9 @@ public class SpamRecyclerAdapter
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
     public void toggleUndoButton(SmsMessage smsMessage) {
-      if (smsMessage.getSuggestersList().contains(SmsMessages.get().getFirebaseUser().getUid())) {
+      if (smsMessage
+          .getSuggestersList()
+          .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {
