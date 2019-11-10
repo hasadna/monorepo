@@ -1,4 +1,4 @@
-package hasadna.noloan;
+package hasadna.noloan.firebase;
 
 import android.util.Log;
 
@@ -149,13 +149,13 @@ public class SmsMessages {
   // Receive changes from the db (called from FirestoreClient)
   public void updateChange(SmsMessage smsMessage, Type type) {
     switch (type) {
-      case ADDED:
+      case Type.ADDED:
         addMessage(smsMessage);
         break;
-      case MODIFIED:
+      case Type.MODIFIED:
         modifyMessage(smsMessage);
         break;
-      case REMOVED:
+      case Type.REMOVED:
         removeMessage(smsMessage);
         break;
     }
@@ -217,13 +217,13 @@ public class SmsMessages {
   public void notifyListeners(int index, SmsMessage smsMessage, Type type) {
     for (MessagesListener listener : messagesListeners) {
       switch (type) {
-        case ADDED:
+        case Type.ADDED:
           listener.messageAdded(smsMessage);
           break;
-        case MODIFIED:
+        case Type.MODIFIED:
           listener.messageModified(index);
           break;
-        case REMOVED:
+        case Type.REMOVED:
           listener.messageRemoved(index, smsMessage);
           break;
       }

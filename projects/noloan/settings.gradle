@@ -1,1 +1,1 @@
-include ':app', ':admin', ':proto'
+include ':app', ':admin', ':proto', ':firebase'
