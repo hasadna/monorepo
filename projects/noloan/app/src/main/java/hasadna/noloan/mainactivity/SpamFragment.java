@@ -23,10 +23,6 @@ public class SpamFragment extends Fragment {
     // Required empty public constructor
   }
 
-  public static InboxFragment newInstance() {
-    return new InboxFragment();
-  }
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

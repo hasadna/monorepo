@@ -14,11 +14,12 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.DbMessages;
 import hasadna.noloan.common.FirebaseAuthentication;
-import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -27,10 +28,13 @@ public class InboxRecyclerAdapter
     extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "InboxRecyclerAdapter";
 
-  public InboxRecyclerAdapter() {
-    if (SmsMessages.get().getInboxMessages().size() == 0) {
+  private ArrayList<SmsMessage> messages;
+
+  public InboxRecyclerAdapter(ArrayList<SmsMessage> inbox) {
+    messages = inbox;
+    if (messages.size() == 0) {
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
-      SmsMessages.get().getInboxMessages().add(noMessage);
+      messages.add(noMessage);
     }
   }
 
@@ -43,12 +47,12 @@ public class InboxRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(SmsMessages.get().getInboxMessages().get(i));
+    recyclerViewHolder.bind(messages.get(i));
   }
 
   @Override
   public int getItemCount() {
-    return SmsMessages.get().getInboxMessages().size();
+    return messages.size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -75,32 +79,17 @@ public class InboxRecyclerAdapter
       content.setText(sms.getBody());
 
       // Search if message was suggested / user suggested: update counter / add undo button
-      if (SmsMessages.get().searchDbMessage(sms) != -1) {
-        counter.setText(
-            itemView
-                .getResources()
-                .getString(
-                    R.string.list_item_textView_spam_counter,
-                    SmsMessages.get()
-                        .getDbMessages()
-                        .get(SmsMessages.get().searchDbMessage(sms))
-                        .getSuggestersCount()));
+      DbMessages dbMessages = DbMessages.getInstance();
+      int index = DbMessages.findSms(sms, dbMessages.getMessages());
+      if (index != -1) {
+        SmsMessage message = dbMessages.getMessages().get(index);
+        counter.setText(itemView.getResources().getString(R.string.list_item_textView_spam_counter, message.getSuggestersCount()));
 
         // Toggle undo button
-        if (SmsMessages.get()
-            .getDbMessages()
-            .get(SmsMessages.get().searchDbMessage(sms))
-            .getSuggestersList()
-            .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+        if (message.getSuggestersList().contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
-          buttonUndoSuggestion.setOnClickListener(
-              view ->
-                  SmsMessages.get()
-                      .undoSuggestion(
-                          SmsMessages.get()
-                              .getDbMessages()
-                              .get(SmsMessages.get().searchDbMessage((sms)))));
+          buttonUndoSuggestion.setOnClickListener(view -> dbMessages.removeMessage(message));
         } else {
           buttonAddSuggestion.setVisibility(View.VISIBLE);
           buttonUndoSuggestion.setVisibility((View.INVISIBLE));
@@ -108,8 +97,7 @@ public class InboxRecyclerAdapter
       }
       // Case: No one suggested this message
       else {
-        counter.setText(
-            itemView.getResources().getString(R.string.list_item_textView_spam_counter, 0));
+        counter.setText(itemView.getResources().getString(R.string.list_item_textView_spam_counter, 0));
         buttonAddSuggestion.setVisibility(View.VISIBLE);
         buttonUndoSuggestion.setVisibility((View.INVISIBLE));
       }
@@ -144,7 +132,7 @@ public class InboxRecyclerAdapter
             view.getContext().startActivity(intentToLawsuitForm);
           });
 
-      buttonAddSuggestion.setOnClickListener(view -> SmsMessages.get().suggestMessage(sms));
+      buttonAddSuggestion.setOnClickListener(view -> DbMessages.getInstance().addMessage(sms));
     }
   }
 }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.common.SmsMessages;
+import hasadna.noloan.common.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
@@ -40,13 +40,15 @@ public class MainActivity extends AppCompatActivity
   TabLayout tabLayout;
   TextView statusTitle;
 
+  ArrayList<SmsMessage> inbox;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main_activity);
 
     // Read inbox messages
-    SmsMessages.get().setInboxMessages(readSmsFromDevice());
+    inbox = readSmsFromDevice();
 
     // Toolbar
     AppBarLayout toolbarContent = findViewById(R.id.toolbar_content);
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity
     viewPager.setRotationY(180);
     MainActivityPagerAdapter pagerAdapter =
         new MainActivityPagerAdapter(getSupportFragmentManager());
-    InboxFragment inboxFragment = new InboxFragment();
+    InboxFragment inboxFragment = new InboxFragment(inbox);
     SpamFragment spamFragment = new SpamFragment();
     pagerAdapter.addFragment(inboxFragment, getString(R.string.inboxFragment_title));
     pagerAdapter.addFragment(spamFragment, getString(R.string.spamFragment_title));
@@ -163,16 +165,16 @@ public class MainActivity extends AppCompatActivity
   // changes
   public void updateTitles() {
     // Main title
-    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
+    statusTitle.setText(String.valueOf(DbMessages.getInstance().getMessages().size()));
 
     // Tab's titles
     tabLayout
         .getTabAt(0)
         .setText(
-            getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+            getString(R.string.inboxFragment_title, inbox.size()));
     tabLayout
         .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
+        .setText(getString(R.string.spamFragment_title, DbMessages.getInstance().getMessages().size()));
   }
 
   private void openAbout() {
