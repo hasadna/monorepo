@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import hasadna.noloan.common.FirebaseAuthentication;
 import hasadna.noloan.common.FirestoreClient;
 
 // Permission request Based on
@@ -92,6 +93,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
+      FirebaseAuthentication.getInstance().signinAdmin("galgolo@gmail.com","coolPassword");
+
       Task spam = new FirestoreClient().StartListeningToMessages().getTask();
       Task Suggestions = new FirestoreClient().StartListeningToMessages().getTask();
 
