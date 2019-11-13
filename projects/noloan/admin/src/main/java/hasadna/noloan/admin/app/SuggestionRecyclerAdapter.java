@@ -2,8 +2,10 @@ package hasadna.noloan.admin.app;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,36 +13,65 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import hasadna.noloan.common.FirestoreClient;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
-public class SuggetionRecyclerAdapter
-    extends RecyclerView.Adapter<SuggetionRecyclerAdapter.RecyclerViewHolder> {
+public class SuggestionRecyclerAdapter
+    extends RecyclerView.Adapter<SuggestionRecyclerAdapter.RecyclerViewHolder> {
 
-  SmsMessages DbMessages;
+  ArrayList<SmsMessage> messages;
 
-  public SuggetionRecyclerAdapter() {
-    DbMessages = SmsMessages.get();
+  public SuggestionRecyclerAdapter() {
+    messages = new ArrayList<>();
+    SmsMessages dbMessages = SmsMessages.get();
+
+    // maybe add getApproved to SmsMessages
+    for (SmsMessage message : dbMessages.getDbMessages()) {
+      if (!message.getApproved()) {
+        this.messages.add(message);
+      }
+    }
+
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setMessagesListener(
-        new SmsMessages.MessagesListener() {
-          @Override
-          public void messageAdded(SmsMessage smsMessage) {
-            handler.post(() -> notifyItemInserted(DbMessages.getDbMessages().size()));
-          }
+    dbMessages.setMessagesListener(new SmsMessages.MessagesListener() {
+      @Override
+      public void messageAdded(SmsMessage smsMessage) {
+        if (!smsMessage.getApproved()) {
+          messages.add(smsMessage);
+          handler.post(() -> notifyItemInserted(messages.size()));
+        }
+      }
 
-          @Override
-          public void messageRemoved(int index, SmsMessage smsMessage) {
-            handler.post(() -> notifyItemRemoved(index));
-          }
+      @Override
+      public void messageRemoved(int index, SmsMessage smsMessage) {
+        if (!smsMessage.getApproved()) {
+          int i = SmsMessages.searchMessage(smsMessage, messages);
+          messages.remove(smsMessage);
+          handler.post(() -> notifyItemRemoved(i));
+        }
+      }
 
-          @Override
-          public void messageModified(int index) {
-            handler.post(() -> notifyItemChanged(index));
-          }
-        });
+      @Override
+      public void messageModified(int index) {
+        SmsMessage smsMessage = dbMessages.getDbMessages().get(index);
+        int i = SmsMessages.searchMessage(smsMessage, messages);
+
+        if (i != -1 && !smsMessage.getApproved()) {
+          messages.set(i, smsMessage);
+          handler.post(() -> notifyItemChanged(i));
+        } else if (i != -1) {
+          messages.remove(i);
+          handler.post(() -> notifyItemRemoved(i));
+        } else {
+          messages.add(smsMessage);
+          handler.post(() -> notifyItemInserted(messages.size()));
+        }
+      }
+    });
   }
 
   @NonNull
@@ -53,12 +84,12 @@ public class SuggetionRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(DbMessages.getDbMessages().get(i));
+    recyclerViewHolder.bind(messages.get(i));
   }
 
   @Override
   public int getItemCount() {
-    return DbMessages.getDbMessages().size();
+    return messages.size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -82,8 +113,8 @@ public class SuggetionRecyclerAdapter
       buttonAccept.setOnClickListener(
           view -> {
             FirestoreClient client = new FirestoreClient();
-            client.writeMessage(sms);
-            client.deleteMessage(sms);
+            SmsMessage approved = sms.toBuilder().setApproved(true).build();
+            client.modifyMessage(sms, approved);
             Toast.makeText(view.getContext(), "accepted", Toast.LENGTH_SHORT).show();
           });
       buttonDelete.setOnClickListener(
