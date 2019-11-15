@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
 
     if (FirebaseAuthentication.getInstance().isSignin()) {
       startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
+      finish();
     } else {
       // for debugging
       TextView currentUser = findViewById(R.id.current_text);
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
           FirebaseAuthentication.getInstance().signinAdmin(email, password).getTask().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
               startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
+              finish();
               //currentUser.setText(FirebaseAuthentication.getInstance().getCurrentUserId());
             } else {
               Toast.makeText(getBaseContext(), "failed to login", Toast.LENGTH_LONG).show();
