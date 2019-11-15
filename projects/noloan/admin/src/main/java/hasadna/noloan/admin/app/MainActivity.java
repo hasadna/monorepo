@@ -1,5 +1,6 @@
 package hasadna.noloan.admin.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import hasadna.noloan.common.FirebaseAuthentication;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,6 +71,12 @@ public class MainActivity extends AppCompatActivity
     int id = item.getItemId();
     if (id == R.id.nav_about) {
       openAbout();
+    }
+    else if(id == R.id.nav_signout)
+    {
+      FirebaseAuthentication.getInstance().signout();
+      startActivity(new Intent(MainActivity.this,LoginActivity.class));
+      finish();
     }
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);

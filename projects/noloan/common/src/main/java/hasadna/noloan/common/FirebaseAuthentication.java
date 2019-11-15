@@ -45,9 +45,9 @@ public class FirebaseAuthentication {
 
   public TaskCompletionSource<Boolean> signinAdmin(String email, String password) {
     Log.d(TAG, "starting to log in!");
-    TaskCompletionSource t = new TaskCompletionSource<>();
+    TaskCompletionSource result = new TaskCompletionSource<>();
 
-    // if not already signed in.
+    // If not already signed in.
     if (user == null) {
       auth.signInWithEmailAndPassword(email, password)
           .addOnCompleteListener(
@@ -55,21 +55,21 @@ public class FirebaseAuthentication {
                 if (task.isSuccessful()) {
                   Log.d(TAG, "login admin successfully");
                   user = auth.getCurrentUser();
-                  t.trySetResult(true);
+                  result.trySetResult(true);
                 } else {
                   Log.e(TAG, "failed to signin admin" + email + "  " + password);
-                  t.trySetResult(false);
+                  result.trySetResult(false);
                 }
               });
     } else {
-      t.trySetResult(true);
+      result.trySetResult(true);
     }
-    return t;
+    return result;
   }
 
-  // signout take time, we can listen to one of the event it fire.
   public void signout() {
     auth.signOut();
+    user = null;
   }
 
   public boolean isSignin() {
@@ -78,7 +78,7 @@ public class FirebaseAuthentication {
 
   public String getCurrentUserId() {
     if (user == null) {
-      return "no one";
+      return null;
     }
     return user.getUid();
   }

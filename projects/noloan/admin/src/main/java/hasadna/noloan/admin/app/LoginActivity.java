@@ -10,21 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import hasadna.noloan.common.FirebaseAuthentication;
 
+// TODO read about FirebaseUI
 public class LoginActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-
+    // In case the admin already loged in
     if (FirebaseAuthentication.getInstance().isSignin()) {
       startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
       finish();
     } else {
-      // for debugging
-      TextView currentUser = findViewById(R.id.current_text);
-      currentUser.setText(FirebaseAuthentication.getInstance().getCurrentUserId());
-
       TextView emailText = findViewById(R.id.email_Text);
       TextView passwordText = findViewById(R.id.password_text);
 
@@ -42,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                           startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
                           finish();
-                          // currentUser.setText(FirebaseAuthentication.getInstance().getCurrentUserId());
                         } else {
                           Toast.makeText(getBaseContext(), "failed to login", Toast.LENGTH_LONG)
                               .show();
@@ -51,14 +47,6 @@ public class LoginActivity extends AppCompatActivity {
             } else {
               Toast.makeText(this, "email or password is empty", Toast.LENGTH_LONG).show();
             }
-          });
-
-      // fo debugging
-      Button signout = findViewById(R.id.signout_button);
-      signout.setOnClickListener(
-          v -> {
-            FirebaseAuthentication.getInstance().signout();
-            currentUser.setText(FirebaseAuthentication.getInstance().getCurrentUserId());
           });
     }
   }
