@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,8 +26,14 @@ public class FirebaseAuthentication {
     return instance;
   }
 
-  public void signinAnonymusly() {
+  public FirebaseAuthentication()
+  {
     auth = FirebaseAuth.getInstance();
+    user = auth.getCurrentUser();
+
+  }
+
+  public void signinAnonymusly() {
     auth.signInAnonymously()
         .addOnCompleteListener(task -> {
           if (task.isSuccessful()) {
@@ -38,26 +45,46 @@ public class FirebaseAuthentication {
   }
 
 
-  public void signinAdmin(String email, String password) {
+  public TaskCompletionSource<Boolean> signinAdmin(String email, String password) {
     Log.d(TAG, "starting to log in!");
-    auth = FirebaseAuth.getInstance();
-    user = auth.getCurrentUser();
-    Log.d(TAG, "" + user.getUid());
+    TaskCompletionSource t = new TaskCompletionSource<>();
+
     //if not already signed in.
     if (user == null) {
       auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
         if (task.isSuccessful()) {
           Log.d(TAG, "login admin successfully");
           user = auth.getCurrentUser();
+          t.trySetResult(true);
         } else {
           Log.e(TAG, "failed to signin admin" + email + "  " + password);
+          t.trySetResult(false);
         }
       });
     }
+    else
+    {
+      t.trySetResult(true);
+    }
+    return t;
+  }
 
+  // signout take time, we can listen to one of the event it fire.
+  public void signout()
+  {
+    auth.signOut();
+  }
+
+  public boolean isSignin()
+  {
+    return user != null;
   }
 
   public String getCurrentUserId() {
+    if(user == null)
+    {
+      return "no one";
+    }
     return user.getUid();
   }
 }
