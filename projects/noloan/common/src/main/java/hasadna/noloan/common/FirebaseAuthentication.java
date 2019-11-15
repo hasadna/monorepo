@@ -26,63 +26,58 @@ public class FirebaseAuthentication {
     return instance;
   }
 
-  public FirebaseAuthentication()
-  {
+  public FirebaseAuthentication() {
     auth = FirebaseAuth.getInstance();
     user = auth.getCurrentUser();
-
   }
 
   public void signinAnonymusly() {
     auth.signInAnonymously()
-        .addOnCompleteListener(task -> {
-          if (task.isSuccessful()) {
-            user = auth.getCurrentUser();
-          } else {
-            Log.w(TAG, "signInAnonymously:failure", task.getException());
-          }
-        });
+        .addOnCompleteListener(
+            task -> {
+              if (task.isSuccessful()) {
+                user = auth.getCurrentUser();
+              } else {
+                Log.w(TAG, "signInAnonymously:failure", task.getException());
+              }
+            });
   }
-
 
   public TaskCompletionSource<Boolean> signinAdmin(String email, String password) {
     Log.d(TAG, "starting to log in!");
     TaskCompletionSource t = new TaskCompletionSource<>();
 
-    //if not already signed in.
+    // if not already signed in.
     if (user == null) {
-      auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-        if (task.isSuccessful()) {
-          Log.d(TAG, "login admin successfully");
-          user = auth.getCurrentUser();
-          t.trySetResult(true);
-        } else {
-          Log.e(TAG, "failed to signin admin" + email + "  " + password);
-          t.trySetResult(false);
-        }
-      });
-    }
-    else
-    {
+      auth.signInWithEmailAndPassword(email, password)
+          .addOnCompleteListener(
+              task -> {
+                if (task.isSuccessful()) {
+                  Log.d(TAG, "login admin successfully");
+                  user = auth.getCurrentUser();
+                  t.trySetResult(true);
+                } else {
+                  Log.e(TAG, "failed to signin admin" + email + "  " + password);
+                  t.trySetResult(false);
+                }
+              });
+    } else {
       t.trySetResult(true);
     }
     return t;
   }
 
   // signout take time, we can listen to one of the event it fire.
-  public void signout()
-  {
+  public void signout() {
     auth.signOut();
   }
 
-  public boolean isSignin()
-  {
+  public boolean isSignin() {
     return user != null;
   }
 
   public String getCurrentUserId() {
-    if(user == null)
-    {
+    if (user == null) {
       return "no one";
     }
     return user.getUid();
