@@ -2,12 +2,7 @@ package hasadna.noloan.common;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -44,7 +39,7 @@ public class FirebaseAuthentication {
   }
 
   public TaskCompletionSource<Boolean> signinAdmin(String email, String password) {
-    Log.d(TAG, "starting to log in!");
+    Log.d(TAG, "signinAdmin starting");
     TaskCompletionSource result = new TaskCompletionSource<>();
 
     // If not already signed in.
@@ -53,11 +48,11 @@ public class FirebaseAuthentication {
           .addOnCompleteListener(
               task -> {
                 if (task.isSuccessful()) {
-                  Log.d(TAG, "login admin successfully");
+                  Log.d(TAG, "Login admin successfully");
                   user = auth.getCurrentUser();
                   result.trySetResult(true);
                 } else {
-                  Log.e(TAG, "failed to signin admin" + email + "  " + password);
+                  Log.e(TAG, "Failed to signin admin" + email + "  " + password);
                   result.trySetResult(false);
                 }
               });

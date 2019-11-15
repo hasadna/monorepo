@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import hasadna.noloan.common.FirebaseAuthentication;
 
-// TODO read about FirebaseUI
+// TODO Read about FirebaseUI
 public class LoginActivity extends AppCompatActivity {
 
   @Override
@@ -40,12 +40,12 @@ public class LoginActivity extends AppCompatActivity {
                           startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
                           finish();
                         } else {
-                          Toast.makeText(getBaseContext(), "failed to login", Toast.LENGTH_LONG)
+                          Toast.makeText(getBaseContext(), "Failed to login", Toast.LENGTH_LONG)
                               .show();
                         }
                       });
             } else {
-              Toast.makeText(this, "email or password is empty", Toast.LENGTH_LONG).show();
+              Toast.makeText(this, "Email or password is empty", Toast.LENGTH_LONG).show();
             }
           });
     }
