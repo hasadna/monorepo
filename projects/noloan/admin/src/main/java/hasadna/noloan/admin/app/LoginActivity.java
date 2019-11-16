@@ -17,8 +17,8 @@ public class LoginActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-    // In case the admin already loged in
-    if (FirebaseAuthentication.getInstance().isSignin()) {
+    // In case the admin is already logged in
+    if (FirebaseAuthentication.getInstance().isSignedIn()) {
       startActivity(new Intent(LoginActivity.this, SplashScreenActivity.class));
       finish();
     } else {
@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = passwordText.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
               FirebaseAuthentication.getInstance()
-                  .signinAdmin(email, password)
+                  .signInAdmin(email, password)
                   .getTask()
                   .addOnCompleteListener(
                       task -> {

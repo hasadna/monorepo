@@ -26,7 +26,7 @@ public class FirebaseAuthentication {
     user = auth.getCurrentUser();
   }
 
-  public void signinAnonymusly() {
+  public void signInAnonymusly() {
     auth.signInAnonymously()
         .addOnCompleteListener(
             task -> {
@@ -38,8 +38,8 @@ public class FirebaseAuthentication {
             });
   }
 
-  public TaskCompletionSource<Boolean> signinAdmin(String email, String password) {
-    Log.d(TAG, "signinAdmin starting");
+  public TaskCompletionSource<Boolean> signInAdmin(String email, String password) {
+    Log.d(TAG, "signInAdmin starting");
     TaskCompletionSource result = new TaskCompletionSource<>();
 
     // If not already signed in.
@@ -62,12 +62,12 @@ public class FirebaseAuthentication {
     return result;
   }
 
-  public void signout() {
+  public void signOut() {
     auth.signOut();
     user = null;
   }
 
-  public boolean isSignin() {
+  public boolean isSignedIn() {
     return user != null;
   }
 

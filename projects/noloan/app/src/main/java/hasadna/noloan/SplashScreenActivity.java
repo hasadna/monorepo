@@ -94,7 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
-      FirebaseAuthentication.getInstance().signinAnonymusly();
+      FirebaseAuthentication.getInstance().signInAnonymusly();
       Task messagesTask = new FirestoreClient().StartListeningToMessages().getTask();
 
       Task<Boolean> permissions = permissionTask.getTask();
