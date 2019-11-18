@@ -59,7 +59,7 @@ public class FirestoreClient {
             return;
           }
 
-          SmsMessages smsMessages = SmsMessages.get();
+          DbMessages dbMessages = DbMessages.getInstance();
 
           // Get the message that changed
           for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
@@ -73,8 +73,17 @@ public class FirestoreClient {
             } catch (InvalidProtocolBufferException e1) {
               e1.printStackTrace();
             }
-
-            smsMessages.updateChange(sms, documentChange.getType());
+            switch (documentChange.getType()) {
+              case ADDED:
+                dbMessages.addMessage(sms);
+                break;
+              case MODIFIED:
+                dbMessages.modifyMessage(sms);
+                break;
+              case REMOVED:
+                dbMessages.removeMessage(sms);
+                break;
+            }
           }
           task.trySetResult(true);
         });

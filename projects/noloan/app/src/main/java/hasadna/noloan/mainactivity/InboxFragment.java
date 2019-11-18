@@ -3,14 +3,18 @@ package hasadna.noloan.mainactivity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import hasadna.noloan.common.SmsMessages;
+import java.util.ArrayList;
+
+import hasadna.noloan.common.DbMessages;
 import hasadna.noloan.InboxRecyclerAdapter;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -21,40 +25,37 @@ public class InboxFragment extends Fragment {
   private RecyclerView recyclerView;
   private InboxRecyclerAdapter inboxRecyclerAdapter;
 
-  public InboxFragment() {
-    // Required empty public constructor
-  }
+  private ArrayList<SmsMessage> inbox;
 
-  public static InboxFragment newInstance() {
-    return new InboxFragment();
+  public InboxFragment(ArrayList<SmsMessage> inbox) {
+    this.inbox = inbox;
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    inboxRecyclerAdapter = new InboxRecyclerAdapter();
+    inboxRecyclerAdapter = new InboxRecyclerAdapter(inbox);
 
     // If new spams added to the DB - Check if the spams exists in user's inbox, if so update the
     // counter of suggesters
-    SmsMessages.get()
-        .setMessagesListener(
-            new SmsMessages.MessagesListener() {
+    DbMessages.getInstance() // TODO move to the recycler
+        .addMessagesListener(
+            new DbMessages.MessagesListener() {
               @Override
               public void messageAdded(SmsMessage smsMessage) {
                 // Check if user has this message in the inbox
-                if (SmsMessages.get().searchInboxMessage(smsMessage) != -1) {
+                if (DbMessages.findSms(smsMessage,inbox) != -1) {
                   getActivity()
                       .runOnUiThread(
                           () ->
                               inboxRecyclerAdapter.notifyItemChanged(
-                                  SmsMessages.get().searchInboxMessage(smsMessage)));
+                                  DbMessages.findSms(smsMessage,inbox)));
                 }
               }
 
               @Override
               public void messageModified(int index) {
-                if (SmsMessages.get()
-                        .searchInboxMessage(SmsMessages.get().getDbMessages().get(index))
+                if (DbMessages.findSms(DbMessages.getInstance().getMessages().get(index),inbox)
                     != -1) {
                   getActivity().runOnUiThread(() -> inboxRecyclerAdapter.notifyItemChanged(index));
                 }
@@ -62,12 +63,12 @@ public class InboxFragment extends Fragment {
 
               @Override
               public void messageRemoved(int index, SmsMessage smsMessage) {
-                if (SmsMessages.get().searchInboxMessage(smsMessage) != -1) {
+                if (DbMessages.findSms(smsMessage,inbox) != -1) {
                   getActivity()
                       .runOnUiThread(
                           () ->
                               inboxRecyclerAdapter.notifyItemChanged(
-                                  SmsMessages.get().searchInboxMessage(smsMessage)));
+                                  DbMessages.findSms(smsMessage,inbox)));
                 }
               }
             });
@@ -75,7 +76,8 @@ public class InboxFragment extends Fragment {
     inboxRecyclerAdapter.registerAdapterDataObserver(
         new RecyclerView.AdapterDataObserver() {
           @Override
-          public void onItemRangeChanged(int positionStart, int itemCount) {}
+          public void onItemRangeChanged(int positionStart, int itemCount) {
+          }
         });
   }
 

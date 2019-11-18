@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import hasadna.noloan.common.DbMessages;
 import hasadna.noloan.common.FirebaseAuthentication;
-import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -33,12 +33,12 @@ public class SpamRecyclerAdapter
     Handler handler = new Handler(Looper.myLooper());
 
     // Listen to db smsMessages
-    SmsMessages.get()
-        .setMessagesListener(
-            new SmsMessages.MessagesListener() {
+    DbMessages.getInstance()
+        .addMessagesListener(
+            new DbMessages.MessagesListener() {
               @Override
               public void messageAdded(SmsMessage newMessage) {
-                handler.post(() -> notifyItemInserted(SmsMessages.get().getDbMessages().size()));
+                handler.post(() -> notifyItemInserted(DbMessages.getInstance().getMessages().size()));
               }
 
               @Override
@@ -62,12 +62,12 @@ public class SpamRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(SmsMessages.get().getDbMessages().get(i));
+    recyclerViewHolder.bind(DbMessages.getInstance().getMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return SmsMessages.get().getDbMessages().size();
+    return DbMessages.getInstance().getMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -133,16 +133,17 @@ public class SpamRecyclerAdapter
 
       buttonUndoSuggestion.setOnClickListener(
           v -> {
-            SmsMessages.get().undoSuggestion(sms);
+            DbMessages.getInstance().removeMessage(sms);
           });
 
       buttonAddSuggestion.setOnClickListener(
           view -> {
-            SmsMessages.get().suggestMessage(sms);
+            DbMessages.getInstance().addMessage(sms);
           });
     }
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
+    //TODO for consistesy, remove this function
     public void toggleUndoButton(SmsMessage smsMessage) {
       if (smsMessage
           .getSuggestersList()

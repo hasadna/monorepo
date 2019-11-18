@@ -93,14 +93,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected Object doInBackground(Object[] objects) {
       checkPermissions();
       Task spam = new FirestoreClient().StartListeningToMessages().getTask();
-      Task Suggestions = new FirestoreClient().StartListeningToMessages().getTask();
-
       Task<Boolean> permissions = permissionTask.getTask();
       try {
 
         Tasks.await(permissions);
         Tasks.await(spam);
-        Tasks.await(Suggestions);
       } catch (ExecutionException | InterruptedException e) {
         e.printStackTrace();
       }

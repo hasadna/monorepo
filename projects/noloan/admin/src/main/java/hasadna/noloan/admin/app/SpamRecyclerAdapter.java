@@ -13,25 +13,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import hasadna.noloan.common.FirestoreClient;
-import hasadna.noloan.common.SmsMessages;
+import hasadna.noloan.common.DbMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
 public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
 
-  SmsMessages DbMessages;
 
   public SpamRecyclerAdapter() {
 
-    DbMessages = SmsMessages.get();
+    DbMessages dbMessages = hasadna.noloan.common.DbMessages.getInstance();
     Handler handler = new Handler(Looper.getMainLooper());
 
-    DbMessages.setMessagesListener(
-        new SmsMessages.MessagesListener() {
+    dbMessages.addMessagesListener(
+        new hasadna.noloan.common.DbMessages.MessagesListener() {
           @Override
           public void messageAdded(SmsMessage smsMessage) {
-            handler.post(() -> notifyItemInserted(DbMessages.getDbMessages().size()));
+            handler.post(() -> notifyItemInserted(dbMessages.getMessages().size()));
           }
 
           @Override
@@ -55,12 +53,12 @@ public class SpamRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(DbMessages.getDbMessages().get(i));
+    recyclerViewHolder.bind(DbMessages.getInstance().getMessages().get(i));
   }
 
   @Override
   public int getItemCount() {
-    return DbMessages.getDbMessages().size();
+    return DbMessages.getInstance().getMessages().size();
   }
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -83,8 +81,7 @@ public class SpamRecyclerAdapter
 
       buttonDelete.setOnClickListener(
           view -> {
-            FirestoreClient client = new FirestoreClient();
-            client.deleteMessage(sms);
+            DbMessages.getInstance().removeMessage(sms);
             Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
           });
     }
