@@ -37,41 +37,43 @@ public class SuggestionRecyclerAdapter
     Handler handler = new Handler(Looper.getMainLooper());
 
     // Listening to changes in the DB
-    dbMessages.setMessagesListener(new SmsMessages.MessagesListener() {
-      @Override
-      public void messageAdded(SmsMessage smsMessage) {
-        if (!smsMessage.getApproved()) {
-          messages.add(smsMessage);
-          handler.post(() -> notifyItemInserted(messages.size()));
-        }
-      }
+    dbMessages.setMessagesListener(
+        new SmsMessages.MessagesListener() {
+          @Override
+          public void messageAdded(SmsMessage smsMessage) {
+            if (!smsMessage.getApproved()) {
+              messages.add(smsMessage);
+              handler.post(() -> notifyItemInserted(messages.size()));
+            }
+          }
 
-      @Override
-      public void messageRemoved(int index, SmsMessage smsMessage) {
-        if (!smsMessage.getApproved()) {
-          int i = SmsMessages.searchMessage(smsMessage, messages);
-          messages.remove(i);
-          handler.post(() -> notifyItemRemoved(i));
-        }
-      }
+          @Override
+          public void messageRemoved(int index, SmsMessage smsMessage) {
+            if (!smsMessage.getApproved()) {
+              int i = SmsMessages.searchMessage(smsMessage, messages);
+              messages.remove(i);
+              handler.post(() -> notifyItemRemoved(i));
+            }
+          }
 
-      @Override
-      public void messageModified(int index) {
-        SmsMessage smsMessage = dbMessages.getDbMessages().get(index);
-        int i = SmsMessages.searchMessage(smsMessage, messages);
+          @Override
+          public void messageModified(int index) {
+            SmsMessage smsMessage = dbMessages.getDbMessages().get(index);
+            int i = SmsMessages.searchMessage(smsMessage, messages);
 
-        if (i != -1 && !smsMessage.getApproved()) { // Message not in the list and not approve
-          messages.set(i, smsMessage);
-          handler.post(() -> notifyItemChanged(i));
-        } else if (i != -1) { // Message not in the list and approved, need to be removed from the list
-          messages.remove(i);
-          handler.post(() -> notifyItemRemoved(i));
-        } else { // Message not in the list and not approve
-          messages.add(smsMessage);
-          handler.post(() -> notifyItemInserted(messages.size()));
-        }
-      }
-    });
+            if (i != -1 && !smsMessage.getApproved()) { // Message not in the list and not approve
+              messages.set(i, smsMessage);
+              handler.post(() -> notifyItemChanged(i));
+            } else if (i
+                != -1) { // Message not in the list and approved, need to be removed from the list
+              messages.remove(i);
+              handler.post(() -> notifyItemRemoved(i));
+            } else { // Message not in the list and not approve
+              messages.add(smsMessage);
+              handler.post(() -> notifyItemInserted(messages.size()));
+            }
+          }
+        });
   }
 
   @NonNull

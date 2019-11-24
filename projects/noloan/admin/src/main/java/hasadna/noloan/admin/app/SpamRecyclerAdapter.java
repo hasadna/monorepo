@@ -94,7 +94,6 @@ public class SpamRecyclerAdapter
     return messages.size();
   }
 
-
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     TextView from, content, receivedAt;
