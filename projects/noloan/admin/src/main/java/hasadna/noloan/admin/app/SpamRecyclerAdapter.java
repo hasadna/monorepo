@@ -29,7 +29,6 @@ public class SpamRecyclerAdapter
     messages = new ArrayList<>();
     SmsMessages dbMessages = SmsMessages.get();
 
-    // maybe add getSuggestions to SmsMessages
     for (SmsMessage message : dbMessages.getDbMessages()) {
       if (message.getApproved()) {
         messages.add(message);
@@ -38,6 +37,7 @@ public class SpamRecyclerAdapter
 
     Handler handler = new Handler(Looper.getMainLooper());
 
+    // Listening to changes in the DB
     dbMessages.setMessagesListener(
         new SmsMessages.MessagesListener() {
           @Override
@@ -52,7 +52,7 @@ public class SpamRecyclerAdapter
           public void messageRemoved(int index, SmsMessage smsMessage) {
             if (smsMessage.getApproved()) {
               int i = SmsMessages.searchMessage(smsMessage, messages);
-              messages.remove(smsMessage);
+              messages.remove(i);
               handler.post(() -> notifyItemRemoved(i));
             }
           }
@@ -61,14 +61,14 @@ public class SpamRecyclerAdapter
           public void messageModified(int index) {
             SmsMessage smsMessage = dbMessages.getDbMessages().get(index);
             int i = SmsMessages.searchMessage(smsMessage, messages);
-            if (i != -1 && smsMessage.getApproved()) { // message approved and in the list
+            if (i != -1 && smsMessage.getApproved()) { // Message approved and in the list
               messages.set(i, smsMessage);
               handler.post(() -> notifyItemChanged(i));
-            } else if (i != -1) // message not approved but in the list
+            } else if (i != -1) // Message not approved but in the list
             {
               messages.remove(i);
               handler.post(() -> notifyItemRemoved(i));
-            } else // message approved but not in the list
+            } else // Message approved but not in the list
             {
               messages.add(smsMessage);
               handler.post(() -> notifyItemInserted(messages.size()));

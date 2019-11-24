@@ -28,7 +28,6 @@ public class SuggestionRecyclerAdapter
     messages = new ArrayList<>();
     SmsMessages dbMessages = SmsMessages.get();
 
-    // maybe add getApproved to SmsMessages
     for (SmsMessage message : dbMessages.getDbMessages()) {
       if (!message.getApproved()) {
         this.messages.add(message);
@@ -37,6 +36,7 @@ public class SuggestionRecyclerAdapter
 
     Handler handler = new Handler(Looper.getMainLooper());
 
+    // Listening to changes in the DB
     dbMessages.setMessagesListener(new SmsMessages.MessagesListener() {
       @Override
       public void messageAdded(SmsMessage smsMessage) {
@@ -50,7 +50,7 @@ public class SuggestionRecyclerAdapter
       public void messageRemoved(int index, SmsMessage smsMessage) {
         if (!smsMessage.getApproved()) {
           int i = SmsMessages.searchMessage(smsMessage, messages);
-          messages.remove(smsMessage);
+          messages.remove(i);
           handler.post(() -> notifyItemRemoved(i));
         }
       }
@@ -60,13 +60,13 @@ public class SuggestionRecyclerAdapter
         SmsMessage smsMessage = dbMessages.getDbMessages().get(index);
         int i = SmsMessages.searchMessage(smsMessage, messages);
 
-        if (i != -1 && !smsMessage.getApproved()) {
+        if (i != -1 && !smsMessage.getApproved()) { // Message not in the list and not approve
           messages.set(i, smsMessage);
           handler.post(() -> notifyItemChanged(i));
-        } else if (i != -1) {
+        } else if (i != -1) { // Message not in the list and approved, need to be removed from the list
           messages.remove(i);
           handler.post(() -> notifyItemRemoved(i));
-        } else {
+        } else { // Message not in the list and not approve
           messages.add(smsMessage);
           handler.post(() -> notifyItemInserted(messages.size()));
         }
