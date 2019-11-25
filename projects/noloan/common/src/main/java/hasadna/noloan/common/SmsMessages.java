@@ -107,7 +107,7 @@ public class SmsMessages {
   }
 
   // Search Db/Inbox messages by sender & body. Return -1 if no message found
-  private int searchMessage(SmsMessage smsMessage, List<SmsMessage> list) {
+  public static int searchMessage(SmsMessage smsMessage, List<SmsMessage> list) {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getBody().contentEquals(smsMessage.getBody())
           && list.get(i).getSender().contentEquals(smsMessage.getSender())) {

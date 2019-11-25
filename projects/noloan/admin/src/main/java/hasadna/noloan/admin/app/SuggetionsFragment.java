@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 
 public class SuggetionsFragment extends Fragment {
 
-  SuggetionRecyclerAdapter recyclerAdapter;
+  SuggestionRecyclerAdapter recyclerAdapter;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    recyclerAdapter = new SuggetionRecyclerAdapter();
+    recyclerAdapter = new SuggestionRecyclerAdapter();
   }
 
   @Override
