@@ -25,17 +25,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
+import hasadna.noloan.SpamRecyclerAdapter;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
+        implements NavigationView.OnNavigationItemSelectedListener,
         InboxFragment.OnFragmentInteractionListener,
         SpamFragment.OnFragmentInteractionListener {
 
   private static final String TAG = "MainActivity";
 
+  SpamFragment spamFragment;
   private DrawerLayout drawerLayout;
   TabLayout tabLayout;
   TextView statusTitle;
@@ -61,12 +63,12 @@ public class MainActivity extends AppCompatActivity
     // drawerLayout
     drawerLayout = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle =
-        new ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close);
+            new ActionBarDrawerToggle(
+                    this,
+                    drawerLayout,
+                    toolbar,
+                    R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
     drawerLayout.addDrawerListener(toggle);
     toggle.syncState();
 
@@ -94,9 +96,9 @@ public class MainActivity extends AppCompatActivity
     // RTL swiping (Along with recyclerView.setRotationY(180) in fragments)
     viewPager.setRotationY(180);
     MainActivityPagerAdapter pagerAdapter =
-        new MainActivityPagerAdapter(getSupportFragmentManager());
+            new MainActivityPagerAdapter(getSupportFragmentManager());
     InboxFragment inboxFragment = new InboxFragment();
-    SpamFragment spamFragment = new SpamFragment();
+    spamFragment = new SpamFragment();
     pagerAdapter.addFragment(inboxFragment, getString(R.string.inboxFragment_title));
     pagerAdapter.addFragment(spamFragment, getString(R.string.spamFragment_title));
     viewPager.setAdapter(pagerAdapter);
@@ -125,18 +127,18 @@ public class MainActivity extends AppCompatActivity
   ArrayList<SmsMessage> getSmsList() {
     ArrayList<SmsMessage> smsList = new ArrayList<>();
     Cursor cursor =
-        getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+            getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
 
     if (cursor.moveToFirst()) {
       do {
         SmsMessage sms =
-            SmsMessage.newBuilder()
-                .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
-                .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
-                .setReceivedAt(
-                    new SimpleDateFormat("dd/M/yyyy")
-                        .format(new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")))))
-                .build();
+                SmsMessage.newBuilder()
+                        .setSender(cursor.getString(cursor.getColumnIndexOrThrow("address")))
+                        .setBody(cursor.getString(cursor.getColumnIndexOrThrow("body")))
+                        .setReceivedAt(
+                                new SimpleDateFormat("dd/M/yyyy")
+                                        .format(new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")))))
+                        .build();
 
         smsList.add(sms);
       } while (cursor.moveToNext());
@@ -162,18 +164,22 @@ public class MainActivity extends AppCompatActivity
   // Update the number of messages in the title - Called from recyclerViewer adapters when list
   // changes
   public void updateTitles() {
-    // Main title
-    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
+    // Main title - Suspicious messages found in the inbox similar to the spams in the DB (body & sender)
+    // Not necessarily the number of messages the user had suggested.
+    statusTitle.setText(String.valueOf(SmsMessages.get().countInboxSpam()));
 
-    // Tab's titles
+    // Number of messages in the inbox
     tabLayout
-        .getTabAt(0)
-        .setText(
-            getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+            .getTabAt(0)
+            .setText(
+                    getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+
+    // Number of messages that the user had suggested
     tabLayout
-        .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
+            .getTabAt(1)
+            .setText(getString(R.string.spamFragment_title, spamFragment!=null ? spamFragment.spamRecyclerAdapter.getItemCount(): -1));
   }
+
 
   private void openAbout() {
     AboutActivity.startActivity(this);
@@ -182,4 +188,3 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onFragmentInteraction(Uri uri) {}
 }
-

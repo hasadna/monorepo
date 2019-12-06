@@ -14,13 +14,14 @@ import hasadna.noloan.SpamRecyclerAdapter;
 import noloan.R;
 
 public class SpamFragment extends Fragment {
+  static final String TAG = "SpamFragment";
 
   private OnFragmentInteractionListener fragmentInteractionListener;
   private RecyclerView recyclerView;
-  private SpamRecyclerAdapter spamRecyclerAdapter;
+  SpamRecyclerAdapter spamRecyclerAdapter;
 
   public SpamFragment() {
-    // Required empty public constructor
+    spamRecyclerAdapter = new SpamRecyclerAdapter();
   }
 
   public static InboxFragment newInstance() {
@@ -35,26 +36,27 @@ public class SpamFragment extends Fragment {
 
   @Override
   public View onCreateView(
-      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+          LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_spam, container, false);
 
     recyclerView = rootView.findViewById(R.id.RecyclerView_spamMessages);
     recyclerView.setRotationY(180);
     spamRecyclerAdapter.registerAdapterDataObserver(
-        new RecyclerView.AdapterDataObserver() {
-          @Override
-          public void onItemRangeInserted(int positionStart, int itemCount) {
-            ((MainActivity) getActivity()).updateTitles();
-          }
+            new RecyclerView.AdapterDataObserver() {
+              @Override
+              public void onItemRangeInserted(int positionStart, int itemCount) {
+                ((MainActivity) getActivity()).updateTitles();
+              }
 
-          @Override
-          public void onItemRangeRemoved(int positionStart, int itemCount) {
-            ((MainActivity) getActivity()).updateTitles();
-          }
-        });
+              @Override
+              public void onItemRangeRemoved(int positionStart, int itemCount) {
+                ((MainActivity) getActivity()).updateTitles();
+              }
+            });
 
     recyclerView.setAdapter(spamRecyclerAdapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    ((MainActivity) getActivity()).updateTitles();
 
     return rootView;
   }
@@ -66,7 +68,7 @@ public class SpamFragment extends Fragment {
       fragmentInteractionListener = (OnFragmentInteractionListener) context;
     } else {
       throw new RuntimeException(
-          context.toString() + " must implement OnFragmentInteractionListener");
+              context.toString() + " must implement OnFragmentInteractionListener");
     }
   }
 
@@ -80,4 +82,3 @@ public class SpamFragment extends Fragment {
     void onFragmentInteraction(Uri uri);
   }
 }
-
