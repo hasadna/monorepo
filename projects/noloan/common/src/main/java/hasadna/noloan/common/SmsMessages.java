@@ -234,11 +234,11 @@ public class SmsMessages {
   }
 
   // Number of spam messages found in the user's inbox by body & sender
-  public int countInboxSpam(){
-    int count = 0 ;
-    for(int i=0; i<inboxMessages.size();i++){
-      if(searchDbMessage(inboxMessages.get(i))!=-1){
-        count ++;
+  public int countInboxSpam() {
+    int count = 0;
+    for (int i = 0; i < inboxMessages.size(); i++) {
+      if (searchDbMessage(inboxMessages.get(i)) != -1) {
+        count++;
       }
     }
 

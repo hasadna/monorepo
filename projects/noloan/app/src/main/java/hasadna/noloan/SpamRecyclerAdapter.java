@@ -28,7 +28,7 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class SpamRecyclerAdapter
-        extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
+    extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "SpamRecyclerAdapter";
 
   ArrayList<SmsMessage> inboxSpam;
@@ -40,46 +40,73 @@ public class SpamRecyclerAdapter
     // Fetch spams from DB that are in user's inbox
     for (int i = 0; i < SmsMessages.get().getInboxMessages().size(); i++) {
       for (SmsMessage sms : SmsMessages.get().getDbMessages()) {
-        if (SmsMessages.get().getInboxMessages().get(i).getBody().contentEquals(sms.getBody()) && SmsMessages.get().getInboxMessages().get(i).getSender().contentEquals(sms.getSender())) {
+        if (SmsMessages.get().getInboxMessages().get(i).getBody().contentEquals(sms.getBody())
+            && SmsMessages.get()
+                .getInboxMessages()
+                .get(i)
+                .getSender()
+                .contentEquals(sms.getSender())) {
           // Add message from the DB - keep received date of user's message
-          inboxSpam.add(sms.toBuilder().setReceivedAt(SmsMessages.get().getInboxMessages().get(i).getReceivedAt()).build());
+          inboxSpam.add(
+              sms.toBuilder()
+                  .setReceivedAt(SmsMessages.get().getInboxMessages().get(i).getReceivedAt())
+                  .build());
         }
       }
     }
 
-
     // Listen to db smsMessages. Update just relevant messages that are in the inbox as well.
     // Keep the received date of the user's message.
     SmsMessages.get()
-            .setMessagesListener(
-                    new SmsMessages.MessagesListener() {
-                      @Override
-                      public void messageAdded(SmsMessage newMessage) {
-                        int inboxIndex = SmsMessages.get().searchMessage(newMessage,SmsMessages.get().getInboxMessages());
-                        if(inboxIndex!=-1) {
-                          inboxSpam.add(newMessage.toBuilder().setReceivedAt(SmsMessages.get().getInboxMessages().get(inboxIndex).getReceivedAt()).build());
-                          handler.post(() -> notifyItemInserted(inboxSpam.size()));
-                        }
-                      }
+        .setMessagesListener(
+            new SmsMessages.MessagesListener() {
+              @Override
+              public void messageAdded(SmsMessage newMessage) {
+                int inboxIndex =
+                    SmsMessages.get()
+                        .searchMessage(newMessage, SmsMessages.get().getInboxMessages());
+                if (inboxIndex != -1) {
+                  inboxSpam.add(
+                      newMessage
+                          .toBuilder()
+                          .setReceivedAt(
+                              SmsMessages.get().getInboxMessages().get(inboxIndex).getReceivedAt())
+                          .build());
+                  handler.post(() -> notifyItemInserted(inboxSpam.size()));
+                }
+              }
 
-                      @Override
-                      public void messageModified(int index) {
-                        int inboxSpamIndex = SmsMessages.get().searchMessage(SmsMessages.get().getDbMessages().get(index), inboxSpam);
-                        if(inboxSpamIndex !=-1) {
-                          inboxSpam.set(inboxSpamIndex, SmsMessages.get().getDbMessages().get(index).toBuilder().setReceivedAt(SmsMessages.get().getInboxMessages().get(inboxSpamIndex).getReceivedAt()).build());
-                          handler.post(() -> notifyItemChanged(inboxSpamIndex));
-                        }
-                      }
+              @Override
+              public void messageModified(int index) {
+                int inboxSpamIndex =
+                    SmsMessages.get()
+                        .searchMessage(SmsMessages.get().getDbMessages().get(index), inboxSpam);
+                if (inboxSpamIndex != -1) {
+                  inboxSpam.set(
+                      inboxSpamIndex,
+                      SmsMessages.get()
+                          .getDbMessages()
+                          .get(index)
+                          .toBuilder()
+                          .setReceivedAt(
+                              SmsMessages.get()
+                                  .getInboxMessages()
+                                  .get(inboxSpamIndex)
+                                  .getReceivedAt())
+                          .build());
+                  handler.post(() -> notifyItemChanged(inboxSpamIndex));
+                }
+              }
 
-                      @Override
-                      public void messageRemoved(int index, SmsMessage smsMessage) {
-                        int inboxSpamIndex = SmsMessages.get().searchMessage(smsMessage, inboxSpam);
-                        if(inboxSpamIndex!=-1) {
-                          inboxSpam.remove(inboxSpamIndex);
-                          handler.post(() -> notifyItemRemoved(inboxSpamIndex));
-                        }
-                      }
-                    });
+              @Override
+              public void messageRemoved(int index, SmsMessage smsMessage) {
+                int inboxSpamIndex = SmsMessages.get().searchMessage(smsMessage, inboxSpam);
+                if (inboxSpamIndex != -1) {
+                  inboxSpam.remove(inboxSpamIndex);
+                  handler.post(() -> notifyItemRemoved(inboxSpamIndex));
+                }
+              }
+            });
   }
 
   @NonNull
@@ -127,55 +154,55 @@ public class SpamRecyclerAdapter
         Locale local = new Locale("he");
         calendar.setTime(new SimpleDateFormat("dd/M/yyyy", local).parse(sms.getReceivedAt()));
         receivedAt.setText(
-                String.format(
-                        itemView.getContext().getString(R.string.list_item_date),
-                        calendar.get(Calendar.DAY_OF_MONTH),
-                        calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, local),
-                        calendar.get(Calendar.YEAR)));
+            String.format(
+                itemView.getContext().getString(R.string.list_item_date),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, local),
+                calendar.get(Calendar.YEAR)));
       } catch (ParseException e) {
         Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
       }
 
       counter.setText(
-              itemView
-                      .getResources()
-                      .getString(R.string.list_item_textView_spam_counter, sms.getSuggestersCount()));
+          itemView
+              .getResources()
+              .getString(R.string.list_item_textView_spam_counter, sms.getSuggestersCount()));
 
       // Click on a message, from there (with message's details) move to the lawsuitPdfActivity
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
       buttonCreateLawsuit.setOnClickListener(
-              view -> {
-                Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
-                // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
-                // fields.
-                intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
-                intentToLawsuitForm.putExtra("from", sms.getSender());
-                intentToLawsuitForm.putExtra("body", sms.getBody());
-                intentToLawsuitForm.putExtra("id", sms.getId());
+          view -> {
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
+            // fields.
+            intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
+            intentToLawsuitForm.putExtra("from", sms.getSender());
+            intentToLawsuitForm.putExtra("body", sms.getBody());
+            intentToLawsuitForm.putExtra("id", sms.getId());
 
-                view.getContext().startActivity(intentToLawsuitForm);
-              });
+            view.getContext().startActivity(intentToLawsuitForm);
+          });
 
       // If user is had suggested this spam - Toggle "Undo suggestion" / Add suggestion options.
       toggleUndoButton(sms);
 
       buttonUndoSuggestion.setOnClickListener(
-              v -> {
-                SmsMessages.get().undoSuggestion(sms);
-              });
+          v -> {
+            SmsMessages.get().undoSuggestion(sms);
+          });
 
       buttonAddSuggestion.setOnClickListener(
-              view -> {
-                SmsMessages.get().suggestMessage(sms);
-              });
+          view -> {
+            SmsMessages.get().suggestMessage(sms);
+          });
     }
 
     // Displays the "Undo suggestion" button, in case user had suggested this message.
-    public void toggleUndoButton (SmsMessage smsMessage){
+    public void toggleUndoButton(SmsMessage smsMessage) {
       if (smsMessage
-              .getSuggestersList()
-              .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+          .getSuggestersList()
+          .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
         buttonAddSuggestion.setVisibility(View.INVISIBLE);
         buttonUndoSuggestion.setVisibility((View.VISIBLE));
       } else {
@@ -183,6 +210,6 @@ public class SpamRecyclerAdapter
         buttonUndoSuggestion.setVisibility((View.INVISIBLE));
       }
     }
-
   }
 }
+

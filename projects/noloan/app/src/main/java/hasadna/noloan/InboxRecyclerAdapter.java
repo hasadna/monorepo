@@ -24,7 +24,7 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class InboxRecyclerAdapter
-        extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
+    extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "InboxRecyclerAdapter";
 
   public InboxRecyclerAdapter() {
@@ -71,36 +71,36 @@ public class InboxRecyclerAdapter
 
     public void bind(SmsMessage sms) {
       from.setText(
-              String.format(itemView.getContext().getString(R.string.list_item_from), sms.getSender()));
+          String.format(itemView.getContext().getString(R.string.list_item_from), sms.getSender()));
       content.setText(sms.getBody());
 
       // Search if message was suggested / user suggested: update counter / add undo button
       if (SmsMessages.get().searchDbMessage(sms) != -1) {
         counter.setText(
-                itemView
-                        .getResources()
-                        .getString(
-                                R.string.list_item_textView_spam_counter,
-                                SmsMessages.get()
-                                        .getDbMessages()
-                                        .get(SmsMessages.get().searchDbMessage(sms))
-                                        .getSuggestersCount()));
+            itemView
+                .getResources()
+                .getString(
+                    R.string.list_item_textView_spam_counter,
+                    SmsMessages.get()
+                        .getDbMessages()
+                        .get(SmsMessages.get().searchDbMessage(sms))
+                        .getSuggestersCount()));
 
         // Toggle undo button
         if (SmsMessages.get()
-                .getDbMessages()
-                .get(SmsMessages.get().searchDbMessage(sms))
-                .getSuggestersList()
-                .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+            .getDbMessages()
+            .get(SmsMessages.get().searchDbMessage(sms))
+            .getSuggestersList()
+            .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
           buttonAddSuggestion.setVisibility(View.INVISIBLE);
           buttonUndoSuggestion.setVisibility((View.VISIBLE));
           buttonUndoSuggestion.setOnClickListener(
-                  view ->
+              view ->
+                  SmsMessages.get()
+                      .undoSuggestion(
                           SmsMessages.get()
-                                  .undoSuggestion(
-                                          SmsMessages.get()
-                                                  .getDbMessages()
-                                                  .get(SmsMessages.get().searchDbMessage((sms)))));
+                              .getDbMessages()
+                              .get(SmsMessages.get().searchDbMessage((sms)))));
         } else {
           buttonAddSuggestion.setVisibility(View.VISIBLE);
           buttonUndoSuggestion.setVisibility((View.INVISIBLE));
@@ -109,7 +109,7 @@ public class InboxRecyclerAdapter
       // Case: No one suggested this message
       else {
         counter.setText(
-                itemView.getResources().getString(R.string.list_item_textView_spam_counter, 0));
+            itemView.getResources().getString(R.string.list_item_textView_spam_counter, 0));
         buttonAddSuggestion.setVisibility(View.VISIBLE);
         buttonUndoSuggestion.setVisibility((View.INVISIBLE));
       }
@@ -120,11 +120,11 @@ public class InboxRecyclerAdapter
         Locale local = new Locale("he");
         calendar.setTime(new SimpleDateFormat("dd/M/yyyy", local).parse(sms.getReceivedAt()));
         receivedAt.setText(
-                String.format(
-                        itemView.getContext().getString(R.string.list_item_date),
-                        calendar.get(Calendar.DAY_OF_MONTH),
-                        calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, local),
-                        calendar.get(Calendar.YEAR)));
+            String.format(
+                itemView.getContext().getString(R.string.list_item_date),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, local),
+                calendar.get(Calendar.YEAR)));
       } catch (ParseException e) {
         Log.e(TAG, "Error parsing sms.ReceivedAt() to Date object\n" + e.getMessage());
       }
@@ -133,18 +133,19 @@ public class InboxRecyclerAdapter
       // TODO: See which more fields in the lawsuit form can be understood from the SMS / other
       // DATA.
       buttonCreateLawsuit.setOnClickListener(
-              view -> {
-                Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
-                // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
-                // fields.
-                intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
-                intentToLawsuitForm.putExtra("from", sms.getSender());
-                intentToLawsuitForm.putExtra("body", sms.getBody());
-                intentToLawsuitForm.putExtra("id", sms.getId());
-                view.getContext().startActivity(intentToLawsuitForm);
-              });
+          view -> {
+            Intent intentToLawsuitForm = new Intent(view.getContext(), LawsuitActivity.class);
+            // TODO: Check if preferably to pass the SmsMessage.Proto object itself, rather than its
+            // fields.
+            intentToLawsuitForm.putExtra("receivedAt", sms.getReceivedAt());
+            intentToLawsuitForm.putExtra("from", sms.getSender());
+            intentToLawsuitForm.putExtra("body", sms.getBody());
+            intentToLawsuitForm.putExtra("id", sms.getId());
+            view.getContext().startActivity(intentToLawsuitForm);
+          });
 
       buttonAddSuggestion.setOnClickListener(view -> SmsMessages.get().suggestMessage(sms));
     }
   }
 }
+
