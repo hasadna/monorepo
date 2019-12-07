@@ -169,19 +169,19 @@ public class MainActivity extends AppCompatActivity
     // Not necessarily the number of messages the user had suggested.
     statusTitle.setText(String.valueOf(SmsMessages.get().countInboxSpam()));
 
-    // Number of messages in the inbox
+    // Inbox tab title
     tabLayout
         .getTabAt(0)
         .setText(
             getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
 
-    // Number of messages that the user had suggested
+    // Spam tab title
     tabLayout
         .getTabAt(1)
         .setText(
             getString(
                 R.string.spamFragment_title,
-                spamFragment != null ? spamFragment.spamRecyclerAdapter.getItemCount() : -1));
+                spamFragment != null ? spamFragment.spamRecyclerAdapter.getItemCount() : 0));
   }
 
   private void openAbout() {

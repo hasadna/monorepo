@@ -38,20 +38,17 @@ public class SpamRecyclerAdapter
     inboxSpam = new ArrayList<>();
 
     // Fetch spams from DB that are in user's inbox
-    for (int i = 0; i < SmsMessages.get().getInboxMessages().size(); i++) {
-      for (SmsMessage sms : SmsMessages.get().getDbMessages()) {
-        if (SmsMessages.get().getInboxMessages().get(i).getBody().contentEquals(sms.getBody())
-            && SmsMessages.get()
-                .getInboxMessages()
-                .get(i)
-                .getSender()
-                .contentEquals(sms.getSender())) {
-          // Add message from the DB - keep received date of user's message
-          inboxSpam.add(
-              sms.toBuilder()
-                  .setReceivedAt(SmsMessages.get().getInboxMessages().get(i).getReceivedAt())
-                  .build());
-        }
+    for (SmsMessage sms : SmsMessages.get().getInboxMessages()) {
+      int dbIndex = SmsMessages.searchMessage(sms, SmsMessages.get().getDbMessages());
+      if (dbIndex != -1) {
+        // Add message from the DB - keep received date of user's message
+        inboxSpam.add(
+            SmsMessages.get()
+                .getDbMessages()
+                .get(dbIndex)
+                .toBuilder()
+                .setReceivedAt(sms.getReceivedAt())
+                .build());
       }
     }
 
@@ -82,6 +79,7 @@ public class SpamRecyclerAdapter
                     SmsMessages.get()
                         .searchMessage(SmsMessages.get().getDbMessages().get(index), inboxSpam);
                 if (inboxSpamIndex != -1) {
+                  // Modify message - keep received date of user's message
                   inboxSpam.set(
                       inboxSpamIndex,
                       SmsMessages.get()
