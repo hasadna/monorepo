@@ -31,7 +31,7 @@ public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "SpamRecyclerAdapter";
 
-  List<SmsMessage> inboxSpam;
+  ArrayList<SmsMessage> inboxSpam;
 
   public SpamRecyclerAdapter() {
     Handler handler = new Handler(Looper.myLooper());
