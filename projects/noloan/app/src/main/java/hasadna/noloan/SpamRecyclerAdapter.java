@@ -31,24 +31,22 @@ public class SpamRecyclerAdapter
     extends RecyclerView.Adapter<SpamRecyclerAdapter.RecyclerViewHolder> {
   private static final String TAG = "SpamRecyclerAdapter";
 
-  ArrayList<SmsMessage> inboxSpam;
+  List<SmsMessage> inboxSpam;
 
   public SpamRecyclerAdapter() {
     Handler handler = new Handler(Looper.myLooper());
+    List<SmsMessage> dbMessages = SmsMessages.get().getDbMessages();
+    List<SmsMessage> inboxMessages = SmsMessages.get().getInboxMessages();
+
     inboxSpam = new ArrayList<>();
 
     // Fetch spams from DB that are in user's inbox
-    for (SmsMessage sms : SmsMessages.get().getInboxMessages()) {
-      int dbIndex = SmsMessages.searchMessage(sms, SmsMessages.get().getDbMessages());
+    for (SmsMessage sms : inboxMessages) {
+      int dbIndex = SmsMessages.searchMessage(sms, dbMessages);
       if (dbIndex != -1) {
         // Add message from the DB - keep received date of user's message
         inboxSpam.add(
-            SmsMessages.get()
-                .getDbMessages()
-                .get(dbIndex)
-                .toBuilder()
-                .setReceivedAt(sms.getReceivedAt())
-                .build());
+            dbMessages.get(dbIndex).toBuilder().setReceivedAt(sms.getReceivedAt()).build());
       }
     }
 
@@ -59,15 +57,13 @@ public class SpamRecyclerAdapter
             new SmsMessages.MessagesListener() {
               @Override
               public void messageAdded(SmsMessage newMessage) {
-                int inboxIndex =
-                    SmsMessages.get()
-                        .searchMessage(newMessage, SmsMessages.get().getInboxMessages());
+                int inboxIndex = SmsMessages.get().searchMessage(newMessage, inboxMessages);
                 if (inboxIndex != -1) {
+                  // Add message - keep received date of user's message
                   inboxSpam.add(
                       newMessage
                           .toBuilder()
-                          .setReceivedAt(
-                              SmsMessages.get().getInboxMessages().get(inboxIndex).getReceivedAt())
+                          .setReceivedAt(inboxMessages.get(inboxIndex).getReceivedAt())
                           .build());
                   handler.post(() -> notifyItemInserted(inboxSpam.size()));
                 }
@@ -76,21 +72,15 @@ public class SpamRecyclerAdapter
               @Override
               public void messageModified(int index) {
                 int inboxSpamIndex =
-                    SmsMessages.get()
-                        .searchMessage(SmsMessages.get().getDbMessages().get(index), inboxSpam);
+                    SmsMessages.get().searchMessage(dbMessages.get(index), inboxSpam);
                 if (inboxSpamIndex != -1) {
                   // Modify message - keep received date of user's message
                   inboxSpam.set(
                       inboxSpamIndex,
-                      SmsMessages.get()
-                          .getDbMessages()
+                      dbMessages
                           .get(index)
                           .toBuilder()
-                          .setReceivedAt(
-                              SmsMessages.get()
-                                  .getInboxMessages()
-                                  .get(inboxSpamIndex)
-                                  .getReceivedAt())
+                          .setReceivedAt(inboxMessages.get(inboxSpamIndex).getReceivedAt())
                           .build());
                   handler.post(() -> notifyItemChanged(inboxSpamIndex));
                 }
