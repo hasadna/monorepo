@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         .setText(
             getString(
                 R.string.spamFragment_title,
-                spamFragment != null ? spamFragment.spamRecyclerAdapter.getItemCount() : 0));
+                spamFragment != null ? spamFragment.getSpamCount() : 0));
   }
 
   private void openAbout() {

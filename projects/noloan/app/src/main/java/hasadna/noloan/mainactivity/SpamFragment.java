@@ -18,7 +18,7 @@ public class SpamFragment extends Fragment {
 
   private OnFragmentInteractionListener fragmentInteractionListener;
   private RecyclerView recyclerView;
-  SpamRecyclerAdapter spamRecyclerAdapter;
+  private SpamRecyclerAdapter spamRecyclerAdapter;
 
   public SpamFragment() {
     spamRecyclerAdapter = new SpamRecyclerAdapter();
@@ -76,6 +76,10 @@ public class SpamFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     fragmentInteractionListener = null;
+  }
+
+  int getSpamCount() {
+    return spamRecyclerAdapter.getItemCount();
   }
 
   public interface OnFragmentInteractionListener {
