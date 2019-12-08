@@ -1,7 +1,5 @@
-package com.example.tasks;
+package projects.data_analysis.task1;
 
-import com.example.tasks.Protos.User;
-import com.example.tasks.Protos.Users;
 import com.google.protobuf.TextFormat;
 
 import java.io.IOException;
@@ -10,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.IntStream;
+import projects.data_analysis.common.Protos.User;
+import projects.data_analysis.common.Protos.Users;
 
 class Task1 {
   public static void main(String[] args) throws IOException {
@@ -25,10 +25,12 @@ class Task1 {
 
     // combine them into proto messages one-by-one and add to allUsersBuilder
     IntStream.range(0, firstNames.size())
-        .mapToObj(i -> User.newBuilder()
-            .setFirstName(firstNames.get(i))
-            .setLastName(lastNames.get(i))
-            .build())
+        .mapToObj(
+            i ->
+                User.newBuilder()
+                    .setFirstName(firstNames.get(i))
+                    .setLastName(lastNames.get(i))
+                    .build())
         .forEach(allUsersBuilder::addUsers);
 
     // write to output file as prototxt for further processing

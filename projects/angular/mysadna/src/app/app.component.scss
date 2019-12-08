@@ -1,0 +1,57 @@
+$logo-size: 74px;
+.app-logo {
+  text-decoration: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  justify-self: flex-start;
+  display: flex;
+  >.my-sadna-logo {
+    height: $logo-size;
+    width: $logo-size;
+  }
+  >.my-sadna {
+    margin-left: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0097e1;
+    padding-top: 15px;
+  }
+}
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  >.placeholder {
+    height: $logo-size;
+  }
+  >.app-navigation-bar {
+    justify-self: flex-end;
+    padding: 18px;
+    >.app-navigation {
+      >a {
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+@import '../styles/media';
+@media only screen and (max-width: $xs) {
+  .app-navigation {
+    >a {
+      font-size: 15px;
+      margin: 7px;
+    }
+  }
+}
+@media only screen and (min-width: $xs + 1) {
+  .app-navigation {
+    >a {
+      margin: 20px;
+      font-size: 18px;
+    }
+  }
+}

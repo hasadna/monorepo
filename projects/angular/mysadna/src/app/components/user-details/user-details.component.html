@@ -1,0 +1,53 @@
+<div class="user-details" *ngIf="user">
+  <div class="media">
+    <div class="user-header">{{ user.getFirstName() }} {{ user.getLastName() }}</div>
+    <div class="user-container media-row-col">
+      <div class="user-label">
+        <div class="flex">
+          <img [src]="user.getImageUrl()">
+          <div class="user-name">{{ user.getId() }}</div>
+          <div class="email">{{ user.getEmail() }}</div>
+          <div class="social-networks">
+            <div class="social-network" *ngFor="let socialNetwork of user.getSocialNetworkList()">
+              <a [href]="socialNetwork.getUrl()">
+                <img [src]="'./assets/images/' + types[socialNetwork.getType()] + '.svg'">
+              </a>
+            </div>
+          </div>
+          <div class="cv-url">
+            <a href="assets/cv-pages/cv-template.html">CV File</a>
+          </div>
+        </div>
+      </div>
+      <div class="media-large-block"></div>
+      <div class="media-small-block"></div>
+      <div class="user-info media-100">
+        <div class="title">Projects:</div>
+        <div class="info-block">
+          <a
+            *ngFor="let project of userProjects"
+            [routerLink]="'/project-details/' + project.getId()"
+          >{{ project.getDisplayName() }}</a>
+        </div>
+
+        <div class="title">Skills:</div>
+        <div class="info-block">
+          {{ getSkills() }}
+        </div>
+
+        <div class="title">Contributions:</div>
+        <div class="contributions">
+          <div
+            class="info-block contribution"
+            *ngFor="let contribution of user.getTopContributionList()"
+          >
+            <div class="contribution-message">{{ contribution.getDescription() }}</div>
+            <div class="contribution-url"><a [href]="contribution.getUrl()">
+              {{ contribution.getUrl() }}
+            </a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

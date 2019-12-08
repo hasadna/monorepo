@@ -1,0 +1,20 @@
+.page {
+  >.new-story {
+    width: 300px;
+    margin-bottom: 15px;
+    >.line {
+      margin-bottom: 10px;
+      input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+  >.story-id-list {
+    >.title {
+      font-size: 17px;
+      color: grey;
+      margin-bottom: 5px;
+    }
+  }
+}

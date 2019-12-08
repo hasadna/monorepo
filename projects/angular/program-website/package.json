@@ -1,0 +1,16 @@
+{
+  "name": "program-website",
+  "scripts": {
+    "start": "ng serve program-website",
+    "build": "ng build program-website",
+    "test": "ng test program-website",
+    "lint": "ng lint program-website",
+    "lint-fix": "ng lint program-website --fix",
+    "deploy": "firebase deploy --only hosting",
+    "protoc": "workspacerun protoc"
+  },
+  "devDependencies": {
+    "ts-protoc-gen": "^0.9.0",
+    "workspacerun": "^1.0.5"
+  }
+}

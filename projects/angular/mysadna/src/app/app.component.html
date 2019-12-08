@@ -1,0 +1,17 @@
+<div class="app-container">
+  <a [routerLink]="'/'" class="app-logo">
+    <img class="my-sadna-logo" src="/assets/images/pkw-logo.png">
+    <span class="my-sadna">MySadna</span>
+  </a>
+  <div class="app-header media-row-col">
+    <div class="placeholder"></div>
+    <div class="app-navigation-bar">
+      <nav class="app-navigation">
+        <a [routerLink]="'/projects'">Projects</a>
+        <a [routerLink]="'/contacts'">Contacts</a>
+        <a href="https://www.hasadna.org.il/">About Hasadna</a>
+      </nav>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

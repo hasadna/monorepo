@@ -1,0 +1,14 @@
+@import "./material";
+@import "./variables";
+@import "./global-styles";
+@import "./notifications";
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  body {
+    margin: 0;
+    font-family: $default-font;
+    background-color: #e6eff0;
+  }
+}

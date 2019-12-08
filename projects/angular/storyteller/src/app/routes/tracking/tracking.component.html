@@ -1,0 +1,31 @@
+<div class="page" *ngIf="!loadingService.isLoading">
+  <div class="tracking">
+    <div class="title title-story">
+      <span>Story to display</span>
+    </div>
+    <div class="story-select">
+      <story-select
+        *ngIf="!userService.isStoryListLoading"
+        (selectStory)="storySelected($event)"
+        (createStory)="createNewStory($event)"
+      ></story-select>
+    </div>
+  
+    <mat-spinner [diameter]="50" *ngIf="isTrackingLoading"></mat-spinner>
+    <div class="total-time" *ngIf="storyDurationTime && !isTrackingLoading">
+      Selected range total time: {{ storyDurationTime }} hours
+    </div>
+    <div class="tracks" *ngIf="!isTrackingLoading">
+      <div class="row" *ngFor="let trackRow of trackRows">
+        <div class="start-date">{{ trackRow.startMs | date:'MMM d' }}</div>
+        <div class="start-time">{{ trackRow.startMs | date:'HH:mm' }}</div>
+        <div class="dash">-</div>
+        <div class="end-time">{{ trackRow.endMs | date:'HH:mm' }}</div>
+        <div class="end-date">
+          <span *ngIf="trackRow.isDayCrossed">({{ trackRow.endMs | date:'MMM d' }})</span>
+        </div>
+        <div class="total-time">{{ trackRow.totalTime }}</div>
+      </div>
+    </div>
+  </div>
+</div>

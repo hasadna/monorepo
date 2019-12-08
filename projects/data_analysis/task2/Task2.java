@@ -1,12 +1,12 @@
-package com.example.tasks;
+package projects.data_analysis.task2;
 
-import com.example.tasks.Protos.Users;
 import com.google.protobuf.TextFormat;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import projects.data_analysis.common.Protos.Users;
 
 class Task2 {
   public static void main(String[] args) throws IOException {
@@ -21,8 +21,8 @@ class Task2 {
     TextFormat.merge(protoTxt, builder);
 
     // count all users in parsed proto
-    String stats = String.format("Total number of users read: %d\n",
-        builder.build().getUsersCount());
+    String stats =
+        String.format("Total number of users read: %d\n", builder.build().getUsersCount());
 
     // write out stats for further processing
     Files.write(outfile, stats.getBytes());

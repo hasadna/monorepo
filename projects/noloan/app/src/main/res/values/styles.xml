@@ -1,0 +1,120 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/heebo</item>
+        <item name="android:textColorHint">@color/colorHint</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SummaryTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/colorTextGrey1</item>
+    </style>
+
+    <style name="SummarySubTitle" parent="SummaryTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorTextGrey3</item>
+    </style>
+
+    <style name="SummaryContent" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+
+    <style name="ListFrom" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorTextGrey1</item>
+    </style>
+
+    <style name="ListDate" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ListContent" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorTextGrey4</item>
+    </style>
+
+    <style name="aboutScreenText" parent="ListContent">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="DefaultButton">
+        <item name="android:layout_height">10dp</item>"
+        <item name="android:layout_marginTop">5dp</item>"
+        <item name="android:background">@color/colorPrimary</item>"
+        <item name="android:includeFontPadding">false</item>"
+        <item name="android:paddingLeft">7dp</item>"
+        <item name="android:paddingRight">7dp</item>"
+        <item name="android:textColor">@color/colorGreyBackground</item>"
+    </style>
+
+    // Lawsuit activity, fragments
+    <style name="LawsuitTopBar">
+        <item name="android:layout_marginVertical">5dp</item>
+    </style>
+
+    <style name="LawsuitFragmentTitle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/colorTextGrey3</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="LawsuitFormFragmentSubTitle" >
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/colorTextGrey3</item>
+    </style>
+
+    <style name="LawsuitThirdFragmentSubTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="LawsuitThirdFragmentSubTitleSmall">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="LawsuitThirdFragment_subTitlePrimary" parent="LawsuitFragmentTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+</resources>

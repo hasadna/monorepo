@@ -1,0 +1,6 @@
+<div class="page">
+  <app-story
+    [easyStory]="easyStory"
+    *ngIf="!loadingService.isLoading && !isCrashError"
+  ></app-story>
+</div>

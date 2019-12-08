@@ -1,0 +1,24 @@
+<div class="page" *ngIf="!loadingService.isLoading">
+  <div class="new-story card">
+    <div class="line">
+      <input type="text" placeholder="Oneliner" #oneliner>
+    </div>
+    <div>
+      <button (click)="create(oneliner)">Create story</button>
+    </div>
+  </div>
+
+  <div class="stories-loading" *ngIf="isStoriesLoading">
+     <mat-spinner [diameter]="30"></mat-spinner>
+  </div>
+
+  <div class="story-id-list" *ngIf="!isStoriesLoading">
+    <div class="title">Ongoing stories</div>
+    <div class="story" *ngFor="let story of storyList">
+      <a
+        [routerLink]="['/story', story.getId()]"
+        (click)="loadingService.load()"
+      >{{ story.getOneliner() }}</a>
+    </div>
+  </div>
+</div>
