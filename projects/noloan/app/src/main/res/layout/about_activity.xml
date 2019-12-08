@@ -24,19 +24,69 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/aboutText"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="16dp"
-                android:textIsSelectable="true"
-                android:gravity="right"
-                android:textAppearance="@style/aboutScreenText"
-                android:text="@string/about_information"/>
+                android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/textView_aboutPage_textContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/about_information"
+                    android:textSize="18sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView_aboutPage_website"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="לאתר הסדנא:"
+                    android:textSize="18sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textView_aboutPage_textContent" />
+
+                <TextView
+                    android:id="@+id/textView_aboutPage_hasadnaLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="8dp"
+                    android:autoLink="web"
+                    android:text="http://www.hasadna.org.il/"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    app:layout_constraintRight_toLeftOf="@id/textView_aboutPage_website"
+                    app:layout_constraintTop_toBottomOf="@id/textView_aboutPage_textContent" />
+
+                <TextView
+                    android:id="@+id/textView_aboutPage_contactText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="ליצירת קשר:"
+                    android:textSize="18sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textView_aboutPage_website" />
+
+                <TextView
+                    android:id="@+id/textView_aboutPage_contactEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    app:layout_constraintRight_toLeftOf="@id/textView_aboutPage_contactText"
+                    app:layout_constraintTop_toBottomOf="@id/textView_aboutPage_website" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
