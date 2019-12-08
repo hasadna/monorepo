@@ -97,46 +97,45 @@ public class DataExtractorTool {
       Attribute attribute = attributes.next();
       String attributeName = attribute.getName().toString();
       switch (attributeName) {
-      case ID_ATTRIBUTE:
-        currentRow.setId(attribute.getValue());
-        break;
-      case POST_TYPE_ID_ATTRIBUTE:
-        currentRow.setPostTypeId(attribute.getValue());
-        break;
-      case CREATION_DATE_ATTRIBUTE:
-        currentRow.setCreationDate(attribute.getValue());
-        break;
-      case OWNER_USER_ID_ATTRIBUTE:
-        currentRow.setOwnerUserId(attribute.getValue());
-        break;
-      case TAGS_ATTRIBUTE:
-        currentRow.setTags(attribute.getValue());
-        break;
+        case ID_ATTRIBUTE:
+          currentRow.setId(attribute.getValue());
+          break;
+        case POST_TYPE_ID_ATTRIBUTE:
+          currentRow.setPostTypeId(attribute.getValue());
+          break;
+        case CREATION_DATE_ATTRIBUTE:
+          currentRow.setCreationDate(attribute.getValue());
+          break;
+        case OWNER_USER_ID_ATTRIBUTE:
+          currentRow.setOwnerUserId(attribute.getValue());
+          break;
+        case TAGS_ATTRIBUTE:
+          currentRow.setTags(attribute.getValue());
+          break;
       }
     }
     return currentRow;
   }
 
-  private void writeExtractedRowToOutput(ExtractedRow currentRow,
-      XMLEventWriter writer) throws XMLStreamException {
+  private void writeExtractedRowToOutput(ExtractedRow currentRow, XMLEventWriter writer)
+      throws XMLStreamException {
     XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     XMLEvent rowStartElement = eventFactory.createStartElement("", "", ROW_TAG);
     writer.add(rowStartElement);
-    XMLEvent idAttrib = eventFactory.createAttribute(ID_ATTRIBUTE,
-        currentRow.getId());
+    XMLEvent idAttrib = eventFactory.createAttribute(ID_ATTRIBUTE, currentRow.getId());
     writer.add(idAttrib);
-    XMLEvent postTypeIdAttrib = eventFactory.createAttribute(
-        POST_TYPE_ID_ATTRIBUTE, currentRow.getPostTypeId());
+    XMLEvent postTypeIdAttrib =
+        eventFactory.createAttribute(POST_TYPE_ID_ATTRIBUTE, currentRow.getPostTypeId());
     writer.add(postTypeIdAttrib);
-    XMLEvent creationDateAttrib = eventFactory.createAttribute(
-        CREATION_DATE_ATTRIBUTE, currentRow.getCreationDate());
+    XMLEvent creationDateAttrib =
+        eventFactory.createAttribute(CREATION_DATE_ATTRIBUTE, currentRow.getCreationDate());
     writer.add(creationDateAttrib);
     // OwnerUserId attribute is not always available, so, add it if it only
     // is
     // available.
     if (currentRow.getOwnerUserId() != null) {
-      XMLEvent ownerUserIdAttrib = eventFactory.createAttribute(
-          OWNER_USER_ID_ATTRIBUTE, currentRow.getOwnerUserId());
+      XMLEvent ownerUserIdAttrib =
+          eventFactory.createAttribute(OWNER_USER_ID_ATTRIBUTE, currentRow.getOwnerUserId());
       writer.add(ownerUserIdAttrib);
     }
     // tags attribute is not always available, so add it only if it is
@@ -144,8 +143,7 @@ public class DataExtractorTool {
     if (currentRow.getTags() == null) {
       return;
     }
-    XMLEvent tagsAttrib = eventFactory.createAttribute(TAGS_ATTRIBUTE,
-        currentRow.getTags());
+    XMLEvent tagsAttrib = eventFactory.createAttribute(TAGS_ATTRIBUTE, currentRow.getTags());
     writer.add(tagsAttrib);
     return;
   }
@@ -172,3 +170,4 @@ public class DataExtractorTool {
     extractor.extractData();
   }
 }
+

@@ -53,5 +53,5 @@ public class ExtractedRow {
   public void setTags(String tags) {
     this.tags = tags;
   }
-
 }
+
