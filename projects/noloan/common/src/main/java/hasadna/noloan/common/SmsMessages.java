@@ -42,7 +42,7 @@ public class SmsMessages {
     // 1. Add user as a "suggester"
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
-        && dbMessages
+        && !dbMessages
             .get(index)
             .getSuggestersList()
             .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
@@ -58,8 +58,8 @@ public class SmsMessages {
 
       // Notify
       notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
-
     }
+
     // Case: New suggestion
     else if (index == -1) {
       firestoreClient.writeMessage(
@@ -231,6 +231,18 @@ public class SmsMessages {
 
   public void setInboxMessages(List<SmsMessage> inboxMessages) {
     this.inboxMessages = inboxMessages;
+  }
+
+  // Number of spam messages found in the user's inbox by body & sender
+  public int countInboxSpam() {
+    int count = 0;
+    for (int i = 0; i < inboxMessages.size(); i++) {
+      if (searchDbMessage(inboxMessages.get(i)) != -1) {
+        count++;
+      }
+    }
+
+    return count;
   }
 
   public interface MessagesListener {

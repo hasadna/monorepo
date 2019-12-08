@@ -53,10 +53,12 @@ public class InboxFragment extends Fragment {
 
               @Override
               public void messageModified(int index) {
-                if (SmsMessages.get()
-                        .searchInboxMessage(SmsMessages.get().getDbMessages().get(index))
-                    != -1) {
-                  getActivity().runOnUiThread(() -> inboxRecyclerAdapter.notifyItemChanged(index));
+                int inboxIndex =
+                    SmsMessages.get()
+                        .searchInboxMessage(SmsMessages.get().getDbMessages().get(index));
+                if (inboxIndex != -1) {
+                  getActivity()
+                      .runOnUiThread(() -> inboxRecyclerAdapter.notifyItemChanged(inboxIndex));
                 }
               }
 

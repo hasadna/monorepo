@@ -14,13 +14,14 @@ import hasadna.noloan.SpamRecyclerAdapter;
 import noloan.R;
 
 public class SpamFragment extends Fragment {
+  static final String TAG = "SpamFragment";
 
   private OnFragmentInteractionListener fragmentInteractionListener;
   private RecyclerView recyclerView;
   private SpamRecyclerAdapter spamRecyclerAdapter;
 
   public SpamFragment() {
-    // Required empty public constructor
+    spamRecyclerAdapter = new SpamRecyclerAdapter();
   }
 
   public static InboxFragment newInstance() {
@@ -55,6 +56,7 @@ public class SpamFragment extends Fragment {
 
     recyclerView.setAdapter(spamRecyclerAdapter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    ((MainActivity) getActivity()).updateTitles();
 
     return rootView;
   }
@@ -74,6 +76,10 @@ public class SpamFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     fragmentInteractionListener = null;
+  }
+
+  int getSpamCount() {
+    return spamRecyclerAdapter.getItemCount();
   }
 
   public interface OnFragmentInteractionListener {
