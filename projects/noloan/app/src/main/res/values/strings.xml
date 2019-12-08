@@ -21,7 +21,7 @@
     <string name="list_item_from">מאת: %1$s</string>
     <string name="list_item_date">ב: %1$d ב%2$s %3$d</string>
     <string name="list_item_body">גוף ההודעה:\n\"%1$s\"</string>
-    <string name="about_information">אפליקציית NoLoan פותחה ע"י מתנדבי הסדנא לידע ציבורי: </string>
+    <string name="about_information">אפליקציית NoLoan פותחה ע\"י מתנדבי הסדנא לידע ציבורי: </string>
     <string name="list_item_button_createLawsuit_text">יצירת כתב תביעה</string>
     <string name="list_item_button_addSpam_text">הוספה למאגר</string>
     <string name="list_item_button_removeSpam_text">ביטול ספאם</string>
