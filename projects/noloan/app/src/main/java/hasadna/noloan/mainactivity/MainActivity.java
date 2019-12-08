@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
+import hasadna.noloan.SpamRecyclerAdapter;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
   private static final String TAG = "MainActivity";
 
+  SpamFragment spamFragment;
   private DrawerLayout drawerLayout;
   TabLayout tabLayout;
   TextView statusTitle;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity
     MainActivityPagerAdapter pagerAdapter =
         new MainActivityPagerAdapter(getSupportFragmentManager());
     InboxFragment inboxFragment = new InboxFragment();
-    SpamFragment spamFragment = new SpamFragment();
+    spamFragment = new SpamFragment();
     pagerAdapter.addFragment(inboxFragment, getString(R.string.inboxFragment_title));
     pagerAdapter.addFragment(spamFragment, getString(R.string.spamFragment_title));
     viewPager.setAdapter(pagerAdapter);
@@ -162,17 +164,24 @@ public class MainActivity extends AppCompatActivity
   // Update the number of messages in the title - Called from recyclerViewer adapters when list
   // changes
   public void updateTitles() {
-    // Main title
-    statusTitle.setText(String.valueOf(SmsMessages.get().getDbMessages().size()));
+    // Main title - Suspicious messages found in the inbox similar to the spams in the DB (body &
+    // sender)
+    // Not necessarily the number of messages the user had suggested.
+    statusTitle.setText(String.valueOf(SmsMessages.get().countInboxSpam()));
 
-    // Tab's titles
+    // Inbox tab title
     tabLayout
         .getTabAt(0)
         .setText(
             getString(R.string.inboxFragment_title, SmsMessages.get().getInboxMessages().size()));
+
+    // Spam tab title
     tabLayout
         .getTabAt(1)
-        .setText(getString(R.string.spamFragment_title, SmsMessages.get().getDbMessages().size()));
+        .setText(
+            getString(
+                R.string.spamFragment_title,
+                spamFragment != null ? spamFragment.getSpamCount() : 0));
   }
 
   private void openAbout() {
