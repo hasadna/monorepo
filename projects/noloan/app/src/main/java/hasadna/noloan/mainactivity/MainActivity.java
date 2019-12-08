@@ -5,27 +5,29 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
-import androidx.core.view.GravityCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import hasadna.noloan.AboutActivity;
-import hasadna.noloan.SpamRecyclerAdapter;
+import hasadna.noloan.TermsOfUsageActivity;
 import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
@@ -154,6 +156,8 @@ public class MainActivity extends AppCompatActivity
     int id = item.getItemId();
     if (id == R.id.nav_about) {
       openAbout();
+    } else if (id == R.id.nav_termOfUsage) {
+      TermsOfUsageActivity.startActivity(this);
     }
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
