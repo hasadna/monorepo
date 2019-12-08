@@ -1,0 +1,18 @@
+<div class="icon-button">
+  <mat-icon
+    class="media-lg-hidden"
+    *ngIf="!headerService.isPushed"
+    (click)="headerService.toggle()"
+  >dehaze</mat-icon>
+  <mat-icon
+    class="media-lg-hidden"
+    *ngIf="headerService.isPushed"
+    (click)="headerService.toggle()"
+  >clear</mat-icon>
+</div>
+<div class="popup" *ngIf="headerService.isPushed">
+  <div
+    class="link"
+    *ngFor="let route of headerService.routes"
+  ><a [routerLink]="route.url" (click)="headerService.close()">{{ route.label }}</a></div>
+</div>

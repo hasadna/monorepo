@@ -2,19 +2,23 @@ package hasadna.noloan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import noloan.R;
 
 public class AboutActivity extends AppCompatActivity {
 
   private static final String TAG = "AboutActivity";
+
+  private TextView email;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,16 @@ public class AboutActivity extends AppCompatActivity {
     ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayShowTitleEnabled(false);
     actionBar.setDisplayHomeAsUpEnabled(true);
+
+    email = findViewById(R.id.textView_aboutPage_contactEmail);
+    email.setText(R.string.app_emailAddress);
+    email.setOnClickListener(
+        v -> {
+          Intent emailIntent =
+              new Intent(
+                  Intent.ACTION_SENDTO, Uri.fromParts("mailto", "noloan.app@gmail.com", null));
+          startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        });
   }
 
   public static void startActivity(Context context) {

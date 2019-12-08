@@ -1,0 +1,16 @@
+<div class="toolbar">
+  <nav-popup *ngIf="isVisible()"></nav-popup>
+  <div class="label">Storyteller</div>
+  <tracker-popup *ngIf="isVisible()"></tracker-popup>
+  <div class="placeholder"></div>
+  <div class="nav media-sm-hidden" *ngIf="isVisible()">
+    <div
+      class="link"
+      *ngFor="let route of headerService.routes"
+      [routerLink]="route.url"
+      [ngClass]="{ selected: route.url === url }"
+    >{{ route.label }}</div>
+  </div>
+  <app-auth *ngIf="isVisible() && !userService.isUserLoading"></app-auth>
+</div>
+<div class="header-placeholder"></div>

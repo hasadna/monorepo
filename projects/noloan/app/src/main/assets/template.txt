@@ -11,7 +11,7 @@
 
 התובע/ים:                          <userFullName>, ת.ז: <userId>
                                מרחוב: <userAddress>, {עיר / מיקוד}
-                               טלפון: <userPhone>; פקסימיליה: <userFax>
+                               טלפון: <userPhone>; פקסימיליה:
 
                                                                          - נ ג ד -
 

@@ -1,0 +1,58 @@
+<div class="tracker" *ngIf="!trackerService.isStoriesTracksLoading">
+  <div
+    class="time"
+    [ngClass]="{
+      'time-tracking': trackerService.isTracking,
+      'time-stoped': !trackerService.isTracking
+    }"
+    (click)="open()"
+  >
+    <img src="/assets/ic-time.svg" *ngIf="trackerService.isTracking">
+    <img src="/assets/ic-time-stop.svg" *ngIf="!trackerService.isTracking">
+    <span>{{ trackerService.totalTimer.time }}</span>
+  </div>
+  <div
+    class="popup"
+    [ngClass]="{ 'popup-tracking': trackerService.isTracking }"
+    *ngIf="!isHidden"
+  >
+    <ng-container *ngIf="!userService.isStoryListLoading && !trackerService.isStoryTracksLoading">
+      <div class="track">
+        <track-button></track-button>
+        <div class="session">
+          <span *ngIf="trackerService.isTracking">
+            {{ trackerService.sessionTimer.time }}
+          </span>
+        </div>
+        <div class="total-story">
+          <span class="time">
+            {{ trackerService.storyTimer.timeWithoutSeconds }}
+          </span>
+          <span> hours since </span>
+          <mat-form-field class="mat-clock" *ngIf="!trackerService.isTracking">
+            <mat-select [formControl]="sinceTime">
+              <mat-option class="clock-option" *ngFor="let clock of clockList" [value]="clock">
+                {{ clock }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <span class="time-holder" *ngIf="trackerService.isTracking">
+            {{ trackerService.sinceTime }}
+          </span>
+        </div>
+      </div>
+      <story-select
+        [story]="trackerService.selectedStory"
+        (selectStory)="storySelected($event)"
+        (valueChanges)="storySelectValueChanges()"
+        (createStory)="createNewStory($event)"
+      ></story-select>
+    </ng-container>
+    <mat-spinner
+      [diameter]="50"
+      *ngIf="userService.isStoryListLoading || trackerService.isStoryTracksLoading"
+    ></mat-spinner>
+  </div>
+  <div class="popup-overlay" (click)="close()" *ngIf="!isHidden"></div>
+</div>
+<mat-spinner [diameter]="40" *ngIf="trackerService.isStoriesTracksLoading"></mat-spinner>

@@ -1,0 +1,11 @@
+<div
+  class="track-button"
+  [ngClass]="{
+    tracking: trackerService.isTracking,
+    disabled: !trackerService.selectedStory
+  }"
+  (click)="click()"
+>
+  <img src="/assets/ic-play.svg" *ngIf="!trackerService.isTracking">
+  <img src="/assets/ic-pause.svg" *ngIf="trackerService.isTracking">
+</div>

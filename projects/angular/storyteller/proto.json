@@ -1,0 +1,7 @@
+{
+  "exportPath": "src/app/core/proto",
+  "protoList": [
+    "monorepo/tools/storyteller/storyteller.proto",
+    "startup-os/tools/reviewer/reviewer.proto"
+  ]
+}
