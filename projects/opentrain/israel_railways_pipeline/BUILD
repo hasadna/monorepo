@@ -1,24 +1,24 @@
 load("@startup_os//tools/checkstyle:checkstyle.bzl", "checkstyle_test")
 
-#checkstyle_test(
- #   name = "israel_railways_pipeline-checkstyle",
-  #  allow_failure = 1,
-   # config = "//tools/checkstyle:config.xml",
-    #target = ":israel_railways_pipeline",
-#)
+checkstyle_test(
+    name = "israel_railways_pipeline-checkstyle",
+    allow_failure = 1,
+    config = "//tools/checkstyle:config.xml",
+    target = ":israel_railways_pipeline",
+)
 
-#java_binary(
- #   name = "israel_railways_pipeline",
-  #  srcs = ["datahandler/DataHandler.java"],
-   # main_class = "projects.opentrain.israel_railways_pipeline.datahandler.DataHandler",
-    #visibility = ["//visibility:public"],
-    #deps = [
-     #   "//projects/opentrain/israel_railways_pipeline/common:railWay_proto",
-      #  "//third_party/maven/com/google/guava",
-       # "//third_party/maven/com/google/protobuf:protobuf_java",
-        #"//third_party/maven/org/apache/commons:commons_csv",
- #   ],
-#)
+java_binary(
+    name = "israel_railways_pipeline",
+    srcs = ["datahandler/DataHandler.java"],
+    main_class = "projects.opentrain.israel_railways_pipeline.datahandler.DataHandler",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//projects/opentrain/israel_railways_pipeline/common:railWay_proto",
+        "//third_party/maven/com/google/guava",
+        "//third_party/maven/com/google/protobuf:protobuf_java",
+        "//third_party/maven/org/apache/commons:commons_csv",
+    ],
+)
 
 #genrule(
  #   name = "open_train",
