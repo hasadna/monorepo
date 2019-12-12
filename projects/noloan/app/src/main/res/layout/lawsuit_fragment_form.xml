@@ -156,7 +156,7 @@
                         android:id="@+id/TextView_companyDetails_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginRight="3dp"
                         android:fontFamily="@font/heebo_medium"
                         android:includeFontPadding="false"
@@ -240,13 +240,29 @@
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <Button
+                        android:id="@+id/button_formFragment_searchCompany"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="140dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/button_rectangle_rounded_blue_filled"
+                        android:fontFamily="@font/heebo_medium"
+                        android:text="@string/formFragment_searchCorporations"
+                        android:textColor="@color/colorWhiteBackground"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/LinearLayout_claimDetails"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="right"
                     android:orientation="vertical">
 
@@ -271,8 +287,8 @@
                             android:id="@+id/EditText_receivedSpamDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="right"
                             android:focusable="false"
+                            android:gravity="right"
                             android:hint="@string/formFragment_spamDate_hint"
                             android:imeOptions="actionNext"
                             android:inputType="date"

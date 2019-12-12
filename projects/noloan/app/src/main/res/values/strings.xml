@@ -52,7 +52,8 @@
     <string name="formFragment_button_chooseCourt_text">בחירת בית משפט</string>
     <string name="formFragment_button_next_text">המשך ליצירת קובץ תביעה</string>
     <string name="formFragment_claimValue_explanation_text">* בגין כל הודעה תוכלו לתבוע סכום של עד 1,000 ש"ח</string>
-
+    <string name="formFragment_searchCorporations">איתור פרטי החברה</string>
+    <string name="formFragment_searchCorporations_website">https://ica.justice.gov.il/GenericCorporarionInfo/SearchCorporation?unit=8</string>
     // Lawsuit - Summary fragment
     <string name="summaryFragment_toolbar_title_text">הגשת תביעה</string>
     <string name="summaryFragment_fileParagraph_title_text">קובץ התביעה נוצר בהצלחה</string>

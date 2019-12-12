@@ -2,6 +2,8 @@ package hasadna.noloan.lawsuit.fragments;
 
 import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.fragment.app.Fragment;
@@ -28,6 +30,7 @@ public class LawsuitFormFragment extends Fragment {
   EditText receivedDate;
   TextInputEditText userId;
   TextView idValidationError;
+  Button searchCompany;
   DatePickerDialog datePickerDialog;
   Calendar calendar;
   Button confirmForm;
@@ -51,7 +54,13 @@ public class LawsuitFormFragment extends Fragment {
     receivedDate = rootView.findViewById(R.id.EditText_receivedSpamDate);
     confirmForm = rootView.findViewById(R.id.Button_formFragment_next);
     scrollView = rootView.findViewById(R.id.ScrollView_formFragment);
-
+    searchCompany = rootView.findViewById(R.id.button_formFragment_searchCompany);
+    searchCompany.setOnClickListener(
+        v -> {
+          Uri uri = Uri.parse(getString(R.string.formFragment_searchCorporations_website));
+          Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+          startActivity(intent);
+        });
     // Validate user id number
     userId.addTextChangedListener(
         new TextWatcher() {
