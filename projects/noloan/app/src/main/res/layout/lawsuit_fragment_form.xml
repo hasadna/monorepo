@@ -100,7 +100,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/textView_idValidationError"
+                            android:id="@+id/textView_userIdValidationError"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
@@ -184,7 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/EditText_companyId"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -193,6 +193,17 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textView_companyIdValidationError"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:text="* מספר ח.פ אינו תקין"
+                            android:textColor="#D20C34"
+                            android:textSize="10sp"
+                            android:visibility="gone" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
