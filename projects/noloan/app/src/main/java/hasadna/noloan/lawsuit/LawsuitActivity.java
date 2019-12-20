@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import hasadna.noloan.common.FirebaseAuthentication;
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.protobuf.LawsuitProto.Lawsuit;
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 
@@ -87,7 +89,6 @@ public class LawsuitActivity extends AppCompatActivity {
     toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
     // Create lawsuitProto of the current lawsuit, from the FormFragment fields
-
     spamMessage =
         SmsMessage.newBuilder()
             .setSender(getIntent().getExtras().getString("from"))
@@ -289,7 +290,7 @@ public class LawsuitActivity extends AppCompatActivity {
                   getString(R.string.app_name),
                   getString(R.string.output_folder_name),
                   ("לא רוצה הלוואה - כתב תביעה "
-                      + lawsuitProto.getCompanyName()
+                      + lawsuitProto.getCompany().getName()
                       + " ("
                       + DATE_TIME_FORMATTER.format(new Date())
                       + ").pdf"))
@@ -328,11 +329,11 @@ public class LawsuitActivity extends AppCompatActivity {
     lawsuit = lawsuit.replace("<userPhone>", lawsuitProto.getUserPhone());
 
     // Company
-    lawsuit = lawsuit.replace("<companyName>", lawsuitProto.getCompanyName());
-    lawsuit = lawsuit.replace("<companyId>", lawsuitProto.getCompanyId());
-    lawsuit = lawsuit.replace("<companyAddress>", lawsuitProto.getCompanyAddress());
-    lawsuit = lawsuit.replace("<companyPhone>", lawsuitProto.getCompanyPhone());
-    lawsuit = lawsuit.replace("<companyFax>", lawsuitProto.getCompanyFax());
+    lawsuit = lawsuit.replace("<companyName>", lawsuitProto.getCompany().getName());
+    lawsuit = lawsuit.replace("<companyId>", lawsuitProto.getCompany().getFax());
+    lawsuit = lawsuit.replace("<companyAddress>", lawsuitProto.getCompany().getAddress());
+    lawsuit = lawsuit.replace("<companyPhone>", lawsuitProto.getCompany().getPhone());
+    lawsuit = lawsuit.replace("<companyFax>", lawsuitProto.getCompany().getFax());
 
     // General
     lawsuit =
@@ -376,6 +377,17 @@ public class LawsuitActivity extends AppCompatActivity {
         sharedPreferencesKey,
         Base64.encodeToString(this.lawsuitProto.toByteArray(), Base64.DEFAULT));
     editor.apply();
+
+    // If this spam had been suggested by the user - update suggested company in the DB
+    int index = SmsMessages.searchMessage(spamMessage, SmsMessages.get().getDbMessages());
+    if (index != -1
+        && SmsMessages.get()
+            .getDbMessages()
+            .get(index)
+            .getSuggestersList()
+            .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+      SmsMessages.get().suggestCompany(lawsuitProto.getSmsMessage(), lawsuitProto.getCompany());
+    }
   }
 
   public Lawsuit getSharedPreferencesLawsuitProto() {

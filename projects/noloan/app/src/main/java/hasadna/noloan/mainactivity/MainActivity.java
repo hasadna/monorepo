@@ -78,18 +78,6 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    /**
-     * At the moment all spams/dbMessages received from the DB are displayed to the user TODO:
-     * Intersect spams/dbMessages with user's inbox messages, display only the relevant messages
-     * that are in the inbox.
-     *
-     * <p>// Create a list of the intersection between the two lists, messages and spam // Based on
-     * https://www.baeldung.com/java-lists-intersection List<SmsMessage> spamAndInbox =
-     * inbox.stream().distinct().filter(spams::contains).collect(Collectors.toList());
-     * List<SmsMessage> suggestionsAndInbox =
-     * inbox.stream().distinct().filter(dbMessages::contains).collect(Collectors.toList());
-     */
-
     // Status title
     statusTitle = findViewById(R.id.textView_numberOfMessages);
 

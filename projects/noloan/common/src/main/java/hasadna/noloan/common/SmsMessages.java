@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hasadna.noloan.protobuf.SmsProto.SmsMessage;
+import hasadna.noloan.protobuf.CompanyProto.Company;
 
 // Simple singleton to hold smsMessages from the db, smsMessages from the inbox
 public class SmsMessages {
-  private static final String TAG = "hasadna.noloan.common.SmsMessages";
+  private static final String TAG = "common.SmsMessages";
 
   private static SmsMessages instance;
   private List<SmsMessage> dbMessages;
@@ -36,10 +37,10 @@ public class SmsMessages {
     return instance;
   }
 
-  // Checks if message had already been suggested. Updates counter / Adds a new suggestion
+  // Checks if message had already been suggested. Add user as a suggester / Adds a new suggestion
   public void suggestMessage(SmsMessage smsMessage) {
     // Case: Message was already suggested by others but not by this user
-    // 1. Add user as a "suggester"
+    // 1. Add user as a "suggester" of this SMS
     int index = searchDbMessage(smsMessage);
     if ((index != -1)
         && !dbMessages
@@ -67,6 +68,123 @@ public class SmsMessages {
               .toBuilder()
               .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
               .build());
+    }
+  }
+
+  // Suggest a company for a given SMS, if message isn't in the DB do nothing.
+  public void suggestCompany(SmsMessage smsMessage, Company company) {
+
+    // Fetch spam message from DB
+    int index = searchDbMessage(smsMessage);
+    if (index != -1) {
+      Company newCompany;
+      SmsMessage newMessage;
+
+      // Check if this company was already suggested for this spam
+      int companyIndex = searchCompany(company, dbMessages.get(index).getCompanyList());
+
+      // Case: New company suggestion for this spam
+      if (companyIndex == -1) {
+        // 1. Add user as a suggester for this company
+        newCompany =
+            company
+                .toBuilder()
+                .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
+                .buildPartial();
+        // 2. Add Company suggestion to the SmsMessage
+        newMessage = dbMessages.get(index).toBuilder().addCompany(newCompany).build();
+
+        // Push to DB
+        firestoreClient.modifyMessage(dbMessages.get(index), newMessage);
+        modifyMessage(newMessage);
+
+        // Notify
+        notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
+      }
+
+      // Case: Company was already suggested for this spam
+      // If user isn't in the company's suggesters list - Add
+      else if (!dbMessages
+          .get(index)
+          .getCompanyList()
+          .get(companyIndex)
+          .getSuggestersList()
+          .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+        newCompany =
+            dbMessages
+                .get(index)
+                .getCompanyList()
+                .get(companyIndex)
+                .toBuilder()
+                .addSuggesters(FirebaseAuthentication.getInstance().getCurrentUserId())
+                .build();
+        newMessage = dbMessages.get(index).toBuilder().setCompany(companyIndex, newCompany).build();
+
+        // Push to DB
+        firestoreClient.modifyMessage(dbMessages.get(index), newMessage);
+        modifyMessage(newMessage);
+
+        // Notify
+        notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
+      }
+    }
+
+    // Case: Suggesting a company for a spam that doesn't exist in the DB - do nothing.
+    // TODO: Prompt user to add this spam to the DB.
+    else {
+      Log.w(TAG, "Attempt to suggest a company for an SMS, but SMS wasn't found in the DB");
+    }
+  }
+
+  // Undo's a company suggestion for a spam in the DB. If spam wasn't found in the DB - do nothing.
+  public void undoCompanySuggestion(SmsMessage smsMessage, Company company) {
+
+    // Fetch message from DB
+    int index = searchDbMessage(smsMessage);
+
+    // Message found:
+    if (index != -1) {
+      int companyIndex = searchCompany(company, dbMessages.get(index).getCompanyList());
+
+      // Case: User is part of the suggesters of this company - Remove from suggesters list
+      if (companyIndex != -1
+          && dbMessages
+              .get(index)
+              .getCompanyList()
+              .get(companyIndex)
+              .getSuggestersList()
+              .contains(FirebaseAuthentication.getInstance().getCurrentUserId())) {
+
+        // Remove user from company's suggesters
+        Company newCompany = dbMessages.get(index).getCompanyList().get(companyIndex);
+        newCompany
+            .toBuilder()
+            .getSuggestersList()
+            .remove(FirebaseAuthentication.getInstance().getCurrentUserId());
+
+        // Update SmsMessage
+        SmsMessage newMessage =
+            dbMessages.get(index).toBuilder().setCompany(companyIndex, newCompany).build();
+
+        // Push new SmsMessage to DB
+        firestoreClient.modifyMessage(smsMessage, newMessage);
+        modifyMessage(newMessage);
+
+        // Notify
+        notifyListeners(dbMessages.indexOf(newMessage), newMessage, Type.MODIFIED);
+      }
+
+      // Case: User is not part of the suggesters for this company - do nothing.
+      else if (companyIndex != -1) {
+        Log.w(
+            TAG,
+            "Attempt to undo a company suggestion for an SMS, but user isn't listed in the company's suggesters");
+      }
+    }
+
+    // Message wasn't found in the DB
+    else {
+      Log.w(TAG, "Attempt to undo a company suggestion for an SMS, but SMS wasn't found in the DB");
     }
   }
 
@@ -114,6 +232,22 @@ public class SmsMessages {
         return i;
       }
     }
+    return -1;
+  }
+
+  // Search company by: Name, Id, Address, Phone, Fax. Return -1 if none found.
+  // Excludes fields that don't relate to the company's details (e.g SuggestersList)
+  public int searchCompany(Company company, List<Company> list) {
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getName().contentEquals(company.getName())
+          && list.get(i).getId().contentEquals(company.getId())
+          && list.get(i).getAddress().contentEquals(company.getAddress())
+          && list.get(i).getPhone().contentEquals(company.getPhone())
+          && list.get(i).getFax().contentEquals(company.getFax())) {
+        return i;
+      }
+    }
+
     return -1;
   }
 

@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import hasadna.noloan.common.SmsMessages;
 import hasadna.noloan.lawsuit.LawsuitActivity;
+import hasadna.noloan.protobuf.CompanyProto.Company;
 import noloan.R;
 
 public class LawsuitFormFragment extends Fragment {
@@ -156,15 +158,15 @@ public class LawsuitFormFragment extends Fragment {
 
     // Company
     ((EditText) getView().findViewById(R.id.EditText_companyName))
-        .setText(lawsuitActivity.lawsuitProto.getCompanyName());
+        .setText(lawsuitActivity.lawsuitProto.getCompany().getName());
     ((EditText) getView().findViewById(R.id.EditText_companyId))
-        .setText(lawsuitActivity.lawsuitProto.getCompanyId());
+        .setText(lawsuitActivity.lawsuitProto.getCompany().getId());
     ((EditText) getView().findViewById(R.id.EditText_companyAddress))
-        .setText(lawsuitActivity.lawsuitProto.getCompanyAddress());
+        .setText(lawsuitActivity.lawsuitProto.getCompany().getAddress());
     ((EditText) getView().findViewById(R.id.EditText_companyPhone))
-        .setText(lawsuitActivity.lawsuitProto.getCompanyPhone());
+        .setText(lawsuitActivity.lawsuitProto.getCompany().getPhone());
     ((EditText) getView().findViewById(R.id.EditText_companyFax))
-        .setText(lawsuitActivity.lawsuitProto.getCompanyFax());
+        .setText(lawsuitActivity.lawsuitProto.getCompany().getFax());
 
     // General
     ((EditText) getView().findViewById(R.id.EditText_receivedSpamDate))
@@ -197,6 +199,7 @@ public class LawsuitFormFragment extends Fragment {
 
   // Update LawsuitProto with form's fields
   private void createLawsuitProto() {
+
     lawsuitActivity.lawsuitProto =
         lawsuitActivity
             .lawsuitProto
@@ -219,20 +222,29 @@ public class LawsuitFormFragment extends Fragment {
                 ((EditText) getView().findViewById(R.id.EditText_userPhone)).getText().toString())
 
             // Company
-            .setCompanyName(
-                ((EditText) getView().findViewById(R.id.EditText_companyName)).getText().toString())
-            .setCompanyId(
-                ((EditText) getView().findViewById(R.id.EditText_companyId)).getText().toString())
-            .setCompanyAddress(
-                ((EditText) getView().findViewById(R.id.EditText_companyAddress))
-                    .getText()
-                    .toString())
-            .setCompanyPhone(
-                ((EditText) getView().findViewById(R.id.EditText_companyPhone))
-                    .getText()
-                    .toString())
-            .setCompanyFax(
-                ((EditText) getView().findViewById(R.id.EditText_companyFax)).getText().toString())
+            .setCompany(
+                Company.newBuilder()
+                    .setName(
+                        ((EditText) getView().findViewById(R.id.EditText_companyName))
+                            .getText()
+                            .toString())
+                    .setId(
+                        ((EditText) getView().findViewById(R.id.EditText_companyId))
+                            .getText()
+                            .toString())
+                    .setAddress(
+                        ((EditText) getView().findViewById(R.id.EditText_companyAddress))
+                            .getText()
+                            .toString())
+                    .setPhone(
+                        ((EditText) getView().findViewById(R.id.EditText_companyPhone))
+                            .getText()
+                            .toString())
+                    .setFax(
+                        ((EditText) getView().findViewById(R.id.EditText_companyFax))
+                            .getText()
+                            .toString())
+                    .build())
 
             // General
             .setDateReceived(
