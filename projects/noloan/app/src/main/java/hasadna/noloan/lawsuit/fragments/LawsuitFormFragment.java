@@ -2,6 +2,8 @@ package hasadna.noloan.lawsuit.fragments;
 
 import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.fragment.app.Fragment;
@@ -24,16 +26,13 @@ import noloan.R;
 public class LawsuitFormFragment extends Fragment {
   private static final String TAG = "LawsuitFormFragment";
 
-  LawsuitActivity lawsuitActivity;
-  EditText receivedDate;
-  TextInputEditText userId;
-  TextView idValidationError;
-  DatePickerDialog datePickerDialog;
-  Calendar calendar;
-  Button confirmForm;
-  ScrollView scrollView;
-  private boolean formValidated = false;
+  private LawsuitActivity lawsuitActivity;
+  private EditText receivedDate;
+  private DatePickerDialog datePickerDialog;
+  private ScrollView scrollView;
+  private TextView userIdValidationError;
 
+  /** Commented for future usage private TextView companyIdValidationError; */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -46,18 +45,22 @@ public class LawsuitFormFragment extends Fragment {
     ViewGroup rootView =
         (ViewGroup) inflater.inflate(R.layout.lawsuit_fragment_form, container, false);
 
-    userId = rootView.findViewById(R.id.EditText_userID);
-    idValidationError = rootView.findViewById(R.id.textView_idValidationError);
-    receivedDate = rootView.findViewById(R.id.EditText_receivedSpamDate);
-    confirmForm = rootView.findViewById(R.id.Button_formFragment_next);
     scrollView = rootView.findViewById(R.id.ScrollView_formFragment);
+    userIdValidationError = rootView.findViewById(R.id.textView_userIdValidationError);
 
-    // Validate user id number
+    /**
+     * Commented for future usage companyIdValidationError =
+     * rootView.findViewById(R.id.textView_companyIdValidationError);
+     */
+
+    // Validate user ID
+    TextInputEditText userId = rootView.findViewById(R.id.EditText_userID);
     userId.addTextChangedListener(
         new TextWatcher() {
           @Override
           public void afterTextChanged(Editable s) {
-            validateIdNumber(userId.getText().toString());
+            userIdValidationError.setVisibility(
+                validateIdNumber(userId.getText().toString()) ? View.INVISIBLE : View.VISIBLE);
           }
 
           @Override
@@ -67,25 +70,57 @@ public class LawsuitFormFragment extends Fragment {
           public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
+    // Validate company ID
+    /**
+     * Commented for future usage TextInputEditText companyId =
+     * rootView.findViewById(R.id.EditText_companyId); companyId.addTextChangedListener( new
+     * TextWatcher() { @Override public void afterTextChanged(Editable s) {
+     * companyIdValidationError.setVisibility(validateIdNumber(companyId.getText().toString()) ?
+     * View.INVISIBLE:View.VISIBLE); } @Override public void beforeTextChanged(CharSequence s, int
+     * start, int count, int after) {} @Override public void onTextChanged(CharSequence s, int
+     * start, int before, int count) {} });
+     */
+
+    // Set received date of message + DatePicker dialog
+    receivedDate = rootView.findViewById(R.id.EditText_receivedSpamDate);
     receivedDate.setText(lawsuitActivity.spamMessage.getReceivedAt());
     receivedDate.setOnClickListener(v -> displayDatePicker());
 
-    // Proceed to next fragment only if form is validated (user's id number)
+    // Button - Search companies at
+    Button searchCompany = rootView.findViewById(R.id.button_formFragment_searchCompany);
+    searchCompany.setOnClickListener(
+        v -> {
+          Uri uri = Uri.parse(getString(R.string.formFragment_searchCorporations_website));
+          Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+          startActivity(intent);
+        });
+
+    // Check if form validated - Proceed to next Fragment
+    Button confirmForm = rootView.findViewById(R.id.Button_formFragment_next);
     confirmForm.setOnClickListener(
         v -> {
-          if (formValidated) {
+
+          // Validate user ID
+          if (!validateIdNumber(userId.getText().toString())) {
+            userIdValidationError.setVisibility(View.VISIBLE);
+            scrollTo(userId);
+          }
+
+          // Validate company's ID
+          /**
+           * Commented for future feature else
+           * if(!validateIdNumber(companyId.getText().toString())){
+           * companyIdValidationError.setVisibility(View.VISIBLE); scrollTo(companyId); }
+           */
+
+          // Form validated:
+          else {
             // Create PDF and proceed to SummaryFragment (Get file's path with:
             // LawsuitActivity.getAbsFilename())
             createLawsuitProto();
             lawsuitActivity.updateSharedPreferences();
             lawsuitActivity.createPdf();
             lawsuitActivity.viewPager.setCurrentItem(1, false);
-          } else {
-            validateIdNumber(userId.getText().toString());
-            ObjectAnimator.ofInt(scrollView, "scrollY", userId.getScrollY())
-                .setDuration(800)
-                .start();
-            userId.requestFocus();
           }
         });
 
@@ -144,7 +179,7 @@ public class LawsuitFormFragment extends Fragment {
 
   // Pops a calendar dialog when clicking on date fields
   private void displayDatePicker() {
-    calendar = Calendar.getInstance();
+    Calendar calendar = Calendar.getInstance();
     int day = calendar.get(Calendar.DAY_OF_MONTH);
     int month = calendar.get(Calendar.MONTH);
     int year = calendar.get(Calendar.YEAR);
@@ -214,9 +249,8 @@ public class LawsuitFormFragment extends Fragment {
 
   // Flags 'formValidated' which is been checked before proceeding to next fragment
   private boolean validateIdNumber(String idNumber) {
+
     if (idNumber.length() > 9 || idNumber.length() < 4) {
-      idValidationError.setVisibility(View.VISIBLE);
-      formValidated = false;
       return false;
     }
     // Complement id number to 9 digits
@@ -232,14 +266,16 @@ public class LawsuitFormFragment extends Fragment {
     }
     sum += id[8];
     if (sum % 10 == 0) {
-      idValidationError.setVisibility(View.GONE);
-      formValidated = true;
       return true;
     } else {
-      idValidationError.setVisibility(View.VISIBLE);
-      formValidated = false;
       return false;
     }
+  }
+
+  // Scroll to form field
+  private void scrollTo(TextView fieldView) {
+    ObjectAnimator.ofInt(scrollView, "scrollY", fieldView.getScrollY()).setDuration(800).start();
+    fieldView.requestFocus();
   }
 }
 
