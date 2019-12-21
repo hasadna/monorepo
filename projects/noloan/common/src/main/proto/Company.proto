@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package hasadna.noloan;
+
+option java_package = "hasadna.noloan.protobuf";
+option java_outer_classname = "CompanyProto";
+
+message Company{
+    string name = 1;
+    string id = 2;
+    string address = 3;
+    string phone = 4;
+    string fax = 5;
+}

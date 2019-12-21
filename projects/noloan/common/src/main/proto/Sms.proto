@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package hasadna.noloan;
 
+import "Company.proto";
+
 option java_package = "hasadna.noloan.protobuf";
 option java_outer_classname = "SmsProto";
 
@@ -11,9 +13,11 @@ message SmsMessage {
     string receivedAt = 3;
     string id = 4;
     bool approved = 6;
+    Company company = 7;
 
     // List of Firestore user IDs that have suggested this message as spam.
-    repeated string suggesters = 7;
+    repeated string suggesters = 8;
+
 }
 
 message SpamList {
