@@ -330,7 +330,7 @@ public class LawsuitActivity extends AppCompatActivity {
 
     // Company
     lawsuit = lawsuit.replace("<companyName>", lawsuitProto.getCompany().getName());
-    lawsuit = lawsuit.replace("<companyId>", lawsuitProto.getCompany().getFax());
+    lawsuit = lawsuit.replace("<companyId>", lawsuitProto.getCompany().getId());
     lawsuit = lawsuit.replace("<companyAddress>", lawsuitProto.getCompany().getAddress());
     lawsuit = lawsuit.replace("<companyPhone>", lawsuitProto.getCompany().getPhone());
     lawsuit = lawsuit.replace("<companyFax>", lawsuitProto.getCompany().getFax());
