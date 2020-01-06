@@ -11,7 +11,7 @@
     <mat-option
       [value]="storySelect.value"
       (click)="createNewStory(storySelect.value)"
-      *ngIf="storySelect.value && !onelinerList.includes(storySelect.value)"
+      *ngIf="storySelect.value && !onelinerList.includes(storySelect.value) && !isShared"
     >
       <div class="new-story">Create new story "{{ storySelect.value }}"</div>
     </mat-option>

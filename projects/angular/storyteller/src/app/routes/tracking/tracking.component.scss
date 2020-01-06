@@ -4,7 +4,38 @@
     >.title {
       margin-bottom: 13px;
       span {
-        font-weight: 600;
+        font-size: 18px;
+        font-weight: bold;
+        color: #4e4e4e;
+      }
+    }
+    >.select-range {
+      >.radio {
+        white-space: nowrap;
+        button {
+          outline: none;
+          background: white;
+          padding: 6px 20px;
+          border: 2px solid #979797;
+          color: #4e4e4e;
+          font-size: 16px;
+          font-weight: bold;
+          border-right: none;
+        }
+        .selected {
+          background: #d8d8d8;
+        }
+        .pointer {
+          cursor: pointer;
+        }
+      }
+      $border-radius: 8px;
+      >.radio :first-child {
+        border-radius: #{$border-radius} 0px 0px #{$border-radius};
+      }
+      >.radio :last-child {
+        border-radius: 0px #{$border-radius} #{$border-radius} 0px;
+        border: 2px solid #979797;
       }
     }
     >.range {

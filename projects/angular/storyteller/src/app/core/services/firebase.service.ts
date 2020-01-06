@@ -145,8 +145,7 @@ export class FirebaseService {
     });
   }
 
-  getTracks(storyId: string): Observable<Track[]> {
-    const email: string = this.authService.email;
+  getTracks(storyId: string, email: string): Observable<Track[]> {
     return this.db.collection(`/storyteller/data/user/${email}/story/${storyId}/track`)
       .snapshotChanges()
       .pipe(
