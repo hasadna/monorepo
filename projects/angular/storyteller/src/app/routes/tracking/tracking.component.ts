@@ -119,18 +119,6 @@ export class TrackingComponent implements OnDestroy {
     }
   }
 
-  getRangeMs(): number {
-    const day: number = 24 * 60 * 60 * 1000;
-    const week: number = 7 * day;
-    const month: number = 30 * week;
-    switch (this.selectedRangeIndex) {
-      case 0: return day;
-      case 1: return week;
-      case 2: return month;
-    }
-    return week;
-  }
-
   isInRange(ms: number): boolean {
     switch (this.selectedRangeIndex) {
       case 0: return this.isThisDay(ms);
