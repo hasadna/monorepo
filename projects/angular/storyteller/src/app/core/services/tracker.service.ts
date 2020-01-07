@@ -205,7 +205,7 @@ export class TrackerService {
 
   private getStoryTracking(storyId: string): Observable<number> {
     return new Observable(observer => {
-      this.firebaseService.getTracks(storyId)
+      this.firebaseService.getTracks(storyId, this.authService.email)
         .pipe(first())
         .subscribe(tracks => {
           const sinceTracks: Track[] = tracks.filter(track => {

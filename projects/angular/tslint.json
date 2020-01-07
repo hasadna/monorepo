@@ -60,7 +60,6 @@
     "no-string-throw": true,
     "no-unsafe-finally": true,
     "no-void-expression": false,
-    "prefer-conditional-expression": true,
     "strict-boolean-expressions": false,
     "strict-type-predicates": false,
     "eofline": true,

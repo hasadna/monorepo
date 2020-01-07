@@ -1,11 +1,28 @@
 <div class="page" *ngIf="!loadingService.isLoading">
   <div class="tracking">
-    <div class="title title-story">
+    <div class="title">
+      <span>Time range to display</span>
+    </div>
+    <div class="select-range range">
+      <div class="radio">
+        <button
+          *ngFor="let label of radioLabels; let i = index;"
+          [ngClass]="{
+            selected: selectedRangeIndex === i,
+            pointer: selectedRangeIndex !== i
+          }"
+          (click)="selectRange(i)"
+        >{{ label }}</button>
+      </div>
+    </div>
+
+    <div class="title">
       <span>Story to display</span>
     </div>
     <div class="story-select">
       <story-select
         *ngIf="!userService.isStoryListLoading"
+        [email]="email"
         (selectStory)="storySelected($event)"
         (createStory)="createNewStory($event)"
       ></story-select>
