@@ -23,8 +23,8 @@
     <string name="list_item_body">גוף ההודעה:\n\"%1$s\"</string>
     <string name="about_information">אפליקציית NoLoan פותחה ע\"י מתנדבי הסדנא לידע ציבורי.\n\nהאפליקציה מאפשרת לראות סמסים שהתקבלו במכשיר שמשתמשים אחרים סימנו כספאם, ועוזרת למשתמשים ליצור ולהגיש כתב תביעה לפי "חוק ספאם".\n</string>
     <string name="list_item_button_createLawsuit_text">יצירת כתב תביעה</string>
-    <string name="list_item_button_addSpam_text">הוספה למאגר</string>
-    <string name="list_item_button_removeSpam_text">ביטול ספאם</string>
+    <string name="list_item_button_addSpam_text">העלאה למאגר</string>
+    <string name="list_item_button_removeSpam_text">הסרה מהמאגר</string>
 
     <string name="list_item_textView_spam_counter">%1$d סימנו כ-spam</string>
 
