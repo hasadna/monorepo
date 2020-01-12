@@ -10,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import hasadna.noloan.common.FirebaseAuthentication;
@@ -24,14 +28,24 @@ import hasadna.noloan.protobuf.SmsProto.SmsMessage;
 import noloan.R;
 
 public class InboxRecyclerAdapter
-    extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> {
+    extends RecyclerView.Adapter<InboxRecyclerAdapter.RecyclerViewHolder> implements Filterable {
   private static final String TAG = "InboxRecyclerAdapter";
 
+  // List to operate on, for search queries (Copy of SmsMessages.getInboxMessages)
+  private List<SmsMessage> filteredMessagesList;
+
   public InboxRecyclerAdapter() {
+
+    // Case: No messages in inbox - create a dummy SmsMessage object
+    // TODO: Think of a different approach - Perhaps display the recycler empty background with text
+    // "אין הודעות בתיבה" e.g
     if (SmsMessages.get().getInboxMessages().size() == 0) {
       SmsMessage noMessage = SmsMessage.newBuilder().setSender("אין הודעות").build();
       SmsMessages.get().getInboxMessages().add(noMessage);
     }
+
+    // Copy all inbox messages to the dedicated filtered list
+    this.filteredMessagesList = new ArrayList<>(SmsMessages.get().getInboxMessages());
   }
 
   @NonNull
@@ -43,13 +57,61 @@ public class InboxRecyclerAdapter
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-    recyclerViewHolder.bind(SmsMessages.get().getInboxMessages().get(i));
+    recyclerViewHolder.bind(filteredMessagesList.get(i));
   }
 
   @Override
   public int getItemCount() {
-    return SmsMessages.get().getInboxMessages().size();
+    return filteredMessagesList.size();
   }
+
+  @Override
+  public Filter getFilter() {
+    return SmsMessagesFilter;
+  }
+
+  // Search Filter for SmsMessages
+  private Filter SmsMessagesFilter =
+      new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+          List<SmsMessage> filteredList = new ArrayList<>();
+
+          // If query's empty - display all messages
+          if (constraint == null || constraint.length() == 0) {
+            filteredList.addAll(SmsMessages.get().getInboxMessages());
+          }
+
+          // Query not empty - Search pattern in messages list (Body/Sender/Date received)
+          else {
+            String filterPattern = constraint.toString().toLowerCase().trim();
+            // Search Body / Sender / Received date
+            for (SmsMessage sms : SmsMessages.get().getInboxMessages()) {
+              if (sms.getBody().toLowerCase().contains(filterPattern)
+                  || sms.getSender().toLowerCase().contains(filterPattern)
+                  || sms.getReceivedAt().toLowerCase().contains(filterPattern)) {
+
+                // Resulted list
+                filteredList.add(sms);
+              }
+            }
+          }
+
+          // Build resulted list, calls 'publishResults' to publish the list to RecyclerViewer
+          FilterResults results = new FilterResults();
+          results.values = filteredList;
+          return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+          // Clears last result
+          filteredMessagesList.clear();
+          // Update new results
+          filteredMessagesList.addAll((List) results.values);
+          notifyDataSetChanged();
+        }
+      };
 
   public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
