@@ -5,14 +5,33 @@
     android:layout_height="match_parent"
     tools:context=".mainactivity.inboxFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView_inboxMessages"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#F0F0F0"
-        android:clipToPadding="false"
-        android:paddingBottom="10dp"
-        android:scrollbars="vertical" />
+        android:orientation="vertical"
+        android:focusableInTouchMode="true">
+        >
+
+        <SearchView
+            android:id="@+id/searchView_Inbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:clickable="true"
+            android:focusedByDefault="false"
+            android:iconifiedByDefault="false"
+            android:layoutDirection="rtl"
+            android:queryHint="חיפוש הודעה"></SearchView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView_inboxMessages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F0F0F0"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
 
 </FrameLayout>
